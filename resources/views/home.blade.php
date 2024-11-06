@@ -2,19 +2,84 @@
 
 @section('content')
 <style>
-    /* Elimina el margen superior entre el navbar y la imagen de fondo */
     body, main {
         margin-top: 0;
         padding-top: 0;
+        font-family: 'Bebas Neue', sans-serif;
     }
 
-    /* Efecto hover para las imágenes de la galería */
     .card-img-top {
         transition: transform 0.3s ease;
     }
 
     .card:hover .card-img-top {
         transform: scale(1.05);
+    }
+
+    .display-4 {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 3.5rem;
+    }
+
+    .lead {
+        font-size: 1.5rem;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+    }
+
+    .card-text {
+        font-size: 1.1rem;
+    }
+
+    /* Estilo para la sección "Sobre Nosotros" */
+    #nosotros {
+        background-color: #000;
+        color: white;
+        padding: 60px 0;
+        text-align: center;
+    }
+    #nosotros .overlay {
+        max-width: 800px;
+        margin: auto;
+        padding: 40px;
+    }
+    #nosotros h2 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+    }
+    #nosotros p {
+        font-size: 1.6rem;
+        line-height: 1.8;
+    }
+    #nosotros .logo {
+        width: 120px;
+        margin-top: 20px;
+    }
+
+    /* Estilo para la sección de lanzamiento */
+    .lanzamiento {
+        position: relative;
+        background-image: url('{{ asset('img/lanzamiento.jpeg') }}');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 100vh; /* Ocupa todo el alto de la ventana */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-align: center;
+        margin-top: 0;
+        width: 100%;
+    }
+    .lanzamiento h2 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+    }
+    .lanzamiento p {
+        font-size: 1.5rem;
     }
 </style>
 
@@ -26,58 +91,19 @@
         </div>
     </div>
 
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-3 mb-4">
-                <div class="card h-100 shadow-sm">
-                    <img src="https://png.pngtree.com/png-vector/20220120/ourmid/pngtree-black-t-shirt-template-png-image_4293336.png" class="card-img-top" alt="Playera 1">
-                    <div class="card-body">
-                        <h5 class="card-title">Playera Básica</h5>
-                        <p class="card-text">Precio: $20.00</p>
-                        <a href="{{ route('producto.detalle') }}" class="btn btn-primary w-100">Ver detalles</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3 mb-4">
-                <div class="card h-100 shadow-sm">
-                    <img src="https://png.pngtree.com/png-vector/20220120/ourmid/pngtree-black-t-shirt-template-png-image_4293336.png" class="card-img-top" alt="Playera 2">
-                    <div class="card-body">
-                        <h5 class="card-title">Playera Premium</h5>
-                        <p class="card-text">Precio: $35.00</p>
-                        <a href="{{ route('producto.detalle') }}" class="btn btn-primary w-100">Ver detalles</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3 mb-4">
-                <div class="card h-100 shadow-sm">
-                    <img src="https://png.pngtree.com/png-vector/20220120/ourmid/pngtree-black-t-shirt-template-png-image_4293336.png" class="card-img-top" alt="Playera 3">
-                    <div class="card-body">
-                        <h5 class="card-title">Playera Personalizada</h5>
-                        <p class="card-text">Precio: $50.00</p>
-                        <a href="{{ route('producto.detalle') }}" class="btn btn-primary w-100">Ver detalles</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3 mb-4">
-                <div class="card h-100 shadow-sm">
-                    <img src="https://png.pngtree.com/png-vector/20220120/ourmid/pngtree-black-t-shirt-template-png-image_4293336.png" class="card-img-top" alt="Playera 4">
-                    <div class="card-body">
-                        <h5 class="card-title">Playera Edición Limitada</h5>
-                        <p class="card-text">Precio: $75.00</p>
-                        <a href="{{ route('producto.detalle') }}" class="btn btn-primary w-100">Ver detalles</a>
-                    </div>
-                </div>
-            </div>
+    <!-- Sección de Lanzamiento -->
+    <div class="lanzamiento">
+        <div>
+            <h2>Nuevo Lanzamiento: Edición Especial Día de Muertos</h2>
+            <p>¡Descubre nuestra exclusiva playera en honor al Día de Muertos! <br>
+            Disponible solo por tiempo limitado.</p>
         </div>
     </div>
 
     <!-- Galería de Modelos -->
-    <div class="container mt-5">
-        <div class="row product-gallery">
-            <div class="col-md-3 mb-4">
+    <div class="container-fluid mt-5">
+        <div class="row g-4 product-gallery">
+            <div class="col-md-3">
                 <div class="card h-100 shadow-sm">
                     <img src="{{ asset('img/first.jpeg') }}" class="card-img-top" alt="Playera 1 - Estilo único">
                     <div class="card-body text-center">
@@ -86,7 +112,7 @@
                 </div>
             </div>
 
-            <div class="col-md-3 mb-4">
+            <div class="col-md-3">
                 <div class="card h-100 shadow-sm">
                     <img src="{{ asset('img/second.jpeg') }}" class="card-img-top" alt="Playera 2 - Diseño original">
                     <div class="card-body text-center">
@@ -95,7 +121,7 @@
                 </div>
             </div>
 
-            <div class="col-md-3 mb-4">
+            <div class="col-md-3">
                 <div class="card h-100 shadow-sm">
                     <img src="{{ asset('img/third.jpeg') }}" class="card-img-top" alt="Playera 3 - Inspiración en cada detalle">
                     <div class="card-body text-center">
@@ -104,7 +130,7 @@
                 </div>
             </div>
 
-            <div class="col-md-3 mb-4">
+            <div class="col-md-3">
                 <div class="card h-100 shadow-sm">
                     <img src="{{ asset('img/fourth.jpeg') }}" class="card-img-top" alt="Playera 4 - Marca la diferencia">
                     <div class="card-body text-center">
@@ -112,6 +138,14 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div id="nosotros" class="container-fluid mt-5">
+        <div class="overlay">
+            <h2>Sobre Nosotros</h2>
+            <p>Raymundo y Domingo, dos amigos apasionados por la moda, soñaban con crear su propia marca. <br> En una tarde soleada, decidieron dar el salto y fundaron Ozez. Con pocos ahorros, diseñaron camisetas. <br> Después de varias noches de trabajo, lograron lanzar su primera colección. La respuesta fue abrumadora. La comunidad apoyó su visión. <br> Ahora, Ozez representa un estilo auténtico y responsable. Cada prenda cuenta una historia de amistad y pasión por la moda.</p>
+            <img class="logo" src="{{ asset('img/ozeztrc.png') }}" alt="Logo de Ozez">
         </div>
     </div>
 </div>
