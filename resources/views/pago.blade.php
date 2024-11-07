@@ -9,7 +9,6 @@
             <div class="card shadow-sm">
                 <div class="card-body">
                     <form id="form-pago">
-                        <!-- Información de Envío -->
                         <h4 class="mb-3">Información de Envío</h4>
                         <div class="mb-3">
                             <label for="nombre" class="form-label">Nombre Completo</label>
@@ -28,7 +27,6 @@
                             <input type="text" class="form-control" id="codigo-postal" required>
                         </div>
 
-                        <!-- Información de Pago -->
                         <h4 class="mt-4 mb-3">Información de Pago</h4>
                         <div class="mb-3">
                             <label for="numero-tarjeta" class="form-label">Número de Tarjeta</label>
@@ -45,7 +43,6 @@
                             </div>
                         </div>
 
-                        <!-- Botón de Pago -->
                         <button type="button" class="btn btn-success w-100 mt-4" onclick="procesarPago()">Realizar Pago</button>
                     </form>
                 </div>
