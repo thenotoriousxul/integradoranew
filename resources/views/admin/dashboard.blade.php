@@ -34,6 +34,7 @@
     <div class="mt-4">
         <a href="#" class="btn btn-primary">Gestionar Productos</a>
         <a href="#" class="btn btn-secondary">Ver Pedidos</a>
+        <a href="{{route ('agregar.producto')}}" class="btn btn-secondary">agregar Producto</a>
     </div>
 </div>
 
