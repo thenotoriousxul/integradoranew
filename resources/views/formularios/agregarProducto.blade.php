@@ -11,7 +11,7 @@
             @csrf
             <div class="mb-3 row">
                 <label class="form-label" for="tipo">ingresa el tipo</label>
-                <input type="text" name="tipo" id="tipo" placeholder="tipo">
+                <input value="{{old('tipo')}}" type="text" name="tipo" id="tipo" placeholder="tipo">
             </div>
 
             <div class="mb-3 row">
@@ -38,12 +38,12 @@
 
             <div class="mb-3 row">
                 <label class="form-label" for="lote">Ingresa la cantidad de lote </label>
-                <input type="number" name="lote" id="lote" placeholder="ingresa la cantidad">
+                <input value="{{old('lote')}}" type="number" name="lote" id="lote" placeholder="ingresa la cantidad">
             </div>
 
             <div class="mb-3 row">
                 <label class="form-label" for="costo">Ingresa el costo base </label>
-                <input type="text" name="costo" id="costo" placeholder="ingresa el costo">
+                <input value="{{old('costo')}}" type="text" name="costo" id="costo" placeholder="ingresa el costo">
             </div>
 
             <div class="mb-3 row">

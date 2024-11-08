@@ -8,9 +8,9 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/productos', function () {
-    return view('productos');
-})->name('productos');
+ Route::get('/productos', function () {
+     return view('productos');
+ })->name('productos');
 
 Route::get('/producto', function () {
     return view('producto_detalle');
@@ -49,6 +49,10 @@ Route::get('/envios', function () {
 
 //------------------------------------------
 Route::get('/formulario/agregar/Producto', [formularioProducto::class, 'formularioProducto'])->name('agregar.producto');
+
+
+//Productos    ---------------------------------------------------
+Route::get('/productos/base',[productoController::class, 'getProductos'])->name('mostrar.productos');
 
 Route::Post('/agregar/producto',[productoController::class, 'saveProducto'])->name('producto.save');
 
