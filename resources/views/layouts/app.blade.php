@@ -153,7 +153,7 @@
                                     {{ Auth::user()->name }}
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('mis_pedidos') }}">
+                                    <a class="dropdown-item" href="{{ route('logout') }}">
                                         {{ __('Mis Pedidos') }}
                                     </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
