@@ -14,7 +14,6 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <style>
-        /* Ajuste del contenedor principal */
         body, html {
             height: 100%;
             margin: 0;
@@ -24,7 +23,6 @@
 </head>
 <body class="m-0 p-0">
     <div id="app" class="m-0 p-0">
-        <!-- Contenido principal sin navbar y footer -->
         <main class="m-0 p-0">
             @yield('content')
         </main>
