@@ -123,8 +123,9 @@
         white-space: nowrap;
     }
 
-    .animacion img {
-        height: 60px;
+    .animacion span, .animacion img {
+        font-size: 1.5rem;
+        color: white;
         margin-right: 15px;
         vertical-align: middle;
     }
@@ -171,8 +172,6 @@
     }
 </style>
 
-<link rel="preload" href="{{ asset('img/byn.jpeg') }}" as="image">
-
 <div class="container-fluid p-0">
     <div class="position-relative text-center text-white bg-cover bg-center" style="background-image: url('{{ asset('img/byn.jpeg') }}'); height: 600px; background-size: cover; background-position: center;">
         <div class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center" style="background: rgba(0, 0, 0, 0.5);">
@@ -183,7 +182,13 @@
 
     <div class="animacion">
         <div class="logo-container">
-            REBAJAS
+            <span>Innovación en Cada Puntada</span>
+            <span>Diseños que Definen tu Estilo</span>
+            <span>OZEZ: Lleva tu Estilo al Siguiente Nivel</span>
+            <span>Autenticidad y Creatividad en Cada Playera</span>
+            <span>Explora la Diferencia con OZEZ</span>
+            <span>Calidad y Personalización en un Solo Lugar</span>
+            <span>Viste tu Estilo, Viste OZEZ</span>
         </div>
     </div>
 
@@ -226,9 +231,12 @@
 
     <div class="animacion">
         <div class="logo-container">
-            @for ($i = 0; $i < 50; $i++)
-                <img src="{{ asset('img/ozeztrc.png') }}" alt="OZEZ Logo">
-            @endfor
+            <span>Exprésate con OZEZ</span>
+            <span>Diseño Exclusivo, Estilo Único</span>
+            <span>Vive tu Moda con OZEZ</span>
+            <span>Edición Limitada para Personalidades Únicas</span>
+            <span>Calidad y Estilo en Cada Costura</span>
+            <span>Hazlo Personal, Hazlo OZEZ</span>
         </div>
     </div>
 
@@ -242,9 +250,10 @@
 
     <div class="animacion">
         <div class="logo-container">
-            @for ($i = 0; $i < 50; $i++)
-                <img src="{{ asset('img/ozeztrc.png') }}" alt="OZEZ Logo">
-            @endfor
+            <span>OZEZ: Viste la Diferencia</span>
+            <span>Crea tu Estilo, Crea con OZEZ</span>
+            <span>Elegancia y Comodidad en Cada Diseño</span>
+            <span>Tu Playera, Tu Historia</span>
         </div>
     </div>
 
