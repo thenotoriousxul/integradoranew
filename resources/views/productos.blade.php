@@ -23,7 +23,7 @@
                     @endif
                     <div class="card-body">
                         <h5 class="card-title">{{$producto->tipo}}</h5>
-                        <p class="card-text">Precio: ${{number_format($producto->costo)}}</p>
+                        <p class="card-text">Precio: ${{ number_format($producto->costo, 2) }}</p>
                         <p class="card-text">Lote: {{$producto->lote}}</p>
                         <p class="card-text">Tamaño: {{$producto->tamaño}}</p>
                         <a href="#" class="btn btn-primary w-100">Ver detalles</a>
@@ -37,7 +37,7 @@
 
 
     <div class="row">
-        @for ($i = 1; $i <= 8; $i++)
+        @for ($i = 1; $i <= 2   ; $i++)
             <div class="col-md-3 mb-4">
                 <div class="card h-100 shadow-sm">
                     <img src="https://png.pngtree.com/png-vector/20220120/ourmid/pngtree-black-t-shirt-template-png-image_4293336.png" class="card-img-top" alt="Playera {{ $i }}">

@@ -1,7 +1,9 @@
 <?php
 
-use App\Http\Controllers\formularioProducto;
+use App\Http\Controllers\formularios\formularioProveedor;
+use App\Http\Controllers\formularios\formularioProducto;
 use App\Http\Controllers\productoController;
+use App\Http\Controllers\proveedorController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -51,10 +53,16 @@ Route::get('/envios', function () {
 Route::get('/formulario/agregar/Producto', [formularioProducto::class, 'formularioProducto'])->name('agregar.producto');
 
 
-//Productos    ---------------------------------------------------
+//Productos---------------------------------------------------
 Route::get('/productos/base',[productoController::class, 'getProductos'])->name('mostrar.productos');
-
+//guardar producto
 Route::Post('/agregar/producto',[productoController::class, 'saveProducto'])->name('producto.save');
 
-
 //------------------------------------------
+
+
+//Crear provedor-------------------------------------------------
+
+Route::get('/agregar/proveedor',[formularioProveedor::class, 'agregarProveedor'])->name('agregar.proveedor');
+Route::get('/guardar/proveedor', [proveedorController::class, 'saveProveedor'])->name('guardar.proveedor');
+//--------------------------------------------------------------
