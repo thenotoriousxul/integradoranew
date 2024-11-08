@@ -265,5 +265,17 @@
             <a href="#" class="btn">Personalizar Ahora</a>
         </div>
     </div>
+
+    <div class="animacion">
+        <div class="logo-container">
+        <span>Estilo Único, Calidad Garantizada</span>
+        <span>Personaliza y Marca la Diferencia</span>
+        <span>OZEZ: Donde el Estilo se Encuentra con la Creatividad</span>
+        <span>Calidad en Cada Puntada, Comodidad en Cada Estilo</span>
+        <span>Moda que Se Adapta a Ti</span>
+        <span>Expresa Tu Esencia con OZEZ</span>
+        </div>
+    </div>
+
 </div>
 @endsection
