@@ -192,7 +192,7 @@
         </div>
     </div>
 
-    <div class="container-fluid mt-4">
+    <div class="container-fluid mt-4 mb-4">
         <div class="row g-4 product-gallery">
             <div class="col-md-3">
                 <div class="card h-100 shadow-sm">
