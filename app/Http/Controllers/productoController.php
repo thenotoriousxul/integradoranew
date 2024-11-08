@@ -33,4 +33,9 @@ class productoController extends Controller
         return redirect()->route('agregar.producto')->with('success', 'Producto creado exitosamente.');
     
     }
+
+    public function getProductos() {
+        $productos = Producto::all();
+        return view('productos' , compact('productos'));
+    }
 }
