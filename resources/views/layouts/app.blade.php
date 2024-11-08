@@ -127,6 +127,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('logout') }}">Personalización</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('rebajas') }}">Rebajas</a>
+                        </li>
                     </ul>
                 </div>
 
@@ -150,7 +153,7 @@
                                     {{ Auth::user()->name }}
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}">
+                                    <a class="dropdown-item" href="{{ route('mis_pedidos') }}">
                                         {{ __('Mis Pedidos') }}
                                     </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
