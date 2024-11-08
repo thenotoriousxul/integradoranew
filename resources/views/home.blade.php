@@ -18,11 +18,26 @@
 
     .display-4 {
         font-family: 'Bebas Neue', sans-serif;
-        font-size: 3.5rem;
+        font-size: 5.5rem;
+        color: white;
+        overflow: hidden;
+        white-space: nowrap;
+        width: 100%;
+        animation: typing 4s steps(40, end), fade-out 0s step-end 4s;
     }
 
     .lead {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
+    }
+
+    @keyframes typing {
+        from { width: 0; }
+        to { width: 100%; }
+    }
+
+    @keyframes fade-out {
+        from { border-right: 4px solid white; }
+        to { border-right: none; }
     }
 
     .card-title {
@@ -33,75 +48,146 @@
         font-size: 1.1rem;
     }
 
-    /* Estilo para la sección "Sobre Nosotros" */
     #nosotros {
         background-color: #000;
         color: white;
-        padding: 60px 0;
+        padding: 60px 20px;
         text-align: center;
     }
     #nosotros .overlay {
-        max-width: 800px;
+        max-width: 100%;
         margin: auto;
-        padding: 40px;
+        padding: 20px;
     }
     #nosotros h2 {
-        font-size: 2.5rem;
-        margin-bottom: 20px;
+        font-size: 3rem;
+        margin-bottom: 15px;
     }
     #nosotros p {
-        font-size: 1.6rem;
+        font-size: 1.8rem;
         line-height: 1.8;
+        text-align: justify;
     }
     #nosotros .logo {
-        width: 120px;
-        margin-top: 20px;
+        width: 100px;
+        margin-top: 15px;
     }
 
-    /* Estilo para la sección de lanzamiento */
     .lanzamiento {
         position: relative;
         background-image: url('{{ asset('img/lanzamiento.jpeg') }}');
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        height: 100vh; /* Ocupa todo el alto de la ventana */
+        height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
         color: white;
         text-align: center;
-        margin-top: 0;
         width: 100%;
     }
     .lanzamiento h2 {
-        font-size: 2.5rem;
+        font-size: 4rem;
         margin-bottom: 10px;
     }
     .lanzamiento p {
+        font-size: 3rem;
+    }
+    .lanzamiento .btn {
         font-size: 1.5rem;
+        padding: 10px 20px;
+        margin-top: 20px;
+        background-color: white;
+        border: none;
+        color: black;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .lanzamiento .btn:hover {
+        background-color: #f1f1f1;
+        color: #333;
+    }
+
+    .animacion {
+        background-color: black;
+        overflow: hidden;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .animacion .logo-container {
+        display: inline-block;
+        animation: scrollLogos 25s linear infinite;
+        white-space: nowrap;
+    }
+
+    .animacion img {
+        height: 60px;
+        margin-right: 15px;
+        vertical-align: middle;
+    }
+
+    @keyframes scrollLogos {
+        0% { transform: translateX(100%); }
+        100% { transform: translateX(-100%); }
+    }
+
+    .personalizacion {
+        display: flex;
+        align-items: center;
+        padding: 60px 20px;
+        background-color: #000;
+    }
+    .personalizacion img {
+        width: 30%;
+        border-radius: 8px;
+    }
+    .personalizacion-content {
+        padding: 0 20px;
+    }
+    .personalizacion-content h2 {
+        font-size: 4rem;
+        color: white;
+        margin-bottom: 20px;
+    }
+    .personalizacion-content p {
+        font-size: 2rem;
+        line-height: 1.6;
+        color: white;
+        margin-bottom: 20px;
+    }
+    .personalizacion-content .btn {
+        font-size: 1.5rem;
+        padding: 10px 20px;
+        background-color: white;
+        color: black;
+        border: none;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .personalizacion-content .btn:hover {
+        background-color: #333;
     }
 </style>
 
+<link rel="preload" href="{{ asset('img/byn.jpeg') }}" as="image">
+
 <div class="container-fluid p-0">
     <div class="position-relative text-center text-white bg-cover bg-center" style="background-image: url('{{ asset('img/byn.jpeg') }}'); height: 600px; background-size: cover; background-position: center;">
-        <div class="position-absolute top-50 start-50 translate-middle" style="background: rgba(0, 0, 0, 0.5); padding: 20px; border-radius: 8px;">
+        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center" style="background: rgba(0, 0, 0, 0.5);">
             <h1 class="display-4">Bienvenido a OZEZ</h1>
             <p class="lead">Explora nuestra colección de playeras personalizables y exclusivas.</p>
         </div>
     </div>
 
-    <!-- Sección de Lanzamiento -->
-    <div class="lanzamiento">
-        <div>
-            <h2>Nuevo Lanzamiento: Edición Especial Día de Muertos</h2>
-            <p>¡Descubre nuestra exclusiva playera en honor al Día de Muertos! <br>
-            Disponible solo por tiempo limitado.</p>
+    <div class="animacion">
+        <div class="logo-container">
+            REBAJAS
         </div>
     </div>
 
-    <!-- Galería de Modelos -->
-    <div class="container-fluid mt-5">
+    <div class="container-fluid mt-4">
         <div class="row g-4 product-gallery">
             <div class="col-md-3">
                 <div class="card h-100 shadow-sm">
@@ -111,7 +197,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-md-3">
                 <div class="card h-100 shadow-sm">
                     <img src="{{ asset('img/second.jpeg') }}" class="card-img-top" alt="Playera 2 - Diseño original">
@@ -120,7 +205,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-md-3">
                 <div class="card h-100 shadow-sm">
                     <img src="{{ asset('img/third.jpeg') }}" class="card-img-top" alt="Playera 3 - Inspiración en cada detalle">
@@ -129,7 +213,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-md-3">
                 <div class="card h-100 shadow-sm">
                     <img src="{{ asset('img/fourth.jpeg') }}" class="card-img-top" alt="Playera 4 - Marca la diferencia">
@@ -141,11 +224,36 @@
         </div>
     </div>
 
-    <div id="nosotros" class="container-fluid mt-5">
-        <div class="overlay">
-            <h2>Sobre Nosotros</h2>
-            <p>Raymundo y Domingo, dos amigos apasionados por la moda, soñaban con crear su propia marca. <br> En una tarde soleada, decidieron dar el salto y fundaron Ozez. Con pocos ahorros, diseñaron camisetas. <br> Después de varias noches de trabajo, lograron lanzar su primera colección. La respuesta fue abrumadora. La comunidad apoyó su visión. <br> Ahora, Ozez representa un estilo auténtico y responsable. Cada prenda cuenta una historia de amistad y pasión por la moda.</p>
-            <img class="logo" src="{{ asset('img/ozeztrc.png') }}" alt="Logo de Ozez">
+    <div class="animacion">
+        <div class="logo-container">
+            @for ($i = 0; $i < 50; $i++)
+                <img src="{{ asset('img/ozeztrc.png') }}" alt="OZEZ Logo">
+            @endfor
+        </div>
+    </div>
+
+    <div class="lanzamiento">
+        <div>
+            <h2>Nuevo Lanzamiento: Edición Especial Día de Muertos</h2>
+            <p>¡Descubre nuestra exclusiva playera en honor al Día de Muertos! <br>Disponible solo por tiempo limitado.</p>
+            <a href="#" class="btn">Consíguelo aquí</a>
+        </div>
+    </div>
+
+    <div class="animacion">
+        <div class="logo-container">
+            @for ($i = 0; $i < 50; $i++)
+                <img src="{{ asset('img/ozeztrc.png') }}" alt="OZEZ Logo">
+            @endfor
+        </div>
+    </div>
+
+    <div class="personalizacion">
+        <img src="{{ asset('img/hombre.jpeg') }}" alt="Personalización de playeras">
+        <div class="personalizacion-content">
+            <h2>Haz Tuya Cada Playera</h2>
+            <p>Con nuestra opción de personalización, puedes darle tu toque especial a cada prenda. Cambia colores o logos, y crea un estilo que realmente hable de ti.</p>
+            <a href="#" class="btn">Personalizar Ahora</a>
         </div>
     </div>
 </div>

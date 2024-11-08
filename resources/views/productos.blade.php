@@ -3,7 +3,6 @@
 @section('content')
 <div class="container py-4">
     <div class="text-center mb-5">
-        <h1>Nuestro Catálogo de Playeras</h1>
         <p class="lead">Explora nuestra amplia gama de playeras para todos los gustos.</p>
     </div>
 
