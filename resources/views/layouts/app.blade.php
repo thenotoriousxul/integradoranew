@@ -3,32 +3,56 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <title>{{ config('app.name', 'Laravel') }}</title>
-
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
+    <link rel="preload" as="image" href="{{ asset('img/byn.jpeg') }}">
+    
     <style>
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        
+        #loading-screen img {
+            width: 100px;
+            height: 100px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
         .navbar-brand, .nav-link {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 1.4rem;
             color: black !important;
         }
+        
         .nav-link:hover {
             color: blue !important;
         }
+
         .navbar-nav-center {
             display: flex;
             gap: 2rem;
         }
+
         .centered-nav {
             position: absolute;
             left: 50%;
@@ -42,27 +66,27 @@
             overflow: hidden;
             border-top: 2px solid black;
         }
-
+        
         .footer-content {
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
             padding: 0 20px;
         }
-
+        
         .footer-column {
             flex: 1;
             min-width: 200px;
             margin-bottom: 20px;
         }
-
+        
         .footer-column h3 {
             font-size: 26px; 
             margin-bottom: 15px;
             color: #000;
             letter-spacing: 1px;
         }
-
+        
         .footer-column a {
             display: block;
             color: #000;
@@ -71,7 +95,7 @@
             font-size: 16px; 
             transition: color 0.3s;
         }
-
+        
         .footer-column a:hover {
             color: #000;
         }
@@ -82,22 +106,22 @@
             font-size: 14px; 
             color: #000;
         }
-
+        
         .social-icons {
             display: flex;
         }
-
+        
         .social-icons a {
             color: #000; 
             margin: 0 10px;
             font-size: 28px; 
             transition: color 0.3s;
         }
-
+        
         .social-icons a:hover {
             color: #000;
         }
-
+        
         .footer-column p {
             font-size: 14px;
             color: #000; 
@@ -105,13 +129,15 @@
     </style>
 </head>
 <body class="m-0 p-0">
+    <div id="loading-screen">
+        <img src="{{ asset('img/ozeztrc.png') }}" alt="OZEZ Logo">
+    </div>
+
     <div id="app" class="m-0 p-0">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container position-relative">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    OZEZ
-                </a>
-
+                <a class="navbar-brand" href="{{ url('/') }}">OZEZ</a>
+                
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -207,5 +233,14 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/app.js') }}"></script>
     
+    <script>
+        window.addEventListener('load', function() {
+            const loadingScreen = document.getElementById('loading-screen');
+            loadingScreen.style.opacity = '0';
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+            }, 500); 
+        });
+    </script>
 </body>
 </html>

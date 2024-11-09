@@ -48,31 +48,6 @@
         font-size: 1.1rem;
     }
 
-    #nosotros {
-        background-color: #000;
-        color: white;
-        padding: 60px 20px;
-        text-align: center;
-    }
-    #nosotros .overlay {
-        max-width: 100%;
-        margin: auto;
-        padding: 20px;
-    }
-    #nosotros h2 {
-        font-size: 3rem;
-        margin-bottom: 15px;
-    }
-    #nosotros p {
-        font-size: 1.8rem;
-        line-height: 1.8;
-        text-align: justify;
-    }
-    #nosotros .logo {
-        width: 100px;
-        margin-top: 15px;
-    }
-
     .lanzamiento {
         position: relative;
         background-image: url('{{ asset('img/lanzamiento.jpeg') }}');
@@ -123,7 +98,7 @@
         white-space: nowrap;
     }
 
-    .animacion span, .animacion img {
+    .animacion span {
         font-size: 1.5rem;
         color: white;
         margin-right: 15px;
@@ -173,6 +148,7 @@
 </style>
 
 <div class="container-fluid p-0">
+    <!-- Sección de bienvenida -->
     <div class="position-relative text-center text-white bg-cover bg-center" style="background-image: url('{{ asset('img/byn.jpeg') }}'); height: 600px; background-size: cover; background-position: center;">
         <div class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center" style="background: rgba(0, 0, 0, 0.5);">
             <h1 class="display-4">Bienvenido a OZEZ</h1>
@@ -180,6 +156,7 @@
         </div>
     </div>
 
+    <!-- Primera animación -->
     <div class="animacion">
         <div class="logo-container">
             <span>Innovación en Cada Puntada</span>
@@ -192,11 +169,39 @@
         </div>
     </div>
 
-    <div class="container-fluid mt-4 mb-4">
-        <div class="row g-4 product-gallery">
+    <!-- Sección del catálogo -->
+    <div class="catalogo py-5 text-center">
+        <div class="container">
+            <h2 class="display-5 font-weight-bold">Explora Nuestro Catálogo</h2>
+            <p class="lead mb-4">Descubre nuestra amplia variedad de playeras únicas, diseñadas para adaptarse a cada estilo. Ya sea que busques algo moderno, clásico o completamente personalizado, OZEZ tiene algo para ti.</p>
+            <a href="#product-gallery" class="btn btn-dark" style="font-size: 2rem; padding: 15px 30px;">Ir al Catálogo</a>
+        </div>
+    </div>
+
+    <!-- Segunda animación después del catálogo -->
+    <div class="animacion">
+        <div class="logo-container">
+            <span>Personalización al Máximo</span>
+            <span>Estilo Único para Cada Personalidad</span>
+            <span>Explora Nuevas Posibilidades con OZEZ</span>
+            <span>Calidad y Estilo en un Solo Lugar</span>
+            <span>Viste la Diferencia</span>
+            <span>Innovación en Cada Puntada</span>
+        </div>
+    </div>
+
+    <!-- Sección de productos destacados -->
+    <div id="product-gallery" class="container-fluid mt-5 mb-5">
+        <div class="text-center mb-4">
+            <h2 class="display-5 font-weight-bold">Productos Destacados</h2>
+            <p class="lead">Explora nuestras prendas más populares y seleccionadas por nuestros clientes como sus favoritas.</p>
+        </div>
+        <div class="row g-4">
             <div class="col-md-3">
                 <div class="card h-100 shadow-sm">
-                    <img src="{{ asset('img/first.jpeg') }}" class="card-img-top" alt="Playera 1 - Estilo único">
+                    <a href="{{ route('producto.detalle') }}">
+                        <img src="{{ asset('img/first.jpeg') }}" class="card-img-top" alt="Playera 1 - Estilo único">
+                    </a>
                     <div class="card-body text-center">
                         <p class="card-text">¡Resalta tu estilo con nuestras playeras exclusivas!</p>
                     </div>
@@ -204,7 +209,9 @@
             </div>
             <div class="col-md-3">
                 <div class="card h-100 shadow-sm">
-                    <img src="{{ asset('img/second.jpeg') }}" class="card-img-top" alt="Playera 2 - Diseño original">
+                    <a href="{{ route('producto.detalle') }}">
+                        <img src="{{ asset('img/second.jpeg') }}" class="card-img-top" alt="Playera 2 - Diseño original">
+                    </a>
                     <div class="card-body text-center">
                         <p class="card-text">Combina autenticidad y comodidad con cada diseño.</p>
                     </div>
@@ -212,7 +219,9 @@
             </div>
             <div class="col-md-3">
                 <div class="card h-100 shadow-sm">
-                    <img src="{{ asset('img/third.jpeg') }}" class="card-img-top" alt="Playera 3 - Inspiración en cada detalle">
+                    <a href="{{ route('producto.detalle') }}">
+                        <img src="{{ asset('img/third.jpeg') }}" class="card-img-top" alt="Playera 3 - Inspiración en cada detalle">
+                    </a>
                     <div class="card-body text-center">
                         <p class="card-text">Encuentra la inspiración en cada detalle de nuestras playeras.</p>
                     </div>
@@ -220,7 +229,9 @@
             </div>
             <div class="col-md-3">
                 <div class="card h-100 shadow-sm">
-                    <img src="{{ asset('img/fourth.jpeg') }}" class="card-img-top" alt="Playera 4 - Marca la diferencia">
+                    <a href="{{ route('producto.detalle') }}">
+                        <img src="{{ asset('img/fourth.jpeg') }}" class="card-img-top" alt="Playera 4 - Marca la diferencia">
+                    </a>
                     <div class="card-body text-center">
                         <p class="card-text">¡Elige el modelo que habla de ti y marca la diferencia!</p>
                     </div>
@@ -229,6 +240,7 @@
         </div>
     </div>
 
+    <!-- Tercera animación después de la galería de productos -->
     <div class="animacion">
         <div class="logo-container">
             <span>Exprésate con OZEZ</span>
@@ -240,6 +252,7 @@
         </div>
     </div>
 
+    <!-- Sección de lanzamiento especial -->
     <div class="lanzamiento">
         <div>
             <h2>Nuevo Lanzamiento: Edición Especial Día de Muertos</h2>
@@ -248,6 +261,7 @@
         </div>
     </div>
 
+    <!-- Cuarta animación -->
     <div class="animacion">
         <div class="logo-container">
             <span>OZEZ: Viste la Diferencia</span>
@@ -257,6 +271,7 @@
         </div>
     </div>
 
+    <!-- Sección de personalización -->
     <div class="personalizacion">
         <img src="{{ asset('img/hombre.jpeg') }}" alt="Personalización de playeras">
         <div class="personalizacion-content">
@@ -266,16 +281,16 @@
         </div>
     </div>
 
+    <!-- Quinta animación -->
     <div class="animacion">
         <div class="logo-container">
-        <span>Estilo Único, Calidad Garantizada</span>
-        <span>Personaliza y Marca la Diferencia</span>
-        <span>OZEZ: Donde el Estilo se Encuentra con la Creatividad</span>
-        <span>Calidad en Cada Puntada, Comodidad en Cada Estilo</span>
-        <span>Moda que Se Adapta a Ti</span>
-        <span>Expresa Tu Esencia con OZEZ</span>
+            <span>Estilo Único, Calidad Garantizada</span>
+            <span>Personaliza y Marca la Diferencia</span>
+            <span>OZEZ: Donde el Estilo se Encuentra con la Creatividad</span>
+            <span>Calidad en Cada Puntada, Comodidad en Cada Estilo</span>
+            <span>Moda que Se Adapta a Ti</span>
+            <span>Expresa Tu Esencia con OZEZ</span>
         </div>
     </div>
-
 </div>
 @endsection

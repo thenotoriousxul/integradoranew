@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Actions\Fortify;
 
 use App\Models\User;
@@ -24,11 +23,19 @@ class CreateNewUser implements CreatesNewUsers
             'email' => [
                 'required',
                 'string',
-                'email',
+                'email:rfc,dns', 
                 'max:255',
                 Rule::unique(User::class),
             ],
-            'password' => $this->passwordRules(),
+            'password' => [
+                'required',
+                'string',
+                'min:8',            
+                'regex:/[a-z]/',     
+                'regex:/[A-Z]/',     
+                'regex:/[0-9]/',     
+                'confirmed'          
+            ],
         ])->validate();
 
         return User::create([

@@ -7,6 +7,7 @@
         margin: 0;
         padding: 0;
         overflow: hidden;
+    }
 
     #btn-primary {
         background-color: black;
@@ -23,17 +24,16 @@
     .left-column {
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
+        justify-content: center; /* Centrado vertical */
+        align-items: center; /* Centrado horizontal */
         padding: 40px;
-        height: 100%;
+        height: 100vh;
     }
 
     .right-column {
-        background-image: url('{{ asset('img/playera.jpeg') }}');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
+        background-image: url('{{ asset('img/loginimg.jpeg') }}');
+        background-size: contain;
+        background-position: top 10% center;
         height: 100vh;
         padding: 0;
         margin: 0;
@@ -43,35 +43,32 @@
         font-size: 1.8rem;
         font-weight: bold;
         color: black;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
         text-align: center;
     }
 
     .logo {
-        width: 100px;
-        height: 100px;
-        margin-bottom: 20px;
+        width: 120px;
+        height: 110px;
+        margin-top: 5px;
     }
 
     .login-link {
-        margin-top: 15px;
+        margin-top: 10px;
         font-size: 0.9rem;
         text-align: center;
     }
 
     .form-container {
         width: 100%;
-        max-width: 400px;
-        padding: 20px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-        background-color: #fff;
-        margin-bottom:1.5rem;
+        max-width: 500px;
+        margin-bottom:30px
     }
 
-    .row.g-0 {
-        margin: 0;
-        height: 100vh;
+    .password-hint, .email-hint, .confirm-password-hint {
+        font-size: 0.8rem;
+        color: #6c757d;
+        margin-top: 5px;
     }
 </style>
 
@@ -85,7 +82,7 @@
             <h2 class="form-title text-center">{{ __('Registrarse') }}</h2>
 
             <div class="form-container">
-                <form method="POST" action="{{ route('register') }}">
+                <form method="POST" action="{{ route('register') }}" id="registerForm">
                     @csrf
 
                     <div class="mb-3">
@@ -97,8 +94,9 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="email" class="form-label">{{ __('Correo Electrónico') }}</label>
+                        <label for="email" class="form-label">{{ __('Correo electrónico') }}</label>
                         <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required>
+                        <div id="email-hint" class="email-hint"></div>
                         @error('email')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                         @enderror
@@ -107,14 +105,18 @@
                     <div class="mb-3">
                         <label for="password" class="form-label">{{ __('Contraseña') }}</label>
                         <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required>
+                        <div id="password-hint" class="password-hint">
+                            La contraseña debe tener al menos 8 caracteres, incluyendo mayúsculas, minúsculas y números.
+                        </div>
                         @error('password')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                         @enderror
                     </div>
 
                     <div class="mb-3">
-                        <label for="password-confirm" class="form-label">{{ __('Confirmar Contraseña') }}</label>
+                        <label for="password-confirm" class="form-label">{{ __('Confirmar contraseña') }}</label>
                         <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                        <div id="confirm-password-hint" class="confirm-password-hint"></div>
                     </div>
 
                     <div class="d-grid">
@@ -122,7 +124,6 @@
                     </div>
                 </form>
 
-                <!-- Enlace para iniciar sesión si ya tiene una cuenta -->
                 <div class="login-link">
                     <p>¿Ya tienes cuenta? <a href="{{ route('login') }}">Iniciar sesión</a></p>
                 </div>
@@ -132,4 +133,50 @@
         <div class="col-md-6 right-column"></div>
     </div>
 </div>
+
+<script>
+    document.getElementById('password').addEventListener('input', function () {
+        const password = this.value;
+        const hint = document.getElementById('password-hint');
+        const rules = [
+            { regex: /.{8,}/, message: 'Mínimo 8 caracteres' },
+            { regex: /[A-Z]/, message: 'Al menos una letra mayúscula' },
+            { regex: /[a-z]/, message: 'Al menos una letra minúscula' },
+            { regex: /\d/, message: 'Al menos un número' }
+        ];
+
+        const missingRules = rules.filter(rule => !rule.regex.test(password)).map(rule => rule.message);
+
+        hint.innerHTML = missingRules.length ? `La contraseña necesita: ${missingRules.join(', ')}` : 'La contraseña cumple con los requisitos';
+        hint.style.color = missingRules.length ? '#dc3545' : '#28a745';
+    });
+
+    document.getElementById('password-confirm').addEventListener('input', function () {
+        const password = document.getElementById('password').value;
+        const confirmPassword = this.value;
+        const hint = document.getElementById('confirm-password-hint');
+
+        if (confirmPassword !== password) {
+            hint.innerHTML = 'Las contraseñas no coinciden';
+            hint.style.color = '#dc3545';
+        } else {
+            hint.innerHTML = 'Las contraseñas coinciden';
+            hint.style.color = '#28a745';
+        }
+    });
+
+    document.getElementById('email').addEventListener('input', function () {
+        const email = this.value;
+        const hint = document.getElementById('email-hint');
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailPattern.test(email)) {
+            hint.innerHTML = 'El correo electrónico no es válido';
+            hint.style.color = '#dc3545';
+        } else {
+            hint.innerHTML = 'Correo electrónico válido';
+            hint.style.color = '#28a745';
+        }
+    });
+</script>
 @endsection
