@@ -49,6 +49,9 @@ Route::get('/envios', function () {
 })->name('envios');
 
 
+
+
+
 //------------------------------------------
 Route::get('/formulario/agregar/Producto', [formularioProducto::class, 'formularioProducto'])->name('agregar.producto');
 
