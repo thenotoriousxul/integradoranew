@@ -14,7 +14,7 @@
     <h1>productos base </h1>
     <div class="row">
         @foreach ($productos as $producto)
-            <div class="col-6 col-md-3 mb-4">
+            <div class="col-md-3 mb-4">
                 <div class="card h-100 shadow-sm">
                     @if($producto->imagen_producto)
                         <img src="{{$producto->imagen_producto}}" alt="" class="card-img-top">
