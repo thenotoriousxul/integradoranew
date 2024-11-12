@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\formularios\formularioEdicion;
 use App\Http\Controllers\formularios\formularioProveedor;
 use App\Http\Controllers\formularios\formularioProducto;
 use App\Http\Controllers\productoController;
@@ -65,7 +66,13 @@ Route::Post('/agregar/producto',[productoController::class, 'saveProducto'])->na
 
 
 //Crear provedor-------------------------------------------------
-
 Route::get('/agregar/proveedor',[formularioProveedor::class, 'agregarProveedor'])->name('agregar.proveedor');
 Route::get('/guardar/proveedor', [proveedorController::class, 'saveProveedor'])->name('guardar.proveedor');
 //--------------------------------------------------------------
+
+
+//Crear edicion--------------------------------------------------------------
+Route::get('/agregar/edicion',[formularioEdicion::class,'formularioEdicion'])->name('agregar.edicion');
+
+
+//--------------------------------------------------------------------------

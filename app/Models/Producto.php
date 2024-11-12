@@ -18,4 +18,8 @@ class Producto extends Model
           'costo',
           'imagen_producto',
       ];
+
+      public function ediciones(){
+        return $this->belongsToMany(Edicion::class, 'ediciones_poducto');
+      }
 }
