@@ -83,7 +83,7 @@
         }
 
         .right-column {
-            display: none; /* Oculta la columna de imagen en pantallas medianas */
+            display: none; 
         }
 
         .form-title {
