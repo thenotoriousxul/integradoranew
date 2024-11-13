@@ -38,6 +38,11 @@
             to { transform: rotate(360deg); }
         }
 
+        .navbar {
+            position: relative;
+            z-index: 1000;
+        }
+
         .navbar-brand, .nav-link {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 1.4rem;
@@ -57,6 +62,15 @@
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
+        }
+
+        /* Estilo para el dropdown en pantallas pequeñas */
+        .dropdown-menu {
+            background-color: white;
+            z-index: 1050;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem;
+            border-radius: 5px;
         }
 
         footer {
@@ -142,8 +156,9 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse centered-nav" id="navbarNav">
-                    <ul class="navbar-nav navbar-nav-center mx-auto">
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <!-- Menú en línea para pantallas grandes -->
+                    <ul class="navbar-nav mx-auto d-none d-md-flex">
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/') }}">Inicio</a>
                         </li>
@@ -155,6 +170,21 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('rebajas') }}">Rebajas</a>
+                        </li>
+                    </ul>
+
+                    <!-- Dropdown para pantallas pequeñas -->
+                    <ul class="navbar-nav mx-auto d-md-none">
+                        <li class="nav-item dropdown">
+                            <a id="navDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Opciones
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navDropdown">
+                                <a class="dropdown-item" href="{{ url('/') }}">Inicio</a>
+                                <a class="dropdown-item" href="{{ route('mostrar.productos') }}">Catálogo</a>
+                                <a class="dropdown-item" href="{{ route('logout') }}">Personalización</a>
+                                <a class="dropdown-item" href="{{ route('rebajas') }}">Rebajas</a>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -179,9 +209,11 @@
                                     {{ Auth::user()->name }}
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}">
-                                        {{ __('Mis Pedidos') }}
-                                    </a>
+                                    @if (Auth::user()->hasRole('cliente'))
+                                        <a class="dropdown-item" href="{{ route('logout') }}">
+                                            {{ __('Mis Pedidos') }}
+                                        </a>
+                                    @endif
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}

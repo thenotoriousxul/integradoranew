@@ -2,6 +2,22 @@
 
 @section('content')
 <style>
+    * {
+        box-sizing: border-box;
+    }
+
+    html, body {
+        overflow-x: hidden;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
+
+    .container-fluid {
+        padding: 0;
+        width: 100%; 
+    }
+
     body, main {
         margin-top: 0;
         padding-top: 0;
@@ -62,13 +78,16 @@
         text-align: center;
         width: 100%;
     }
+
     .lanzamiento h2 {
         font-size: 4rem;
         margin-bottom: 10px;
     }
+
     .lanzamiento p {
         font-size: 3rem;
     }
+
     .lanzamiento .btn {
         font-size: 1.5rem;
         padding: 10px 20px;
@@ -78,6 +97,7 @@
         color: black;
         transition: background-color 0.3s ease, color 0.3s ease;
     }
+
     .lanzamiento .btn:hover {
         background-color: #f1f1f1;
         color: #333;
@@ -90,12 +110,14 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        width: 100%;
     }
 
     .animacion .logo-container {
         display: inline-block;
         animation: scrollLogos 25s linear infinite;
         white-space: nowrap;
+        padding: 0;
     }
 
     .animacion span {
@@ -115,25 +137,36 @@
         align-items: center;
         padding: 60px 20px;
         background-color: #000;
+        width: 100%;
+        flex-wrap: wrap; 
     }
+
     .personalizacion img {
         width: 30%;
+        max-width: 100%;
         border-radius: 8px;
+        height: auto;
+        margin-bottom: 20px; 
     }
+
     .personalizacion-content {
         padding: 0 20px;
+        flex: 1;
     }
+
     .personalizacion-content h2 {
         font-size: 4rem;
         color: white;
         margin-bottom: 20px;
     }
+
     .personalizacion-content p {
         font-size: 2rem;
         line-height: 1.6;
         color: white;
         margin-bottom: 20px;
     }
+
     .personalizacion-content .btn {
         font-size: 1.5rem;
         padding: 10px 20px;
@@ -142,13 +175,122 @@
         border: none;
         transition: background-color 0.3s ease, color 0.3s ease;
     }
+
     .personalizacion-content .btn:hover {
         background-color: #333;
     }
+
+    @media (max-width: 576px) {
+        .display-4 {
+            font-size: 2.5rem;
+        }
+
+        .lead {
+            font-size: 1.2rem;
+        }
+
+        .lanzamiento h2,
+        .personalizacion-content h2 {
+            font-size: 2.5rem;
+        }
+
+        .lanzamiento p,
+        .personalizacion-content p {
+            font-size: 1.5rem;
+        }
+
+        .lanzamiento .btn,
+        .personalizacion-content .btn {
+            font-size: 1rem;
+            padding: 8px 15px;
+        }
+
+        .personalizacion {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .personalizacion img {
+            width: 100%; 
+            margin-bottom: 20px;
+        }
+    }
+
+    @media (min-width: 576px) and (max-width: 768px) {
+        .display-4 {
+            font-size: 4rem;
+        }
+
+        .lead {
+            font-size: 1.5rem;
+        }
+
+        .lanzamiento h2,
+        .personalizacion-content h2 {
+            font-size: 3rem;
+        }
+
+        .lanzamiento p,
+        .personalizacion-content p {
+            font-size: 1.8rem;
+        }
+
+        .lanzamiento .btn,
+        .personalizacion-content .btn {
+            font-size: 1.2rem;
+            padding: 10px 20px;
+        }
+
+        .personalizacion img {
+            width: 50%;
+        }
+    }
+
+    @media (min-width: 768px) and (max-width: 992px) {
+        .display-4 {
+            font-size: 4.5rem;
+        }
+
+        .lead {
+            font-size: 1.6rem;
+        }
+
+        .lanzamiento h2,
+        .personalizacion-content h2 {
+            font-size: 3.5rem;
+        }
+
+        .lanzamiento p,
+        .personalizacion-content p {
+            font-size: 2rem;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .display-4 {
+            font-size: 5.5rem;
+        }
+
+        .lead {
+            font-size: 1.8rem;
+        }
+
+        .lanzamiento h2,
+        .personalizacion-content h2 {
+            font-size: 4rem;
+        }
+
+        .lanzamiento p,
+        .personalizacion-content p {
+            font-size: 3rem;
+        }
+    }
 </style>
 
+
+
 <div class="container-fluid p-0">
-    <!-- Sección de bienvenida -->
     <div class="position-relative text-center text-white bg-cover bg-center" style="background-image: url('{{ asset('img/byn.jpeg') }}'); height: 600px; background-size: cover; background-position: center;">
         <div class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center" style="background: rgba(0, 0, 0, 0.5);">
             <h1 class="display-4">Bienvenido a OZEZ</h1>
@@ -156,7 +298,6 @@
         </div>
     </div>
 
-    <!-- Primera animación -->
     <div class="animacion">
         <div class="logo-container">
             <span>Innovación en Cada Puntada</span>
@@ -169,7 +310,6 @@
         </div>
     </div>
 
-    <!-- Sección del catálogo -->
     <div class="catalogo py-5 text-center">
         <div class="container">
             <h2 class="display-5 font-weight-bold">Explora Nuestro Catálogo</h2>
@@ -178,7 +318,6 @@
         </div>
     </div>
 
-    <!-- Segunda animación después del catálogo -->
     <div class="animacion">
         <div class="logo-container">
             <span>Personalización al Máximo</span>
@@ -190,7 +329,6 @@
         </div>
     </div>
 
-    <!-- Sección de productos destacados -->
     <div id="product-gallery" class="container-fluid mt-5 mb-5">
         <div class="text-center mb-4">
             <h2 class="display-5 font-weight-bold">Productos Destacados</h2>
@@ -240,7 +378,6 @@
         </div>
     </div>
 
-    <!-- Tercera animación después de la galería de productos -->
     <div class="animacion">
         <div class="logo-container">
             <span>Exprésate con OZEZ</span>
@@ -252,7 +389,6 @@
         </div>
     </div>
 
-    <!-- Sección de lanzamiento especial -->
     <div class="lanzamiento">
         <div>
             <h2>Nuevo Lanzamiento: Edición Especial Día de Muertos</h2>
@@ -261,7 +397,6 @@
         </div>
     </div>
 
-    <!-- Cuarta animación -->
     <div class="animacion">
         <div class="logo-container">
             <span>OZEZ: Viste la Diferencia</span>
@@ -271,7 +406,6 @@
         </div>
     </div>
 
-    <!-- Sección de personalización -->
     <div class="personalizacion">
         <img src="{{ asset('img/hombre.jpeg') }}" alt="Personalización de playeras">
         <div class="personalizacion-content">
@@ -281,7 +415,6 @@
         </div>
     </div>
 
-    <!-- Quinta animación -->
     <div class="animacion">
         <div class="logo-container">
             <span>Estilo Único, Calidad Garantizada</span>

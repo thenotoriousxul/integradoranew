@@ -64,6 +64,41 @@
         width: 100%;
         max-width: 500px;
     }
+
+    @media (max-width: 768px) {
+        .container-auth {
+            height: auto;
+        }
+
+        .left-column, .right-column {
+            height: auto;
+            padding: 20px;
+        }
+
+        .right-column {
+            display: none; 
+        }
+
+        .form-title {
+            font-size: 1.5rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .form-title {
+            font-size: 1.3rem;
+        }
+
+        .logo {
+            width: 100px;
+            height: 90px;
+        }
+
+        #btn-black {
+            font-size: 0.9rem;
+            padding: 10px;
+        }
+    }
 </style>
 
 <div class="container-fluid container-auth">
