@@ -71,16 +71,13 @@ Route::get('/envios', function () {
 })->name('envios');
 
 // Formularios y productos sin autenticación
-Route::get('/formulario/agregar/Producto', [formularioProducto::class, 'formularioProducto'])->name('agregar.producto');
 Route::get('/productos/base', [productoController::class, 'getProductos'])->name('mostrar.productos');
 Route::post('/agregar/producto', [productoController::class, 'saveProducto'])->name('producto.save');
 
 // Rutas de proveedores sin autenticación
-Route::get('/agregar/proveedor', [formularioProveedor::class, 'agregarProveedor'])->name('agregar.proveedor');
 Route::get('/guardar/proveedor', [proveedorController::class, 'saveProveedor'])->name('guardar.proveedor');
 
 // Crear edición sin autenticación
-Route::get('/agregar/edicion', [formularioEdicion::class, 'formularioEdicion'])->name('agregar.edicion');
 
 //Productos---------------------------------------------------
 Route::get('/productos/base',[productoController::class, 'getProductos'])->name('mostrar.productos');
