@@ -2,9 +2,7 @@
 use Spatie\Permission\Middlewares\RoleMiddleware;
 use Spatie\Permission\Middlewares\PermissionMiddleware;
 use Spatie\Permission\Middlewares\RoleOrPermissionMiddleware;
-use App\Http\Controllers\formularios\formularioEdicion;
-use App\Http\Controllers\formularios\formularioProveedor;
-use App\Http\Controllers\formularios\formularioProducto;
+use App\Http\Controllers\formularios\formulariosController;
 use App\Http\Controllers\productoController;
 use App\Http\Controllers\proveedorController;
 use Illuminate\Support\Facades\Route;
@@ -45,6 +43,16 @@ Route::middleware(['auth'])->group(function () {
     })->name('admin.dashboard');
 
     // Dashboard del cliente, restringido solo para usuarios con rol 'cliente'
+    Route::get('/formulario/agregar/Producto', [formulariosController::class, 'formularioProducto'])->name('agregar.producto');
+    Route::get('/productos/base', [productoController::class, 'getProductos'])->name('mostrar.productos');
+    Route::post('/agregar/producto', [productoController::class, 'saveProducto'])->name('producto.save');
+
+    Route::get('/agregar/proveedor', [formulariosController::class, 'agregarProveedor'])->name('agregar.proveedor');
+    Route::get('/guardar/proveedor', [proveedorController::class, 'saveProveedor'])->name('guardar.proveedor');
+});
+
+// Rutas específicas para clientes usando el middleware directamente
+Route::middleware(['auth'])->group(function () {
     Route::get('/cliente/dashboard', function () {
         if (!auth()->user()->hasRole('cliente')) {
             abort(403, 'No tienes acceso a esta página.');
@@ -73,3 +81,22 @@ Route::get('/guardar/proveedor', [proveedorController::class, 'saveProveedor'])-
 
 // Crear edición sin autenticación
 Route::get('/agregar/edicion', [formularioEdicion::class, 'formularioEdicion'])->name('agregar.edicion');
+
+//Productos---------------------------------------------------
+Route::get('/productos/base',[productoController::class, 'getProductos'])->name('mostrar.productos');
+//guardar producto
+Route::Post('/agregar/producto',[productoController::class, 'saveProducto'])->name('producto.save');
+
+
+Route::get('/agregar/proveedor',[formulariosController::class, 'agregarProveedor'])->name('agregar.proveedor');
+Route::get('/guardar/proveedor', [proveedorController::class, 'saveProveedor'])->name('guardar.proveedor');
+
+
+Route::get('/agregar/edicion',[formulariosController::class,'formularioEdicion'])->name('agregar.edicion');
+
+
+Route::get('dash', function(){
+return view('admin.layouts.dash');
+});
+
+Route::get('/formulario/agregar/Producto', [formulariosController::class, 'formularioProducto'])->name('agregar.producto');
