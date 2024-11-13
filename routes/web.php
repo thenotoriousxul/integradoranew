@@ -2,9 +2,7 @@
 use Spatie\Permission\Middlewares\RoleMiddleware;
 use Spatie\Permission\Middlewares\PermissionMiddleware;
 use Spatie\Permission\Middlewares\RoleOrPermissionMiddleware;
-use App\Http\Controllers\formularios\formularioEdicion;
-use App\Http\Controllers\formularios\formularioProveedor;
-use App\Http\Controllers\formularios\formularioProducto;
+use App\Http\Controllers\formularios\formulariosController;
 use App\Http\Controllers\productoController;
 use App\Http\Controllers\proveedorController;
 use Illuminate\Support\Facades\Route;
@@ -44,11 +42,11 @@ Route::middleware(['auth'])->group(function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
 
-    Route::get('/formulario/agregar/Producto', [formularioProducto::class, 'formularioProducto'])->name('agregar.producto');
+    Route::get('/formulario/agregar/Producto', [formulariosController::class, 'formularioProducto'])->name('agregar.producto');
     Route::get('/productos/base', [productoController::class, 'getProductos'])->name('mostrar.productos');
     Route::post('/agregar/producto', [productoController::class, 'saveProducto'])->name('producto.save');
 
-    Route::get('/agregar/proveedor', [formularioProveedor::class, 'agregarProveedor'])->name('agregar.proveedor');
+    Route::get('/agregar/proveedor', [formulariosController::class, 'agregarProveedor'])->name('agregar.proveedor');
     Route::get('/guardar/proveedor', [proveedorController::class, 'saveProveedor'])->name('guardar.proveedor');
 });
 
@@ -71,27 +69,22 @@ Route::get('/envios', function () {
 })->name('envios');
 
 
-//------------------------------------------
-Route::get('/formulario/agregar/Producto', [formularioProducto::class, 'formularioProducto'])->name('agregar.producto');
-
-
 //Productos---------------------------------------------------
 Route::get('/productos/base',[productoController::class, 'getProductos'])->name('mostrar.productos');
 //guardar producto
 Route::Post('/agregar/producto',[productoController::class, 'saveProducto'])->name('producto.save');
 
-//------------------------------------------
 
-
-//Crear provedor-------------------------------------------------
-Route::get('/agregar/proveedor',[formularioProveedor::class, 'agregarProveedor'])->name('agregar.proveedor');
+Route::get('/agregar/proveedor',[formulariosController::class, 'agregarProveedor'])->name('agregar.proveedor');
 Route::get('/guardar/proveedor', [proveedorController::class, 'saveProveedor'])->name('guardar.proveedor');
-//--------------------------------------------------------------
 
 
-//Crear edicion--------------------------------------------------------------
-Route::get('/agregar/edicion',[formularioEdicion::class,'formularioEdicion'])->name('agregar.edicion');
-
-
-//--------------------------------------------------------------------------
+Route::get('/agregar/edicion',[formulariosController::class,'formularioEdicion'])->name('agregar.edicion');
 });
+
+
+Route::get('dash', function(){
+return view('admin.layouts.dash');
+});
+
+Route::get('/formulario/agregar/Producto', [formulariosController::class, 'formularioProducto'])->name('agregar.producto');
