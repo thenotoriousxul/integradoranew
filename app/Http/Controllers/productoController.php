@@ -38,4 +38,10 @@ class productoController extends Controller
         $productos = Producto::all();
         return view('productos' , compact('productos'));
     }
+
+    public function detalle($id)
+{
+    $producto = Producto::findOrFail($id);
+    return view('producto_detalle', compact('producto'));
+}
 }

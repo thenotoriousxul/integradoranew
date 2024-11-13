@@ -26,29 +26,13 @@
                         <p class="card-text">Precio: ${{ number_format($producto->costo, 2) }}</p>
                         <p class="card-text">Lote: {{$producto->lote}}</p>
                         <p class="card-text">Tamaño: {{$producto->tamaño}}</p>
-                        <a href="#" class="btn btn-primary w-100">Ver detalles</a>
+                        <a href="{{ route('vista_producto_detalle', ['id' => $producto->id]) }}" class="btn btn-primary w-100">Ver detalles</a>
                     </div>
                 </div>
             </div>
         @endforeach
     </div>
 
-
-
-
-    <div class="row">
-        @for ($i = 1; $i <= 2   ; $i++)
-            <div class="col-md-3 mb-4">
-                <div class="card h-100 shadow-sm">
-                    <img src="https://png.pngtree.com/png-vector/20220120/ourmid/pngtree-black-t-shirt-template-png-image_4293336.png" class="card-img-top" alt="Playera {{ $i }}">
-                    <div class="card-body">
-                        <h5 class="card-title">Playera Modelo {{ $i }}</h5>
-                        <p class="card-text">Precio: ${{ number_format(20 + ($i * 5), 2) }}</p>
-                        <a href="{{ route('producto.detalle', $i) }}" class="btn btn-primary w-100">Ver detalles</a>
-                    </div>
-                </div>
-            </div>
-        @endfor
     </div> 
 </div>
 @endsection
