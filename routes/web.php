@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\carritoController;
 use Spatie\Permission\Middlewares\RoleMiddleware;
 use Spatie\Permission\Middlewares\PermissionMiddleware;
 use Spatie\Permission\Middlewares\RoleOrPermissionMiddleware;
@@ -95,3 +96,15 @@ Route::get('/agregar/edicion',[formularioEdicion::class,'formularioEdicion'])->n
 
 //--------------------------------------------------------------------------
 });
+
+Route::get('/producto/{id}', action: [ProductoController::class, 'detalle'])->name('vista_producto_detalle');
+
+
+
+
+// Rutas para gestionar el carrito
+Route::get('/carrito', [CarritoController::class, 'mostrarCarrito'])->name('carrito.mostrar');
+Route::post('/carrito/agregar/{id}', [CarritoController::class, 'agregarProducto'])->name('carrito.agregar');
+Route::put('/carrito/actualizar/{id}', [CarritoController::class, 'actualizarCantidad'])->name('carrito.actualizar');
+Route::delete('/carrito/eliminar/{id}', [CarritoController::class, 'eliminarProducto'])->name('carrito.eliminar');
+Route::post('/carrito/vaciar', [CarritoController::class, 'vaciarCarrito'])->name('carrito.vaciar');

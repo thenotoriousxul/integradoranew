@@ -3,8 +3,7 @@
 @section('content')
 <div class="container py-4">
     <h1 class="text-center mb-4">Carrito de Compras</h1>
-    
-    <!-- Contenedor del Carrito -->
+
     <div id="carrito-container" class="table-responsive">
         <table class="table table-bordered">
             <thead>
@@ -17,94 +16,105 @@
                 </tr>
             </thead>
             <tbody id="carrito-body">
-                <!-- Los productos se cargarán aquí dinámicamente -->
+                @if($contenidoCarrito->isEmpty())
+                    <tr>
+                        <td colspan="5" class="text-center">Tu carrito está vacío.</td>
+                    </tr>
+                @else
+                    @foreach($contenidoCarrito as $item)
+                        <tr data-id="{{ $item['id'] }}">
+                            <td>
+                                <img src="{{ $item['attributes']['imagen'] ?? 'ruta-a-imagen-default.jpg' }}" alt="{{ $item['tipo'] }}" style="width: 50px; height: 50px;">
+                                {{ $item['tipo'] }}
+                            </td>
+                            <td>${{ number_format($item['price'], 2) }}</td>
+                            <td>
+                                <input type="number" name="cantidad" value="{{ $item['quantity'] }}" min="1" class="form-control actualizar-cantidad" style="width: 80px;">
+                            </td>
+                            <td class="subtotal">${{ number_format($item['price'] * $item['quantity'], 2) }}</td>
+                            <td>
+                                <button class="btn btn-sm btn-danger eliminar-producto" data-id="{{ $item['id'] }}">Eliminar</button>
+                            </td>
+                        </tr>
+                    @endforeach
+                @endif
             </tbody>
         </table>
     </div>
-    
-    <!-- Resumen del Carrito -->
+
     <div class="text-end mt-4">
-        <h4>Total del Carrito: $<span id="carrito-total">0.00</span></h4>
         <button id="vaciar-carrito" class="btn btn-danger mt-3">Vaciar Carrito</button>
         <button id="comprar-carrito" class="btn btn-success mt-3">Proceder al Pago</button>
     </div>
 </div>
 
-<!-- Script para la Funcionalidad del Carrito -->
+<!-- Script para manejar la actualización y eliminación de productos -->
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        cargarCarrito();
+    document.addEventListener('DOMContentLoaded', function () {
+        // Actualizar cantidad del producto
+        document.querySelectorAll('.actualizar-cantidad').forEach(input => {
+            input.addEventListener('change', function () {
+                let idProducto = this.closest('tr').dataset.id;
+                let cantidad = this.value;
 
-        document.getElementById("vaciar-carrito").addEventListener("click", vaciarCarrito);
-        document.getElementById("comprar-carrito").addEventListener("click", comprarCarrito);
+                fetch(`{{ route('carrito.actualizar', '') }}/${idProducto}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ cantidad: cantidad })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Actualizar subtotal sin recargar
+                        this.closest('tr').querySelector('.subtotal').innerText = `$${data.subtotal.toFixed(2)}`;
+                        document.querySelector('#total-carrito').innerText = `Total: $${data.total.toFixed(2)}`;
+                    }
+                });
+            });
+        });
+
+        // Eliminar producto
+        document.querySelectorAll('.eliminar-producto').forEach(button => {
+            button.addEventListener('click', function () {
+                let idProducto = this.dataset.id;
+
+                fetch(`{{ route('carrito.eliminar', '') }}/${idProducto}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Remover fila sin recargar la página
+                        this.closest('tr').remove();
+                        document.querySelector('#total-carrito').innerText = `Total: $${data.total.toFixed(2)}`;
+                    }
+                });
+            });
+        });
+
+        // Vaciar carrito
+        document.getElementById('vaciar-carrito').addEventListener('click', function () {
+            fetch(`{{ route('carrito.vaciar') }}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Vaciar tabla sin recargar
+                    document.getElementById('carrito-body').innerHTML = '<tr><td colspan="5" class="text-center">Tu carrito está vacío.</td></tr>';
+                    document.querySelector('#total-carrito').innerText = 'Total: $0.00';
+                }
+            });
+        });
     });
-
-    // Función para cargar el carrito desde localStorage
-    function cargarCarrito() {
-        const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-        const carritoBody = document.getElementById("carrito-body");
-        let total = 0;
-
-        carritoBody.innerHTML = ""; // Limpiar el contenido previo
-
-        carrito.forEach((producto, index) => {
-            const subtotal = producto.precio * producto.cantidad;
-            total += subtotal;
-
-            const row = document.createElement("tr");
-            row.innerHTML = `
-                <td>${producto.nombre}</td>
-                <td>$${producto.precio.toFixed(2)}</td>
-                <td>
-                    <input type="number" class="form-control cantidad" data-index="${index}" value="${producto.cantidad}" min="1">
-                </td>
-                <td>$${subtotal.toFixed(2)}</td>
-                <td>
-                    <button class="btn btn-danger btn-sm" onclick="eliminarProducto(${index})">Eliminar</button>
-                </td>
-            `;
-            carritoBody.appendChild(row);
-        });
-
-        document.getElementById("carrito-total").innerText = total.toFixed(2);
-
-        // Actualizar cantidad al cambiar el valor
-        document.querySelectorAll(".cantidad").forEach(input => {
-            input.addEventListener("change", actualizarCantidad);
-        });
-    }
-
-    // Función para actualizar la cantidad de un producto
-    function actualizarCantidad(event) {
-        const index = event.target.getAttribute("data-index");
-        const nuevaCantidad = parseInt(event.target.value);
-        
-        const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-        carrito[index].cantidad = nuevaCantidad;
-
-        localStorage.setItem("carrito", JSON.stringify(carrito));
-        cargarCarrito();
-    }
-
-    // Función para eliminar un producto del carrito
-    function eliminarProducto(index) {
-        const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-        carrito.splice(index, 1);
-
-        localStorage.setItem("carrito", JSON.stringify(carrito));
-        cargarCarrito();
-    }
-
-    // Función para vaciar el carrito
-    function vaciarCarrito() {
-        localStorage.removeItem("carrito");
-        cargarCarrito();
-    }
-
-    // Función para simular la compra
-    function comprarCarrito() {
-        alert("Gracias por tu compra.");
-        vaciarCarrito();
-    }
 </script>
 @endsection

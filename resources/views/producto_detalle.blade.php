@@ -6,44 +6,31 @@
         <!-- Imagen del Producto -->
         <div class="col-md-6">
             <div class="card shadow-sm">
-                <img src="https://png.pngtree.com/png-vector/20220120/ourmid/pngtree-black-t-shirt-template-png-image_4293336.png" class="card-img-top" alt="Playera Detalle">
+                @if(!empty($producto->imagen_producto))
+                    <img src="{{ $producto->imagen_producto }}" alt="Imagen del producto" class="card-img-top">
+                @else
+                    <p>Imagen no disponible</p>
+                @endif
             </div>
         </div>
 
         <!-- Detalles del Producto -->
         <div class="col-md-6">
-            <h1 class="mb-3">Playera</h1>
-            <p class="text-muted">Código: PRD001</p>
-            <p class="lead">$20.00</p>
-            <p>Descripción: Esta es una playera de alta calidad, perfecta para el uso diario. Hecha de algodón suave y disponible en varios colores.</p>
+            <h1 class="mb-3">{{ $producto->tipo }}</h1>
+            <p class="text-muted">Código: {{ $producto->id }}</p>
+            <p class="lead">${{ number_format($producto->costo, 2) }}</p>
+            <p>Descripción: {{ $producto->descripcion }}</p>
             
-
-            <div class="mb-3">
-                <label class="form-label">Cantidad</label>
-                <input type="number" class="form-control" value="1" min="1">
-            </div>
-
-            <div class="d-grid gap-2 mt-4">
-                <button class="btn btn-primary btn-lg">Agregar al Carrito</button>
-            </div>
-        </div>
+            <!-- Dentro del formulario de producto -->
+<form action="{{ route('carrito.agregar', $producto->id) }}" method="POST">
+    @csrf
+    <div class="mb-3">
+        <label class="form-label">Cantidad</label>
+        <input type="number" class="form-control" id="cantidad" name="cantidad" value="1" min="1">
     </div>
+    <button type="submit" class="btn btn-primary">Agregar al carrito</button>
+</form>
 
-    <div class="mt-5">
-        <h3>Productos Relacionados</h3>
-        <div class="row">
-            @for ($j = 1; $j <= 4; $j++)
-                <div class="col-md-3 mb-4">
-                    <div class="card h-100 shadow-sm">
-                        <img src="https://png.pngtree.com/png-vector/20220120/ourmid/pngtree-black-t-shirt-template-png-image_4293336.png" class="card-img-top" alt="Playera Relacionada {{ $j }}">
-                        <div class="card-body">
-                            <h5 class="card-title">Playera Modelo {{ $j }}</h5>
-                            <p class="card-text">$ {{ number_format(15 + ($j * 10), 2) }}</p>
-                            <a href="{{ route('producto.detalle', $j) }}" class="btn btn-primary w-100">Ver detalles</a>
-                        </div>
-                    </div>
-                </div>
-            @endfor
         </div>
     </div>
 </div>
