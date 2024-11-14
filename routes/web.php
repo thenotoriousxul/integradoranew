@@ -117,3 +117,6 @@ Route::get('/dashmenu', function () {
     return view('admin.dashMenu');
 });
 
+Route::get('/dashorden', function () {
+    return view('admin.dashOrdenes');
+});
