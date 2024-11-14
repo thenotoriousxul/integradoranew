@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <head>
     <title>{{ $title ?? 'Dashboard' }}</title>
 </head>
@@ -60,6 +61,7 @@ body {
   .overlay.visible {
     display: block;
   }
+  
 }
 
 </style>

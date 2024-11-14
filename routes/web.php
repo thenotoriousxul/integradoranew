@@ -120,3 +120,7 @@ Route::get('/dashmenu', function () {
 Route::get('/dashorden', function () {
     return view('admin.dashOrdenes');
 });
+
+Route::get('/dashinventario', function () {
+    return view('admin.dashInventario');
+});
