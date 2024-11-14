@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link rel="preload" as="image" href="{{ asset('img/byn.jpeg') }}">
+    <!--<link rel="preload" as="image" href="{{ asset('img/byn.jpeg') }}">-->
     
     <style>
         #loading-screen {

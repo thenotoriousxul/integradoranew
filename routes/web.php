@@ -13,6 +13,11 @@ Route::get('/', function () {
     return view('home');
 });
 
+Route::get('/catalogo', function () {
+    return view('catalogo');
+});
+
+
 Route::get('/productos', function () {
     return view('productos');
 })->name('productos');
@@ -44,7 +49,7 @@ Route::middleware(['auth'])->group(function () {
     })->name('admin.dashboard');
 
     // Dashboard del cliente, restringido solo para usuarios con rol 'cliente'
-    Route::get('/formulario/agregar/Producto', [formulariosController::class, 'formularioProducto'])->name('agregar.producto');
+    Route::get('/formulario/agregar/producto', [formulariosController::class, 'formularioProducto'])->name('agregar.producto');
     Route::get('/productos/base', [productoController::class, 'getProductos'])->name('mostrar.productos');
     Route::post('/agregar/producto', [productoController::class, 'saveProducto'])->name('producto.save');
 
