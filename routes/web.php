@@ -112,3 +112,8 @@ return view('admin.layouts.dash');
 });
 
 Route::get('/formulario/agregar/Producto', [formulariosController::class, 'formularioProducto'])->name('agregar.producto');
+
+Route::get('/dashmenu', function () {
+    return view('admin.dashMenu');
+});
+
