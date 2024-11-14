@@ -49,7 +49,8 @@ Route::middleware(['auth'])->group(function () {
     })->name('admin.dashboard');
 
     // Dashboard del cliente, restringido solo para usuarios con rol 'cliente'
-    Route::get('/formulario/agregar/producto', [formulariosController::class, 'formularioProducto'])->name('agregar.producto');
+    Route::get('/formulario/agregar/pq
+    roducto', [formulariosController::class, 'formularioProducto'])->name('agregar.producto');
     Route::get('/productos/base', [productoController::class, 'getProductos'])->name('mostrar.productos');
     Route::post('/agregar/producto', [productoController::class, 'saveProducto'])->name('producto.save');
 
