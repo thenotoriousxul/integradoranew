@@ -129,7 +129,7 @@ Route::get('/dashmenu', function () {
 
 
 Route::get('/dashN', function () {
-    return view('admin.dashMenu');
+    return view('admin.layouts.dashboard');
 });
 
 
