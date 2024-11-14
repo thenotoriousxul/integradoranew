@@ -121,3 +121,9 @@ Route::get('/dashmenu', function () {
     return view('admin.dashMenu');
 });
 
+
+Route::get('/dashN', function () {
+    return view('admin.dashMenu');
+});
+
+
