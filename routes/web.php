@@ -12,6 +12,8 @@ use App\Http\Controllers\EstampadoController;
 use App\Http\Controllers\PersonalizacionController;
 use App\Http\Controllers\OrdenController;
 
+
+//prueba
 // Rutas de acceso general
 Route::get('/', function () {
     return view('home');
