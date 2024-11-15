@@ -58,6 +58,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/guardar/proveedor', [proveedorController::class, 'saveProveedor'])->name('guardar.proveedor');
 });
 
+
+
+
 // Rutas específicas para clientes usando el middleware directamente
 Route::middleware(['auth'])->group(function () {
     Route::get('/cliente/dashboard', function () {
@@ -132,4 +135,9 @@ Route::get('/dashN', function () {
     return view('admin.layouts.dashboard');
 });
 
+Route::get('/mispedidos', function () {
+    return view('mis-pedidos');
+});
 
+
+Route::get('/personalizacion', [PersonalizacionController::class, 'personalizacion']);
