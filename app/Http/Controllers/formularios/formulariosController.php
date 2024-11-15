@@ -12,7 +12,7 @@ class formulariosController extends Controller
 
 
     public function formularioProducto(){
-        return view('admin.agregarProducto');
+        return view('admin.dashProducto');
     }
 
     public function formularioEdicion(){

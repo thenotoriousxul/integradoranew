@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'Laravel') }}</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <!--<link rel="preload" as="image" href="{{ asset('img/byn.jpeg') }}">-->
-    
+    <link rel="preload" as="image" href="{{ asset('img/byn.jpeg') }}">
+
     <style>
         #loading-screen {
             position: fixed;
@@ -55,22 +56,64 @@
 
         .navbar-nav-center {
             display: flex;
+            justify-content: center;
+            align-items: center;
             gap: 2rem;
+            width: 100%;
         }
 
-        .centered-nav {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        /* Estilo para el dropdown en pantallas pequeñas */
         .dropdown-menu {
             background-color: white;
             z-index: 1050;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 0.5rem;
+            padding: 0;
             border-radius: 5px;
+        }
+
+        .dropdown-menu .dropdown-item {
+            padding: 0.75rem 1.25rem;
+            text-align: center;
+            margin: 0;
+        }
+
+        .total-cart {
+            font-size: 1rem;
+            color: #000;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+
+        /* Centrar verticalmente los elementos en la barra de navegación */
+        .navbar .navbar-nav .nav-item, .navbar .navbar-nav .nav-link, .navbar .navbar-brand {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Espaciado y centrado para opciones de menú en pantallas pequeñas */
+        @media (max-width: 768px) {
+            .navbar-collapse {
+                justify-content: center;
+            }
+            .navbar-nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            .navbar-nav.ms-auto {
+                justify-content: center;
+                width: 100%;
+            }
+            .navbar-nav .nav-item {
+                margin-bottom: 0;
+            }
+            .navbar-nav .nav-item.dropdown,
+            .navbar-nav .nav-item.position-relative {
+                margin-bottom: 10px; /* Separación entre Cuenta y Carrito */
+            }
+        }
+
+        /* Separación entre "Cuenta" y el carrito en pantallas grandes */
+        .navbar-nav .nav-item.position-relative {
+            margin-left: 15px;
         }
 
         footer {
@@ -157,8 +200,7 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <!-- Menú en línea para pantallas grandes -->
-                    <ul class="navbar-nav mx-auto d-none d-md-flex">
+                    <ul class="navbar-nav navbar-nav-center">
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/') }}">Inicio</a>
                         </li>
@@ -166,31 +208,15 @@
                             <a class="nav-link" href="{{ route('mostrar.productos') }}">Catálogo</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('logout') }}">Personalización</a>
+                            <a class="nav-link" href="{{ route('personalizacion') }}">Personalización</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('rebajas') }}">Rebajas</a>
                         </li>
                     </ul>
 
-                    <!-- Dropdown para pantallas pequeñas -->
-                    <ul class="navbar-nav mx-auto d-md-none">
-                        <li class="nav-item dropdown">
-                            <a id="navDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Opciones
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navDropdown">
-                                <a class="dropdown-item" href="{{ url('/') }}">Inicio</a>
-                                <a class="dropdown-item" href="{{ route('mostrar.productos') }}">Catálogo</a>
-                                <a class="dropdown-item" href="{{ route('logout') }}">Personalización</a>
-                                <a class="dropdown-item" href="{{ route('rebajas') }}">Rebajas</a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="col-auto ms-auto">
-                    <ul class="navbar-nav">
+                    <ul class="navbar-nav ms-auto">
+                        <!-- Usuario -->
                         @guest
                             <li class="nav-item dropdown">
                                 <a id="guestDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -201,6 +227,7 @@
                                     @if (Route::has('register'))
                                         <a class="dropdown-item" href="{{ route('register') }}">{{ __('Registrarse') }}</a>
                                     @endif
+                                    <a class="dropdown-item" href="{{ route('dash.menu') }}">{{ __('ir al panel administrador') }}</a>
                                 </div>
                             </li>
                         @else
@@ -210,9 +237,7 @@
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     @if (Auth::user()->hasRole('cliente'))
-                                        <a class="dropdown-item" href="{{ route('logout') }}">
-                                            {{ __('Mis Pedidos') }}
-                                        </a>
+                                        <a class="dropdown-item" href="{{ route('pedidos') }}">{{ __('Mis Pedidos') }}</a>
                                     @endif
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -224,6 +249,14 @@
                                 </div>
                             </li>
                         @endguest
+
+                        <!-- Carrito -->
+                        <li class="nav-item position-relative">
+                            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#cartModal">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span class="total-cart">${{ number_format($totalMonto ?? 0, 2) }}</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -232,6 +265,33 @@
         <main class="m-0 p-0">
             @yield('content')
         </main>
+
+        <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="cartModalLabel">Productos en el carrito</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="list-group">
+                            @forelse ($productosCarrito ?? [] as $producto)
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    {{ $producto->nombre }}
+                                    <span>${{ number_format($producto->precio, 2) }}</span>
+                                </li>
+                            @empty
+                                <li class="list-group-item">El carrito está vacío.</li>
+                            @endforelse
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <a href="{{ route('carrito.mostrar') }}" class="btn btn-primary">Ver Carrito</a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <footer>
             <div class="footer-content">
@@ -244,10 +304,9 @@
                 <div class="footer-column">
                     <h3>Síguenos</h3>
                     <div class="social-icons">
-                        <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-                        <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-                        <a href="#" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
-                        <a href="#" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                        <a href="https://www.facebook.com/profile.php?id=61555644123310" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="https://www.instagram.com/ozez.trc?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="https://wa.me/528718974991?text=Hola,%20quiero%20saber%20más%20sobre%20sus%20servicios" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
                     </div>
                     <p>¡Conéctate con nosotros en redes!</p> 
                 </div>

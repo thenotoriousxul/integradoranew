@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\productoRequest;
 use App\Models\Producto;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
 
+use function Laravel\Prompts\select;
 
 class productoController extends Controller
 {
@@ -37,11 +40,112 @@ class productoController extends Controller
     public function getProductos() {
         $productos = Producto::all();
         return view('productos' , compact('productos'));
+
+    }
+
+    public function dashProductos() {
+        $productos = Producto::all();
+ 
+        return view('admin.productosBase' , compact('productos'));
     }
 
     public function detalle($id)
-{
+    {
     $producto = Producto::findOrFail($id);
     return view('producto_detalle', compact('producto'));
-}
+    }
+
+    public function activar($id){
+        $producto = Producto::findOrFail($id);
+        $producto->estado = 'activo';
+        $producto->save();
+        return redirect()->route('dash.productosBase')->with('success', 'producto activado correctamente');
+    }
+
+    public function inactivar($id){
+        $producto = Producto::findOrFail($id);
+        $producto->estado = 'inactivo';
+        $producto->save();
+        return redirect()->route('dash.productosBase')->with('success', 'producto desactivado correctamente');
+    }
+
+    public function editar($id){
+        $producto = Producto::findOrFail($id);
+        return view('admin.dashEditProducto', compact('producto'));
+    }
+
+    public function update(productoRequest $request, $id){
+        $producto = Producto::findOrFail($id);
+        
+        $imageUrl = null;
+
+            // Manejar la imagen si hay una nueva subida
+        if ($request->hasFile('imagen_producto')) {
+        // Eliminar la imagen anterior de S3, si existe
+        if ($producto->imagen_producto) {
+            Storage::disk('s3')->delete($producto->imagen_producto);
+        }
+
+        // Subir la nueva imagen a S3
+        $imagePath = $request->file('imagen_producto')->store('productos', 's3');
+        Storage::disk('s3')->setVisibility($imagePath, 'public');
+
+        // Actualizar la URL de la imagen
+        $producto->imagen_producto = Storage::disk('s3')->url($imagePath);
+        }
+
+        $producto->tipo = $request->input('tipo');
+        $producto->tamaño = $request->input('tamaño');
+        $producto->color = $request->input('color');
+        $producto->lote = $request->input('lote');
+        $producto->costo = $request->input('costo');
+
+        
+        $producto->save();
+
+        
+        return redirect()->route('dash.productosBase')->with('success', 'Producto actualizado exitosamente.');
+    }
+
+
+    public function filtrarPorPrecio(Request $request){
+        $request->validate([
+            'costo_min' => ['required','numeric','min:0'],
+            'costo_max' => ['required','numeric','min:0'],
+        ]);
+
+        $productos = DB::select('call filtrarPorPrecio(?,?)',[
+            $request->input('costo_max'),
+            $request->input('costo_min')
+        ]);
+
+        return view('admin.productosBase' , compact('productos'));
+    }
+
+    public function filtros(Request $request)
+    {
+        $request->validate([
+            'costo_min' => ['nullable','numeric','min:0'],
+            'costo_max' => ['nullable','numeric','min:0'],
+            'tamaño' => ['nullable','in:CH,M,XL,XXL'],
+            'tipo' => ['nullable','string','max:100'],
+        ]);
+    
+
+        $costo_min = $request->input('costo_min') === '' ? null : $request->input('costo_min');
+        $costo_max = $request->input('costo_max') === '' ? null : $request->input('costo_max');
+        $tamaño = $request->input('tamaño') === '' ? null : $request->input('tamaño');
+        $tipo = $request->input('tipo') === '' ? null : $request->input('tipo');
+    
+        $productos = DB::select('call filtrarProductos(?,?,?,?)', [
+            $costo_min,
+            $costo_max,
+            $tipo,
+            $tamaño,
+        ]);
+
+    
+        return view('admin.productosBase', compact('productos'));
+    }
+    
 }
