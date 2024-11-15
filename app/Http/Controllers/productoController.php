@@ -37,6 +37,13 @@ class productoController extends Controller
     public function getProductos() {
         $productos = Producto::all();
         return view('productos' , compact('productos'));
+
+    }
+
+    public function dashProductos() {
+        $productos = Producto::all();
+ 
+        return view('admin.productosBase' , compact('productos'));
     }
 
     public function detalle($id)

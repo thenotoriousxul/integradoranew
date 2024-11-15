@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 // Rutas de acceso general
 Route::get('/', function () {
     return view('home');
-});
+})->name('home');
 
 Route::get('/productos', function () {
     return view('productos');
@@ -44,8 +44,6 @@ Route::middleware(['auth'])->group(function () {
     })->name('admin.dashboard');
 
     // Dashboard del cliente, restringido solo para usuarios con rol 'cliente'
-    Route::get('/formulario/agregar/Producto', [formulariosController::class, 'formularioProducto'])->name('agregar.producto');
-    Route::get('/productos/base', [productoController::class, 'getProductos'])->name('mostrar.productos');
     Route::post('/agregar/producto', [productoController::class, 'saveProducto'])->name('producto.save');
 
     Route::get('/agregar/proveedor', [formulariosController::class, 'agregarProveedor'])->name('agregar.proveedor');
@@ -92,13 +90,7 @@ Route::get('/guardar/proveedor', [proveedorController::class, 'saveProveedor'])-
 
 Route::get('/agregar/edicion',[formulariosController::class,'formularioEdicion'])->name('agregar.edicion');
 
-
-//--------------------------------------------------------------------------
-
-
 Route::get('/producto/{id}', action: [ProductoController::class, 'detalle'])->name('vista_producto_detalle');
-
-
 
 
 // Rutas para gestionar el carrito
@@ -111,19 +103,12 @@ Route::get('dash', function(){
 return view('admin.layouts.dash');
 });
 
-Route::get('dash' , function(){
-return view('admin.layouts.dash');
-});
 
-Route::get('/formulario/agregar/Producto', [formulariosController::class, 'formularioProducto'])->name('agregar.producto');
-
-Route::get('/dashmenu', function () {
+Route::get('/dash/menu', function () {
     return view('admin.dashMenu');
-});
+})->name('dash.menu');
 
 
-Route::get('/dashN', function () {
-    return view('admin.layouts.dashboard');
-});
+Route::get('/dash/productosBase',[productoController::class, 'dashProductos'])->name('dash.productosBase');
 
-
+Route::get('/dash/agregar/Producto', [formulariosController::class, 'formularioProducto'])->name('agregar.producto');
