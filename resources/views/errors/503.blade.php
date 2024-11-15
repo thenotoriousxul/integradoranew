@@ -102,8 +102,8 @@
         <p>Estamos realizando algunas mejoras. Por favor, vuelve a intentarlo más tarde.</p>
         <p>Disculpa las molestias. ¡Gracias por tu paciencia!</p>
         
-    </div>
+    
         <p>Esperamos vuelvas pronto.</p>
-    </div>
+    
 </body>
 </html>
