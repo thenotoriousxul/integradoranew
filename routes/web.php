@@ -12,7 +12,6 @@ use App\Http\Controllers\EstampadoController;
 use App\Http\Controllers\PersonalizacionController;
 use App\Http\Controllers\OrdenController;
 
-
 //prueba
 // Rutas de acceso general
 Route::get('/', function () {
@@ -168,8 +167,6 @@ Route::prefix('admin/estampados')->group(function () {
 });
 
 Route::get('/personalizacion', [PersonalizacionController::class, 'index'])->name('personalizacion');
-Route::post('/personalizacion/guardar', [PersonalizacionController::class, 'guardar'])->name('personalizacion.guardar');
-
 Route::get('/pedidos', [OrdenController::class, 'listarPedidos'])->name('pedidos');
 
 Route::prefix('admins/ordenes')->group(function () {
