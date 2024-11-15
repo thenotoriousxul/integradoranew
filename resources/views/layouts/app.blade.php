@@ -216,6 +216,7 @@
                                     @if (Route::has('register'))
                                         <a class="dropdown-item" href="{{ route('register') }}">{{ __('Registrarse') }}</a>
                                     @endif
+                                    <a class="dropdown-item" href="{{ route('dash.menu') }}">{{ __('ir al panel administrador') }}</a>
                                 </div>
                             </li>
                         @else
@@ -257,10 +258,9 @@
                 <div class="footer-column">
                     <h3>Síguenos</h3>
                     <div class="social-icons">
-                        <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-                        <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-                        <a href="#" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
-                        <a href="#" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                        <a href="https://www.facebook.com/profile.php?id=61555644123310" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="https://www.instagram.com/ozez.trc?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="https://wa.me/528718974991?text=Hola,%20quiero%20saber%20más%20sobre%20sus%20servicios" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
                     </div>
                     <p>¡Conéctate con nosotros en redes!</p> 
                 </div>

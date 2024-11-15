@@ -129,7 +129,7 @@
 {
   margin-left: auto;
 }
-media (max-width: 768px) {
+@media (max-width: 768px) {
   .sidebar-container {
     transform: translateX(-100%);
     width: 100%;
@@ -147,12 +147,12 @@ media (max-width: 768px) {
 
 <aside class="sidebar-container">
     <div class="logo-container">
-      <p class="logo"><img src="{{asset('img/ozeztrc.png')}}" alt="Logo" /></p>
+     <a href="{{route('home')}}"> <p class="logo"><img src="{{asset('img/ozeztrc.png')}}" alt="Logo" /></p> </a>
     </div>
     <div class="menu-container">
     <div class="page-container">
       <h3 class="title-section">Menú</h3>
-      <a class="item-side" href="/dash/menu"
+      <a class="item-side" href="{{ route('home') }}"
         ><i class="fas fa-home"></i
         ><span class="sidebar-text">Menu principal</span></a
       >
@@ -169,12 +169,21 @@ media (max-width: 768px) {
           <i class="fas fa-list"></i>
           <span class="sidebar-text">Lista de Inventario</span>
         </a>
+        <a class="item-side sub" href="{{route('dash.productosBase')}}">
+          <i class="fa-solid fa-list-check"></i>
+          <span class="sidebar-text">LIsta Productos base</span>
+        </a>
+        <a class="item-side sub" href="{{route('agregar.producto')}}">
+          <i class="fas fa-plus"></i>
+          <span class="sidebar-text">Agregar Producto base</span>
+        </a>
         <a class="item-side sub" href="/dash/agregar/producto">
           <i class="fas fa-plus"></i>
-          <span class="sidebar-text">Catalogo de productos</span>
+          <span class="sidebar-text">Agregar diseño</span>
+        </a>
         <a class="item-side sub" href="/dash/agregar/producto">
           <i class="fas fa-plus"></i>
-          <span class="sidebar-text">Agregar Producto</span>
+          <span class="sidebar-text">crear edicion</span>
         </a>
       </div>
       <a class="item-side" href="/dash/opiniones"
@@ -197,7 +206,7 @@ media (max-width: 768px) {
         </a>
         <a class="item-side sub" href="/dash/agregar/orden">
           <i class="fas fa-plus"></i>
-          <span class="sidebar-text">Agregar Orden</span>
+          <span class="sidebar-text">Crear Orden</span>
         </a>
       </div>
     </div>

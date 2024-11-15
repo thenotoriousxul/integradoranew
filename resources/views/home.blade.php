@@ -317,7 +317,7 @@
         <div class="container">
             <h2 class="display-5 font-weight-bold">Explora Nuestro Catálogo</h2>
             <p class="lead mb-4">Descubre nuestra amplia variedad de playeras únicas, diseñadas para adaptarse a cada estilo. Ya sea que busques algo moderno, clásico o completamente personalizado, OZEZ tiene algo para ti.</p>
-            <a href="#product-gallery" class="btn btn-dark" style="font-size: 2rem; padding: 15px 30px;">Ir al Catálogo</a>
+            <a href="{{route('mostrar.productos')}}" class="btn btn-dark" style="font-size: 2rem; padding: 15px 30px;">Ir al Catálogo</a>
         </div>
     </div>
 
