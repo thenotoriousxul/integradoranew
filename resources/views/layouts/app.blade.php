@@ -54,29 +54,66 @@
             color: blue !important;
         }
 
-        /* Centrar el menú en pantallas grandes */
         .navbar-nav-center {
             display: flex;
             justify-content: center;
+            align-items: center;
             gap: 2rem;
             width: 100%;
         }
 
-        /* Estilo para el dropdown en pantallas pequeñas */
         .dropdown-menu {
             background-color: white;
             z-index: 1050;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 0.5rem;
+            padding: 0;
             border-radius: 5px;
         }
 
-        /* Ajuste del estilo de la badge del contador del carrito */
-        .small-badge {
-            font-size: 0.7rem;
-            padding: 0.2em 0.4em;
-            top: 8%;
-            right: 10%;
+        .dropdown-menu .dropdown-item {
+            padding: 0.75rem 1.25rem;
+            text-align: center;
+            margin: 0;
+        }
+
+        .total-cart {
+            font-size: 1rem;
+            color: #000;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+
+        /* Centrar verticalmente los elementos en la barra de navegación */
+        .navbar .navbar-nav .nav-item, .navbar .navbar-nav .nav-link, .navbar .navbar-brand {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Espaciado y centrado para opciones de menú en pantallas pequeñas */
+        @media (max-width: 768px) {
+            .navbar-collapse {
+                justify-content: center;
+            }
+            .navbar-nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            .navbar-nav.ms-auto {
+                justify-content: center;
+                width: 100%;
+            }
+            .navbar-nav .nav-item {
+                margin-bottom: 0;
+            }
+            .navbar-nav .nav-item.dropdown,
+            .navbar-nav .nav-item.position-relative {
+                margin-bottom: 10px; /* Separación entre Cuenta y Carrito */
+            }
+        }
+
+        /* Separación entre "Cuenta" y el carrito en pantallas grandes */
+        .navbar-nav .nav-item.position-relative {
+            margin-left: 15px;
         }
 
         footer {
@@ -163,8 +200,7 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <!-- Menú en línea para pantallas grandes centrado -->
-                    <ul class="navbar-nav navbar-nav-center d-none d-md-flex">
+                    <ul class="navbar-nav navbar-nav-center">
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/') }}">Inicio</a>
                         </li>
@@ -172,39 +208,14 @@
                             <a class="nav-link" href="{{ route('mostrar.productos') }}">Catálogo</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('logout') }}">Personalización</a>
+                            <a class="nav-link" href="{{ route('personalizacion') }}">Personalización</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('rebajas') }}">Rebajas</a>
                         </li>
                     </ul>
 
-                    <!-- Dropdown para pantallas pequeñas -->
-                    <ul class="navbar-nav mx-auto d-md-none">
-                        <li class="nav-item dropdown">
-                            <a id="navDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Opciones
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navDropdown">
-                                <a class="dropdown-item" href="{{ url('/') }}">Inicio</a>
-                                <a class="dropdown-item" href="{{ route('mostrar.productos') }}">Catálogo</a>
-                                <a class="dropdown-item" href="{{ route('logout') }}">Personalización</a>
-                                <a class="dropdown-item" href="{{ route('rebajas') }}">Rebajas</a>
-                            </div>
-                        </li>
-                    </ul>
-
-                    <!-- Icono del carrito de compras -->
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item position-relative">
-                            <a class="nav-link" href="{{ route('carrito.mostrar') }}" aria-label="Carrito de Compras">
-                                <i class="fas fa-shopping-cart"></i>
-                                <span id="carrito-contador" class="position-absolute small-badge badge rounded-pill bg-danger">
-                                    {{ $totalProductos ?? 0 }}
-                                </span>
-                            </a>
-                        </li>
-
                         <!-- Usuario -->
                         @guest
                             <li class="nav-item dropdown">
@@ -238,6 +249,14 @@
                                 </div>
                             </li>
                         @endguest
+
+                        <!-- Carrito -->
+                        <li class="nav-item position-relative">
+                            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#cartModal">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span class="total-cart">${{ number_format($totalMonto ?? 0, 2) }}</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -246,6 +265,33 @@
         <main class="m-0 p-0">
             @yield('content')
         </main>
+
+        <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="cartModalLabel">Productos en el carrito</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="list-group">
+                            @forelse ($productosCarrito ?? [] as $producto)
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    {{ $producto->nombre }}
+                                    <span>${{ number_format($producto->precio, 2) }}</span>
+                                </li>
+                            @empty
+                                <li class="list-group-item">El carrito está vacío.</li>
+                            @endforelse
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <a href="{{ route('carrito.mostrar') }}" class="btn btn-primary">Ver Carrito</a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <footer>
             <div class="footer-content">
