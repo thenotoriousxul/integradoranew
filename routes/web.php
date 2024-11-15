@@ -53,7 +53,6 @@ Route::middleware(['auth'])->group(function () {
 
     // Dashboard del cliente, restringido solo para usuarios con rol 'cliente'
     Route::get('/formulario/agregar/Producto', [formulariosController::class, 'formularioProducto'])->name('agregar.producto');
-    Route::get('/productos/base', [productoController::class, 'getProductos'])->name('mostrar.productos');
     Route::post('/agregar/producto', [productoController::class, 'saveProducto'])->name('producto.save');
 
     Route::get('/agregar/proveedor', [formulariosController::class, 'agregarProveedor'])->name('agregar.proveedor');
@@ -84,18 +83,14 @@ Route::get('/envios', function () {
 
 // Formularios y productos sin autenticación
 Route::get('/productos/base', [productoController::class, 'getProductos'])->name('mostrar.productos');
-Route::post('/agregar/producto', [productoController::class, 'saveProducto'])->name('producto.save');
+
 
 // Rutas de proveedores sin autenticación
 Route::get('/guardar/proveedor', [proveedorController::class, 'saveProveedor'])->name('guardar.proveedor');
 
-// Crear edición sin autenticación
 
 //Productos---------------------------------------------------
 Route::get('/productos/base',[productoController::class, 'getProductos'])->name('mostrar.productos');
-//guardar producto
-Route::Post('/agregar/producto',[productoController::class, 'saveProducto'])->name('producto.save');
-
 
 Route::get('/agregar/proveedor',[formulariosController::class, 'agregarProveedor'])->name('agregar.proveedor');
 Route::get('/guardar/proveedor', [proveedorController::class, 'saveProveedor'])->name('guardar.proveedor');
