@@ -9,9 +9,13 @@ use App\Http\Controllers\proveedorController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EdicionController;
 use App\Http\Controllers\EstampadoController;
+<<<<<<< HEAD
 use App\Http\Controllers\PersonalizacionController;
 use App\Http\Controllers\OrdenController;
 
+=======
+use App\Http\Controllers\formularios\PersonalizacionController;
+>>>>>>> d1c4e2ab4f8f1111528bee1e00e739b087dc3327
 
 // Rutas de acceso general
 Route::get('/', function () {
@@ -55,7 +59,6 @@ Route::middleware(['auth'])->group(function () {
 
     // Dashboard del cliente, restringido solo para usuarios con rol 'cliente'
     Route::get('/formulario/agregar/Producto', [formulariosController::class, 'formularioProducto'])->name('agregar.producto');
-    Route::get('/productos/base', [productoController::class, 'getProductos'])->name('mostrar.productos');
     Route::post('/agregar/producto', [productoController::class, 'saveProducto'])->name('producto.save');
 
     Route::get('/agregar/proveedor', [formulariosController::class, 'agregarProveedor'])->name('agregar.proveedor');
@@ -86,18 +89,14 @@ Route::get('/envios', function () {
 
 // Formularios y productos sin autenticación
 Route::get('/productos/base', [productoController::class, 'getProductos'])->name('mostrar.productos');
-Route::post('/agregar/producto', [productoController::class, 'saveProducto'])->name('producto.save');
+
 
 // Rutas de proveedores sin autenticación
 Route::get('/guardar/proveedor', [proveedorController::class, 'saveProveedor'])->name('guardar.proveedor');
 
-// Crear edición sin autenticación
 
 //Productos---------------------------------------------------
 Route::get('/productos/base',[productoController::class, 'getProductos'])->name('mostrar.productos');
-//guardar producto
-Route::Post('/agregar/producto',[productoController::class, 'saveProducto'])->name('producto.save');
-
 
 Route::get('/agregar/proveedor',[formulariosController::class, 'agregarProveedor'])->name('agregar.proveedor');
 Route::get('/guardar/proveedor', [proveedorController::class, 'saveProveedor'])->name('guardar.proveedor');
@@ -132,12 +131,22 @@ Route::get('/dashinventario', function () {
     return view('admin.dashInventario');
 });
 
+// Ruta para mostrar productos (GET)
+Route::get('/dash/productosBase', [productoController::class, 'dashProductos'])->name('dash.productosBase');
 
-Route::get('/dash/productosBase',[productoController::class, 'dashProductos'])->name('dash.productosBase');
+Route::patch('/dash/productoBase/activar/{id}', [productoController::class, 'activar'])->name('activar.producto');
 
-Route::get('/mispedidos', function () {
-    return view('mis-pedidos');
-});
+Route::patch('/dash/productoBase/inactivar/{id}', [productoController::class, 'inactivar'])->name('inactivar.producto');
+
+Route::get('dash/producto/editar/{id}', [productoController::class, 'editar'])->name('editar.producto');
+
+Route::put('dash/productos/actualizar/{id}', [productoController::class, 'update'])->name('actualizar.producto');
+
+// ruta para filtros productos
+
+Route::get('dash/productos/filtroPorPrecio',[productoController::class, 'filtrarPorPrecio'])->name('filtrar.precio');
+
+Route::get('dash/productos/filtros',[productoController::class, 'filtros'])->name('filtros');
 
 
 Route::get('/personalizacion', [PersonalizacionController::class, 'personalizacion']);
