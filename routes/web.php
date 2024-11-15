@@ -127,7 +127,6 @@ Route::get('/dashmenu', function () {
     return view('admin.dashMenu');
 });
 
-<<<<<<< HEAD
 Route::get('/dashorden', function () {
     return view('admin.dashOrdenes');
 });
@@ -135,11 +134,9 @@ Route::get('/dashorden', function () {
 Route::get('/dashinventario', function () {
     return view('admin.dashInventario');
 });
-=======
 
 Route::get('/dashN', function () {
     return view('admin.layouts.dashboard');
 });
 
 
->>>>>>> 64adf9ec795d85e63a5f95e325fef6a596ad8fbf
