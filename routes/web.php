@@ -124,7 +124,20 @@ Route::get('/dashinventario', function () {
     return view('admin.dashInventario');
 });
 
+// Ruta para mostrar productos (GET)
+Route::get('/dash/productosBase', [productoController::class, 'dashProductos'])->name('dash.productosBase');
 
-Route::get('/dash/productosBase',[productoController::class, 'dashProductos'])->name('dash.productosBase');
+Route::patch('/dash/productoBase/activar/{id}', [productoController::class, 'activar'])->name('activar.producto');
 
+Route::patch('/dash/productoBase/inactivar/{id}', [productoController::class, 'inactivar'])->name('inactivar.producto');
+
+Route::get('dash/producto/editar/{id}', [productoController::class, 'editar'])->name('editar.producto');
+
+Route::put('dash/productos/actualizar/{id}', [productoController::class, 'update'])->name('actualizar.producto');
+
+// ruta para filtros productos
+
+Route::get('dash/productos/filtroPorPrecio',[productoController::class, 'filtrarPorPrecio'])->name('filtrar.precio');
+
+Route::get('dash/productos/filtros',[productoController::class, 'filtros'])->name('filtros');
 

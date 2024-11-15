@@ -17,6 +17,7 @@ class Producto extends Model
           'lote',
           'costo',
           'imagen_producto',
+          'estado',
       ];
 
       public function ediciones(){
