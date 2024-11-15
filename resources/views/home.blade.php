@@ -291,12 +291,15 @@
 
 
 <div class="container-fluid p-0">
-    <div class="position-relative text-center text-white bg-cover bg-center" style="background-image: url('{{ asset('img/byn.jpeg') }}'); height: 600px; background-size: cover; background-position: center;">
-        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center" style="background: rgba(0, 0, 0, 0.5);">
+    <div class="position-relative text-center text-white bg-cover bg-center" style="background-image: url('{{ asset('img/playera.jpeg') }}'); height: 600px; background-size: cover; background-position: center;">
+        <div class="position-absolute top-0 start-0 w-100 h-100" style="background: rgba(0, 0, 0, 0.5);"></div>
+        
+        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center">
             <h1 class="display-4">Bienvenido a OZEZ</h1>
             <p class="lead">Explora nuestra colección de playeras personalizables y exclusivas.</p>
         </div>
     </div>
+
 
     <div class="animacion">
         <div class="logo-container">
@@ -314,7 +317,7 @@
         <div class="container">
             <h2 class="display-5 font-weight-bold">Explora Nuestro Catálogo</h2>
             <p class="lead mb-4">Descubre nuestra amplia variedad de playeras únicas, diseñadas para adaptarse a cada estilo. Ya sea que busques algo moderno, clásico o completamente personalizado, OZEZ tiene algo para ti.</p>
-            <a href="#product-gallery" class="btn btn-dark" style="font-size: 2rem; padding: 15px 30px;">Ir al Catálogo</a>
+            <a href="{{route('mostrar.productos')}}" class="btn btn-dark" style="font-size: 2rem; padding: 15px 30px;">Ir al Catálogo</a>
         </div>
     </div>
 

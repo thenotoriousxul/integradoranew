@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'Laravel') }}</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="preload" as="image" href="{{ asset('img/byn.jpeg') }}">
-    
+
     <style>
         #loading-screen {
             position: fixed;
@@ -53,15 +54,12 @@
             color: blue !important;
         }
 
+        /* Centrar el menú en pantallas grandes */
         .navbar-nav-center {
             display: flex;
+            justify-content: center;
             gap: 2rem;
-        }
-
-        .centered-nav {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
+            width: 100%;
         }
 
         /* Estilo para el dropdown en pantallas pequeñas */
@@ -71,6 +69,14 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             padding: 0.5rem;
             border-radius: 5px;
+        }
+
+        /* Ajuste del estilo de la badge del contador del carrito */
+        .small-badge {
+            font-size: 0.7rem;
+            padding: 0.2em 0.4em;
+            top: 8%;
+            right: 10%;
         }
 
         footer {
@@ -157,8 +163,8 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <!-- Menú en línea para pantallas grandes -->
-                    <ul class="navbar-nav mx-auto d-none d-md-flex">
+                    <!-- Menú en línea para pantallas grandes centrado -->
+                    <ul class="navbar-nav navbar-nav-center d-none d-md-flex">
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/') }}">Inicio</a>
                         </li>
@@ -187,10 +193,19 @@
                             </div>
                         </li>
                     </ul>
-                </div>
 
-                <div class="col-auto ms-auto">
-                    <ul class="navbar-nav">
+                    <!-- Icono del carrito de compras -->
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item position-relative">
+                            <a class="nav-link" href="{{ route('carrito.mostrar') }}" aria-label="Carrito de Compras">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span id="carrito-contador" class="position-absolute small-badge badge rounded-pill bg-danger">
+                                    {{ $totalProductos ?? 0 }}
+                                </span>
+                            </a>
+                        </li>
+
+                        <!-- Usuario -->
                         @guest
                             <li class="nav-item dropdown">
                                 <a id="guestDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -201,6 +216,7 @@
                                     @if (Route::has('register'))
                                         <a class="dropdown-item" href="{{ route('register') }}">{{ __('Registrarse') }}</a>
                                     @endif
+                                    <a class="dropdown-item" href="{{ route('dash.menu') }}">{{ __('ir al panel administrador') }}</a>
                                 </div>
                             </li>
                         @else
@@ -210,9 +226,7 @@
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     @if (Auth::user()->hasRole('cliente'))
-                                        <a class="dropdown-item" href="{{ route('logout') }}">
-                                            {{ __('Mis Pedidos') }}
-                                        </a>
+                                        <a class="dropdown-item" href="{{ route('pedidos') }}">{{ __('Mis Pedidos') }}</a>
                                     @endif
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -244,10 +258,9 @@
                 <div class="footer-column">
                     <h3>Síguenos</h3>
                     <div class="social-icons">
-                        <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-                        <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-                        <a href="#" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
-                        <a href="#" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                        <a href="https://www.facebook.com/profile.php?id=61555644123310" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="https://www.instagram.com/ozez.trc?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="https://wa.me/528718974991?text=Hola,%20quiero%20saber%20más%20sobre%20sus%20servicios" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
                     </div>
                     <p>¡Conéctate con nosotros en redes!</p> 
                 </div>

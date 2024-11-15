@@ -7,11 +7,19 @@ use App\Http\Controllers\formularios\formulariosController;
 use App\Http\Controllers\productoController;
 use App\Http\Controllers\proveedorController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EdicionController;
+use App\Http\Controllers\EstampadoController;
+use App\Http\Controllers\formularios\PersonalizacionController;
 
 // Rutas de acceso general
 Route::get('/', function () {
     return view('home');
+})->name('home');
+
+Route::get('/catalogo', function () {
+    return view('catalogo');
 });
+
 
 Route::get('/productos', function () {
     return view('productos');
@@ -51,6 +59,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/agregar/proveedor', [formulariosController::class, 'agregarProveedor'])->name('agregar.proveedor');
     Route::get('/guardar/proveedor', [proveedorController::class, 'saveProveedor'])->name('guardar.proveedor');
 });
+
+
+
 
 // Rutas específicas para clientes usando el middleware directamente
 Route::middleware(['auth'])->group(function () {
@@ -92,13 +103,7 @@ Route::get('/guardar/proveedor', [proveedorController::class, 'saveProveedor'])-
 
 Route::get('/agregar/edicion',[formulariosController::class,'formularioEdicion'])->name('agregar.edicion');
 
-
-//--------------------------------------------------------------------------
-
-
 Route::get('/producto/{id}', action: [ProductoController::class, 'detalle'])->name('vista_producto_detalle');
-
-
 
 
 // Rutas para gestionar el carrito
@@ -111,19 +116,55 @@ Route::get('dash', function(){
 return view('admin.layouts.dash');
 });
 
-Route::get('dash' , function(){
-return view('admin.layouts.dash');
-});
 
-Route::get('/formulario/agregar/Producto', [formulariosController::class, 'formularioProducto'])->name('agregar.producto');
-
-Route::get('/dashmenu', function () {
+Route::get('/dash/menu', function () {
     return view('admin.dashMenu');
+})->name('dash.menu');
+
+
+Route::get('/dashorden', function () {
+    return view('admin.dashOrdenes');
 });
 
-
-Route::get('/dashN', function () {
-    return view('admin.dashMenu');
+Route::get('/dashinventario', function () {
+    return view('admin.dashInventario');
 });
 
+// Ruta para mostrar productos (GET)
+Route::get('/dash/productosBase', [productoController::class, 'dashProductos'])->name('dash.productosBase');
 
+Route::patch('/dash/productoBase/activar/{id}', [productoController::class, 'activar'])->name('activar.producto');
+
+Route::patch('/dash/productoBase/inactivar/{id}', [productoController::class, 'inactivar'])->name('inactivar.producto');
+
+Route::get('dash/producto/editar/{id}', [productoController::class, 'editar'])->name('editar.producto');
+
+Route::put('dash/productos/actualizar/{id}', [productoController::class, 'update'])->name('actualizar.producto');
+
+// ruta para filtros productos
+
+Route::get('dash/productos/filtroPorPrecio',[productoController::class, 'filtrarPorPrecio'])->name('filtrar.precio');
+
+Route::get('dash/productos/filtros',[productoController::class, 'filtros'])->name('filtros');
+
+
+Route::get('/personalizacion', [PersonalizacionController::class, 'personalizacion']);
+
+Route::prefix('admin/ediciones')->group(function () {
+    Route::get('/crear', [EdicionController::class, 'crearFormularioEdicion'])->name('ediciones.crear');
+    Route::post('/guardar', [EdicionController::class, 'guardarEdicion'])->name('ediciones.guardar');
+    Route::get('/listar', [EdicionController::class, 'listarEdiciones'])->name('ediciones.listar');
+    Route::get('/{id}/detalle', [EdicionController::class, 'detalleEdicion'])->name('ediciones.detalle');
+    Route::get('/{id}/editar', [EdicionController::class, 'editarFormularioEdicion'])->name('ediciones.editar');
+    Route::post('/{id}/actualizar', [EdicionController::class, 'actualizarEdicion'])->name('ediciones.actualizar');
+    Route::delete('/{id}/eliminar', [EdicionController::class, 'eliminarEdicion'])->name('ediciones.eliminar');
+});
+
+Route::prefix('admin/estampados')->group(function () {
+    Route::get('/listar', [EstampadoController::class, 'listarEstampados'])->name('estampados.listar');
+    Route::get('/crear', [EstampadoController::class, 'crearFormularioEstampado'])->name('estampados.crear');
+    Route::post('/guardar', [EstampadoController::class, 'guardarEstampado'])->name('estampados.guardar');
+    Route::get('/{id}/editar', [EstampadoController::class, 'editarFormularioEstampado'])->name('estampados.editar');
+    Route::post('/{id}/actualizar', [EstampadoController::class, 'actualizarEstampado'])->name('estampados.actualizar');
+    Route::delete('/{id}/eliminar', [EstampadoController::class, 'eliminarEstampado'])->name('estampados.eliminar');
+});

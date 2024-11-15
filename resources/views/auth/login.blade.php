@@ -32,7 +32,7 @@
     }
 
     .right-column {
-        background-image: url('{{ asset('img/playera.jpeg') }}');
+        background-image: url('{{ asset('img/colorplayera.jpeg') }}');
         background-size: cover;
         background-position: center;
         height: 100vh;
