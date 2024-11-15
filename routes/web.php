@@ -9,13 +9,10 @@ use App\Http\Controllers\proveedorController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EdicionController;
 use App\Http\Controllers\EstampadoController;
-<<<<<<< HEAD
 use App\Http\Controllers\PersonalizacionController;
 use App\Http\Controllers\OrdenController;
 
-=======
 use App\Http\Controllers\formularios\PersonalizacionController;
->>>>>>> d1c4e2ab4f8f1111528bee1e00e739b087dc3327
 
 // Rutas de acceso general
 Route::get('/', function () {
