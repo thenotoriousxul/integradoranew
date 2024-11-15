@@ -24,8 +24,8 @@
                     <option value="" disabled selected>Selecciona un tamaño</option>
                     <option value="CH">CH</option>
                     <option value="M">M</option>
-                    <option value="S">S</option>
                     <option value="XL">XL</option>
+                    <option value="XXL">XXL</option>
                 </select>
             </div>
     
