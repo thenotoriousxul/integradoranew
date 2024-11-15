@@ -292,11 +292,14 @@
 
 <div class="container-fluid p-0">
     <div class="position-relative text-center text-white bg-cover bg-center" style="background-image: url('{{ asset('img/playera.jpeg') }}'); height: 600px; background-size: cover; background-position: center;">
-        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center" style="background: rgba(0, 0, 0, 0);">
+        <div class="position-absolute top-0 start-0 w-100 h-100" style="background: rgba(0, 0, 0, 0.5);"></div>
+        
+        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center">
             <h1 class="display-4">Bienvenido a OZEZ</h1>
             <p class="lead">Explora nuestra colección de playeras personalizables y exclusivas.</p>
         </div>
     </div>
+
 
     <div class="animacion">
         <div class="logo-container">
