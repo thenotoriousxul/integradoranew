@@ -4,7 +4,7 @@
 <div class="container py-4" id="personalizationContainer">
     <h1 class="text-center mb-4">Personaliza tu Playera</h1>
 
-    <form id="personalizationForm" action="{{ route('personalizacion.guardar') }}" method="POST" enctype="multipart/form-data">
+    <form id="personalizationForm" action="{{ route('personalizacion') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <div class="mb-4">
