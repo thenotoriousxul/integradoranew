@@ -115,7 +115,7 @@ Route::get('/dash/menu', function () {
     return view('admin.dashMenu');
 })->name('dash.menu');
 
-<<<<<<< HEAD
+
 Route::get('/dashorden', function () {
     return view('admin.dashOrdenes');
 });
@@ -123,7 +123,7 @@ Route::get('/dashorden', function () {
 Route::get('/dashinventario', function () {
     return view('admin.dashInventario');
 });
-=======
+
 
 Route::get('/dash/productosBase',[productoController::class, 'dashProductos'])->name('dash.productosBase');
 
