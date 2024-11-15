@@ -13,6 +13,11 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
+Route::get('/catalogo', function () {
+    return view('catalogo');
+});
+
+
 Route::get('/productos', function () {
     return view('productos');
 })->name('productos');
@@ -44,6 +49,8 @@ Route::middleware(['auth'])->group(function () {
     })->name('admin.dashboard');
 
     // Dashboard del cliente, restringido solo para usuarios con rol 'cliente'
+    Route::get('/formulario/agregar/Producto', [formulariosController::class, 'formularioProducto'])->name('agregar.producto');
+    Route::get('/productos/base', [productoController::class, 'getProductos'])->name('mostrar.productos');
     Route::post('/agregar/producto', [productoController::class, 'saveProducto'])->name('producto.save');
 
     Route::get('/agregar/proveedor', [formulariosController::class, 'agregarProveedor'])->name('agregar.proveedor');
@@ -108,7 +115,16 @@ Route::get('/dash/menu', function () {
     return view('admin.dashMenu');
 })->name('dash.menu');
 
+<<<<<<< HEAD
+Route::get('/dashorden', function () {
+    return view('admin.dashOrdenes');
+});
+
+Route::get('/dashinventario', function () {
+    return view('admin.dashInventario');
+});
+=======
 
 Route::get('/dash/productosBase',[productoController::class, 'dashProductos'])->name('dash.productosBase');
 
-Route::get('/dash/agregar/Producto', [formulariosController::class, 'formularioProducto'])->name('agregar.producto');
+

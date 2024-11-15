@@ -129,7 +129,7 @@
 {
   margin-left: auto;
 }
-media (max-width: 768px) {
+@media (max-width: 768px) {
   .sidebar-container {
     transform: translateX(-100%);
     width: 100%;
