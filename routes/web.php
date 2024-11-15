@@ -12,8 +12,6 @@ use App\Http\Controllers\EstampadoController;
 use App\Http\Controllers\PersonalizacionController;
 use App\Http\Controllers\OrdenController;
 
-use App\Http\Controllers\formularios\PersonalizacionController;
-
 // Rutas de acceso general
 Route::get('/', function () {
     return view('home');
