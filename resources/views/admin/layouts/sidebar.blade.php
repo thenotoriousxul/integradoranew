@@ -173,6 +173,17 @@
             </a>
         </div>
         <div class="page-container">
+            <h3 class="title-section">Órdenes</h3>
+            <a class="item-side" href="{{ route('admins.ordenes.index') }}">
+                <i class="fas fa-list"></i>
+                <span class="sidebar-text">Lista de Órdenes</span>
+            </a>
+            <a class="item-side" href="{{ route('admins.ordenes.create') }}">
+                <i class="fas fa-plus"></i>
+                <span class="sidebar-text">Crear Orden</span>
+            </a>
+        </div>
+        <div class="page-container">
             <h3 class="title-section">Configuración</h3>
             <a id="configuracion" class="item-side" href="">
                 <i class="fas fa-cogs"></i>

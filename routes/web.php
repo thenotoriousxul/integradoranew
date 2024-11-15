@@ -9,8 +9,10 @@ use App\Http\Controllers\proveedorController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EdicionController;
 use App\Http\Controllers\EstampadoController;
-use App\Http\Controllers\formularios\PersonalizacionController;
+use App\Http\Controllers\PersonalizacionController;
+use App\Http\Controllers\OrdenController;
 
+//prueba
 // Rutas de acceso general
 Route::get('/', function () {
     return view('home');
@@ -162,4 +164,17 @@ Route::prefix('admin/estampados')->group(function () {
     Route::get('/{id}/editar', [EstampadoController::class, 'editarFormularioEstampado'])->name('estampados.editar');
     Route::post('/{id}/actualizar', [EstampadoController::class, 'actualizarEstampado'])->name('estampados.actualizar');
     Route::delete('/{id}/eliminar', [EstampadoController::class, 'eliminarEstampado'])->name('estampados.eliminar');
+});
+
+Route::get('/personalizacion', [PersonalizacionController::class, 'index'])->name('personalizacion');
+Route::get('/pedidos', [OrdenController::class, 'listarPedidos'])->name('pedidos');
+
+Route::prefix('admins/ordenes')->group(function () {
+    Route::get('/', [OrdenController::class, 'index'])->name('admins.ordenes.index');
+    Route::get('/crear', [OrdenController::class, 'create'])->name('admins.ordenes.create');
+    Route::post('/guardar', [OrdenController::class, 'store'])->name('admins.ordenes.store');
+    Route::get('/{id}/editar', [OrdenController::class, 'edit'])->name('admins.ordenes.edit');
+    Route::put('/{id}/actualizar', [OrdenController::class, 'update'])->name('admins.ordenes.update');
+    Route::delete('/{id}/eliminar', [OrdenController::class, 'destroy'])->name('admins.ordenes.destroy');
+    Route::get('/{id}', [OrdenController::class, 'show'])->name('admins.ordenes.show');
 });

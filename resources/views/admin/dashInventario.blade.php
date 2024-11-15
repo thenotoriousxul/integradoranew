@@ -2,19 +2,20 @@
 
 @section('content')
 <style>
-    body {
-        background-color: #1a202c;
-        color: #e2e8f0;
-    }
-    .form-control, .form-select {
-        background-color: #2d3748;
-        color: #e2e8f0;
-        border-color: #4a5568;
-    }
-    .form-control:focus, .form-select:focus {
-        background-color: #2d3748;
-        color: #e2e8f0;
-    }
+
+table {
+            color: #e2e8f0;
+            background-color: #212529 !important; 
+        }
+        .form-control, .form-select {
+            background-color: #2d3748;
+            color: #e2e8f0;
+            border-color: #4a5568;
+        }
+        .form-control:focus, .form-select:focus {
+            background-color: #2d3748;
+            color: #e2e8f0;
+        }
     .product-img {
         width: 50px;
         height: 50px;
@@ -40,10 +41,7 @@
         max-height: 200px;
         object-fit: contain;
     }
-    .table-hover tbody tr:hover {
-        cursor: pointer;
-        background-color: rgba(255,255,255,0.1) !important;
-    }
+   
     .overlay {
         position: fixed;
         top: 0;
@@ -54,43 +52,45 @@
         display: none;
         z-index: 999;
     }
+    .inventario 
+    {
+        background-color: #1f2937;
+            padding: 10px;
+            border-radius: 10px;
+    }
 </style>
 </head>
 <body>
 <div class="container-fluid mt-4">
-    <h1 class="mb-4">Gestión de Inventario</h1>
     
     <form id="search-form" class="mb-4">
         <div class="row g-3">
             <div class="col-md-3">
-                <label for="search-field" class="form-label">Buscar por:</label>
                 <select id="search-field" class="form-select">
-                    <option value="id">ID</option>
-                    <option value="producto">Producto</option>
-                    <option value="precio">Precio</option>
+                    <option value="">Buscar por</option>
+                    <option value="matricula">ID</option>
+                    <option value="nombre">Playera</option>
+                    <option value="apellido">Edición</option>
                 </select>
             </div>
             <div class="col-md-3">
-                <label for="search-input" class="form-label">Término de búsqueda:</label>
                 <input type="text" id="search-input" class="form-control" placeholder="Buscar">
             </div>
             <div class="col-md-2">
-                <label for="start-date" class="form-label">Desde:</label>
-                <input type="date" id="start-date" class="form-control">
+                <input type="date" id="start-date" class="form-control" aria-label="Fecha desde">
             </div>
             <div class="col-md-2">
-                <label for="end-date" class="form-label">Hasta:</label>
-                <input type="date" id="end-date" class="form-control">
+                <input type="date" id="end-date" class="form-control" aria-label="Fecha hasta">
             </div>
-            <div class="col-md-2 d-flex align-items-end">
+            <div class="col-md-2">
                 <button type="submit" id="search-btn" class="btn btn-primary w-100">
                     <i class="fas fa-search me-2"></i>Buscar
                 </button>
             </div>
         </div>
     </form>
-
-    <div class="table-responsive">
+ 
+    <div class="table-responsive inventario">
         <table class="table table-dark table-hover">
             <thead>
                 <tr>
@@ -121,25 +121,6 @@
                         </div>
                     </td>
                 </tr>
-                <tr data-id="1742D">
-                    <td>1742D</td>
-                    <td>
-                        <img src="img/reloj.jpeg" alt="Reloj Elegante" class="product-img me-2">
-                        Reloj Elegante
-                    </td>
-                    <td>$ 250</td>
-                    <td>500</td>
-                    <td>
-                        <div class="btn-group" role="group" aria-label="Acciones">
-                            <button type="button" class="btn btn-sm btn-outline-light" data-bs-toggle="modal" data-bs-target="#editarProductoModal">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
             </tbody>
         </table>
     </div>
@@ -153,7 +134,7 @@
     <p id="product-status" class="badge"></p>
 </div>
 
-<div id="overlay" class="overlay"></div>
+<div id="overlayy" class="overlay"></div>
 <script src="{{ asset('js/productoinventario.js') }}" defer></script>
 
 @endsection
