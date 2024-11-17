@@ -94,7 +94,10 @@
                             <img src="{{ $producto->imagen_producto }}" alt="Imagen de {{ $producto->tipo }}" class="card-img-top">
                         </a>
                     @else
+                    <a href="{{ route('vista_producto_detalle', ['id' => $producto->id]) }}">
                         <p>Imagen no disponible</p>
+                    </a>
+
                     @endif
                     <div class="card-body">
                         <h5 class="card-title">{{ $producto->tipo }}</h5>
