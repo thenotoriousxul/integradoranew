@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('ediciones_diseños', function (Blueprint $table) {
-            $table->foreign(['edicion_id'], 'fk_ediciones_diseños_edicion1')->references(['id'])->on('edicion')->onUpdate('restrict')->onDelete('restrict');
-            $table->foreign(['estampados_id'], 'fk_ediciones_diseños_estampados1')->references(['id'])->on('estampados')->onUpdate('restrict')->onDelete('restrict');
+        Schema::table('ediciones_estampados', function (Blueprint $table) {
+            $table->foreign(['edicion_id'], 'fk_ediciones_estampados_edicion1')->references(['id'])->on('edicion')->onUpdate('restrict')->onDelete('restrict');
+            $table->foreign(['estampados_id'], 'fk_ediciones_estampados_estampados1')->references(['id'])->on('estampados')->onUpdate('restrict')->onDelete('restrict');
         });
     }
 
@@ -22,9 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('ediciones_diseños', function (Blueprint $table) {
-            $table->dropForeign('fk_ediciones_diseños_edicion1');
-            $table->dropForeign('fk_ediciones_diseños_estampados1');
+        Schema::table('ediciones_estampados', function (Blueprint $table) {
+            $table->dropForeign('fk_ediciones_estampados_edicion1');
+            $table->dropForeign('fk_ediciones_estampados_estampados1');
         });
     }
 };

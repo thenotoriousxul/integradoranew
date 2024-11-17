@@ -12,9 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('estampados', function (Blueprint $table) {
-            $table->bigInteger('id', true);
+            $table->bigIncrements('id');
             $table->string('nombre', 45);
-            $table->string('imagen_diseño');
+            $table->string('imagen_estampado');
+            $table->decimal('costo', 10, 2);
             $table->timestamps();
         });
     }

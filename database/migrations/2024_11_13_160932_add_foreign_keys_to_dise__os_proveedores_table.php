@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('diseños_proveedores', function (Blueprint $table) {
-            $table->foreign(['diseños_id'], 'fk_diseños_proveedores_diseños1')->references(['id'])->on('diseños')->onUpdate('restrict')->onDelete('restrict');
-            $table->foreign(['proveedores_id'], 'fk_diseños_proveedores_proveedores1')->references(['id'])->on('proveedores')->onUpdate('restrict')->onDelete('restrict');
+        Schema::table('disenos_proveedores', function (Blueprint $table) {
+            $table->foreign(['disenos_id'], 'fk_disenos_proveedores_disenos1')->references(['id'])->on('disenos')->onUpdate('restrict')->onDelete('restrict');
+            $table->foreign(['proveedores_id'], 'fk_disenos_proveedores_proveedores1')->references(['id'])->on('proveedores')->onUpdate('restrict')->onDelete('restrict');
         });
     }
 
@@ -22,9 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('diseños_proveedores', function (Blueprint $table) {
-            $table->dropForeign('fk_diseños_proveedores_diseños1');
-            $table->dropForeign('fk_diseños_proveedores_proveedores1');
+        Schema::table('disenos_proveedores', function (Blueprint $table) {
+            $table->dropForeign('fk_disenos_proveedores_disenos1');
+            $table->dropForeign('fk_disenos_proveedores_proveedores1');
         });
     }
 };

@@ -12,13 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('productos', function (Blueprint $table) {
-            $table->bigInteger('id', true);
+            $table->bigIncrements('id');
             $table->string('tipo', 50);
-            $table->enum('tamaño', ['CH', 'M', 'XL', 'XXL']);
+            $table->enum('talla', ['CH', 'M', 'XL', 'XXL']);
             $table->string('color', 50);
+            $table->decimal('costo', 10, 2);
             $table->integer('lote');
-            $table->double('costo');
             $table->string('imagen_producto');
+            $table->boolean('producto_personalizar')->default(false);
             $table->timestamps();
         });
     }

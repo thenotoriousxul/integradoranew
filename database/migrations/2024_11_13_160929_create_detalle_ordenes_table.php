@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('detalle_ordenes', function (Blueprint $table) {
-            $table->bigInteger('id', true);
-            $table->bigInteger('edicion_id')->index('fk_detalle_ordenes_edicion1');
-            $table->bigInteger('ordenes_id')->index('fk_detalle_ordenes_ordenes1');
-            $table->integer('cantidad');
-            $table->double('precio');
-            $table->timestamps();
-        });
+    Schema::create('detalle_ordenes', function (Blueprint $table) {
+        $table->bigIncrements('id'); // Clave primaria
+        $table->bigInteger('ediciones_productos_id')->unsigned()->index('fk_detalle_ordenes_ediciones_productos1');
+        $table->bigInteger('ordenes_id')->unsigned()->index('fk_detalle_ordenes_ordenes1');
+        $table->integer('cantidad');
+        $table->decimal('total', 10, 2);
+        $table->timestamps();
+    });
     }
 
     /**

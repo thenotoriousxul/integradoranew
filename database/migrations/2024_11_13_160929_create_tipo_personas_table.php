@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tipo_personas', function (Blueprint $table) {
-            $table->bigInteger('id', true);
-            $table->bigInteger('personas_id')->index('fk_tipo_personas_personas1');
+            $table->bigIncrements('id');
+            $table->bigInteger('personas_id')->unsigned()->index('fk_tipo_personas_personas1'); // unsigned bigInteger
             $table->enum('tipo_persona', ['Cliente', 'Empleado']);
             $table->string('curp', 50)->nullable();
             $table->string('rfc', 50)->nullable();

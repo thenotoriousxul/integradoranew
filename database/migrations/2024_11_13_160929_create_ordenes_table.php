@@ -12,11 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ordenes', function (Blueprint $table) {
-            $table->bigInteger('id', true);
-            $table->bigInteger('tipo_personas_id')->index('fk_ordenes_tipo_personas1');
-            $table->date('fecha');
-            $table->double('total');
+            $table->bigIncrements('id'); // Clave primaria como unsigned bigInteger
+            $table->bigInteger('tipo_personas_id')->unsigned()->index('fk_ordenes_tipo_personas1'); // unsigned bigInteger
+            $table->date('fecha_orden');
+            $table->decimal('total', 10, 2);
             $table->tinyInteger('envios_domicilio');
+            $table->enum('estado', ['Pendiente', 'Entregada', 'Cancelada', 'Devuelta','Pagada']);
             $table->timestamps();
         });
     }

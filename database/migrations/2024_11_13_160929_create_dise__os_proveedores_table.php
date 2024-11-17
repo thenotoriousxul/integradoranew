@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('diseños_proveedores', function (Blueprint $table) {
-            $table->bigInteger('id', true);
-            $table->bigInteger('diseños_id')->index('fk_diseños_proveedores_diseños1');
-            $table->bigInteger('proveedores_id')->index('fk_diseños_proveedores_proveedores1');
+        Schema::create('disenos_proveedores', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->bigInteger('disenos_id')->unsigned()->index('fk_disenos_proveedores_disenos1'); // unsigned bigInteger
+            $table->bigInteger('proveedores_id')->unsigned()->index('fk_disenos_proveedores_proveedores1'); // unsigned bigInteger
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('diseños_proveedores');
+        Schema::dropIfExists('disenos_proveedores');
     }
 };

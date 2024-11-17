@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('productos_proveedores', function (Blueprint $table) {
-            $table->bigInteger('id', true);
-            $table->bigInteger('productos_id')->index('fk_productos_proveedores_productos1');
-            $table->bigInteger('proveedores_id')->index('fk_productos_proveedores_proveedores1');
+            $table->bigIncrements('id');
+            $table->bigInteger('productos_id')->unsigned()->index('fk_productos_proveedores_productos1'); // unsigned bigInteger
+            $table->bigInteger('proveedores_id')->unsigned()->index('fk_productos_proveedores_proveedores1'); // unsigned bigInteger
             $table->timestamps();
         });
     }
