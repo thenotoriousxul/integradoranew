@@ -254,18 +254,18 @@
                         <li class="nav-item position-relative">
                             <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#cartModal">
                                 <i class="fas fa-shopping-cart"></i>
-                                <span class="total-cart">${{ number_format($totalMonto ?? 0, 2) }}</span>
+                                <span class="total-cart">${{ number_format($totalMonto ?? 0, 2, '.', ',') }}</span>
                             </a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
-
+ 
         <main class="m-0 p-0">
             @yield('content')
         </main>
-
+ 
         <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -274,16 +274,35 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <ul class="list-group">
-                            @forelse ($productosCarrito ?? [] as $producto)
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    {{ $producto->nombre }}
-                                    <span>${{ number_format($producto->precio, 2) }}</span>
-                                </li>
-                            @empty
-                                <li class="list-group-item">El carrito está vacío.</li>
-                            @endforelse
-                        </ul>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Precio</th>
+                                    <th>Quitar</th>
+                                </tr>
+                            </thead>
+                            <tbody id="carrito-body">
+                                @if($contenidoCarrito->isEmpty())
+                                    <tr>
+                                        <td colspan="5" class="text-center">Tu carrito está vacío.</td>
+                                    </tr>
+                                @else
+                                    @foreach($contenidoCarrito as $item)
+                                        <tr data-id="{{ $item['id'] }}">
+                                            <td>
+                                                <img src="{{ $item['attributes']['imagen'] ?? 'ruta-a-imagen-default.jpg' }}" alt="{{ $item['tipo'] }}" style="width: 80px; height: 60px;">
+                                                {{ $item['tipo'] }}
+                                            </td>
+                                            <td>${{ number_format($item['price'], 2) }}</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-danger eliminar-producto" data-id="{{ $item['id'] }}">Eliminar</button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>

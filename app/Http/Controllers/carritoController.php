@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Producto;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class carritoController extends Controller
 {
@@ -58,16 +59,13 @@ class carritoController extends Controller
     return view('producto_detalle', compact('producto'));
 
 }
-
-
-
     // Mostrar contenido del carrito
     public function mostrarCarrito()
     {
-        $contenidoCarrito = collect(session()->get('carrito', []));
-        return view('carrito', data:  compact('contenidoCarrito'));
+        return view('carrito');
     }
 
+    
     // Actualizar cantidad de un producto en el carrito
     public function actualizarCantidad(Request $request, $productoId)
     {
@@ -132,6 +130,7 @@ class carritoController extends Controller
         session()->forget('carrito');  // Limpiamos el carrito de la sesión
         return response()->json(['success' => true]);
     }
+
 }
 
 
