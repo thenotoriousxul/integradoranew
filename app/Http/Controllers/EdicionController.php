@@ -20,12 +20,12 @@ class EdicionController extends Controller
         // Validación
         $request->validate([
             'nombre_edicion' => 'required|string|max:50',
+            'descripcion' => 'required|string|max:255',
             'fecha_de_salida' => 'required|date',
-            'lote' => 'required|integer|min:1',
-            'existencias' => 'required|integer|min:1',
+            'lote' => 'required|integer',
+            'existencias' => 'required|integer',
             'extra' => 'nullable|numeric|min:0',
-            'precio_de_venta' => 'required|numeric|min:0',
-            'imagen_producto' => 'nullable|image|max:2048',
+            'tipo'=> ['required','in:Edicion,Personalizada']
         ]);
 
         // Manejo de imagen
@@ -40,13 +40,11 @@ class EdicionController extends Controller
         Edicion::create([
             'nombre_edicion' => $request->nombre_edicion,
             'fecha_de_salida' => $request->fecha_de_salida,
+            'descripcion'=>$request->descripcion,
             'lote' => $request->lote,
             'existencias' => $request->existencias,
             'extra' => $request->extra ?? 0,
-            'costo_fabricacion' => 0, // Puedes calcular esto más adelante si es necesario
-            'precio_de_venta' => $request->precio_de_venta,
-            'tipo' => 'Edicion',
-            'imagen_producto' => $imagenProducto,
+            'tipo' => $request->tipo
         ]);
 
         // Redirigir al listado con un mensaje de éxito

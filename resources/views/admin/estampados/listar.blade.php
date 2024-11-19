@@ -22,8 +22,8 @@
         <tr>
             <td>{{ $estampado->nombre }}</td>
             <td>
-                @if ($estampado->imagen_diseño)
-                    <img src="{{ $estampado->imagen_diseño }}" alt="Imagen" style="width: 100px;">
+                @if ($estampado->imagen_estampado)
+                    <img src="{{ Storage::url( $estampado->imagen_estampado) }}" alt="Imagen" style="width: 100px;">
                 @else
                     Sin Imagen
                 @endif

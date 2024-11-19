@@ -9,14 +9,12 @@ class Edicion extends Model
 
     protected $fillable = [
         'nombre_edicion',
+        'descripcion',
         'fecha_de_salida',
         'lote',
         'existencias',
         'extra',
-        'costo_fabricacion',
-        'precio_de_venta',
         'tipo',
-        'imagen_producto',
     ];
 
     public function productos()
