@@ -41,11 +41,11 @@
                     </td>
                     <td>{{$producto->tipo}}</td>
                     <td>{{$producto->lote}}</td>
-                    <td>{{$producto->tamaño}}</td>
+                    <td>{{$producto->talla}}</td>
                     <td>{{$producto->costo}}</td>
                     <td>{{ \Carbon\Carbon::parse($producto->created_at)->format('d-m-Y') }}</td>
                     <td>
-                        <span class="badge {{ $producto->estado == 'activo' ? 'bg-success' : 'bg-danger' }}">
+                        <span class="badge {{ $producto->estado == 'Activo' ? 'bg-success' : 'bg-danger' }}">
                             {{ ucfirst($producto->estado) }}
                         </span>
                     </td>
@@ -60,7 +60,7 @@
                                     <a class="dropdown-item" href="{{ route('editar.producto', $producto->id)}}}">Editar</a>
                                 </li>
                                
-                                @if ($producto->estado == 'activo')
+                                @if ($producto->estado == 'Activo')
                                     <li>
                                         <form method="POST" action="{{ route('inactivar.producto', $producto->id) }}" style="display:inline;">
                                             @csrf

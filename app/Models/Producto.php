@@ -12,12 +12,13 @@ class Producto extends Model
      
       protected $fillable = [
           'tipo',
-          'tamaño',
+          'talla',
           'color',
           'lote',
           'costo',
           'imagen_producto',
           'estado',
+          'producto_personalizar'
       ];
 
       public function ediciones(){

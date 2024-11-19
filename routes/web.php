@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\carritoController;
+use App\Http\Controllers\disenosController;
 use Spatie\Permission\Middlewares\RoleMiddleware;
 use Spatie\Permission\Middlewares\PermissionMiddleware;
 use Spatie\Permission\Middlewares\RoleOrPermissionMiddleware;
@@ -127,25 +128,20 @@ Route::get('/dashinventario', function () {
     return view('admin.dashInventario');
 });
 
-// Ruta para mostrar productos (GET)
-Route::get('/dash/productosBase', [productoController::class, 'dashProductos'])->name('dash.productosBase');
-
-Route::patch('/dash/productoBase/activar/{id}', [productoController::class, 'activar'])->name('activar.producto');
-
-Route::patch('/dash/productoBase/inactivar/{id}', [productoController::class, 'inactivar'])->name('inactivar.producto');
-
-Route::get('dash/producto/editar/{id}', [productoController::class, 'editar'])->name('editar.producto');
-
-Route::put('dash/productos/actualizar/{id}', [productoController::class, 'update'])->name('actualizar.producto');
-
-// ruta para filtros productos
-
-Route::get('dash/productos/filtroPorPrecio',[productoController::class, 'filtrarPorPrecio'])->name('filtrar.precio');
-
-Route::get('dash/productos/filtros',[productoController::class, 'filtros'])->name('filtros');
 
 
 Route::get('/personalizacion', [PersonalizacionController::class, 'personalizacion']);
+
+
+Route::prefix('admin/producto')->group(function(){
+    Route::get('/dash/productosBase', [productoController::class, 'dashProductos'])->name('dash.productosBase');
+    Route::patch('/dash/productoBase/activar/{id}', [productoController::class, 'activar'])->name('activar.producto');
+    Route::patch('/dash/productoBase/inactivar/{id}', [productoController::class, 'inactivar'])->name('inactivar.producto');
+    Route::get('dash/producto/editar/{id}', [productoController::class, 'editar'])->name('editar.producto');
+    Route::put('dash/productos/actualizar/{id}', [productoController::class, 'update'])->name('actualizar.producto');
+    Route::get('dash/productos/filtroPorPrecio',[productoController::class, 'filtrarPorPrecio'])->name('filtrar.precio');
+    Route::get('dash/productos/filtros',[productoController::class, 'filtros'])->name('filtros');
+});
 
 Route::prefix('admin/ediciones')->group(function () {
     Route::get('/crear', [EdicionController::class, 'crearFormularioEdicion'])->name('ediciones.crear');
@@ -169,6 +165,8 @@ Route::prefix('admin/estampados')->group(function () {
 Route::get('/personalizacion', [PersonalizacionController::class, 'index'])->name('personalizacion');
 Route::get('/pedidos', [OrdenController::class, 'listarPedidos'])->name('pedidos');
 
+
+
 Route::prefix('admins/ordenes')->group(function () {
     Route::get('/', [OrdenController::class, 'index'])->name('admins.ordenes.index');
     Route::get('/crear', [OrdenController::class, 'create'])->name('admins.ordenes.create');
@@ -177,4 +175,10 @@ Route::prefix('admins/ordenes')->group(function () {
     Route::put('/{id}/actualizar', [OrdenController::class, 'update'])->name('admins.ordenes.update');
     Route::delete('/{id}/eliminar', [OrdenController::class, 'destroy'])->name('admins.ordenes.destroy');
     Route::get('/{id}', [OrdenController::class, 'show'])->name('admins.ordenes.show');
+});
+
+Route::prefix('admin/diseños')->group(function(){
+    Route::get('/crear',[formulariosController::class, 'crearDiseño'])->name('crear.diseño');
+    Route::post('/guardar',[disenosController::class, 'storeDiseños'])->name('guardar.diseño');
+    Route::get('/diseños',[disenosController::class, 'getDiseños'])->name('mostrar.diseños');
 });

@@ -19,15 +19,15 @@
             </div>
     
             <div class="mb-4">
-                <label class="form-label fw-semibold text-dark" for="tamaño">Ingresa el tamaño</label>
-                <select name="tamaño" id="tamaño" class="form-select border rounded" required style="background-color: #e9ecef; color: #495057;">
-                    <option value="" disabled selected>Selecciona un tamaño</option>
+                <label class="form-label fw-semibold text-dark" for="talla">Ingresa la talla</label>
+                <select name="talla" id="talla" class="form-select border rounded" required style="background-color: #e9ecef; color: #495057;">
+                    <option value="" disabled selected>Selecciona un talla</option>
                     <option value="CH">CH</option>
                     <option value="M">M</option>
-                    <option value="S">S</option>
-                    <option value="XL">XL</option>
+                    <option value="S">XL</option>
+                    <option value="XL">XXL</option>
                 </select>
-                <small class="text-muted">ingresa el Tamaño.</small>
+                <small class="text-muted">ingresa La talla.</small>
             </div>
     
             <div class="mb-4">

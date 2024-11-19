@@ -24,7 +24,7 @@ class productoRequest extends FormRequest
     {
         return [
             'tipo' => ['required', 'string', 'max:50'],
-            'tamaño' => ['required', Rule::in(['CH', 'M', 'XL', 'XXL'])],
+            'talla' => ['required', Rule::in(['CH', 'M', 'XL', 'XXL'])],
             'color' => ['required', 'string', 'max:50'],
             'lote' => ['required', 'integer', 'min:1'],
             'costo' => ['required', 'numeric', 'min:0'],

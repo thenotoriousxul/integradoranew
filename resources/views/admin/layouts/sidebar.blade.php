@@ -154,6 +154,10 @@
                     <i class="fas fa-plus"></i>
                     <span class="sidebar-text">Agregar Producto Base</span>
                 </a>
+                <a class="item-side sub" href="{{ route('crear.diseño') }}">
+                    <i class="fas fa-plus"></i>
+                    <span class="sidebar-text">Agregar diseño</span>
+                </a>
                 <a class="item-side sub" href="{{ route('estampados.crear') }}">
                     <i class="fas fa-plus"></i>
                     <span class="sidebar-text">Agregar Estampado</span>

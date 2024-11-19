@@ -26,7 +26,7 @@ class productoController extends Controller
         // Creación y guardado del producto
         $producto = new Producto();
         $producto->tipo = $request->input('tipo');
-        $producto->tamaño = $request->input('tamaño');
+        $producto->talla = $request->input('talla');
         $producto->color = $request->input('color');
         $producto->lote = $request->input('lote');
         $producto->costo = $request->input('costo');
@@ -46,7 +46,7 @@ class productoController extends Controller
     public function dashProductos() {
         $productos = Producto::all();
  
-        return view('admin.productosBase' , compact('productos'));
+        return view('admin.productos.productosBase' , compact('productos'));
     }
 
     public function detalle($id)
@@ -57,21 +57,21 @@ class productoController extends Controller
 
     public function activar($id){
         $producto = Producto::findOrFail($id);
-        $producto->estado = 'activo';
+        $producto->estado = 'Activo';
         $producto->save();
         return redirect()->route('dash.productosBase')->with('success', 'producto activado correctamente');
     }
 
     public function inactivar($id){
         $producto = Producto::findOrFail($id);
-        $producto->estado = 'inactivo';
+        $producto->estado = 'Inactivo';
         $producto->save();
         return redirect()->route('dash.productosBase')->with('success', 'producto desactivado correctamente');
     }
 
     public function editar($id){
         $producto = Producto::findOrFail($id);
-        return view('admin.dashEditProducto', compact('producto'));
+        return view('admin.productos.dashEditProducto', compact('producto'));
     }
 
     public function update(productoRequest $request, $id){
@@ -95,7 +95,7 @@ class productoController extends Controller
         }
 
         $producto->tipo = $request->input('tipo');
-        $producto->tamaño = $request->input('tamaño');
+        $producto->talla = $request->input('talla');
         $producto->color = $request->input('color');
         $producto->lote = $request->input('lote');
         $producto->costo = $request->input('costo');
@@ -127,21 +127,21 @@ class productoController extends Controller
         $request->validate([
             'costo_min' => ['nullable','numeric','min:0'],
             'costo_max' => ['nullable','numeric','min:0'],
-            'tamaño' => ['nullable','in:CH,M,XL,XXL'],
+            'talla' => ['nullable','in:CH,M,XL,XXL'],
             'tipo' => ['nullable','string','max:100'],
         ]);
     
 
         $costo_min = $request->input('costo_min') === '' ? null : $request->input('costo_min');
         $costo_max = $request->input('costo_max') === '' ? null : $request->input('costo_max');
-        $tamaño = $request->input('tamaño') === '' ? null : $request->input('tamaño');
+        $talla = $request->input('talla') === '' ? null : $request->input('talla');
         $tipo = $request->input('tipo') === '' ? null : $request->input('tipo');
     
         $productos = DB::select('call filtrarProductos(?,?,?,?)', [
             $costo_min,
             $costo_max,
             $tipo,
-            $tamaño,
+            $talla,
         ]);
 
     
