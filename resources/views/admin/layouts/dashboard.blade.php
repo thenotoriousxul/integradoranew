@@ -26,8 +26,7 @@ body {
   padding: 0;
   font-family: "Inter", sans-serif;
   height: 100%;
-  background-color: #111827 !important;
-  color: #fff !important;
+  background-color: #f3f3f3 !important;
 }
     .overlay {
   display: none;
@@ -49,6 +48,23 @@ body {
 .dash-body.expanded {
   margin-left: 0;
 }
+.menu-container::-webkit-scrollbar {
+  width: 0px; 
+  background: transparent; 
+}
+/* Para Firefox */
+.menu-container {
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+}
+.menu-container {
+  overflow: hidden; 
+  overflow-y: scroll; 
+}
+.menu-container::-webkit-scrollbar {
+  display: none; 
+}
+
 @media (max-width: 768px) {
 
   .dash-body {
