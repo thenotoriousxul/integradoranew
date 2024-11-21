@@ -48,6 +48,12 @@
     </div>
 </div>
 
+
+
+
+
+
+
 <!-- Script para manejar la actualización y eliminación de productos -->
 
 <script>
