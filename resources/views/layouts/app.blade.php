@@ -351,6 +351,34 @@
                 loadingScreen.style.display = 'none';
             }, 500); 
         });
+
+        const urlEliminar = "{{ route('carrito.eliminar', ':id') }}";
+
+
+        document.querySelectorAll('.eliminar-producto').forEach(button => {
+        button.addEventListener('click', function () {
+            const idProducto = this.dataset.id;
+            const url = urlEliminar.replace(':id', idProducto);
+
+            fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Remover fila sin recargar la página
+                    this.closest('tr').remove();
+                    document.querySelector('#total-carrito').innerText = `Total: $${data.total.toFixed(2)}`;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+
     </script>
+
 </body>
 </html>
