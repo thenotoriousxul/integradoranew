@@ -58,7 +58,7 @@ class carritoController extends Controller
 
     session()->flash('success', 'Producto agregado al carrito.');
     // Respondemos con el carrito actualizado
-    return view('producto_detalle', compact('producto'));
+    return view('admin.edicionesP.producto_detalle', compact('producto'));
 
 }
     // Mostrar contenido del carrito
