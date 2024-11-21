@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Edicion;
 use App\Models\ediciones_productos;
 use App\Models\Producto;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
@@ -62,5 +63,30 @@ class ediciones_productoController extends Controller
         $productos = ediciones_productos::where('rebaja', 1)->get();
 
         return view('rebajas' , compact('productos'));
+    }
+
+     public function filtro(Request $request){
+        $request->validate([
+            'costo_min' => ['nullable','numeric','min:0'],
+            'costo_max' => ['nullable','numeric','min:0'],
+            'talla' => ['nullable','in:CH,M,XL,XXL'],
+            'nombre' => ['nullable','string','max:100'],
+        ]);
+    
+
+        $costo_min = $request->input('costo_min') === '' ? null : $request->input('costo_min');
+        $costo_max = $request->input('costo_max') === '' ? null : $request->input('costo_max');
+        $talla = $request->input('talla') === '' ? null : $request->input('talla');
+        $nombre = $request->input('nombre') === '' ? null : $request->input('nombre');
+    
+        $productos = DB::select('call filtrarEdicionProductos(?,?,?,?)', [
+            $costo_min,
+            $costo_max,
+            $nombre,
+            $talla,
+        ]);
+
+    
+        return view('admin.edicionesP.productos', compact('productos'));
     }
 }

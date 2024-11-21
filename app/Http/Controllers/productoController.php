@@ -40,7 +40,7 @@ class productoController extends Controller
    
 
     public function dashProductos() {
-        $productos = Producto::all();
+        $productos = Producto::paginate(10);
  
         return view('admin.productos.productosBase' , compact('productos'));
     }

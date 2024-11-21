@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Edicion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class EdicionController extends Controller
@@ -130,4 +131,7 @@ class EdicionController extends Controller
 
         return redirect()->route('ediciones.listar')->with('success', 'Edición eliminada exitosamente.');
     }
+
+
+   
 }

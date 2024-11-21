@@ -189,8 +189,10 @@ Route::prefix('admin/ediciones_productos')->group(function(){
     Route::get('/crear/producto',[ediciones_productoController::class, 'create'])->name('crear.producto');
     Route::post('guardar/producto',[ediciones_productoController::class, 'store'])->name('store.productos');
     Route::get('/productos/catalogo',[ediciones_productoController::class, 'getProductos'])->name('mostrar.productos');
-
+    Route::get('/filtros',[ediciones_productoController::class, 'filtro'])->name('filtros.productos');
 });
+
+
 Route::get('/producto/{id}', action: [ediciones_productoController::class, 'detalle'])->name('vista_producto_detalle'); 
 
 Route::get('/rebajas' , [ediciones_productoController::class, 'rebajas'])->name('rebajas');

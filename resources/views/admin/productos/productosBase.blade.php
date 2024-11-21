@@ -96,6 +96,7 @@
             @endforelse
         </tbody>
     </table>
+    {{ $productos->links() }}
     
     <div class="offcanvas offcanvas-start" tabindex="-1" id="filtroOffcanvas" aria-labelledby="filtroOffcanvasLabel">
         <div class="offcanvas-header">

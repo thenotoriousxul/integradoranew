@@ -84,6 +84,12 @@
         <p>Explora nuestra amplia gama de playeras para todos los gustos.</p>
     </div>
 
+    <div class="d-flex justify-content-end dropdown mb-3">
+        <button class="btn btn-primary btn-animated mb-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#filtroOffcanvas" aria-controls="filtroOffcanvas">
+            <i class="bi bi-funnel-fill"></i> Filtrar
+        </button>
+    </div>
+
     <!-- Productos base -->
     <div class="row">
         @foreach ($productos as $producto)
@@ -106,6 +112,55 @@
                 </div>
             </div>
         @endforeach
+    </div>
+
+
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="filtroOffcanvas" aria-labelledby="filtroOffcanvasLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="filtroOffcanvasLabel">Filtros</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <form method="GET" action="{{ route('filtros.productos') }}">
+                <!-- Filtro por Precio -->
+                <h6>Filtrar por Precio</h6>
+                <div class="mb-3">
+                    <label for="costo_min" class="form-label">Costo Mínimo</label>
+                    <input type="number" name="costo_min" id="costo_min" class="form-control mb-2" value="{{ request('costo_min') }}">
+                </div>
+                <div class="mb-3">
+                    <label for="costo_max" class="form-label">Costo Máximo</label>
+                    <input type="number" name="costo_max" id="costo_max" class="form-control mb-2" value="{{ request('costo_max') }}">
+                </div>
+
+                <h6>filtrar por tipo</h6>
+                <div class="mb-3">
+                    <label for="tipo" class="form-label">Nombre producto</label>
+                    <input type="text" name="tipo" id="tipo" class="form-control mb-2" value="{{ request('tipo') }}">
+                </div>
+    
+                <!-- Filtro por Tipo -->
+                <h6>Filtrar por Talla</h6>
+                <div class="mb-3">
+                    <label for="talla" class="form-label">Talla</label>
+                    <select name="talla" id="talla" class="form-select">
+                        <option value="">-- Seleccionar la talla --</option>
+                        <option value="CH" {{ request('talla') == 'CH' ? 'selected' : '' }}>CH</option>
+                        <option value="M" {{ request('talla') == 'M' ? 'selected' : '' }}>M</option>
+                        <option value="XL" {{ request('talla') == 'XL' ? 'selected' : '' }}>XL</option>
+                        <option value="XXL" {{ request('talla') == 'XXL' ? 'selected' : '' }}>XXL</option>
+                    </select>
+                </div>
+    
+                <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
+            </form>
+    
+            <br>
+            <form method="GET" action="{{ route('mostrar.productos') }}">
+                <button type="submit" class="btn btn-dark">Limpiar Filtros</button>
+            </form>
+        </div>
     </div>
 </div>
 @endsection
