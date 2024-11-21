@@ -237,7 +237,11 @@
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     @if (Auth::user()->hasRole('cliente'))
-                                        <a class="dropdown-item" href="{{ route('pedidos') }}">{{ __('Mis Pedidos') }}</a>
+                                        <a class="dropdown-item" href="{{ route('pedidos') }}">{{ __('Mis pedidos') }}</a>
+                                    @endif
+
+                                    @if (Auth::user()->hasRole('cliente'))
+                                        <a class="dropdown-item" href="{{ route('perfil') }}">{{ __('Mi perfil') }}</a>
                                     @endif
                                     
                                     @if (Auth::user()->hasRole('admin'))
