@@ -18,10 +18,10 @@ return new class extends Migration
         $table->string('imagen_producto_final', 255);
         $table->decimal('costo_fabrica', 10, 2);
         $table->decimal('costo_precio_venta', 10, 2);
-        $table->integer('cantidad');
+        $table->integer('cantidad')->default(0);
         $table->boolean('rebaja')->default(false);
-        $table->decimal('porcentaje_rebaja', 5,2)->nullable();
-        $table->decimal('precio_rebajado', 10,2)->nullable();
+        $table->decimal('porcentaje_rebaja', 5,2)->default(0.00);
+        $table->decimal('precio_rebajado', 10,2)->default(0.00);
         $table->bigInteger('edicion_id')->unsigned()->index('fk_table1_edicion');
         $table->bigInteger('productos_id')->unsigned()->index('fk_table1_productos1');
         $table->timestamps();
