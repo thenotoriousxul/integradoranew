@@ -136,7 +136,7 @@ class productoController extends Controller
         ]);
 
     
-        return view('admin.productosBase', compact('productos'));
+        return view('admin.productos.productosBase', compact('productos'));
     }
     
 }

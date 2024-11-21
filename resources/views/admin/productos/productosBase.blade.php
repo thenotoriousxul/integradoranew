@@ -122,15 +122,15 @@
                 </div>
     
                 <!-- Filtro por Tipo -->
-                <h6>Filtrar por Tamaño</h6>
+                <h6>Filtrar por Talla</h6>
                 <div class="mb-3">
-                    <label for="tamaño" class="form-label">Talla</label>
-                    <select name="tamaño" id="tamaño" class="form-select">
+                    <label for="talla" class="form-label">Talla</label>
+                    <select name="talla" id="talla" class="form-select">
                         <option value="">-- Seleccionar la talla --</option>
-                        <option value="CH" {{ request('tamaño') == 'CH' ? 'selected' : '' }}>CH</option>
-                        <option value="M" {{ request('tamaño') == 'M' ? 'selected' : '' }}>M</option>
-                        <option value="XL" {{ request('tamaño') == 'XL' ? 'selected' : '' }}>XL</option>
-                        <option value="XXL" {{ request('tamaño') == 'XXL' ? 'selected' : '' }}>XXL</option>
+                        <option value="CH" {{ request('talla') == 'CH' ? 'selected' : '' }}>CH</option>
+                        <option value="M" {{ request('talla') == 'M' ? 'selected' : '' }}>M</option>
+                        <option value="XL" {{ request('talla') == 'XL' ? 'selected' : '' }}>XL</option>
+                        <option value="XXL" {{ request('talla') == 'XXL' ? 'selected' : '' }}>XXL</option>
                     </select>
                 </div>
     

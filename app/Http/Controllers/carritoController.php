@@ -37,7 +37,7 @@ class carritoController extends Controller
             'price' => $producto->costo_precio_venta,
             'quantity' => $carrito[$productoId]['quantity'] + $cantidad, // Incrementamos la cantidad
             'attributes' => [
-                'imagen' => $producto->imagen_producto,
+            'imagen' => $producto->imagen_producto_final,
             ]
         ]);
     } else {
@@ -48,7 +48,7 @@ class carritoController extends Controller
             'price' => $producto->costo_precio_venta,
             'quantity' => $cantidad,
             'attributes' => [
-                'imagen' => $producto->imagen_producto,
+            'imagen' => $producto->imagen_producto_final,
             ]
         ]);
     }
