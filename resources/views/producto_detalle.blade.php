@@ -153,7 +153,7 @@
     <div class="row">
         <div class="col-md-6 mb-4 mb-md-0">
             <div class="product-image-container">
-                <img src="{{ $producto->imagen_producto ?? '/placeholder.svg?height=600&width=600' }}" alt="{{ $producto->tipo }}" class="product-image">
+                <img src="{{ $producto->imagen_producto ?? '/placeholder.svg?height=600&width=600' }}" alt="{{ $producto->nombre }}" class="product-image">
             </div>
         </div>
         <div class="col-md-6">
