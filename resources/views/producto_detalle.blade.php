@@ -157,8 +157,8 @@
             </div>
         </div>
         <div class="col-md-6">
-            <h1 class="product-title">{{ $producto->tipo }}</h1>
-            <div class="product-price">${{ number_format($producto->costo, 2) }}</div>
+            <h1 class="product-title">{{ $producto->nombre }}</h1>
+            <div class="product-price">${{ number_format($producto->costo_precio_venta, 2) }}</div>
 
             <ul class="nav nav-tabs">
                 <li class="nav-item">
