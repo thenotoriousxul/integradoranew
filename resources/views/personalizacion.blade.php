@@ -2,22 +2,24 @@
 @extends('layouts.app')
 
 @section('content')
+    <!-- Importar la fuente "Bebas Neue" desde Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+
     <!-- Estilos Personalizados -->
     <style>
         /* Contenedor Principal */
         .custom-container {
             display: flex;
             flex-direction: row;
-            margin-top: 30px; /* Aumentado para más espacio desde la parte superior */
-            flex-wrap: nowrap; /* Mantiene los elementos en una sola fila */
-            align-items: flex-start; /* Alinea al inicio verticalmente */
-            justify-content: space-between; /* Distribuye espacio equitativamente */
-            padding: 0 20px; /* Espaciado horizontal */
+            margin-top: 30px;
+            align-items: flex-start;
+            justify-content: space-between;
+            padding: 0 20px;
         }
 
         /* Estilos de Opciones */
         .opciones {
-            width: 80px; /* Ancho fijo para las opciones de personalización */
+            width: 80px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -30,52 +32,52 @@
         .opciones i {
             margin: 20px 0;
             cursor: pointer;
-            color: #333; /* Color de los íconos cambiado a gris oscuro */
+            color: #333; 
             transition: color 0.3s;
         }
 
         .opciones i:hover {
-            color: #555; /* Color al pasar el cursor */
+            color: #555; 
         }
 
         /* Estilos de la Card de Configuración */
         .custom-card {
-            width: 250px; /* Ancho reducido para opciones de configuración */
+            width: 350px; 
             background-color: #fff;
             border-radius: 10px;
             padding: 15px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            max-height: 700px; /* Altura máxima para evitar alargamiento excesivo */
-            overflow-y: auto; /* Scroll vertical si el contenido excede la altura */
+            font-family: 'Bebas Neue', sans-serif; /* Aplicar la fuente */
         }
 
         .custom-card .card-header {
             font-size: 1.5rem;
             margin-bottom: 15px;
-            color: #333; /* Color de fuente cambiado a gris oscuro */
+            color: #333; 
             text-align: center;
+            font-family: 'Bebas Neue', sans-serif; /* Aplicar la fuente */
         }
 
         /* Estilos de las Imágenes Preestablecidas */
         .imagen_plantilla {
-            width: 100%;
-            max-width: 200px;
+            width: 48%;
             height: auto;
             cursor: pointer;
-            margin: 5px 0;
+            margin: 1%;
             border: 2px solid transparent;
             border-radius: 5px;
             transition: border-color 0.3s;
+            box-sizing: border-box;
         }
 
         .imagen_plantilla:hover {
-            border-color: #333; /* Color de borde al pasar el cursor */
+            border-color: #333; 
         }
 
         /* Estilos de los Botones de Color */
         .btn-custom-red, .btn-custom-blue, .btn-custom-black, .btn-custom-crema, .btn-outline-light {
             border-radius: 50%;
-            width: 30px; /* Reducido de 35px a 30px para mayor compactación */
+            width: 30px; 
             height: 30px;
             border: none;
             color: white;
@@ -130,11 +132,11 @@
 
         /* Estilos del Canvas */
         .Elcanvas-container {
-            flex: 1; /* Toma el espacio restante */
+            flex: 2; 
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 0 20px; /* Espaciado horizontal */
+            padding: 0 20px;
         }
 
         #myCanvas {
@@ -162,10 +164,11 @@
             .custom-card {
                 width: 90%;
                 margin-left: 0;
-                max-height: none; /* Elimina la altura máxima en pantallas pequeñas */
             }
 
             .imagen_plantilla {
+                width: 48%; 
+                margin: 1%;
                 max-width: 150px;
             }
         }
@@ -176,17 +179,23 @@
             }
 
             .btn-custom-red, .btn-custom-blue, .btn-custom-black, .btn-custom-crema, .btn-outline-light {
-                width: 25px; /* Reducido a 25px */
+                width: 25px; 
                 height: 25px;
             }
 
             .custom-card {
                 padding: 10px;
+                width: 100%;
             }
 
             #myCanvas {
                 width: 100%;
                 height: auto;
+            }
+
+            .imagen_plantilla {
+                width: 48%;
+                margin: 1%;
             }
         }
     </style>
@@ -197,7 +206,6 @@
         <div class="opciones">
             <i class="fa-solid fa-shirt fa-2xl" title="Productos" aria-label="Productos" role="button"></i>
             <i onclick="descargarImagen()" class="fa-solid fa-floppy-disk fa-2xl" title="Guardar" aria-label="Guardar" role="button"></i>
-            <!-- Ícono "Agregar Texto" eliminado -->
             <i onclick="eliminarObjeto()" class="fa-solid fa-trash fa-2xl" title="Eliminar" aria-label="Eliminar" role="button"></i>
         </div>
 
@@ -221,13 +229,12 @@
                 <button onclick="cambiarColor('#e1c699')" class="btn btn-custom-crema" title="Crema" aria-label="Crema"></button>
                 <br>
                 <br>
-                <!-- Sección "Color Personalizado" eliminada -->
             </div>
             <div class="card-body">
                 <h3>Espacio para Personalización</h3>
                 <br>
                 <br>
-                <div class="body-imagenes">
+                <div class="body-imagenes" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
                     <img onclick="agregarImagenPreestablecida('imagen_gato')" class="imagen_plantilla" src="{{ asset('img/imagen_gato.png') }}" alt="Imagen Gato">
                     <img onclick="agregarImagenPreestablecida('san_valentin_rem')" class="imagen_plantilla" src="{{ asset('img/san_valentin_rem.png') }}" alt="San Valentín">
                     <img onclick="agregarImagenPreestablecida('dinero_rem')" class="imagen_plantilla" src="{{ asset('img/dinero_rem.png') }}" alt="Dinero">
@@ -255,8 +262,10 @@
     <script>
         // Inicializar el canvas de Fabric.js
         const canvas = new fabric.Canvas('myCanvas');
-        
+
         let playera = null;
+        let tshirtBounds = null; // Variable para almacenar los límites de la playera
+
         function crearPlayera() {
             fabric.Image.fromURL(imagePaths.playera, function(img) {
                 img.set({
@@ -266,27 +275,22 @@
                     scaleY: 0.25,
                     selectable: false // No permite mover la playera
                 });
-        
+
                 playera = img;
-        
+
                 canvas.add(img);
                 canvas.renderAll();
+
+                // Calcular y almacenar los límites de la playera
+                tshirtBounds = img.getBoundingRect();
             });
         }
-        
-        // Se elimina el listener para 'color-picker' ya que no se usa más
-        /*
-        document.getElementById('color-picker').addEventListener('input', function(){
-            const colorSeleccionado = this.value;
-            cambiarColor(colorSeleccionado);
-        });
-        */
-        
+
+        // Función para cambiar el color de la playera
         function cambiarColor(color) {
             if (playera) {
                 playera.filters = []; 
-        
-                // Crear un filtro de ColorMatrix
+
                 const colorMatrix = new fabric.Image.filters.ColorMatrix({
                     matrix: [
                         0, 0, 0, 0, 0, 
@@ -296,19 +300,20 @@
                         0, 0, 0, 0, 0  
                     ]
                 });
-        
+
                 const hexColor = colorToRGBA(color);
-        
+
                 colorMatrix.matrix[0] = hexColor[0]; 
                 colorMatrix.matrix[5] = hexColor[1]; 
                 colorMatrix.matrix[10] = hexColor[2]; 
-        
+
                 playera.filters.push(colorMatrix);
                 playera.applyFilters();
                 canvas.renderAll();
             }
         }
         
+        // Convertir color hexadecimal a componentes RGBA normalizados
         function colorToRGBA(color) {
             if (color.startsWith('#')) {
                 color = color.slice(1);
@@ -320,6 +325,7 @@
             return [r, g, b];
         }
         
+        // Función para descargar la imagen personalizada
         function descargarImagen() {
             const link = document.createElement('a');
             link.href = canvas.toDataURL({ format: 'png' });
@@ -327,10 +333,11 @@
             link.click();
         }
         
-        var maxImg = 2;
-        
+        var maxImg = 4; // Permitir hasta 4 imágenes
+
         function agregarImagenPreestablecida(imagenKey) {
-            var imageCount = canvas.getObjects('image').length;
+            // Contar solo las imágenes añadidas (excluyendo la playera)
+            var imageCount = canvas.getObjects('image').filter(obj => obj !== playera).length;
             if(imageCount >= maxImg) {
                 alert('Excediste el número máximo de imágenes por playera');
                 return;
@@ -342,50 +349,90 @@
                         scaleX: 0.5,
                         scaleY: 0.5,
                         selectable: true,
-                        hasControls: false,
-                        lockMovementX: true,
-                        lockMovementY: true
+                        hasControls: true, // Permitir redimensionar
+                        lockRotation: true, // Deshabilitar rotación
+                        cornerStyle: 'circle', // Mejor apariencia de controles
+                        cornerColor: 'blue',
+                        cornerSize: 10,
+                        transparentCorners: false,
+                        minScaleLimit: 0.3, // Escala mínima
+                        originX: 'center',
+                        originY: 'center',
+                        hasBorders: true,
+                        hasControls: true,
+                        lockMovementX: false,
+                        lockMovementY: false,
                     });
+
+                    // Restringir movimiento dentro de los límites de la playera
+                    img.on('moving', function() {
+                        if (!tshirtBounds) return;
+
+                        var obj = img;
+                        obj.setCoords();
+                        var objBounding = obj.getBoundingRect();
+
+                        // Ajustar posición si se sale por la izquierda
+                        if(objBounding.left < tshirtBounds.left){
+                            obj.left += tshirtBounds.left - objBounding.left;
+                        }
+                        // Ajustar posición si se sale por arriba
+                        if(objBounding.top < tshirtBounds.top){
+                            obj.top += tshirtBounds.top - objBounding.top;
+                        }
+                        // Ajustar posición si se sale por la derecha
+                        if(objBounding.left + objBounding.width > tshirtBounds.left + tshirtBounds.width){
+                            obj.left -= (objBounding.left + objBounding.width) - (tshirtBounds.left + tshirtBounds.width);
+                        }
+                        // Ajustar posición si se sale por abajo
+                        if(objBounding.top + objBounding.height > tshirtBounds.top + tshirtBounds.height){
+                            obj.top -= (objBounding.top + objBounding.height) - (tshirtBounds.top + tshirtBounds.height);
+                        }
+                    });
+
+                    // Restringir redimensionamiento dentro de la playera
+                    img.on('scaling', function() {
+                        if (!tshirtBounds) return;
+
+                        var obj = img;
+                        var objBounding = obj.getBoundingRect();
+
+                        // Evitar que se escale por debajo del límite
+                        if(obj.scaleX < obj.minScaleLimit){
+                            obj.scaleX = obj.minScaleLimit;
+                        }
+                        if(obj.scaleY < obj.minScaleLimit){
+                            obj.scaleY = obj.minScaleLimit;
+                        }
+
+                        // Evitar que se escale más allá de la playera
+                        if(objBounding.width > tshirtBounds.width){
+                            obj.scaleX = tshirtBounds.width / obj.width;
+                        }
+                        if(objBounding.height > tshirtBounds.height){
+                            obj.scaleY = tshirtBounds.height / obj.height;
+                        }
+                    });
+
                     canvas.add(img);
                     canvas.renderAll();
                 });
             }
         }
-        
-        // Se elimina la función 'agregarTexto' ya que la opción ha sido eliminada
-        /*
-        function agregarTexto() {
-            var textoEditable = new fabric.Textbox('Escribe aquí...', {
-                left: 100,
-                top: 100,
-                width: 200,          
-                fontSize: 30,
-                hasControls: true,
-                lockMovementX: false,
-                lockMovementY: false,
-                fill: '#000000',
-                textAlign: 'center',
-                borderColor: 'black', 
-                cornerColor: 'blue',  
-                cornerSize: 10       
-            });
-        
-            canvas.add(textoEditable);
-            canvas.renderAll();
-        }
-        */
-        
+
+        // Función para eliminar objetos (excluyendo la playera)
         function eliminarObjeto () {
             var activeObject = canvas.getActiveObject();
         
-            if(activeObject) {
+            if(activeObject && activeObject !== playera) {
                 canvas.remove(activeObject);
                 canvas.renderAll();
             } else{
-                alert('Para eliminar, tienes que seleccionar la imagen o texto en la playera :)');
+                alert('Para eliminar, tienes que seleccionar una imagen en la playera :)');
             }
         }
         
+        // Crear la playera al cargar la página
         crearPlayera();
     </script>
 
