@@ -353,7 +353,7 @@
                         lockRotation: true, // Deshabilitar rotación
                         cornerStyle: 'circle', // Mejor apariencia de controles
                         cornerColor: 'blue',
-                        cornerSize: 10,
+                        cornerSize: 5,
                         transparentCorners: false,
                         minScaleLimit: 0.3, // Escala mínima
                         originX: 'center',

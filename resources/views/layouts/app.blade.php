@@ -227,7 +227,7 @@
                                     @if (Route::has('register'))
                                         <a class="dropdown-item" href="{{ route('register') }}">{{ __('Registrarse') }}</a>
                                     @endif
-                                    <a class="dropdown-item" href="{{ route('dash.menu') }}">{{ __('ir al panel administrador') }}</a>
+                                    <!-- Eliminado el enlace "Ir al panel administrador" para invitados -->
                                 </div>
                             </li>
                         @else
@@ -239,6 +239,11 @@
                                     @if (Auth::user()->hasRole('cliente'))
                                         <a class="dropdown-item" href="{{ route('pedidos') }}">{{ __('Mis Pedidos') }}</a>
                                     @endif
+                                    
+                                    @if (Auth::user()->hasRole('admin'))
+                                        <a class="dropdown-item" href="{{ route('dash.menu') }}">{{ __('Ir al panel administrador') }}</a>
+                                    @endif
+
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
@@ -285,13 +290,13 @@
                             <tbody id="carrito-body">
                                 @if(empty($contenidoCarrito) || count($contenidoCarrito) === 0)
                                 <tr>
-                                    <td colspan="5" class="text-center">Tu carrito está vacío.</td>
+                                    <td colspan="3" class="text-center">Tu carrito está vacío.</td>
                                 </tr>
                                 @else
                                     @foreach($contenidoCarrito as $item)
                                         <tr data-id="{{ $item['id'] }}">
                                             <td>
-                                                <img src="{{ $item['attributes']['imagen'] ?? 'ruta-a-imagen-default.jpg' }}" alt="{{ $item['name'] }}" style="width: 80px; height: 60px;">
+                                                <img src="{{ $item['attributes']['imagen'] ?? asset('img/default.jpg') }}" alt="{{ $item['name'] }}" style="width: 80px; height: 60px;">
                                                 {{ $item['name'] }}
                                             </td>
                                             <td>${{ number_format($item['price'], 2) }}</td>
@@ -356,28 +361,28 @@
 
 
         document.querySelectorAll('.eliminar-producto').forEach(button => {
-        button.addEventListener('click', function () {
-            const idProducto = this.dataset.id;
-            const url = urlEliminar.replace(':id', idProducto);
+            button.addEventListener('click', function () {
+                const idProducto = this.dataset.id;
+                const url = urlEliminar.replace(':id', idProducto);
 
-            fetch(url, {
-                method: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Remover fila sin recargar la página
-                    this.closest('tr').remove();
-                    document.querySelector('#total-carrito').innerText = `Total: $${data.total.toFixed(2)}`;
-                }
-            })
-            .catch(error => console.error('Error:', error));
+                fetch(url, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Remover fila sin recargar la página
+                        this.closest('tr').remove();
+                        // Actualizar el total del carrito si es necesario
+                        // document.querySelector('#total-carrito').innerText = `Total: $${data.total.toFixed(2)}`;
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
         });
-    });
-
     </script>
 
 </body>
