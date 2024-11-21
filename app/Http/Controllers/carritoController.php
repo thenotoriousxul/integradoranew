@@ -56,6 +56,7 @@ class carritoController extends Controller
     // Guardamos el carrito actualizado en la sesión
     session()->put('carrito', $carrito);
 
+    session()->flash('success', 'Producto agregado al carrito.');
     // Respondemos con el carrito actualizado
     return view('producto_detalle', compact('producto'));
 
