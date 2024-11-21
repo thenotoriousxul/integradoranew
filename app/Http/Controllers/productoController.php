@@ -37,11 +37,7 @@ class productoController extends Controller
     
     }
 
-    public function getProductos() {
-        $productos = Producto::all();
-        return view('productos' , compact('productos'));
-
-    }
+   
 
     public function dashProductos() {
         $productos = Producto::all();
@@ -49,11 +45,6 @@ class productoController extends Controller
         return view('admin.productos.productosBase' , compact('productos'));
     }
 
-    public function detalle($id)
-    {
-    $producto = Producto::findOrFail($id);
-    return view('producto_detalle', compact('producto'));
-    }
 
     public function activar($id){
         $producto = Producto::findOrFail($id);

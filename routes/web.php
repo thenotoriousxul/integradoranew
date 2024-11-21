@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\carritoController;
 use App\Http\Controllers\disenosController;
+use App\Http\Controllers\ediciones_productoController;
 use Spatie\Permission\Middlewares\RoleMiddleware;
 use Spatie\Permission\Middlewares\PermissionMiddleware;
 use Spatie\Permission\Middlewares\RoleOrPermissionMiddleware;
@@ -85,7 +86,8 @@ Route::get('/envios', function () {
 })->name('envios');
 
 // Formularios y productos sin autenticación
-Route::get('/productos/base', [productoController::class, 'getProductos'])->name('mostrar.productos');
+
+//Route::get('/productos/base', [productoController::class, 'getProductos'])->name('mostrar.productos');
 
 
 // Rutas de proveedores sin autenticación
@@ -93,7 +95,10 @@ Route::get('/guardar/proveedor', [proveedorController::class, 'saveProveedor'])-
 
 
 //Productos---------------------------------------------------
-Route::get('/productos/base',[productoController::class, 'getProductos'])->name('mostrar.productos');
+//Route::get('/productos/base',[productoController::class, 'getProductos'])->name('mostrar.productos');
+
+Route::get('/productos/base',[ediciones_productoController::class, 'getProductos'])->name('mostrar.productos');
+Route::get('/producto/{id}', action: [ediciones_productoController::class, 'detalle'])->name('vista_producto_detalle');
 
 Route::get('/agregar/proveedor',[formulariosController::class, 'agregarProveedor'])->name('agregar.proveedor');
 Route::get('/guardar/proveedor', [proveedorController::class, 'saveProveedor'])->name('guardar.proveedor');
@@ -101,7 +106,7 @@ Route::get('/guardar/proveedor', [proveedorController::class, 'saveProveedor'])-
 
 Route::get('/agregar/edicion',[formulariosController::class,'formularioEdicion'])->name('agregar.edicion');
 
-Route::get('/producto/{id}', action: [ProductoController::class, 'detalle'])->name('vista_producto_detalle');
+//Route::get('/producto/{id}', action: [ProductoController::class, 'detalle'])->name('vista_producto_detalle');
 
 
 // Rutas para gestionar el carrito

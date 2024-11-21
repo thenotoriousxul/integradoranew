@@ -291,8 +291,8 @@
                                     @foreach($contenidoCarrito as $item)
                                         <tr data-id="{{ $item['id'] }}">
                                             <td>
-                                                <img src="{{ $item['attributes']['imagen'] ?? 'ruta-a-imagen-default.jpg' }}" alt="{{ $item['tipo'] }}" style="width: 80px; height: 60px;">
-                                                {{ $item['tipo'] }}
+                                                <img src="{{ $item['attributes']['imagen'] ?? 'ruta-a-imagen-default.jpg' }}" alt="{{ $item['name'] }}" style="width: 80px; height: 60px;">
+                                                {{ $item['name'] }}
                                             </td>
                                             <td>${{ number_format($item['price'], 2) }}</td>
                                             <td>

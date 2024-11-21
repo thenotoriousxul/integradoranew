@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ediciones_productos;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -11,7 +12,7 @@ class carritoController extends Controller
     // Agregar un producto al carrito
     public function agregarProducto(Request $request, $productoId)
 {
-    $producto = Producto::find($productoId);
+    $producto = ediciones_productos::find($productoId);
     
     if (!$producto) {
         return response()->json(['message' => 'Producto no encontrado'], 404);
@@ -32,8 +33,8 @@ class carritoController extends Controller
         // Si existe, incrementamos la cantidad
         $carrito->put($productoId, [
             'id' => $producto->id,
-            'tipo' => $producto->tipo,
-            'price' => $producto->costo,
+            'name' => $producto->nombre,
+            'price' => $producto->costo_precio_venta,
             'quantity' => $carrito[$productoId]['quantity'] + $cantidad, // Incrementamos la cantidad
             'attributes' => [
                 'imagen' => $producto->imagen_producto,
@@ -43,8 +44,8 @@ class carritoController extends Controller
         // Si no existe, lo agregamos con la cantidad especificada
         $carrito->put($productoId, [
             'id' => $producto->id,
-            'tipo' => $producto->tipo,
-            'price' => $producto->costo,
+            'name' => $producto->nombre,
+            'price' => $producto->costo_precio_venta,
             'quantity' => $cantidad,
             'attributes' => [
                 'imagen' => $producto->imagen_producto,

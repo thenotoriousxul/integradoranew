@@ -100,8 +100,8 @@
 
                     @endif
                     <div class="card-body">
-                        <h5 class="card-title">{{ $producto->tipo }}</h5>
-                        <p class="card-text">Precio: ${{ number_format($producto->costo, 2) }}</p>
+                        <h5 class="card-title">{{ $producto->nombre }}</h5>
+                        <p class="card-text">Precio: ${{ number_format($producto->costo_precio_venta, 2) }}</p>
                     </div>
                 </div>
             </div>
