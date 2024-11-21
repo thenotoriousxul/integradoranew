@@ -138,6 +138,12 @@
                 <i class="fas fa-chevron-down abajo"></i>
             </a>
             <div id="inventario-submenu" class="submenu">
+                {{-- ////////////////// --}}
+                <a class="item-side sub" href="{{ route('crear.producto') }}">
+                    <i class="fas fa-plus"></i>
+                    <span class="sidebar-text">Crear producto catalogo</span>
+                </a>
+                {{-- /////////////////// --}}
                 <a class="item-side sub" href="{{ route('dash.productosBase') }}">
                     <i class="fa-solid fa-list-check"></i>
                     <span class="sidebar-text">Lista Productos Base</span>
@@ -209,5 +215,6 @@
                 <span class="sidebar-text">Página principal</span>
             </a>
         </div>
+        {{------------------------------- --}}
     </div>
 </aside>

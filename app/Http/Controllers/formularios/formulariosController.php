@@ -22,4 +22,8 @@ class formulariosController extends Controller
     public function crearDiseño(){
         return view('admin.disenos.crearDiseño');
     }
+
+    public function crearEdicionProducto(){
+        return view('admin.edicionesP.formularioProducto');
+    }
 }

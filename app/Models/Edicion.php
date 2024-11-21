@@ -17,9 +17,7 @@ class Edicion extends Model
         'tipo',
     ];
 
-    public function productos()
-    {
-        return $this->belongsToMany(Producto::class, 'ediciones_productos', 'edicion_id', 'productos_id')
-                    ->withPivot('lote', 'existencias');
-    }
+    public function productos(){
+        return $this->hasMany(Edicion::class, 'ediciones_poductos');
+      }
 }

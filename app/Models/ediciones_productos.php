@@ -12,14 +12,19 @@ class ediciones_productos extends Model
     protected $primaryKey ='id';
     protected $fillable = [
         'nombre',
-        'talla',
-        'costo_fabrica',
-        'costo_precio_venta',
         'cantidad',
         'rebaja',
         'porcentaje_rebaja',
         'precio_rebajado',
         'productos_id',
         'edicion_id',
+        'imagen_producto_final'
     ];
+
+    public function edicion(){
+        return $this->belongsTo(Edicion::class);
+    }
+    public function producto(){
+        return $this->belongsTo(Producto::class);
+    }
 }

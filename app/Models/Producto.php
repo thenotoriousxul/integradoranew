@@ -22,6 +22,6 @@ class Producto extends Model
       ];
 
       public function ediciones(){
-        return $this->belongsToMany(Edicion::class, 'ediciones_poducto');
+        return $this->hasMany(Edicion::class, 'ediciones_poductos');
       }
 }

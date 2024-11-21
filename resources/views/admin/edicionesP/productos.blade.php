@@ -89,9 +89,9 @@
         @foreach ($productos as $producto)
             <div class="col-md-3 mb-4">
                 <div class="card h-100">
-                    @if($producto->imagen_producto)
+                    @if($producto->imagen_producto_final)
                         <a href="{{ route('vista_producto_detalle', ['id' => $producto->id]) }}">
-                            <img src="{{ $producto->imagen_producto }}" alt="Imagen de {{ $producto->tipo }}" class="card-img-top">
+                            <img src="{{ $producto->imagen_producto_final }}" alt="Imagen de {{ $producto->nombre }}" class="card-img-top">
                         </a>
                     @else
                     <a href="{{ route('vista_producto_detalle', ['id' => $producto->id]) }}">

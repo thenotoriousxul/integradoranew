@@ -4,6 +4,9 @@
 <head>
     <title>{{ $title ?? 'Dashboard' }}</title>
 </head>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <link
 href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 rel="stylesheet"
@@ -79,6 +82,22 @@ body {
   }
   
 }
+
+.producto-card {
+    border: 1px solid #ddd;
+    transition: all 0.3s ease-in-out;
+}
+
+.producto-card:hover {
+    transform: scale(1.05);
+    border-color: #007bff;
+}
+
+#producto-seleccionado {
+    font-size: 1rem;
+}
+
+
 
 </style>
 <body>

@@ -8,30 +8,42 @@
     </div>
 
     <div class="row">
-        @for ($i = 1; $i <= 8; $i++)
+        @foreach ($productos as $producto)
             <div class="col-md-3 mb-4">
                 <div class="card h-100 shadow-sm">
-                    <img src="https://png.pngtree.com/png-vector/20220120/ourmid/pngtree-black-t-shirt-template-png-image_4293336.png" class="card-img-top" alt="Playera en Rebaja {{ $i }}">
+                    @if($producto->imagen_producto_final)
+                        <img src="{{ $producto->imagen_producto_final }}" class="card-img-top" alt="Imagen de {{ $producto->nombre }}">
+                    @else
+                        <img src="https://png.pngtree.com/png-vector/20220120/ourmid/pngtree-black-t-shirt-template-png-image_4293336.png" class="card-img-top" alt="Imagen no disponible">
+                    @endif
                     
                     <div class="card-body">
-                        <h5 class="card-title">Playera en Oferta {{ $i }}</h5>
+                        <h5 class="card-title">{{ $producto->nombre }}</h5>
                         
                         <p class="text-muted mb-0">
-                            <del>$ {{ number_format(30 + ($i * 5), 2) }}</del>
-                        </p>
-                        <p class="text-danger fw-bold">
-                            ${{ number_format((30 + ($i * 5)) * 0.8, 2) }} <small class="text-success">(20% Off)</small>
+                            @if($producto->rebaja)
+                                <del>${{ number_format($producto->costo_precio_venta, 2) }}</del>
+                            @endif
                         </p>
                         
-                        <a href="{{ route('producto.detalle') }}" class="btn btn-primary w-100">Ver detalles</a>
+                        <p class="{{ $producto->rebaja ? 'text-danger fw-bold' : 'fw-bold' }}">
+                            ${{ number_format($producto->rebaja ? $producto->precio_rebajado : $producto->costo_precio_venta, 2) }}
+                            @if($producto->rebaja)
+                                <small class="text-success">({{ $producto->porcentaje_rebaja }}% Off)</small>
+                            @endif
+                        </p>
+                        
+                        <a href="{{ route('vista_producto_detalle', ['id' => $producto->id]) }}" class="btn btn-primary w-100">Ver detalles</a>
                     </div>
                     
-                    <div class="position-absolute top-0 end-0 bg-danger text-white px-2 py-1" style="border-radius: 0 0 0 5px;">
-                        -20%
-                    </div>
+                    @if($producto->rebaja)
+                        <div class="position-absolute top-0 end-0 bg-danger text-white px-2 py-1" style="border-radius: 0 0 0 5px;">
+                            -{{ $producto->porcentaje_rebaja }}%
+                        </div>
+                    @endif
                 </div>
             </div>
-        @endfor
+        @endforeach
     </div>
 </div>
 @endsection

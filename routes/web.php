@@ -77,9 +77,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Rutas de acceso general
-Route::get('/rebajas', function () {
-    return view('rebajas');
-})->name('rebajas');
+
 
 Route::get('/envios', function () {
     return view('envios');
@@ -97,8 +95,6 @@ Route::get('/guardar/proveedor', [proveedorController::class, 'saveProveedor'])-
 //Productos---------------------------------------------------
 //Route::get('/productos/base',[productoController::class, 'getProductos'])->name('mostrar.productos');
 
-Route::get('/productos/base',[ediciones_productoController::class, 'getProductos'])->name('mostrar.productos');
-Route::get('/producto/{id}', action: [ediciones_productoController::class, 'detalle'])->name('vista_producto_detalle');
 
 Route::get('/agregar/proveedor',[formulariosController::class, 'agregarProveedor'])->name('agregar.proveedor');
 Route::get('/guardar/proveedor', [proveedorController::class, 'saveProveedor'])->name('guardar.proveedor');
@@ -187,3 +183,14 @@ Route::prefix('admin/diseños')->group(function(){
     Route::post('/guardar',[disenosController::class, 'storeDiseños'])->name('guardar.diseño');
     Route::get('/diseños',[disenosController::class, 'getDiseños'])->name('mostrar.diseños');
 });
+
+
+Route::prefix('admin/ediciones_productos')->group(function(){
+    Route::get('/crear/producto',[ediciones_productoController::class, 'create'])->name('crear.producto');
+    Route::post('guardar/producto',[ediciones_productoController::class, 'store'])->name('store.productos');
+    Route::get('/productos/catalogo',[ediciones_productoController::class, 'getProductos'])->name('mostrar.productos');
+Route::get('/producto/{id}', action: [ediciones_productoController::class, 'detalle'])->name('vista_producto_detalle');
+});
+
+
+Route::get('/rebajas' , [ediciones_productoController::class, 'rebajas'])->name('rebajas');
