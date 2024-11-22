@@ -196,3 +196,7 @@ Route::prefix('admin/ediciones_productos')->group(function(){
 Route::get('/producto/{id}', action: [ediciones_productoController::class, 'detalle'])->name('vista_producto_detalle'); 
 
 Route::get('/rebajas' , [ediciones_productoController::class, 'rebajas'])->name('rebajas');
+
+Route::get('/datosorden', function () {
+    return view('informacionCliente');
+});
