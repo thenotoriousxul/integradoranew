@@ -24,7 +24,7 @@ class ediciones_productoController extends Controller
 
     public function create()
     {
-    $ediciones = Edicion::where();
+    $ediciones = Edicion::all();
     $productos = Producto::all();
 
     return view('admin.edicionesP.formularioProducto', compact('ediciones', 'productos'));
