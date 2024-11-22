@@ -94,6 +94,7 @@
                                     <h5 class="card-title">{{ ucfirst($producto->tipo) }}</h5>
                                     <p class="card-text">Color: {{ ucfirst($producto->color) }}</p>
                                     <p class="card-text">Talla: {{ strtoupper($producto->talla) }}</p>
+                                    <p class="card-text">Lote actual: {{ strtoupper($producto->lote) }}</p>
                                     <button type="button" class="btn btn-primary seleccionar-producto">
                                         Seleccionar
                                     </button>
