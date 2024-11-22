@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('descripcion', 255);
             $table->date('fecha_de_salida');
             $table->integer('lote')->default(0);
-            $table->integer('existencias');
+            $table->integer('existencias')->default(0);
             $table->decimal('extra', 10, 2)->default(0);
             $table->enum('tipo', ['Edicion', 'Personalizada']);
             $table->timestamps();

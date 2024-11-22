@@ -16,7 +16,7 @@ return new class extends Migration
             $table->bigInteger('ordenes_id')->unsigned()->index('fk_pago_ordenes1'); // unsigned bigInteger
             $table->decimal('descuento', 10, 2)->nullable()->default(0);
             $table->decimal('pago_total', 10, 2);
-            $table->enum('metodo_pago', ['Efectivo', 'Tarjeta', 'Transferencia']);
+            $table->enum('metodo_pago', ['Efectivo', 'Tarjeta']);
             $table->date('fecha_pago');
             $table->enum('estado', ['Pagado', 'Pendiente', 'Rechazado']);
             $table->string('num_referencia', 50)->nullable();
