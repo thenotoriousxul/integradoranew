@@ -6,6 +6,8 @@ use App\Http\Requests\productoRequest;
 use App\Models\Producto;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
 
@@ -135,8 +137,25 @@ class productoController extends Controller
             $talla,
         ]);
 
-    
-        return view('admin.productos.productosBase', compact('productos'));
-    }
-    
+        $productosCollection = Collection::make($productos);
+
+          
+        $perPage = 10; 
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $currentPageItems = $productosCollection->slice(($currentPage - 1) * $perPage, $perPage)->values(); // Elementos actuales
+
+        // Crear el objeto paginador
+        $paginatedProductos = new LengthAwarePaginator(
+            $currentPageItems, 
+            $productosCollection->count(), 
+            $perPage, 
+            $currentPage, 
+            ['path' => $request->url(), 'query' => $request->query()] 
+        );
+
+        // Retornar a la vista
+        return view('admin.productos.productosBase', [
+            'productos' => $paginatedProductos,
+        ]);
+ }
 }

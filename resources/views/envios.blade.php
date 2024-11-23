@@ -24,15 +24,7 @@
                             <input type="text" class="form-control" id="codigo-postal" required>
                         </div>
 
-                        <!-- Opciones de Envío -->
-                        <h4 class="mt-4 mb-3">Opciones de Envío</h4>
-                        <div class="mb-3">
-                            <select class="form-select" id="opcionEnvio" required>
-                                <option value="" disabled selected>Seleccione una opción de envío</option>
-                                <option value="estandar">Envío Estándar (3-5 días) - $10.00</option>
-                                <option value="expres">Envío Exprés (1-2 días) - $20.00</option>
-                            </select>
-                        </div>
+                        
 
                         <!-- Resultado de la Simulación -->
                         <div id="resultadoEnvio" class="mt-4 d-none">
