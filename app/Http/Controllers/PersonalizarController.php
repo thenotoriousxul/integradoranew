@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Producto;
 use Illuminate\Http\Request;
+use App\Models\Estampado;
 
 class PersonalizarController extends Controller
 {
@@ -13,6 +14,15 @@ public function mostrarCatalogoPersonalizable() {
 
     // Pasar los productos a la vista
     return view('personalizacion', ['productos' => $productos]);
+}
+
+
+public function personalizarProducto($id) {
+    $producto = Producto::findOrFail($id);
+
+    $estampados = Estampado::all();
+
+    return view('personalizar', compact('producto', 'estampados'));
 }
 
 }

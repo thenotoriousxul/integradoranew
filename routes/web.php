@@ -198,6 +198,8 @@ Route::get('/rebajas' , [ediciones_productoController::class, 'rebajas'])->name(
 
 // Define la ruta y asigna un nombre usando el método name()
 Route::get('/personalizacion', [PersonalizarController::class, 'mostrarCatalogoPersonalizable'])->name('personalizacion');
+Route::get('/personalizar/{id}', [PersonalizarController::class, 'personalizarProducto'])->name('personalizar.producto');
+
 
 
 
