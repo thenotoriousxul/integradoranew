@@ -12,8 +12,9 @@ use App\Http\Controllers\proveedorController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EdicionController;
 use App\Http\Controllers\EstampadoController;
-use App\Http\Controllers\PersonalizacionController;
+use App\Http\Controllers\PersonalizarController;
 use App\Http\Controllers\OrdenController;
+
 
 //prueba
 // Rutas de acceso general
@@ -131,10 +132,6 @@ Route::get('/dashinventario', function () {
 });
 
 
-
-Route::get('/personalizacion', [PersonalizacionController::class, 'personalizacion']);
-
-
 Route::prefix('admin/producto')->group(function(){
     Route::get('/dash/productosBase', [productoController::class, 'dashProductos'])->name('dash.productosBase');
     Route::patch('/dash/productoBase/activar/{id}', [productoController::class, 'activar'])->name('activar.producto');
@@ -164,7 +161,6 @@ Route::prefix('admin/estampados')->group(function () {
     Route::delete('/{id}/eliminar', [EstampadoController::class, 'eliminarEstampado'])->name('estampados.eliminar');
 });
 
-Route::get('/personalizacion', [PersonalizacionController::class, 'index'])->name('personalizacion');
 Route::get('/pedidos', [OrdenController::class, 'listarPedidos'])->name('pedidos');
 
 
@@ -200,6 +196,11 @@ Route::get('/rebajas' , [ediciones_productoController::class, 'rebajas'])->name(
 
 
 
+// Define la ruta y asigna un nombre usando el método name()
+Route::get('/personalizacion', [PersonalizarController::class, 'mostrarCatalogoPersonalizable'])->name('personalizacion');
+
+
+
 // RUTAS DEl PROCESO DE ORDEN -- EN CONSTRUCCION XD
 Route::post('/create-payment-intent', [StripeController::class, 'createPaymentIntent'])->name('createPaymentIntent');
 
@@ -210,3 +211,4 @@ Route::get('/datosorden', function () {
 Route::get('/agradecimiento', function () {
     return view('agradecimitnto');
 });
+

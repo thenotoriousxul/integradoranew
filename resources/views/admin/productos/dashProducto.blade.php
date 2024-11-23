@@ -55,6 +55,15 @@
             <input type="file" name="imagen_producto" id="imagen_producto" class="form-control border rounded">
         </div>
 
+    <div class="mb-4">
+        <label class="form-label fw-semibold text-black" for="producto_personalizar">Tipo de Producto</label>
+        <select name="producto_personalizar" id="producto_personalizar" class="form-select border rounded">
+        <option value="" disabled selected>Selecciona el Tipo de Producto</option>
+        <option value="1">Producto a Personalizar</option>
+        <option value="0">Producto para Materia Prima</option>
+        </select>
+    </div>
+
         <div class="text-center">
             <button class="btn btn-primary btn-lg w-100 rounded" type="submit" style="background-color: #007bff; border: none;">Guardar Producto</button>
         </div>
