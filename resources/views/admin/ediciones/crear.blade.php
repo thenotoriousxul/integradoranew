@@ -1,6 +1,6 @@
 @extends('admin.layouts.dashboard')
 
-@section('content')
+@section('content') 
 <h2>Crear Edición</h2>
 
 <form action="{{ route('ediciones.guardar') }}" method="POST" enctype="multipart/form-data">

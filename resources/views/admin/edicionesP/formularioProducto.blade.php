@@ -6,22 +6,22 @@
     <div class="alert alert-danger">
         <ul>
             @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
+                <li>{{ $error }}</li> 
             @endforeach
         </ul>
     </div>
 @endif
+dde3eb
+<div class="container my-4" style="background-color: #1f2937; padding: 2rem; border-radius: 2rem;">
+    <h1 class="text-center mb-4 text-light">Formulario para agregar un producto a una edición</h1>
 
-<div class="container my-4">
-    <h1 class="text-center mb-4">Formulario para agregar un producto a una edición</h1>
-
-    <form action="{{ route('store.productos') }}" method="POST"  enctype="multipart/form-data" class="bg-light p-4 shadow rounded">
+    <form action="{{ route('store.productos') }}" method="POST"  enctype="multipart/form-data" class="p-4 shadow rounded" style="background-color: #dde3eb; border-radius: 2rem;">
         @csrf
 
 
         <div class="mb-3">
-            <label for="nombre" class="form-label fw-bold">nombre</label>
-            <input type="text" name="nombre" id="nombre" class="form-control" min="1" placeholder="Ingrese la nombre" required>
+            <label for="nombre" class="form-label fw-bold">Nombre</label>
+            <input type="text" name="nombre" id="nombre" class="form-control" min="1" placeholder="Ingrese el nombre" required>
         </div>
 
         <div class="mb-3">

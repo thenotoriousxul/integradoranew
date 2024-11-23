@@ -13,7 +13,7 @@
         </ul>
     </div>
 @endif
-
+ 
 <form action="{{ route('admins.ordenes.store') }}" method="POST">
     @csrf
 

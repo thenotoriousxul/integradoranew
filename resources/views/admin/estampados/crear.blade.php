@@ -30,3 +30,4 @@
     <a href="{{ route('estampados.listar') }}" class="btn btn-secondary">Cancelar</a>
 </form>
 @endsection
+ 
