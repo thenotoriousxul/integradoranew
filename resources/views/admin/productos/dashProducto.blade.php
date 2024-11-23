@@ -4,7 +4,7 @@
 <div class="container mt-5" style="background-color: #1f2937; padding: 2rem; border-radius: 2rem;">
     <h1 class="text-center mb-4 display-5 fw-bold text-light">Agregar Producto</h1>
 
-    <form action="/agregar/producto" method="POST" enctype="multipart/form-data" style="background-color: #dde3eb; padding: 2rem; border-radius: 0.5rem;" class="shadow border">
+    <form action="/agregar/producto" method="POST" enctype="multipart/form-data" style="background-color: #0b70f3; padding: 2rem; border-radius: 0.5rem;" class="shadow border" >
         @csrf
 
         @if(session('success'))
