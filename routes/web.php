@@ -199,6 +199,8 @@ Route::get('/producto/{id}', action: [ediciones_productoController::class, 'deta
 Route::get('/rebajas' , [ediciones_productoController::class, 'rebajas'])->name('rebajas');
 
 
+
+// RUTAS DEl PROCESO DE ORDEN -- EN CONSTRUCCION XD
 Route::post('/create-payment-intent', [StripeController::class, 'createPaymentIntent'])->name('createPaymentIntent');
 
 Route::get('/datosorden', function () {

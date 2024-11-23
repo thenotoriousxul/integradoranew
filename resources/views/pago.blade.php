@@ -2,6 +2,8 @@
 
 @section('content')
 
+
+
     <style>
         .payment-card {
             background: #ffffff;
@@ -103,7 +105,18 @@
                 alert('Error en el pago: ' + error.message);
             } else {
                 alert('Pago realizado con éxito');
-                window.location.href = '/gracias';
+                window.location.href = '/agradecimiento';
+
+               
+        fetch('/carrito/vaciar', {
+            method: 'POST',
+            headers: { 'X-CSRF-TOKEN': csrfToken }
+        })
+        .then(() => {
+            actualizarTotal(0);
+        });
+    
+
             }
         });
     </script> 
