@@ -203,3 +203,7 @@ Route::post('/create-payment-intent', [StripeController::class, 'createPaymentIn
 Route::get('/datosorden', function () {
     return view('informacionCliente');
 });
+
+Route::get('/agradecimiento', function () {
+    return view('agradecimitnto');
+});
