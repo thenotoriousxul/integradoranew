@@ -11,7 +11,6 @@
         </ul>
     </div>
 @endif
-dde3eb
 <div class="container my-4" style="background-color: #1f2937; padding: 2rem; border-radius: 2rem;">
     <h1 class="text-center mb-4 text-light">Formulario para agregar un producto a una edición</h1>
 
