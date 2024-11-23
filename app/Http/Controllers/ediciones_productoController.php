@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 class ediciones_productoController extends Controller
 {
     public function getProductos() {
-        $productos = ediciones_productos::all();
+        $productos = ediciones_productos::where('rebaja',0)->get();
         return view('admin.edicionesP.productos' , compact('productos'));
     }
 
