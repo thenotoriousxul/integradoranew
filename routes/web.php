@@ -198,11 +198,8 @@ Route::get('/producto/{id}', action: [ediciones_productoController::class, 'deta
 
 Route::get('/rebajas' , [ediciones_productoController::class, 'rebajas'])->name('rebajas');
 
-<<<<<<< HEAD
 
 Route::post('/create-payment-intent', [StripeController::class, 'createPaymentIntent'])->name('createPaymentIntent');
-=======
 Route::get('/datosorden', function () {
     return view('informacionCliente');
 });
->>>>>>> 5e0d11fc57cb38fe072073de031394cee9d2a93e
