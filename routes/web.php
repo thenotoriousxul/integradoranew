@@ -211,3 +211,7 @@ Route::get('/agradecimiento', function () {
     return view('agradecimitnto');
 });
 
+
+Route::get('/Detalle_Orden', function () {
+    return view('detallaeOrden');
+});
