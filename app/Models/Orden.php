@@ -22,4 +22,9 @@ class Orden extends Model
     {
         return $this->hasMany(DetalleOrden::class, 'ordenes_id');
     }
+    public function orden()
+   {
+    return $this->hasOne(Orden::class, 'ordenes_id');
+   }
+
 }

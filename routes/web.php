@@ -206,9 +206,6 @@ Route::get('/personalizar/{id}', [PersonalizarController::class, 'personalizarPr
 // RUTAS DEl PROCESO DE ORDEN -- EN CONSTRUCCION XD
 Route::post('/create-payment-intent', [StripeController::class, 'createPaymentIntent'])->name('createPaymentIntent');
 
-Route::get('/datosorden', function () {
-    return view('informacionCliente');
-});
 
 Route::get('/agradecimiento', function () {
     return view('agradecimitnto');

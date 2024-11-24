@@ -17,4 +17,10 @@ class direccion extends Model
     'codigo_postal',
     'pais',
     ];
+
+    public function envios()
+    {
+    return $this->hasMany(envios::class, 'direcciones_id');
+    }
+
 }
