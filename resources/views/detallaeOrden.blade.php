@@ -81,13 +81,18 @@
         </tfoot>
     </table>
 
-    <h2>Información de Envío</h2>
-    <p>
-        Juan Pérez<br>
-        Calle Principal 123<br>
-        Ciudad, Estado 12345<br>
-        País
-    </p>
+    
+        <h2>Información de Envío</h2>
+        <p>
+            {{ $user->persona->nombre ?? 'Nombre no disponible' }}<br>
+            {{ $user->persona->direccion?->calle ?? 'Calle no disponible' }}<br>
+            {{ $user->persona->direccion?->ciudad ?? 'Ciudad no disponible' }}, 
+            {{ $user->persona->direccion?->estado ?? 'Estado no disponible' }} 
+            {{ $user->persona->direccion?->codigo_postal ?? 'Código postal no disponible' }}<br>
+            {{ $user->persona->direccion?->pais ?? 'País no disponible' }}<br>
+        </p>
+        
+    
 
 
     <a href="{{ route('pago') }}" id="pago" class="btn btn-success mt-3 px-4 py-2" style="font-family: 'Bebas Neue', cursive; font-size: 1.2rem;">Pasar a pagar</a>

@@ -26,5 +26,9 @@ class Orden extends Model
    {
     return $this->hasOne(Orden::class, 'ordenes_id');
    }
+   public function tipoPersona()
+   {
+       return $this->belongsTo(tipoPersona::class, 'tipo_personas_id');
+   }
 
 }

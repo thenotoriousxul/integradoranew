@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class direccion extends Model
 {
-    protected $table = 'proveedores';
+    protected $table = 'direcciones';
 
     protected $fillable = [
     'calle',
@@ -21,6 +21,10 @@ class direccion extends Model
     public function envios()
     {
     return $this->hasMany(envios::class, 'direcciones_id');
+    }
+    public function persona()
+    {
+        return $this->hasOne(Persona::class, 'direcciones_id');
     }
 
 }

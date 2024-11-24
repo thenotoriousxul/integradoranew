@@ -2,6 +2,7 @@
 use App\Http\Controllers\carritoController;
 use App\Http\Controllers\disenosController;
 use App\Http\Controllers\ediciones_productoController;
+use App\Http\Controllers\informacionClienteController;
 use App\Http\Controllers\StripeController;
 use Spatie\Permission\Middlewares\RoleMiddleware;
 use Spatie\Permission\Middlewares\PermissionMiddleware;
@@ -82,9 +83,7 @@ Route::get('/agradecimiento', function () {
     return view('agradecimitnto');
 })->name('agradecimiento');
 
-Route::get('/Detalle_Orden', function () {
-    return view('detallaeOrden');
-})->name('detalleOrden');
+
 
 Route::get('/pago', function () {
     return view('pago');
@@ -93,6 +92,9 @@ Route::get('/pago', function () {
 Route::get('/Datos/Cliente', function () {
     return view('informacionCliente');
 })->name('informacionCliente');
+
+Route::get('/Detalle_Orden/{userId}', [informacionClienteController::class, 'mostrarInformacionEnvio'])->name('detalleOrden');
+
 
 });
 
