@@ -93,7 +93,7 @@ Route::get('/Datos/Cliente', function () {
     return view('informacionCliente');
 })->name('informacionCliente');
 
-Route::get('/Detalle_Orden/{userId}', [informacionClienteController::class, 'mostrarInformacionEnvio'])->name('detalleOrden');
+Route::get('/Detalle_Orden', [informacionClienteController::class, 'mostrarInformacionEnvio'])->name('detalleOrden')->middleware('auth');
 
 
 });

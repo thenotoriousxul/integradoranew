@@ -7,10 +7,10 @@ use App\Models\User;
 
 class informacionClienteController extends Controller
 {
-    public function mostrarInformacionEnvio($userId)
+    public function mostrarInformacionEnvio()
     {
         // Aquí se utiliza el modelo User correctamente
-        $user = User::with(['persona.direccion'])->findOrFail($userId);
+        $user = auth()->user()->load('persona.direccion');
 
         return view('detallaeOrden', compact('user'));
     }
