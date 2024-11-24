@@ -69,3 +69,23 @@ document.addEventListener("DOMContentLoaded", () => {
       inventorySubmenu.style.display = inventorySubmenu.style.display === 'none' ? 'block' : 'none';
     });
   });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const inventoryItem = document.getElementById('ediciones');
+    const inventorySubmenu = document.getElementById('ediciones-submenu');
+    
+    inventoryItem.addEventListener('click', function(e) {
+      e.preventDefault();
+      inventorySubmenu.style.display = inventorySubmenu.style.display === 'none' ? 'block' : 'none';
+    });
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const inventoryItem = document.getElementById('estampados');
+    const inventorySubmenu = document.getElementById('estampados-submenu');
+    
+    inventoryItem.addEventListener('click', function(e) {
+      e.preventDefault();
+      inventorySubmenu.style.display = inventorySubmenu.style.display === 'none' ? 'block' : 'none';
+    });
+  });

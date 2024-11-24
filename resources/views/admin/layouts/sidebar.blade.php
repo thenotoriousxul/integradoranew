@@ -143,22 +143,41 @@
                     <i class="fas fa-plus"></i>
                     <span class="sidebar-text">Crear producto catalogo</span>
                 </a>
-                {{-- /////////////////// --}}
                 <a class="item-side sub" href="{{ route('dash.productosBase') }}">
                     <i class="fa-solid fa-list-check"></i>
                     <span class="sidebar-text">Lista Productos Base</span>
                 </a>
-                <a class="item-side sub" href="{{ route('estampados.listar') }}">
-                    <i class="fa-solid fa-list-check"></i>
-                    <span class="sidebar-text">Lista Estampados</span>
+                <a class="item-side sub" href="{{ route('agregar.producto') }}">
+                    <i class="fas fa-plus"></i>
+                    <span class="sidebar-text">Agregar Producto Base</span>
                 </a>
+            </div>
+            <a id="ediciones" class="item-side" href="">
+                <i class="fas fa-box"></i>
+                <span class="sidebar-text">Ediciones</span>
+                <i class="fas fa-chevron-down abajo"></i>
+            </a>
+            <div id="ediciones-submenu" class="submenu">
                 <a class="item-side sub" href="{{ route('ediciones.listar') }}">
                     <i class="fa-solid fa-list-check"></i>
                     <span class="sidebar-text">Lista Ediciones</span>
                 </a>
-                <a class="item-side sub" href="{{ route('agregar.producto') }}">
+                <a class="item-side sub" href="{{ route('ediciones.crear') }}">
                     <i class="fas fa-plus"></i>
-                    <span class="sidebar-text">Agregar Producto Base</span>
+                    <span class="sidebar-text">Crear Edición</span>
+                </a>
+            </div>
+
+
+            <a id="estampados" class="item-side" href="">
+                <i class="fas fa-box"></i>
+                <span class="sidebar-text">Estampados</span>
+                <i class="fas fa-chevron-down abajo"></i>
+            </a>
+            <div id="estampados-submenu" class="submenu">
+                <a class="item-side sub" href="{{ route('estampados.listar') }}">
+                    <i class="fa-solid fa-list-check"></i>
+                    <span class="sidebar-text">Lista Estampados</span>
                 </a>
                 <a class="item-side sub" href="{{ route('crear.diseño') }}">
                     <i class="fas fa-plus"></i>
@@ -168,15 +187,9 @@
                     <i class="fas fa-plus"></i>
                     <span class="sidebar-text">Agregar Estampado</span>
                 </a>
-                <a class="item-side sub" href="{{ route('ediciones.crear') }}">
-                    <i class="fas fa-plus"></i>
-                    <span class="sidebar-text">Crear Edición</span>
-                </a>
             </div>
-            <a class="item-side" href="/dash/opiniones">
-                <i class="fas fa-clipboard-list"></i>
-                <span class="sidebar-text">Opiniones</span>
-            </a>
+
+
             <a class="item-side" href="/dash/gestor/historial">
                 <i class="fas fa-history"></i>
                 <span class="sidebar-text">Historial</span>
@@ -210,10 +223,6 @@
                     <span class="sidebar-text">Agregar Usuario</span>
                 </a>
             </div>
-            <a class="item-side" href="">
-                <i class="fas fa-globe"></i>
-                <span class="sidebar-text">Página principal</span>
-            </a>
         </div>
         {{------------------------------- --}}
     </div>
