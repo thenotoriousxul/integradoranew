@@ -49,8 +49,11 @@
 
     <div class="text-end mt-4">
         <button id="vaciar-carrito" class="btn btn-danger mt-3 px-4 py-2" style="font-family: 'Bebas Neue', cursive; font-size: 1.2rem;">Vaciar Carrito</button>
-        <a href="{{ route('pago') }}" id="comprar-carrito" class="btn btn-success mt-3 px-4 py-2" style="font-family: 'Bebas Neue', cursive; font-size: 1.2rem;">Continuar con la compra</a>
+        <a href="{{ route('detalleOrden') }}" id="comprar-carrito" 
+           class="btn btn-success mt-3 px-4 py-2 {{ empty($contenidoCarrito) || count($contenidoCarrito) === 0 ? 'disabled' : '' }}" 
+           style="font-family: 'Bebas Neue', cursive; font-size: 1.2rem;">Continuar con la compra</a>
     </div>
+    
 </div>
 
 <script>

@@ -41,6 +41,10 @@
         border-radius: 5px;
         font-size: 16px;
     }
+    .ojo
+    {
+        margin-top: 15px
+    }
 </style>
 <div class="container-orden">
     <h1>Resumen de la Orden</h1>
@@ -54,29 +58,25 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>Camiseta</td>
-                <td>2</td>
-                <td>$19.99</td>
-                <td>$39.98</td>
-            </tr>
-            <tr>
-                <td>Pantalón</td>
-                <td>1</td>
-                <td>$39.99</td>
-                <td>$39.99</td>
-            </tr>
-            <tr>
-                <td>Zapatos</td>
-                <td>1</td>
-                <td>$59.99</td>
-                <td>$59.99</td>
-            </tr>
+                @foreach($contenidoCarrito as $item)
+                    <tr data-id="{{ $item['id'] }}">
+                        <td class="d-flex justify-content-center">
+                            <span class="ojo" style="font-family: 'Inter', sans-serif;">{{ $item['name'] }}</span>
+                        </td>
+                        <td>
+                            <span  name="cantidad"  class="form-control actualizar-cantidad text-center mx-auto" style="width: 80px; font-family: 'Inter', sans-serif;">{{ $item['quantity'] }}</span>
+                        </td>
+                        <td style="font-family: 'Inter', sans-serif;">${{ number_format($item['price'], 2) }}</td>
+                      
+                        <td class="subtotal" style="font-family: 'Inter', sans-serif;">${{ number_format($item['price'] * $item['quantity'], 2) }}</td>
+                       
+                    </tr>
+                @endforeach
         </tbody>
         <tfoot>
             <tr class="total">
                 <td colspan="3">Total</td>
-                <td>$139.96</td>
+                <td class="subtotal" style="font-family: 'Inter', sans-serif;">${{ number_format($item['price'] * $item['quantity'], 2) }}</td>
             </tr>
         </tfoot>
     </table>
@@ -89,10 +89,8 @@
         País
     </p>
 
-    <h2>Método de Pago</h2>
-    <p>Tarjeta de crédito terminada en 1234</p>
 
-    <a href="#" class="btn">Proceder con la Compra</a>
+    <a href="{{ route('pago') }}" id="pago" class="btn btn-success mt-3 px-4 py-2" style="font-family: 'Bebas Neue', cursive; font-size: 1.2rem;">Pasar a pagar</a>
 </div>
 
 

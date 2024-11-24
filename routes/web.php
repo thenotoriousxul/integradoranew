@@ -39,9 +39,6 @@ Route::get('/carrito', function () {
     return view('carrito'); 
 })->name('carrito');
 
-Route::get('/pago', function () {
-    return view('pago');
-})->name('pago');
 
 Route::get('/perfil', function () {
     return view('perfil'); 
@@ -76,6 +73,27 @@ Route::middleware(['auth'])->group(function () {
         }
         return view('cliente.dashboard');
     })->name('cliente.dashboard');
+
+    
+// RUTAS DEl PROCESO DE ORDEN -- EN CONSTRUCCION XD
+Route::post('/create-payment-intent', [StripeController::class, 'createPaymentIntent'])->name('createPaymentIntent');
+
+Route::get('/agradecimiento', function () {
+    return view('agradecimitnto');
+})->name('agradecimiento');
+
+Route::get('/Detalle_Orden', function () {
+    return view('detallaeOrden');
+})->name('detalleOrden');
+
+Route::get('/pago', function () {
+    return view('pago');
+})->name('pago');
+
+Route::get('/Datos/Cliente', function () {
+    return view('informacionCliente');
+})->name('informacionCliente');
+
 });
 
 // Rutas de acceso general
@@ -202,16 +220,3 @@ Route::get('/personalizar/{id}', [PersonalizarController::class, 'personalizarPr
 
 
 
-
-// RUTAS DEl PROCESO DE ORDEN -- EN CONSTRUCCION XD
-Route::post('/create-payment-intent', [StripeController::class, 'createPaymentIntent'])->name('createPaymentIntent');
-
-
-Route::get('/agradecimiento', function () {
-    return view('agradecimitnto');
-});
-
-
-Route::get('/Detalle_Orden', function () {
-    return view('detallaeOrden');
-});
