@@ -13,9 +13,10 @@ class Orden extends Model
 
     protected $fillable = [
         'tipo_personas_id',
-        'fecha',
+        'fecha_orden',
         'total',
         'envios_domicilio',
+        'estado'
     ];
 
     public function detalles()
@@ -31,4 +32,10 @@ class Orden extends Model
        return $this->belongsTo(tipoPersona::class, 'tipo_personas_id');
    }
 
+   public function pagos()
+   {
+       return $this->hasMany(pago::class, 'ordenes_id');
+   }
+
 }
+ 

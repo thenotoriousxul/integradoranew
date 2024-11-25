@@ -1,17 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-
-
-
     <style>
         .payment-card {
             background: #ffffff;
             border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             padding: 2rem;
-            max-width: 500px; 
-            margin: auto; 
+            max-width: 500px;
+            margin: auto;
         }
         #card-number, #card-expiry, #card-cvc {
             padding: 10px;
@@ -80,45 +77,53 @@
 
             // Crear Intent de Pago
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-            const response = await fetch('{{ route('createPaymentIntent') }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken
-                },
-                body: JSON.stringify({})
-            });
+            try {
+                const response = await fetch('{{ route('createPaymentIntent') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: JSON.stringify({})
+                });
 
-            const { clientSecret } = await response.json();
+                const { clientSecret } = await response.json();
 
-            // Confirmar el pago con Stripe
-            const { error } = await stripe.confirmCardPayment(clientSecret, {
-                payment_method: {
-                    card: cardNumber,
-                    billing_details: {
-                        name: document.getElementById('cardName')?.value || 'Cliente'
+                // Confirmar el pago con Stripe
+                const { paymentIntent, error } = await stripe.confirmCardPayment(clientSecret, {
+                    payment_method: {
+                        card: cardNumber,
+                        billing_details: {
+                            name: 'Cliente'
+                        }
+                    }
+                });
+
+                if (error) {
+                    alert('Error en el pago: ' + error.message);
+                } else if (paymentIntent.status === 'succeeded') {
+                    // Notificar al servidor sobre el pago exitoso
+                    const backendResponse = await fetch('{{ route('procesarPago') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        body: JSON.stringify({ payment_intent_id: paymentIntent.id })
+                    });
+
+                    const backendResult = await backendResponse.json();
+
+                    if (backendResult.success) {
+                        alert('Pago procesado con éxito.');
+                        window.location.href = '/agradecimiento';
+                    } else {
+                        alert('Hubo un problema al guardar la orden: ' + backendResult.message);
                     }
                 }
-            });
-
-            if (error) {
-                alert('Error en el pago: ' + error.message);
-            } else {
-                alert('Pago realizado con éxito');
-                window.location.href = '/agradecimiento';
-
-               
-        fetch('/carrito/vaciar', {
-            method: 'POST',
-            headers: { 'X-CSRF-TOKEN': csrfToken }
-        })
-        .then(() => {
-            actualizarTotal(0);
-        });
-    
-
+            } catch (error) {
+                alert('Error procesando el pago: ' + error.message);
             }
         });
-    </script> 
-
+    </script>
 @endsection

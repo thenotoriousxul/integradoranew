@@ -77,13 +77,12 @@ Route::middleware(['auth'])->group(function () {
 
     
 // RUTAS DEl PROCESO DE ORDEN -- EN CONSTRUCCION XD
+Route::post('/procesar-pago', [StripeController::class, 'procesarPago'])->name('procesarPago');
 Route::post('/create-payment-intent', [StripeController::class, 'createPaymentIntent'])->name('createPaymentIntent');
 
 Route::get('/agradecimiento', function () {
     return view('agradecimitnto');
 })->name('agradecimiento');
-
-
 
 Route::get('/pago', function () {
     return view('pago');
