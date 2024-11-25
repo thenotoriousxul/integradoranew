@@ -4,11 +4,9 @@
 <div class="container">
     <h1 class="text-center">Personaliza tu playera</h1>
     <div class="personalization-container d-flex flex-row flex-wrap align-items-start justify-content-center">
-        <!-- Canvas para Personalización -->
         <div class="canvas-container">
             <canvas id="myCanvas" width="550" height="600"></canvas>
         </div>
-        <!-- Estampados Disponibles y Botones de Acción -->
         <div class="estampados-container ml-4">
             <h3>Estampados Disponibles</h3>
             <div class="estampados d-flex flex-wrap">

@@ -1,184 +1,170 @@
 @extends('layouts.auth')
-
 @section('content')
 <style>
-    html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
+    body {
+        font-family: 'Inter', sans-serif;
     }
-
-    #btn-primary {
-        background-color: black;
-        color: white;
-        border: none;
-    }
-
-    .container-auth {
-        width: 100%;
-        height: 100vh;
-        padding: 0;
-    }
-
-    .left-column {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center; 
-        padding: 40px;
-        height: 100vh;
-    }
-
-    .right-column {
-        background-image: url('{{ asset('img/loginimg.jpeg') }}');
-        background-size: contain;
-        background-position: top 10% center;
-        height: 100vh;
-        padding: 0;
-        margin: 0;
-    }
-
-    .form-title {
-        font-size: 1.8rem;
+    .title {
+        font-family: 'Inter', sans-serif;
         font-weight: bold;
-        color: black;
-        margin-bottom: 10px;
-        text-align: center;
     }
-
-    .logo {
-        width: 120px;
-        height: 110px;
-        margin-top: 5px;
-    }
-
-    .login-link {
-        margin-top: 10px;
-        font-size: 0.9rem;
-        text-align: center;
-    }
-
-    .form-container {
-        width: 100%;
-        max-width: 500px;
-        margin-bottom: 30px;
-    }
-
     .password-hint, .email-hint, .confirm-password-hint {
-        font-size: 0.8rem;
-        color: #6c757d;
+        font-size: 0.85rem;
         margin-top: 5px;
-    }
-
-    /* Media Queries */
-    @media (max-width: 768px) {
-        .container-auth {
-            height: auto;
-        }
-
-        .left-column, .right-column {
-            height: auto;
-            padding: 20px;
-        }
-
-        .right-column {
-            display: none; 
-        }
-
-        .form-title {
-            font-size: 1.5rem;
-        }
-
-        .logo {
-            width: 100px;
-            height: 90px;
-        }
-
-        #btn-primary {
-            font-size: 0.9rem;
-            padding: 10px;
-        }
-    }
-
-    @media (max-width: 576px) {
-        .form-title {
-            font-size: 1.3rem;
-        }
-
-        .login-link {
-            font-size: 0.8rem;
-        }
-
-        .form-container {
-            max-width: 100%;
-        }
     }
 </style>
+<div class="container-fluid vh-100">
+    <div class="row h-100">
+        <!-- Columna izquierda: Formulario -->
+        <div class="col-lg-6 d-flex align-items-center justify-content-center bg-white p-4">
+            <div class="w-100" style="max-width: 400px;">
+                <!-- Logo y título -->
+                <div class="text-center mb-4">
+                    <a href="{{ url('/') }}">
+                        <img src="{{ asset('img/ozeztrc.png') }}" alt="Logo" class="img-fluid mb-3" style="max-height: 80px;">
+                    </a>
+                    <h2 class="title" style="font-size: 1.8rem;">{{ __('Regístrate') }}</h2>
+                </div>
 
-<div class="container-fluid container-auth">
-    <div class="row g-0">
-        <div class="col-md-6 left-column">
-            <a href="{{ url('/') }}">
-                <img src="{{ asset('img/ozeztrc.png') }}" alt="OZEZ Logo" class="logo">
-            </a>
-
-            <h2 class="form-title text-center">{{ __('Registrarse') }}</h2>
-
-            <div class="form-container">
                 <form method="POST" action="{{ route('register') }}" id="registerForm">
                     @csrf
 
-                    <div class="mb-3">
-                        <label for="name" class="form-label">{{ __('Nombre de usuario') }}</label>
-                        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autofocus>
-                        @error('name')
-                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                        @enderror
+                    <!-- Usuario -->
+                    <h4 class="text-dark mb-3" style="font-size: 1rem;">{{ __('Información de Usuario') }}</h4>
+                    <div class="mb-2">
+                        <label for="name" class="form-label" style="font-size: 0.85rem;">{{ __('Nombre de usuario') }}</label>
+                        <input id="name" type="text" class="form-control form-control-sm" name="name" required>
+                        <div class="invalid-feedback">El nombre de usuario es obligatorio.</div>
                     </div>
-
-                    <div class="mb-3">
-                        <label for="email" class="form-label">{{ __('Correo electrónico') }}</label>
-                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required>
+                    <div class="mb-2">
+                        <label for="email" class="form-label" style="font-size: 0.85rem;">{{ __('Correo') }}</label>
+                        <input id="email" type="email" class="form-control form-control-sm" name="email" required>
                         <div id="email-hint" class="email-hint"></div>
-                        @error('email')
-                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                        @enderror
+                        <div class="invalid-feedback">Debe ingresar un correo válido.</div>
                     </div>
-
-                    <div class="mb-3">
-                        <label for="password" class="form-label">{{ __('Contraseña') }}</label>
-                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required>
-                        <div id="password-hint" class="password-hint">
-                            La contraseña debe tener al menos 8 caracteres, incluyendo mayúsculas, minúsculas y números.
-                        </div>
-                        @error('password')
-                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                        @enderror
+                    <div class="mb-2">
+                        <label for="password" class="form-label" style="font-size: 0.85rem;">{{ __('Contraseña') }}</label>
+                        <input id="password" type="password" class="form-control form-control-sm" name="password" required minlength="8">
+                        <div id="password-hint" class="password-hint"></div>
+                        <div class="invalid-feedback">La contraseña debe tener al menos 8 caracteres.</div>
                     </div>
-
-                    <div class="mb-3">
-                        <label for="password-confirm" class="form-label">{{ __('Confirmar contraseña') }}</label>
-                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                    <div class="mb-2">
+                        <label for="password_confirmation" class="form-label" style="font-size: 0.85rem;">{{ __('Confirmar contraseña') }}</label>
+                        <input id="password_confirmation" type="password" class="form-control form-control-sm" name="password_confirmation" required>
                         <div id="confirm-password-hint" class="confirm-password-hint"></div>
+                        <div class="invalid-feedback">Las contraseñas deben coincidir.</div>
                     </div>
 
-                    <div class="d-grid">
-                        <button type="submit" id="btn-primary" class="btn">{{ __('Registrarse') }}</button>
+                    <!-- Información personal -->
+                    <h4 class="text-dark mt-4 mb-3" style="font-size: 1rem;">{{ __('Información Personal') }}</h4>
+                    <div class="mb-2">
+                        <label for="nombre" class="form-label" style="font-size: 0.85rem;">{{ __('Nombre') }}</label>
+                        <input id="nombre" type="text" class="form-control form-control-sm" name="nombre" required>
+                        <div class="invalid-feedback">El nombre es obligatorio.</div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="apellido_paterno" class="form-label" style="font-size: 0.85rem;">{{ __('Apellido Paterno') }}</label>
+                        <input id="apellido_paterno" type="text" class="form-control form-control-sm" name="apellido_paterno" required>
+                        <div class="invalid-feedback">El apellido paterno es obligatorio.</div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="apellido_materno" class="form-label" style="font-size: 0.85rem;">{{ __('Apellido Materno') }}</label>
+                        <input id="apellido_materno" type="text" class="form-control form-control-sm" name="apellido_materno" required>
+                        <div class="invalid-feedback">El apellido materno es obligatorio.</div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="fecha_nacimiento" class="form-label" style="font-size: 0.85rem;">{{ __('Fecha de nacimiento') }}</label>
+                        <input id="fecha_nacimiento" type="date" class="form-control form-control-sm" name="fecha_nacimiento" required>
+                        <div class="invalid-feedback">La fecha de nacimiento es obligatoria.</div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="genero" class="form-label" style="font-size: 0.85rem;">{{ __('Género') }}</label>
+                        <select id="genero" class="form-select form-select-sm" name="genero" required>
+                            <option value="M">{{ __('Masculino') }}</option>
+                            <option value="F">{{ __('Femenino') }}</option>
+                        </select>
+                        <div class="invalid-feedback">El género es obligatorio.</div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="numero_telefonico" class="form-label" style="font-size: 0.85rem;">{{ __('Número Telefónico') }}</label>
+                        <input id="numero_telefonico" type="text" class="form-control form-control-sm" name="numero_telefonico" required pattern="\d+">
+                        <div class="invalid-feedback">El número telefónico es obligatorio y debe ser numérico.</div>
+                    </div>
+
+                    <!-- Dirección -->
+                    <h4 class="text-dark mt-4 mb-3" style="font-size: 1rem;">{{ __('Dirección') }}</h4>
+                    <div class="mb-2">
+                        <label for="calle" class="form-label" style="font-size: 0.85rem;">{{ __('Calle') }}</label>
+                        <input id="calle" type="text" class="form-control form-control-sm" name="calle" required>
+                        <div class="invalid-feedback">La calle es obligatoria.</div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="numero_ext" class="form-label" style="font-size: 0.85rem;">{{ __('Número exterior') }}</label>
+                        <input id="numero_ext" type="text" class="form-control form-control-sm" name="numero_ext" required>
+                        <div class="invalid-feedback">El número exterior es obligatorio.</div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="numero_int" class="form-label" style="font-size: 0.85rem;">{{ __('Número interior (opcional)') }}</label>
+                        <input id="numero_int" type="text" class="form-control form-control-sm" name="numero_int">
+                    </div>
+                    <div class="mb-2">
+                        <label for="colonia" class="form-label" style="font-size: 0.85rem;">{{ __('Colonia') }}</label>
+                        <input id="colonia" type="text" class="form-control form-control-sm" name="colonia" required>
+                        <div class="invalid-feedback">La colonia es obligatoria.</div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="estado" class="form-label" style="font-size: 0.85rem;">{{ __('Estado') }}</label>
+                        <input id="estado" type="text" class="form-control form-control-sm" name="estado" required>
+                        <div class="invalid-feedback">El estado es obligatorio.</div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="codigo_postal" class="form-label" style="font-size: 0.85rem;">{{ __('Código Postal') }}</label>
+                        <input id="codigo_postal" type="text" class="form-control form-control-sm" name="codigo_postal" required pattern="\d{5}">
+                        <div class="invalid-feedback">El código postal debe tener 5 dígitos.</div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="pais" class="form-label" style="font-size: 0.85rem;">{{ __('País') }}</label>
+                        <input id="pais" type="text" class="form-control form-control-sm" name="pais" required>
+                        <div class="invalid-feedback">El país es obligatorio.</div>
+                    </div>
+
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-dark btn-sm">{{ __('Registrarse') }}</button>
                     </div>
                 </form>
 
-                <div class="login-link">
-                    <p>¿Ya tienes cuenta? <a href="{{ route('login') }}">Iniciar sesión</a></p>
+                <div class="text-center mt-3">
+                    <p style="font-size: 0.85rem;">{{ __('¿Ya tienes cuenta?') }} <a href="{{ route('login') }}" class="text-dark fw-bold">{{ __('Inicia sesión') }}</a></p>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-6 right-column"></div>
+        <!-- Columna derecha: Imagen -->
+        <div class="col-lg-6 bg-image d-none d-lg-block" style="background-image: url('{{ asset('img/mujer.jpeg') }}'); background-size: cover; background-position: center;">
+        </div>
     </div>
 </div>
 
 <script>
+    document.getElementById('registerForm').addEventListener('submit', function(event) {
+        const form = this;
+        const inputs = form.querySelectorAll('input, select');
+        let valid = true;
+
+        inputs.forEach(input => {
+            if (!input.checkValidity()) {
+                valid = false;
+                input.classList.add('is-invalid');
+            } else {
+                input.classList.remove('is-invalid');
+            }
+        });
+
+        if (!valid) {
+            event.preventDefault(); // Evitar envío si hay errores
+        }
+    });
+
     document.getElementById('password').addEventListener('input', function () {
         const password = this.value;
         const hint = document.getElementById('password-hint');
@@ -195,7 +181,7 @@
         hint.style.color = missingRules.length ? '#dc3545' : '#28a745';
     });
 
-    document.getElementById('password-confirm').addEventListener('input', function () {
+    document.getElementById('password_confirmation').addEventListener('input', function () {
         const password = document.getElementById('password').value;
         const confirmPassword = this.value;
         const hint = document.getElementById('confirm-password-hint');
