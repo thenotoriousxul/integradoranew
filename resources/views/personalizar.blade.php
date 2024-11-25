@@ -12,10 +12,13 @@
         <div class="estampados-container ml-4">
             <h3>Estampados Disponibles</h3>
             <div class="estampados d-flex flex-wrap">
-                <img onclick="agregarEstampado('imagen_gato')" src="{{ asset('img/imagen_gato.png') }}" alt="Gato" class="img-thumbnail m-2">
-                <img onclick="agregarEstampado('san_valentin_rem')" src="{{ asset('img/san_valentin_rem.png') }}" alt="San Valentín" class="img-thumbnail m-2">
-                <img onclick="agregarEstampado('dinero_rem')" src="{{ asset('img/dinero_rem.png') }}" alt="Dinero" class="img-thumbnail m-2">
-                <img onclick="agregarEstampado('tenis_rem')" src="{{ asset('img/tenis_rem.png') }}" alt="Tenis" class="img-thumbnail m-2">
+                @foreach($estampados as $estampado)
+                    <img onclick="agregarEstampado('{{ $estampado->imagen_estampado }}')" 
+                         src="{{ Storage::disk('s3')->url($estampado->imagen_estampado) }}" 
+                         alt="{{ $estampado->nombre }}" 
+                         class="img-thumbnail m-2" 
+                         title="{{ $estampado->nombre }}">
+                @endforeach
             </div>
             <!-- Selector de Tamaño con Diseño Bootstrap -->
             <div class="mt-3">
@@ -30,6 +33,7 @@
             <div class="controls mt-3">
                 <button onclick="descargarImagen()" class="btn btn-success">Guardar Diseño</button>
                 <button onclick="eliminarObjeto()" class="btn btn-danger">Eliminar Objeto</button>
+                <button onclick="descargarCanvas()" class="btn btn-primary mt-2">Descargar Canvas</button>
             </div>
         </div>
     </div>
@@ -40,6 +44,7 @@
     const canvas = new fabric.Canvas('myCanvas');
     let logoAdded = false; // Control para añadir solo un logo
 
+    // Cargar el producto base como fondo del canvas
     fabric.Image.fromURL('{{ $producto->imagen_producto }}', function(img) {
         img.set({
             left: canvas.width / 2 - img.getScaledWidth() / 2,
@@ -50,13 +55,13 @@
         canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
     });
 
-    function agregarEstampado(imageKey) {
+    // Agregar estampado al canvas
+    function agregarEstampado(imagePath) {
         if (logoAdded) {
             alert("Ya se ha añadido un logo. Elimine el existente para añadir uno nuevo.");
             return;
         }
-        const path = '{{ asset('img') }}/' + imageKey + '.png';
-        fabric.Image.fromURL(path, function(img) {
+        fabric.Image.fromURL(imagePath, function(img) {
             img.set({
                 left: 100,
                 top: 100,
@@ -73,8 +78,9 @@
         });
     }
 
+    // Cambiar tamaño del logo
     function cambiarTamañoLogo() {
-        let size = parseFloat(document.getElementById('logoSize').value);
+        const size = parseFloat(document.getElementById('logoSize').value);
         const activeObject = canvas.getActiveObject();
         if (activeObject) {
             activeObject.scaleX = activeObject.scaleY = size;
@@ -83,6 +89,7 @@
         }
     }
 
+    // Descargar la imagen del canvas
     function descargarImagen() {
         const link = document.createElement('a');
         link.download = 'personalizacion.png';
@@ -90,11 +97,36 @@
         link.click();
     }
 
+    // Descargar el canvas como archivo
+    function descargarCanvas() {
+    try {
+        const dataURL = canvas.toDataURL({
+            format: 'png',
+            quality: 1.0
+        });
+
+        // Crear un enlace temporal para la descarga
+        const link = document.createElement('a');
+        link.download = 'canvas.png';
+        link.href = dataURL;
+
+        // Simular un clic para iniciar la descarga
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } catch (error) {
+        console.error("Error al descargar el canvas:", error);
+        alert("Ocurrió un error al intentar descargar el canvas. Verifica los permisos del navegador.");
+    }
+}
+
+
+    // Eliminar el objeto seleccionado
     function eliminarObjeto() {
         const activeObject = canvas.getActiveObject();
         if (activeObject) {
             canvas.remove(activeObject);
-            logoAdded = false; // Restablecer el indicador cuando se elimina el logo
+            logoAdded = false; // Restablecer el indicador
         }
     }
 </script>

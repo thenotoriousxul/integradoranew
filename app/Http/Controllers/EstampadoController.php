@@ -23,26 +23,29 @@ class EstampadoController extends Controller
 
     // Guardar un nuevo estampado
     public function guardarEstampado(Request $request)
-    {
-        $request->validate([
-            'nombre' => 'required|string|max:45',
-            'imagen_diseño' => 'nullable|image|max:2048',
-        ]);
+{
+    $request->validate([
+        'nombre' => 'required|string|max:45',
+        'costo' => 'required|numeric|min:0',
+        'imagen_diseño' => 'nullable|image|max:2048',
+    ]);
 
-        $imagenDiseño = null;
-        if ($request->hasFile('imagen_diseño')) {
-            $path = $request->file('imagen_diseño')->store('estampados', 's3');
-            Storage::disk('s3')->setVisibility($path, 'public');
-            $imagenDiseño = Storage::disk('s3')->url($path);
-        }
-
-        Estampado::create([
-            'nombre' => $request->nombre,
-            'imagen_diseño' => $imagenDiseño,
-        ]);
-
-        return redirect()->route('estampados.listar')->with('success', 'Estampado creado exitosamente.');
+    $imagenEstampado = null;
+    if ($request->hasFile('imagen_diseño')) {
+        $path = $request->file('imagen_diseño')->store('estampados', 's3');
+        Storage::disk('s3')->setVisibility($path, 'public');
+        $imagenEstampado = Storage::disk('s3')->url($path);
     }
+
+    Estampado::create([
+        'nombre' => $request->nombre,
+        'costo' => $request->costo,
+        'imagen_estampado' => $imagenEstampado,
+    ]);
+
+    return redirect()->route('estampados.listar')->with('success', 'Estampado creado exitosamente.');
+}
+
 
     // Mostrar formulario para editar un estampado
     public function editarFormularioEstampado($id)

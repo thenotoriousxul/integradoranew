@@ -4,7 +4,7 @@
 <div class="container mt-4">
     <h1 class="text-center mb-4">Seleccione un producto a personalizar</h1>
     <div class="row">
-    @foreach($productos as $producto)
+        @foreach($productos as $producto)
 <div class="col-md-4">
     <div class="card">
         <img src="{{ $producto->imagen_producto }}" class="card-img-top" alt="Imagen de {{ $producto->tipo }}">
@@ -16,6 +16,7 @@
     </div>
 </div>
 @endforeach
+
     </div>
 </div>
 @endsection

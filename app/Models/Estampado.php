@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Psy\CodeCleaner\ReturnTypePass;
 
 class Estampado extends Model
 {
@@ -18,8 +17,16 @@ class Estampado extends Model
         'costo',
     ];
 
+    /**
+     * Relación muchos a muchos con el modelo Diseno.
+     */
     public function disenos()
     {
-        return $this->belongsToMany(Diseno::class, 'disenos_estampados', 'estampado_id', 'diseno_id');
+        return $this->belongsToMany(
+            Diseno::class,            
+            'disenos_estampados',    
+            'estampado_id',           
+            'diseno_id'              
+        );
     }
 }
