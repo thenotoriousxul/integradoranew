@@ -18,79 +18,108 @@
                          title="{{ $estampado->nombre }}">
                 @endforeach
             </div>
-            <!-- Selector de Tamaño con Diseño Bootstrap -->
-            <div class="mt-3">
-                <label for="logoSize" class="form-label">Tamaño del Logo:</label>
-                <select id="logoSize" class="form-select" onchange="cambiarTamañoLogo()">
-                    <option value="0.25">Pequeño</option>
-                    <option value="0.5" selected>Mediano</option>
-                    <option value="0.75">Grande</option>
-                </select>
-            </div>
             <!-- Botones de Acción -->
             <div class="controls mt-3">
                 <button onclick="descargarImagen()" class="btn btn-success">Guardar Diseño</button>
                 <button onclick="eliminarObjeto()" class="btn btn-danger">Eliminar Objeto</button>
-                <button onclick="descargarCanvas()" class="btn btn-primary mt-2">Descargar Canvas</button>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Agregar la librería Fabric.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.0/fabric.min.js"></script>
 <script>
     const canvas = new fabric.Canvas('myCanvas');
-    let logoAdded = false; // Control para añadir solo un logo
+    const productId = {{ $producto->id }};
+    let playeraBounds = null;
 
-    // Predefinir posiciones y tamaños
-    const predefinedPosition = { left: 200, top: 200 }; // Ajustar según necesidades
-    const predefinedScale = 0.5;
-
-    // Cargar el producto base como fondo del canvas
-    fabric.Image.fromURL('{{ $producto->imagen_producto }}', function(img) {
-        img.set({
-            left: 0,
-            top: 0,
-            selectable: false,
-            evented: false
+    // Función para establecer la imagen de fondo
+    function setBackground() {
+        fabric.Image.fromURL('{{ $producto->imagen_producto }}', function(img) {
+            img.set({
+                left: 0,
+                top: 0,
+                selectable: false,
+                evented: false
+            });
+            canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
+            // Almacenar los límites de la playera
+            playeraBounds = img.getBoundingRect();
         });
-        canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
-        restoreCanvas(); // Restaurar el canvas al cargar
-    });
+    }
 
-    // Agregar estampado al canvas en posición fija
+    // Restaurar el canvas al cargar
+    restoreCanvas();
+
+    // Agregar estampado al canvas
     function agregarEstampado(imagePath) {
-        if (logoAdded) {
-            alert("Ya se ha añadido un logo. Elimine el existente para añadir uno nuevo.");
-            return;
-        }
         fabric.Image.fromURL(imagePath, function(img) {
             img.set({
-                left: predefinedPosition.left,
-                top: predefinedPosition.top,
-                scaleX: predefinedScale,
-                scaleY: predefinedScale,
-                selectable: false, // Desactivar movimiento
-                evented: false // Desactivar interacción
+                left: canvas.width / 2,
+                top: canvas.height / 2,
+                scaleX: 0.2,
+                scaleY: 0.2,
+                originX: 'center',
+                originY: 'center',
+                selectable: true,
+                evented: true
             });
             canvas.add(img);
-            logoAdded = true; // Marcar que un logo ha sido añadido
-            saveCanvas(); // Guardar el estado
+            canvas.setActiveObject(img);
+            saveCanvas();
         });
     }
 
-    // Cambiar tamaño del logo (no afecta la posición fija)
-    function cambiarTamañoLogo() {
-        const size = parseFloat(document.getElementById('logoSize').value);
-        const objects = canvas.getObjects();
-        const logo = objects.find(obj => obj !== canvas.backgroundImage); // Buscar el logo añadido
-        if (logo) {
-            logo.scaleX = logo.scaleY = size;
-            logo.setCoords();
-            canvas.requestRenderAll();
-            saveCanvas(); // Guardar el estado
+    // Eventos para restringir movimiento y escalado dentro de la playera
+    canvas.on('object:moving', function(e) {
+        var obj = e.target;
+        if (obj === canvas.backgroundImage) return;
+
+        var objBounds = obj.getBoundingRect();
+
+        // Restringir movimiento
+        if (objBounds.left < playeraBounds.left) {
+            obj.left = playeraBounds.left + obj.width * obj.scaleX / 2;
         }
-    }
+        if (objBounds.top < playeraBounds.top) {
+            obj.top = playeraBounds.top + obj.height * obj.scaleY / 2;
+        }
+        if (objBounds.left + objBounds.width > playeraBounds.left + playeraBounds.width) {
+            obj.left = playeraBounds.left + playeraBounds.width - obj.width * obj.scaleX / 2;
+        }
+        if (objBounds.top + objBounds.height > playeraBounds.top + playeraBounds.height) {
+            obj.top = playeraBounds.top + playeraBounds.height - obj.height * obj.scaleY / 2;
+        }
+    });
+
+    canvas.on('object:scaling', function(e) {
+        var obj = e.target;
+        if (obj === canvas.backgroundImage) return;
+
+        var objBounds = obj.getBoundingRect();
+
+        // Restringir escalado
+        if (objBounds.left < playeraBounds.left ||
+            objBounds.top < playeraBounds.top ||
+            objBounds.left + objBounds.width > playeraBounds.left + playeraBounds.width ||
+            objBounds.top + objBounds.height > playeraBounds.top + playeraBounds.height) {
+            obj.scaleX = obj.oldScaleX || obj.scaleX;
+            obj.scaleY = obj.oldScaleY || obj.scaleY;
+            obj.left = obj.oldLeft || obj.left;
+            obj.top = obj.oldTop || obj.top;
+        } else {
+            obj.oldScaleX = obj.scaleX;
+            obj.oldScaleY = obj.scaleY;
+            obj.oldLeft = obj.left;
+            obj.oldTop = obj.top;
+        }
+    });
+
+    // Guardar el estado después de modificar objetos
+    canvas.on('object:modified', function() {
+        saveCanvas();
+    });
 
     // Descargar la imagen del canvas
     function descargarImagen() {
@@ -100,53 +129,40 @@
         link.click();
     }
 
-    // Descargar el canvas como archivo
-    function descargarCanvas() {
-        try {
-            const dataURL = canvas.toDataURL({
-                format: 'png',
-                quality: 1.0
-            });
-            const link = document.createElement('a');
-            link.download = 'canvas.png';
-            link.href = dataURL;
-            link.click();
-        } catch (error) {
-            console.error("Error al descargar el canvas:", error);
-            alert("Ocurrió un error al intentar descargar el canvas. Verifica los permisos del navegador.");
-        }
-    }
-
     // Eliminar el objeto seleccionado
     function eliminarObjeto() {
-        const objects = canvas.getObjects();
-        const logo = objects.find(obj => obj !== canvas.backgroundImage); // Buscar el logo añadido
-        if (logo) {
-            canvas.remove(logo);
-            logoAdded = false; // Restablecer el indicador
-            saveCanvas(); // Guardar el estado
+        const activeObject = canvas.getActiveObject();
+        if (activeObject && activeObject !== canvas.backgroundImage) {
+            canvas.remove(activeObject);
+            saveCanvas();
+        } else {
+            alert('Seleccione un objeto para eliminar.');
         }
     }
 
-    // Guardar el estado del canvas en localStorage
+    // Guardar el estado del canvas en localStorage por producto
     function saveCanvas() {
-        const canvasData = JSON.stringify(canvas.toJSON());
-        localStorage.setItem('canvasState', canvasData);
+        const canvasData = JSON.stringify(canvas.toJSON(['objects']));
+        localStorage.setItem('canvasState_' + productId, canvasData);
     }
 
     // Restaurar el estado del canvas desde localStorage
     function restoreCanvas() {
-        const canvasData = localStorage.getItem('canvasState');
+        const canvasData = localStorage.getItem('canvasState_' + productId);
         if (canvasData) {
             canvas.loadFromJSON(canvasData, function() {
                 canvas.renderAll();
-                const objects = canvas.getObjects();
-                const logo = objects.find(obj => obj !== canvas.backgroundImage); // Buscar el logo añadido
-                logoAdded = !!logo; // Actualizar el indicador
+
+                // Asegurarse de que la imagen de fondo es la correcta después de restaurar
+                setBackground();
             });
+        } else {
+            // Si no hay estado guardado, establecer la imagen de fondo
+            setBackground();
         }
     }
 </script>
+
 <style>
     .personalization-container {
         display: flex;
@@ -165,8 +181,8 @@
     }
     .img-thumbnail {
         cursor: pointer;
-        width: 100px;
-        height: 100px;
+        width: 80px;
+        height: 80px;
     }
     @media (max-width: 768px) {
         .personalization-container {
