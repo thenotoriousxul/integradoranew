@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('nombre', 50);
             $table->string('apellido_paterno', 50);
             $table->string('apellido_materno', 50);
-            $table->string('fecha_nacimiento', 50);
             $table->enum('genero', ['M', 'F']);
             $table->string('numero_telefonico', 50);
             $table->timestamps();
