@@ -57,7 +57,7 @@
                             <label for="n_ex" class="form-label">Numero exterior</label>
                             <input type="text" class="form-control" id="n_ex" >
                         </div>
-                        <button type="button" class="btn btn-success w-100 mt-4" onclick="procesarPago()">Continuar</button>
+                       <input type="submit" value="GUARDAR DATOS">
                     </form>
                 </div>
             </div>

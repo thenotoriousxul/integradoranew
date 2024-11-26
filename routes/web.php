@@ -3,6 +3,8 @@ use App\Http\Controllers\carritoController;
 use App\Http\Controllers\dashController;
 use App\Http\Controllers\disenosController;
 use App\Http\Controllers\ediciones_productoController;
+use App\Http\Controllers\informacionClienteController;
+use App\Http\Controllers\StripeController;
 use Spatie\Permission\Middlewares\RoleMiddleware;
 use Spatie\Permission\Middlewares\PermissionMiddleware;
 use Spatie\Permission\Middlewares\RoleOrPermissionMiddleware;
@@ -12,8 +14,9 @@ use App\Http\Controllers\proveedorController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EdicionController;
 use App\Http\Controllers\EstampadoController;
-use App\Http\Controllers\PersonalizacionController;
+use App\Http\Controllers\PersonalizarController;
 use App\Http\Controllers\OrdenController;
+
 
 //prueba
 // Rutas de acceso general
@@ -38,9 +41,6 @@ Route::get('/carrito', function () {
     return view('carrito'); 
 })->name('carrito');
 
-Route::get('/pago', function () {
-    return view('pago');
-})->name('pago');
 
 Route::get('/perfil', function () {
     return view('perfil'); 
@@ -75,6 +75,27 @@ Route::middleware(['auth'])->group(function () {
         }
         return view('cliente.dashboard');
     })->name('cliente.dashboard');
+
+    
+// RUTAS DEl PROCESO DE ORDEN -- EN CONSTRUCCION XD
+Route::post('/procesar-pago', [StripeController::class, 'procesarPago'])->name('procesarPago');
+Route::post('/create-payment-intent', [StripeController::class, 'createPaymentIntent'])->name('createPaymentIntent');
+
+Route::get('/agradecimiento', function () {
+    return view('agradecimitnto');
+})->name('agradecimiento');
+
+Route::get('/pago', function () {
+    return view('pago');
+})->name('pago');
+
+Route::get('/Datos/Cliente', function () {
+    return view('informacionCliente');
+})->name('informacionCliente');
+
+Route::get('/Detalle_Orden', [informacionClienteController::class, 'mostrarInformacionEnvio'])->name('detalleOrden')->middleware('auth');
+
+
 });
 
 // Rutas de acceso general
@@ -126,10 +147,6 @@ Route::get('/dashinventario', function () {
 });
 
 
-
-Route::get('/personalizacion', [PersonalizacionController::class, 'personalizacion']);
-
-
 Route::prefix('admin/producto')->group(function(){
     Route::get('/dash/productosBase', [productoController::class, 'dashProductos'])->name('dash.productosBase');
     Route::patch('/dash/productoBase/activar/{id}', [productoController::class, 'activar'])->name('activar.producto');
@@ -159,7 +176,6 @@ Route::prefix('admin/estampados')->group(function () {
     Route::delete('/{id}/eliminar', [EstampadoController::class, 'eliminarEstampado'])->name('estampados.eliminar');
 });
 
-Route::get('/personalizacion', [PersonalizacionController::class, 'index'])->name('personalizacion');
 Route::get('/pedidos', [OrdenController::class, 'listarPedidos'])->name('pedidos');
 
 
@@ -196,6 +212,10 @@ Route::get('/producto/{id}', action: [ediciones_productoController::class, 'deta
 
 Route::get('/rebajas' , [ediciones_productoController::class, 'rebajas'])->name('rebajas');
 
-Route::get('/datosorden', function () {
-    return view('informacionCliente');
-});
+
+
+Route::get('/personalizacion', [PersonalizarController::class, 'mostrarCatalogoPersonalizable'])->name('personalizacion');
+Route::get('/personalizar/{productoId}', [PersonalizarController::class, 'personalizarProducto'])->name('personalizar.producto');
+
+
+

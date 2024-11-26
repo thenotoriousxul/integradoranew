@@ -12,10 +12,10 @@ class DetalleOrden extends Model
     protected $table = 'detalle_ordenes';
 
     protected $fillable = [
-        'edicion_id',
+        'ediciones_productos_id',
         'ordenes_id',
         'cantidad',
-        'precio',
+        'total',
     ];
 
     public function orden()

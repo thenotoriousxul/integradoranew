@@ -10,14 +10,13 @@ use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
-
 use function Laravel\Prompts\select;
 
 class productoController extends Controller
 {
     public function saveProducto(productoRequest $request){
         $imageUrl = null;
-
+    
         // Subida de la imagen a S3 y generación de la URL
         if ($request->hasFile('imagen_producto')) {
             $imagePath = $request->file('imagen_producto')->store('productos', 's3');
@@ -32,12 +31,13 @@ class productoController extends Controller
         $producto->color = $request->input('color');
         $producto->lote = $request->input('lote');
         $producto->costo = $request->input('costo');
+        $producto->producto_personalizar = $request->input('producto_personalizar');
         $producto->imagen_producto = $imageUrl; // La URL se guarda como string en la BD
         $producto->save();
     
         return redirect()->route('agregar.producto')->with('success', 'Producto creado exitosamente.');
-    
     }
+    
 
    
 

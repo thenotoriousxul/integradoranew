@@ -1,60 +1,129 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container py-5">
-    <h1 class="text-center mb-4">Proceso de Pago</h1>
+    <style>
+        .payment-card {
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            max-width: 500px;
+            margin: auto;
+        }
+        #card-number, #card-expiry, #card-cvc {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: #f8f9fa;
+            margin-bottom: 1rem;
+        }
+        #submit-payment {
+            margin-top: 20px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            width: 100%;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        #submit-payment:hover {
+            background-color: #45a049;
+        }
+    </style>
 
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <form id="form-pago">
-                        <h4 class="mb-3">Información de Envío</h4>
-                        <div class="mb-3">
-                            <label for="nombre" class="form-label">Nombre Completo</label>
-                            <input type="text" class="form-control" id="nombre" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="direccion" class="form-label">Dirección</label>
-                            <input type="text" class="form-control" id="direccion" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="ciudad" class="form-label">Ciudad</label>
-                            <input type="text" class="form-control" id="ciudad" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="codigo-postal" class="form-label">Código Postal</label>
-                            <input type="text" class="form-control" id="codigo-postal" required>
-                        </div>
+    <div class="container py-5">
+        <h1 class="text-center mb-4">Proceso de Pago</h1>
 
-                        <h4 class="mt-4 mb-3">Información de Pago</h4>
-                        <div class="mb-3">
-                            <label for="numero-tarjeta" class="form-label">Número de Tarjeta</label>
-                            <input type="text" class="form-control" id="numero-tarjeta" placeholder="1234 5678 9012 3456" required>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="fecha-expiracion" class="form-label">Fecha de Expiración</label>
-                                <input type="text" class="form-control" id="fecha-expiracion" placeholder="MM/AA" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="cvc" class="form-label">CVC</label>
-                                <input type="text" class="form-control" id="cvc" placeholder="123" required>
-                            </div>
-                        </div>
+        <div class="payment-card">
+            <h2 class="text-center mb-4">Detalles de la Tarjeta</h2>
+            <form id="payment-form">
 
-                        <button type="button" class="btn btn-success w-100 mt-4" onclick="procesarPago()">Realizar Pago</button>
-                    </form>
-                </div>
-            </div>
+                <label for="card-number" class="form-label">Número de tarjeta</label>
+                <div id="card-number" class="mb-3"></div>
+
+                <label for="card-expiry" class="form-label">Fecha de vencimiento</label>
+                <div id="card-expiry" class="mb-3"></div>
+
+                <label for="card-cvc" class="form-label">CVC</label>
+                <div id="card-cvc" class="mb-3"></div>
+
+                <button id="submit-payment" type="button">Pagar</button>
+            </form>
         </div>
     </div>
-</div>
 
-<!-- Script de Pago Simulado -->
-<script>
-    function procesarPago() {
-        alert("Pago realizado con éxito. ¡Gracias por tu compra!");
-    }
-</script>
+    <!-- Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        // Inicializar Stripe
+        const stripe = Stripe('{{ env('STRIPE_PUBLIC') }}');
+        const elements = stripe.elements();
+
+        // Crear los elementos individualmente
+        const cardNumber = elements.create('cardNumber', { placeholder: '1234 5678 9012 3456' });
+        const cardExpiry = elements.create('cardExpiry');
+        const cardCvc = elements.create('cardCvc');
+
+        // Montar cada elemento en su contenedor
+        cardNumber.mount('#card-number');
+        cardExpiry.mount('#card-expiry');
+        cardCvc.mount('#card-cvc');
+
+        // Manejo del botón de pago
+        document.getElementById('submit-payment').addEventListener('click', async (e) => {
+            e.preventDefault();
+
+            // Crear Intent de Pago
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            try {
+                const response = await fetch('{{ route('createPaymentIntent') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: JSON.stringify({})
+                });
+
+                const { clientSecret } = await response.json();
+
+                // Confirmar el pago con Stripe
+                const { paymentIntent, error } = await stripe.confirmCardPayment(clientSecret, {
+                    payment_method: {
+                        card: cardNumber,
+                        billing_details: {
+                            name: 'Cliente'
+                        }
+                    }
+                });
+
+                if (error) {
+                    alert('Error en el pago: ' + error.message);
+                } else if (paymentIntent.status === 'succeeded') {
+                    // Notificar al servidor sobre el pago exitoso
+                    const backendResponse = await fetch('{{ route('procesarPago') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        body: JSON.stringify({ payment_intent_id: paymentIntent.id })
+                    });
+
+                    const backendResult = await backendResponse.json();
+
+                    if (backendResult.success) {
+                        alert('Pago procesado con éxito.');
+                        window.location.href = '/agradecimiento';
+                    } else {
+                        alert('Hubo un problema al guardar la orden: ' + backendResult.message);
+                    }
+                }
+            } catch (error) {
+                alert('Error procesando el pago: ' + error.message);
+            }
+        });
+    </script>
 @endsection

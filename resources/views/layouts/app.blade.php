@@ -275,7 +275,7 @@
             @yield('content')
         </main>
  
-        <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal fade carti" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -287,8 +287,10 @@
                             <thead>
                                 <tr>
                                     <th>Producto</th>
+                                    <th>Cantidad</th>
                                     <th>Precio</th>
                                     <th>Quitar</th>
+                                    
                                 </tr>
                             </thead>
                             <tbody id="carrito-body">
@@ -302,6 +304,9 @@
                                             <td>
                                                 <img src="{{ $item['attributes']['imagen'] ?? asset('img/default.jpg') }}" alt="{{ $item['name'] }}" style="width: 80px; height: 60px;">
                                                 {{ $item['name'] }}
+                                            </td>
+                                            <td>
+                                                <input type="number" name="cantidad" value="{{ $item['quantity'] }}" min="1" class="form-control actualizar-cantidad text-center mx-auto" style="width: 80px; font-family: 'Inter', sans-serif;">
                                             </td>
                                             <td>${{ number_format($item['price'], 2) }}</td>
                                             <td>

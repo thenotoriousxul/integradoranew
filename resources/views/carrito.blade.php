@@ -49,9 +49,57 @@
 
     <div class="text-end mt-4">
         <button id="vaciar-carrito" class="btn btn-danger mt-3 px-4 py-2" style="font-family: 'Bebas Neue', cursive; font-size: 1.2rem;">Vaciar Carrito</button>
-        <button id="comprar-carrito" class="btn btn-success mt-3 px-4 py-2" style="font-family: 'Bebas Neue', cursive; font-size: 1.2rem;">Continuar con la compra</button>
+        <a href="{{ route('detalleOrden') }}" id="comprar-carrito" 
+           class="btn btn-success mt-3 px-4 py-2 {{ empty($contenidoCarrito) || count($contenidoCarrito) === 0 ? 'disabled' : '' }}" 
+           style="font-family: 'Bebas Neue', cursive; font-size: 1.2rem;">Continuar con la compra</a>
     </div>
+    
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+
+    // Actualizar cantidad
+    document.querySelectorAll('.actualizar-cantidad').forEach(input => {
+        input.addEventListener('change', function () {
+            fetch(`/carrito/actualizar/${this.closest('tr').dataset.id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                body: JSON.stringify({ cantidad: this.value })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    this.closest('tr').querySelector('.subtotal').textContent = `$${data.subtotal.toFixed(2)}`;
+                    actualizarTotal(data.total);
+                }
+            });
+        });
+    });
+
+    document.getElementById('vaciar-carrito').addEventListener('click', () => {
+    fetch('/carrito/vaciar', {
+        method: 'POST',
+        headers: { 'X-CSRF-TOKEN': csrfToken }
+    }).then(() => {
+        location.reload(); 
+    }).catch(error => console.error('Error al vaciar el carrito:', error));
+});
+
+
+    function actualizarTotal(total) {
+        document.querySelector('#carrito-total').textContent = `Total: $${total.toFixed(2)}`;
+    }
+});
+
+</script>
+
+
 
 @section('styles')
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
@@ -59,6 +107,7 @@
     body {
         background-color: #121212;
         color: #fff;
+        min-width: ;
     }
     table th {
         border-bottom: 2px solid #343a40;
