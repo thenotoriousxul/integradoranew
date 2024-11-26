@@ -12,6 +12,12 @@ class CreateNewUser implements CreatesNewUsers
 {
     use PasswordValidationRules;
 
+    /**
+     * Validate and create a newly registered user.
+     *
+     * @param  array<string, string>  $input
+     */
+
     public function create(array $input)
     {
         // Validar los datos
@@ -19,19 +25,7 @@ class CreateNewUser implements CreatesNewUsers
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'nombre' => ['required', 'string', 'max:255'],
-            'apellido_paterno' => ['required', 'string', 'max:255'],
-            'apellido_materno' => ['required', 'string', 'max:255'],
-            'fecha_nacimiento' => ['required', 'date'],
-            'genero' => ['required', 'string', 'in:M,F'],
-            'numero_telefonico' => ['required', 'string', 'max:15'],
-            'calle' => ['required', 'string', 'max:255'],
-            'numero_ext' => ['required', 'string', 'max:50'],
-            'numero_int' => ['nullable', 'string', 'max:50'],
-            'colonia' => ['required', 'string', 'max:255'],
-            'estado' => ['required', 'string', 'max:255'],
-            'codigo_postal' => ['required', 'string', 'max:10'],
-            'pais' => ['required', 'string', 'max:255'],
+            
         ])->validate();
 
         // Crear usuario
@@ -59,10 +53,12 @@ class CreateNewUser implements CreatesNewUsers
             'nombre' => $input['nombre'],
             'apellido_paterno' => $input['apellido_paterno'],
             'apellido_materno' => $input['apellido_materno'],
-            'fecha_nacimiento' => $input['fecha_nacimiento'],
             'genero' => $input['genero'],
             'numero_telefonico' => $input['numero_telefonico'],
         ]);
+
+        $user->assignRole('cliente');
+
 
         return $user;
     }
