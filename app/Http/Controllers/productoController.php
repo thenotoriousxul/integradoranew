@@ -35,7 +35,7 @@ class productoController extends Controller
         $producto->imagen_producto = $imageUrl; // La URL se guarda como string en la BD
         $producto->save();
     
-        return redirect()->route('agregar.producto')->with('success', 'Producto creado exitosamente.');
+        return redirect()->route('dash.productosBase')->with('success', 'Producto creado exitosamente.');
     }
     
 

@@ -19,12 +19,17 @@
     </div>
 @endif
 
-<form action="{{ route('ediciones.actualizar', $edicion->id) }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('ediciones.actualizar', $edicion->id) }}" method="POST">
     @csrf
 
     <div class="mb-3">
         <label for="nombre_edicion" class="form-label">Nombre de la Edición</label>
         <input type="text" name="nombre_edicion" id="nombre_edicion" class="form-control" value="{{ $edicion->nombre_edicion }}" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="descripcion" class="form-label">descripcion</label>
+        <input type="text" name="descripcion" id="descripcion" class="form-control" value="{{ $edicion->descripcion }}" step="0.01">
     </div>
 
     <div class="mb-3">
@@ -47,18 +52,15 @@
         <input type="number" name="extra" id="extra" class="form-control" value="{{ $edicion->extra }}" step="0.01">
     </div>
 
-    <div class="mb-3">
-        <label for="precio_de_venta" class="form-label">Precio de Venta</label>
-        <input type="number" name="precio_de_venta" id="precio_de_venta" class="form-control" value="{{ $edicion->precio_de_venta }}" step="0.01" required>
+    <div class="mb-4">
+        <label class="form-label fw-bold" for="tipo">Tipo</label>
+        <select name="tipo" id="tipo" class="form-select border rounded" required style="background-color: #e9ecef; color: #495057;">
+            <option value="" disabled selected>Seleccione el tipo</option>
+            <option value="Edicion">Edición</option>
+            <option value="Personalizada">Personalizada</option>
+        </select>
     </div>
 
-    <div class="mb-3">
-        <label for="imagen_producto" class="form-label">Imagen del Producto</label>
-        @if ($edicion->imagen_producto)
-            <img src="{{ $edicion->imagen_producto }}" alt="Imagen" class="img-thumbnail mb-3" style="width: 150px;">
-        @endif
-        <input type="file" name="imagen_producto" id="imagen_producto" class="form-control">
-    </div>
 
     <button type="submit" class="btn btn-primary">Actualizar Edición</button>
     <a href="{{ route('ediciones.listar') }}" class="btn btn-secondary">Cancelar</a>

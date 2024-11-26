@@ -1,5 +1,3 @@
-
-
 @extends('layouts.app')
 
 @section('content')
@@ -25,17 +23,6 @@
         border-radius: 8px;
         overflow: hidden;
     }
-    .items-left-badge {
-        position: absolute;
-        top: 16px;
-        right: 16px;
-        background-color: var(--primary-color);
-        color: white;
-        padding: 8px 12px;
-        border-radius: 4px;
-        font-size: 14px;
-        font-weight: 600;
-    }
 
     .product-image {
         width: 100%;
@@ -56,67 +43,49 @@
         margin-bottom: 24px;
     }
 
-    .nav-tabs {
-        border-bottom: 1px solid var(--border-color);
-        margin-bottom: 24px;
-    }
-
-    .nav-tabs .nav-link {
-        color: var(--text-color);
-        border: none;
-        padding: 8px 16px;
-        font-weight: 500;
-    }
-
-    .nav-tabs .nav-link.active {
-        color: var(--primary-color);
-        border-bottom: 2px solid var(--primary-color);
-        background: none;
-    }
-
-    .color-options {
-        display: flex;
-        gap: 8px;
-        margin-bottom: 24px;
-    }
-
-    .color-option {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        border: 2px solid var(--border-color);
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
-
-    .color-option.active {
-        border-color: var(--primary-color);
-        transform: scale(1.1);
-    }
-
     .size-options {
         display: flex;
-        gap: 8px;
+        gap: 10px;
+        flex-wrap: wrap;
         margin-bottom: 24px;
     }
 
     .size-option {
-        padding: 8px 16px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        width: 50px;
+        height: 50px;
         border: 1px solid var(--border-color);
-        border-radius: 4px;
+        border-radius: 50%;
+        font-size: 16px;
+        font-weight: 600;
         cursor: pointer;
-        transition: all 0.2s ease;
+        transition: all 0.3s ease;
+        text-align: center;
+        color: var(--text-color);
     }
 
-    .size-option.active {
-        background-color: var(--primary-color);
-        color: white;
+    /* Estilo para tallas disponibles */
+    .size-option.available {
+        background-color: #ffffff;
+        color: var(--primary-color);
         border-color: var(--primary-color);
     }
 
-    .quantity-selector {
-        width: 120px;
-        margin-bottom: 24px;
+    .size-option.available:hover {
+        background-color: var(--primary-color);
+        color: white;
+        transform: scale(1.1);
+    }
+
+    /* Estilo para tallas agotadas */
+    .size-option.unavailable {
+        background-color: #f6f6f6;
+        color: #999999;
+        border-color: #cccccc;
+        cursor: not-allowed;
+        text-decoration: line-through;
     }
 
     .btn-add-cart {
@@ -135,23 +104,14 @@
         color: white;
     }
 
-    .back-link {
-        color: var(--text-color);
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        margin-bottom: 24px;
-    }
-
-    .back-link:hover {
-        color: var(--primary-color);
+    .btn-add-cart:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
     }
 </style>
 
-
-
 <div class="container py-5">
-    <a href="" class="back-link mb-4">
+    <a href="{{ route('mostrar.productos') }}" class="back-link mb-4">
         <i class="bi bi-arrow-left me-2"></i>
         Volver a la Tienda
     </a>
@@ -163,82 +123,70 @@
             </div>
         </div>
         <div class="col-md-6">
-            <h1 class="product-title">{{ $producto->nombre }}</h1>
+            <h1 class="product-title">{{ ucfirst($producto->nombre) }}</h1>
             <div class="product-price">${{ number_format($producto->costo_precio_venta, 2) }}</div>
-
-            <ul class="nav nav-tabs">
-                <li class="nav-item">
-                    <div class="nav-link active" href="#description">DESCRIPTION</div>
-                </li>
-            </ul>
-
-            <div class="tab-content mb-4">
-                <div class="tab-pane fade show active" id="description">
-                    <p>{{ $producto->descripcion }}</p>
-                    <p class="text-danger">watsthisshit</p>
-                </div>
-            </div>
-
-
-            
 
             <div class="mb-4">
                 <label class="form-label">Medidas</label>
                 <div class="size-options">
-                    <div class="size-option">XS</div>
-                    <div class="size-option">S</div>
-                    <div class="size-option active">M</div>
-                    <div class="size-option">L</div>
-                    <div class="size-option">XL</div>
+                    @foreach ($tallas as $talla)
+                        @if ($talla['cantidad'] > 0)
+                            <div class="size-option available" data-talla="{{ $talla['talla'] }}" title="{{ $talla['cantidad'] }} disponibles">
+                                {{ $talla['talla'] }}
+                            </div>
+                        @else
+                            <div class="size-option unavailable" title="Agotada">
+                                {{ $talla['talla'] }}
+                            </div>
+                        @endif
+                    @endforeach
                 </div>
             </div>
 
             <form action="{{ route('carrito.agregar', $producto->id) }}" method="POST">
                 @csrf
+                <input type="hidden" name="talla" id="talla-seleccionada" value="">
+
                 <div class="mb-4">
-                    <label class="form-label">QUANTITY</label>
+                    <label class="form-label">Cantidad</label>
                     <select class="form-select quantity-selector" name="cantidad">
-                        @for ($i = 1; $i <= min(5, $producto->stock); $i++)
+                        @for ($i = 1; $i <= min(5, $producto->cantidad); $i++)
                             <option value="{{ $i }}">{{ $i }}</option>
                         @endfor
                     </select>
                 </div>
 
-                <button type="submit" class="btn btn-add-cart">
-                  Agregar al Carrito
+                <button type="submit" class="btn btn-add-cart" id="agregar-carrito" disabled>
+                    Agregar al Carrito
                 </button>
             </form>
         </div>
     </div>
 </div>
 
-    <div class="card border-0 shadow rounded-3">
-        <div class="card-body p-4">
-            <h4 class="card-title mb-4">¿Necesitas ayuda?</h4>
-            <p>Nuestro equipo de atención al cliente está disponible para responder tus preguntas.</p>
-            <a href="#" class="btn btn-outline-primary w-100 py-2 rounded-pill">
-                <i class="bi bi-chat-dots me-2"></i> Chatear ahora
-            </a>
-        </div>
-    </div>
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-    const sizeOptions = document.querySelectorAll('.size-option');
-    
-    sizeOptions.forEach(option => {
-        option.addEventListener('click', function() {
-            // Remove 'active' class from all options
-            sizeOptions.forEach(opt => opt.classList.remove('active'));
-            
-            // Add 'active' class to the clicked option
-            this.classList.add('active');
-            
-            // You can add additional logic here, such as updating a hidden input
-            // or triggering other actions based on the selected size
-            console.log('Selected size:', this.textContent);
+        const sizeOptions = document.querySelectorAll('.size-option.available');
+        const hiddenTallaInput = document.getElementById('talla-seleccionada');
+        const agregarCarritoButton = document.getElementById('agregar-carrito');
+
+        sizeOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // Remover la clase 'active' de todas las opciones
+                sizeOptions.forEach(opt => opt.classList.remove('active'));
+
+                // Agregar la clase 'active' a la opción seleccionada
+                this.classList.add('active');
+
+                // Actualizar el campo oculto con la talla seleccionada
+                hiddenTallaInput.value = this.dataset.talla;
+
+                // Habilitar el botón de agregar al carrito
+                agregarCarritoButton.disabled = false;
+
+                console.log('Talla seleccionada:', this.dataset.talla);
+            });
         });
     });
-});
 </script>
 @endsection

@@ -11,56 +11,78 @@ class carritoController extends Controller
 {
     // Agregar un producto al carrito
     public function agregarProducto(Request $request, $productoId)
-{
-    $producto = ediciones_productos::find($productoId);
+    {
+        // Buscar el producto
+        $producto = ediciones_productos::find($productoId);
+        
+        if (!$producto) {
+            return response()->json(['message' => 'Producto no encontrado'], 404);
+        }
     
-    if (!$producto) {
-        return response()->json(['message' => 'Producto no encontrado'], 404);
+        // Obtener la talla y la cantidad desde la solicitud
+        $talla = $request->input('talla');
+        $cantidad = $request->input('cantidad', 1);
+    
+        if (!$talla) {
+            return back()->withErrors(['error' => 'Por favor selecciona una talla.']);
+        }
+    
+        if ($cantidad <= 0) {
+            return back()->withErrors(['error' => 'Cantidad inválida.']);
+        }
+    
+        // Verificar si hay suficiente stock para la talla seleccionada
+        $stockDisponible = ediciones_productos::where('nombre', $producto->nombre)
+                            ->where('talla', $talla)
+                            ->value('cantidad');
+    
+        if ($cantidad > $stockDisponible) {
+            return back()->withErrors(['error' => 'Stock insuficiente para esta talla.']);
+        }
+    
+        // Recuperar el carrito de la sesión
+        $carrito = collect(session()->get('carrito', []));
+    
+        // Identificador único para producto+talla
+        $productoTallaKey = "{$productoId}_{$talla}";
+    
+        // Verificar si el producto+talla ya existe en el carrito
+        if ($carrito->has($productoTallaKey)) {
+            // Incrementar la cantidad
+            $carrito->put($productoTallaKey, [
+                'id' => $producto->id,
+                'name' => $producto->nombre,
+                'price' => $producto->costo_precio_venta,
+                'quantity' => $carrito[$productoTallaKey]['quantity'] + $cantidad,
+                'attributes' => [
+                    'imagen' => $producto->imagen_producto_final,
+                    'talla' => $talla,
+                ]
+            ]);
+        } else {
+            // Agregar como nuevo producto+talla
+            $carrito->put($productoTallaKey, [
+                'id' => $producto->id,
+                'name' => $producto->nombre,
+                'price' => $producto->costo_precio_venta,
+                'quantity' => $cantidad,
+                'attributes' => [
+                    'imagen' => $producto->imagen_producto_final,
+                    'talla' => $talla,
+                ]
+            ]);
+        }
+    
+        // Guardar el carrito actualizado en la sesión
+        session()->put('carrito', $carrito);
+    
+        // Mensaje de éxito
+        session()->flash('success', 'Producto agregado al carrito.');
+    
+        // Redirigir a la vista del carrito o al detalle del producto
+        return redirect()->back();
     }
-
-    // Obtener la cantidad desde la solicitud, con un valor predeterminado de 1
-    $cantidad = $request->input('cantidad', 1);
-
-    if ($cantidad <= 0) {
-        return response()->json(['message' => 'Cantidad inválida'], 400);
-    }
-
-    // Recuperamos el carrito de la sesión
-    $carrito = collect(session()->get('carrito', [])); // Usamos colección en vez de array
-
-    // Verificar si el producto ya existe en el carrito
-    if ($carrito->has($productoId)) {
-        // Si existe, incrementamos la cantidad
-        $carrito->put($productoId, [
-            'id' => $producto->id,
-            'name' => $producto->nombre,
-            'price' => $producto->costo_precio_venta,
-            'quantity' => $carrito[$productoId]['quantity'] + $cantidad, // Incrementamos la cantidad
-            'attributes' => [
-            'imagen' => $producto->imagen_producto_final,
-            ]
-        ]);
-    } else {
-        // Si no existe, lo agregamos con la cantidad especificada
-        $carrito->put($productoId, [
-            'id' => $producto->id,
-            'name' => $producto->nombre,
-            'price' => $producto->costo_precio_venta,
-            'quantity' => $cantidad,
-            'attributes' => [
-            'imagen' => $producto->imagen_producto_final,
-            ]
-        ]);
-    }
-
-    // Guardamos el carrito actualizado en la sesión
-    session()->put('carrito', $carrito);
-
-    session()->flash('success', 'Producto agregado al carrito.');
-    // Respondemos con el carrito actualizado
-    return view('admin.edicionesP.producto_detalle', compact('producto'));
-
-}
+    
     // Mostrar contenido del carrito
     public function mostrarCarrito()
     {

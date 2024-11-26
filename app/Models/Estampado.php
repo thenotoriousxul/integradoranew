@@ -29,4 +29,14 @@ class Estampado extends Model
             'diseno_id'              
         );
     }
+
+    public function estampados()
+    {
+    return $this->belongsToMany(
+        Estampado::class,          // Modelo relacionado
+        'ediciones_estampados',    // Nombre de la tabla pivote
+        'edicion_id',              // Clave foránea en la tabla pivote para "Edicion"
+        'estampado_id'             // Clave foránea en la tabla pivote para "Estampado"
+    );
+    }
 }

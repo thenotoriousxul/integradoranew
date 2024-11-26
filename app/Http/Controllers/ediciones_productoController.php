@@ -11,15 +11,41 @@ use Illuminate\Http\Request;
 
 class ediciones_productoController extends Controller
 {
-    public function getProductos() {
-        $productos = ediciones_productos::where('rebaja',0)->get();
-        return view('admin.edicionesP.productos' , compact('productos'));
+    public function getProductos()
+    {
+    $producto = ediciones_productos::where('rebaja', 0)->get();
+
+    $productos = $producto->groupBy(function ($item) {
+        // Convertimos a minúsculas para normalizar los nombres
+        return strtolower(trim($item->nombre));
+    })->map(function ($grupo) {
+        // Ordenamos por precio y seleccionamos el más caro
+        return $grupo->sortByDesc('costo_precio_venta')->first();
+    });
+
+    // Pasamos los productos agrupados a la vista
+    return view('admin.edicionesP.productos', compact('productos'));
     }
+
 
     public function detalle($id)
     {
     $producto = ediciones_productos::findOrFail($id);
-    return view('admin.edicionesP.producto_detalle', compact('producto'));
+    
+   
+        // Obtener todas las tallas asociadas al producto normalizando el nombre
+         // Obtener todas las tallas asociadas al producto por nombre
+        $tallas = ediciones_productos::whereRaw('LOWER(nombre) = ?', [strtolower(trim($producto->nombre))])
+        ->get()
+        ->map(function ($item) {
+            return [
+                'talla' => $item->talla,
+                'cantidad' => $item->cantidad,
+            ];
+        })
+        ->unique('talla'); // Evita duplicados de tallas
+    return view('admin.edicionesP.producto_detalle', compact('producto', 'tallas'));
+
     }
 
     public function create()

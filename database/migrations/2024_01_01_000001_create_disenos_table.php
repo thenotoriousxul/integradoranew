@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('disenos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('cantidad');
+            $table->string('nombre', 50);
+            $table->integer('cantidad')->default(0);
             $table->double('costo');
             $table->timestamps();
         });
