@@ -72,11 +72,7 @@
                         <input id="apellido_materno" type="text" class="form-control form-control-sm" name="apellido_materno" required>
                         <div class="invalid-feedback">El apellido materno es obligatorio.</div>
                     </div>
-                    {{-- <div class="mb-2">
-                        <label for="fecha_nacimiento" class="form-label" style="font-size: 0.85rem;">{{ __('Fecha de nacimiento') }}</label>
-                        <input id="fecha_nacimiento" type="date" class="form-control form-control-sm" name="fecha_nacimiento" required>
-                        <div class="invalid-feedback">La fecha de nacimiento es obligatoria.</div>
-                    </div> --}}
+                    
                     <div class="mb-2">
                         <label for="genero" class="form-label" style="font-size: 0.85rem;">{{ __('Género') }}</label>
                         <select id="genero" class="form-select form-select-sm" name="genero" required>

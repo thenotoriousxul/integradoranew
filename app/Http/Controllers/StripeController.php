@@ -85,8 +85,8 @@ class StripeController extends Controller
             'fecha_orden' => now(),
             'total' => $total,
             'envios_domicilio' => 1,
-            'estado' => 'pendiente',
-        ]);
+            'estado' => 'Pagada',
+        ]); 
 
         foreach ($carrito as $producto) {
             DetalleOrden::create([
