@@ -222,6 +222,10 @@
                     <i class="fas fa-plus"></i>
                     <span class="sidebar-text">Agregar Usuario</span>
                 </a>
+                <a class="item-side sub" href="{{route('manual')}}">
+                    <i class="fas fa-plus"></i>
+                    <span class="sidebar-text">Ayuda</span>
+                </a>
             </div>
         </div>
         {{------------------------------- --}}

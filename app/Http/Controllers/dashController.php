@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB; 
-
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class dashController extends Controller
@@ -10,15 +10,14 @@ class dashController extends Controller
     public function menuPrincipal(){
 
         $ingresosMes = DB::table('ordenes')
-        ->where('estado', 'Entregada')
+        ->where('estado', 'Pagada')
         ->whereMonth('fecha_orden', now()->month)
         ->whereYear('fecha_orden', now()->year)
         ->sum('total');
 
 
-
         $ventasTotales = DB::table('ordenes')
-        ->where('estado', 'Entregada')
+        ->where('estado', 'Pagada')
         ->whereMonth('fecha_orden', now()->month)
         ->whereYear('fecha_orden', now()->year)
         ->count();
@@ -30,11 +29,17 @@ class dashController extends Controller
         ->count();
 
 
-
         return view('admin.dashmenu', [
             'ingresosMes'=>$ingresosMes,
             'ventasTotales'=>$ventasTotales,
             'nuevosClientes'=>$nuevosClientes,
         ]);
+    }
+
+    public function manual(){
+
+        $pdf = pdf::loadView('admin.manual');
+
+        return $pdf->stream('manual_usuario.pdf');
     }
 }

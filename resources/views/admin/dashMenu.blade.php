@@ -140,7 +140,7 @@
     </div>
     <div class="card">
         <h2>Nuevos clientes este mes</h2>
-        <div class="table-info">{{$nuevosClientes}}</div>
+        <div class="table-info">{{$nuevosClientes}} </div>
     </div>
 </div>
 

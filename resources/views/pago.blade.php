@@ -31,6 +31,15 @@
         #submit-payment:hover {
             background-color: #45a049;
         }
+        #submit-payment:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        .spinner-border {
+            width: 1rem;
+            height: 1rem;
+            vertical-align: middle;
+        }
     </style>
 
     <div class="container py-5">
@@ -49,7 +58,11 @@
                 <label for="card-cvc" class="form-label">CVC</label>
                 <div id="card-cvc" class="mb-3"></div>
 
-                <button id="submit-payment" type="button">Pagar</button>
+                <!-- Botón con spinner -->
+                <button id="submit-payment" type="button">
+                    <span class="spinner-border spinner-border-sm d-none" id="spinner" role="status" aria-hidden="true"></span>
+                    <span id="button-text">Pagar</span>
+                </button>
             </form>
         </div>
     </div>
@@ -75,9 +88,18 @@
         document.getElementById('submit-payment').addEventListener('click', async (e) => {
             e.preventDefault();
 
-            // Crear Intent de Pago
-            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const button = e.target;
+            const spinner = document.getElementById('spinner');
+            const buttonText = document.getElementById('button-text');
+
+            // Desactivar botón y mostrar animación
+            button.disabled = true;
+            spinner.classList.remove('d-none');
+            buttonText.textContent = 'Procesando...';
+
             try {
+                // Crear Intent de Pago
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                 const response = await fetch('{{ route('createPaymentIntent') }}', {
                     method: 'POST',
                     headers: {
@@ -123,6 +145,11 @@
                 }
             } catch (error) {
                 alert('Error procesando el pago: ' + error.message);
+            } finally {
+                // Restaurar el estado del botón
+                button.disabled = false;
+                spinner.classList.add('d-none');
+                buttonText.textContent = 'Pagar';
             }
         });
     </script>
