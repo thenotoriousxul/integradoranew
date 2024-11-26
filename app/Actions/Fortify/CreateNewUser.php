@@ -1,6 +1,7 @@
 <?php
 namespace App\Actions\Fortify;
 
+use App\Models\tipoPersona;
 use App\Models\User;
 use App\Models\Persona;
 use App\Models\Direccion;
@@ -26,6 +27,18 @@ class CreateNewUser implements CreatesNewUsers
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'nombre' => ['required', 'string', 'max:255'],
+            'apellido_paterno' => ['required', 'string', 'max:255'],
+            'apellido_materno' => ['required', 'string', 'max:255'],
+            'genero' => ['required', 'string', 'in:M,F'],
+            'numero_telefonico' => ['required', 'string', 'max:15'],
+            'calle' => ['required', 'string', 'max:255'],
+            'numero_ext' => ['required', 'string', 'max:50'],
+            'numero_int' => ['nullable', 'string', 'max:50'],
+            'colonia' => ['required', 'string', 'max:255'],
+            'estado' => ['required', 'string', 'max:255'],
+            'codigo_postal' => ['required', 'string', 'max:10'],
+            'pais' => ['required', 'string','max:255']
             
         ])->validate();
 
@@ -48,7 +61,7 @@ class CreateNewUser implements CreatesNewUsers
         ]);
 
         // Crear persona
-        Persona::create([
+       $persona= Persona::create([
             'users_id' => $user->id,
             'direcciones_id' => $direccion->id,
             'nombre' => $input['nombre'],
@@ -57,6 +70,14 @@ class CreateNewUser implements CreatesNewUsers
             'genero' => $input['genero'],
             'numero_telefonico' => $input['numero_telefonico'],
         ]);
+    
+        tipoPersona::create([
+            'personas_id' => $persona->id,
+            'tipo_persona'=> 'Cliente'
+
+        ]);
+
+
 
         $user->assignRole('cliente');
 
