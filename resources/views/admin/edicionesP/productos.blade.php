@@ -112,6 +112,144 @@
         transform: rotate(45deg);
         transform-origin: center;
     }
+
+    .filter-button-container {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .btn-filter {
+        display: flex;
+        align-items: center;
+        background-color: #000;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border-radius: 0;
+    }
+
+    .btn-filter:hover {
+        background-color: #333;
+    }
+
+    .filter-icon {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3'%3E%3C/polygon%3E%3C/svg%3E");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    .filter-text {
+        font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+        .btn-filter {
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+
+        .filter-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+        }
+
+        .filter-text {
+            font-size: 12px;
+        }
+    }
+
+    .offcanvas {
+        background-color: #f8f9fa;
+    }
+
+    .offcanvas-header {
+        background-color: #000;
+        color: #fff;
+        padding: 1rem;
+    }
+
+    .offcanvas-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .btn-close {
+        filter: invert(1);
+    }
+
+    .offcanvas-body {
+        padding: 1.5rem;
+    }
+
+    .filter-section {
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid #e0e0e0;
+        padding-bottom: 1rem;
+    }
+
+    .filter-section:last-child {
+        border-bottom: none;
+    }
+
+    .filter-title {
+        font-size: 1.1rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        color: #333;
+    }
+
+    .form-label {
+        font-weight: 500;
+        color: #555;
+    }
+
+    .form-control, .form-select {
+        border: 1px solid #ddd;
+        border-radius: 0;
+        padding: 0.5rem;
+    }
+
+    .form-control:focus, .form-select:focus {
+        box-shadow: none;
+        border-color: #000;
+    }
+
+
+    .btn-filter:hover {
+        background-color: #333;
+    }
+
+    .btn-clear {
+        background-color: transparent;
+        color: #000;
+        border: 1px solid #000;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        width: 100%;
+        transition: all 0.3s ease;
+    }
+
+    .btn-clear:hover {
+        background-color: #000;
+        color: #fff;
+    }
 </style>
 
 @section('content')
@@ -123,9 +261,10 @@
         <p>Explora nuestra amplia gama de playeras para todos los gustos.</p>
     </div>
 
-    <div class="d-flex justify-content-end dropdown mb-3">
-        <button class="btn btn-primary btn-animated mb-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#filtroOffcanvas" aria-controls="filtroOffcanvas">
-            <i class="bi bi-funnel-fill"></i> Filtrar
+    <div class="filter-button-container mb-4">
+        <button class="btn-filter" type="button" data-bs-toggle="offcanvas" data-bs-target="#filtroOffcanvas" aria-controls="filtroOffcanvas">
+            <span class="filter-icon"></span>
+            <span class="filter-text">Filtrar</span>
         </button>
     </div>
 
@@ -182,42 +321,45 @@
         </div>
         <div class="offcanvas-body">
             <form method="GET" action="{{ route('filtros.productos') }}">
-                <!-- Filtro por Precio -->
-                <h6>Filtrar por Precio</h6>
-                <div class="mb-3">
-                    <label for="costo_min" class="form-label">Costo Mínimo</label>
-                    <input type="number" name="costo_min" id="costo_min" class="form-control mb-2" value="{{ request('costo_min') }}">
-                </div>
-                <div class="mb-3">
-                    <label for="costo_max" class="form-label">Costo Máximo</label>
-                    <input type="number" name="costo_max" id="costo_max" class="form-control mb-2" value="{{ request('costo_max') }}">
-                </div>
-
-                <h6>filtrar por tipo</h6>
-                <div class="mb-3">
-                    <label for="tipo" class="form-label">Nombre producto</label>
-                    <input type="text" name="tipo" id="tipo" class="form-control mb-2" value="{{ request('tipo') }}">
+                <div class="filter-section">
+                    <h6 class="filter-title">Filtrar por Precio</h6>
+                    <div class="mb-3">
+                        <label for="costo_min" class="form-label">Costo Mínimo</label>
+                        <input type="number" name="costo_min" id="costo_min" class="form-control" value="{{ request('costo_min') }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="costo_max" class="form-label">Costo Máximo</label>
+                        <input type="number" name="costo_max" id="costo_max" class="form-control" value="{{ request('costo_max') }}">
+                    </div>
                 </div>
     
-                <!-- Filtro por Tipo -->
-                <h6>Filtrar por Talla</h6>
-                <div class="mb-3">
-                    <label for="talla" class="form-label">Talla</label>
-                    <select name="talla" id="talla" class="form-select">
-                        <option value="">-- Seleccionar la talla --</option>
-                        <option value="CH" {{ request('talla') == 'CH' ? 'selected' : '' }}>CH</option>
-                        <option value="M" {{ request('talla') == 'M' ? 'selected' : '' }}>M</option>
-                        <option value="XL" {{ request('talla') == 'XL' ? 'selected' : '' }}>XL</option>
-                        <option value="XXL" {{ request('talla') == 'XXL' ? 'selected' : '' }}>XXL</option>
-                    </select>
+                <div class="filter-section">
+                    <h6 class="filter-title">Filtrar por Tipo</h6>
+                    <div class="mb-3">
+                        <label for="tipo" class="form-label">Nombre producto</label>
+                        <input type="text" name="tipo" id="tipo" class="form-control" value="{{ request('tipo') }}">
+                    </div>
                 </div>
     
-                <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
+                <div class="filter-section">
+                    <h6 class="filter-title">Filtrar por Talla</h6>
+                    <div class="mb-3">
+                        <label for="talla" class="form-label">Talla</label>
+                        <select name="talla" id="talla" class="form-select">
+                            <option value="">-- Seleccionar la talla --</option>
+                            <option value="CH" {{ request('talla') == 'CH' ? 'selected' : '' }}>CH</option>
+                            <option value="M" {{ request('talla') == 'M' ? 'selected' : '' }}>M</option>
+                            <option value="XL" {{ request('talla') == 'XL' ? 'selected' : '' }}>XL</option>
+                            <option value="XXL" {{ request('talla') == 'XXL' ? 'selected' : '' }}>XXL</option>
+                        </select>
+                    </div>
+                </div>
+    
+                <button type="submit" class="btn btn-filter">Aplicar Filtros</button>
             </form>
     
-            <br>
             <form method="GET" action="{{ route('mostrar.productos') }}">
-                <button type="submit" class="btn btn-dark">Limpiar Filtros</button>
+                <button type="submit" class="btn btn-clear">Limpiar Filtros</button>
             </form>
         </div>
     </div>

@@ -209,6 +209,12 @@ Route::prefix('admin/dashboard')->group(function(){
     Route::get('/manual',[dashController::class,'manual'])->name('manual');
 });
 
+Route::prefix('cliente')->group(function(){
+    Route::get('/dash', function(){
+        return view('cliente.menuPrincipal');
+    });
+});
+
 Route::get('/producto/{id}', action: [ediciones_productoController::class, 'detalle'])->name('vista_producto_detalle'); 
 
 Route::get('/rebajas' , [ediciones_productoController::class, 'rebajas'])->name('rebajas');
