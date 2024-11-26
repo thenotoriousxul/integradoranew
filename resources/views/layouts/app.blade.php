@@ -287,6 +287,7 @@
                             <thead>
                                 <tr>
                                     <th>Producto</th>
+                                    <th>Talla</th>
                                     <th>Cantidad</th>
                                     <th>Precio</th>
                                     <th>Quitar</th>
@@ -305,6 +306,7 @@
                                                 <img src="{{ $item['attributes']['imagen'] ?? asset('img/default.jpg') }}" alt="{{ $item['name'] }}" style="width: 80px; height: 60px;">
                                                 {{ $item['name'] }}
                                             </td>
+                                            <td>{{ $item['attributes']['talla'] }}</td>
                                             <td>
                                                 <input type="number" name="cantidad" value="{{ $item['quantity'] }}" min="1" class="form-control actualizar-cantidad text-center mx-auto" style="width: 80px; font-family: 'Inter', sans-serif;">
                                             </td>

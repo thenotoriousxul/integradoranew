@@ -116,6 +116,16 @@
         Volver a la Tienda
     </a>
 
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
     <div class="row">
         <div class="col-md-6 mb-4 mb-md-0">
             <div class="product-image-container">
@@ -131,7 +141,10 @@
                 <div class="size-options">
                     @foreach ($tallas as $talla)
                         @if ($talla['cantidad'] > 0)
-                            <div class="size-option available" data-talla="{{ $talla['talla'] }}" title="{{ $talla['cantidad'] }} disponibles">
+                            <div class="size-option available"
+                                data-talla="{{ $talla['talla'] }}"
+                                data-cantidad="{{ $talla['cantidad'] }}"
+                                title="{{ $talla['cantidad'] }} disponibles">
                                 {{ $talla['talla'] }}
                             </div>
                         @else
@@ -150,10 +163,9 @@
                 <div class="mb-4">
                     <label class="form-label">Cantidad</label>
                     <select class="form-select quantity-selector" name="cantidad">
-                        @for ($i = 1; $i <= min(5, $producto->cantidad); $i++)
-                            <option value="{{ $i }}">{{ $i }}</option>
-                        @endfor
+                        <!-- Opciones de cantidad se actualizarán dinámicamente -->
                     </select>
+                    <p>Selecciona una talla para ver el stock disponible.</p>
                 </div>
 
                 <button type="submit" class="btn btn-add-cart" id="agregar-carrito" disabled>
@@ -166,27 +178,44 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const sizeOptions = document.querySelectorAll('.size-option.available');
-        const hiddenTallaInput = document.getElementById('talla-seleccionada');
-        const agregarCarritoButton = document.getElementById('agregar-carrito');
+    const sizeOptions = document.querySelectorAll('.size-option.available');
+    const hiddenTallaInput = document.getElementById('talla-seleccionada');
+    const agregarCarritoButton = document.getElementById('agregar-carrito');
+    const quantitySelector = document.querySelector('.quantity-selector');
 
-        sizeOptions.forEach(option => {
-            option.addEventListener('click', function() {
-                // Remover la clase 'active' de todas las opciones
-                sizeOptions.forEach(opt => opt.classList.remove('active'));
+    sizeOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            // Remover la clase 'active' de todas las opciones
+            sizeOptions.forEach(opt => opt.classList.remove('active'));
 
-                // Agregar la clase 'active' a la opción seleccionada
-                this.classList.add('active');
+            // Agregar la clase 'active' a la opción seleccionada
+            this.classList.add('active');
 
-                // Actualizar el campo oculto con la talla seleccionada
-                hiddenTallaInput.value = this.dataset.talla;
+            // Actualizar el campo oculto con la talla seleccionada
+            hiddenTallaInput.value = this.dataset.talla;
 
-                // Habilitar el botón de agregar al carrito
-                agregarCarritoButton.disabled = false;
+            // Obtener el stock disponible para la talla seleccionada
+            const stockDisponible = parseInt(this.dataset.cantidad);
 
-                console.log('Talla seleccionada:', this.dataset.talla);
-            });
+            // Establecer el máximo entre 1 y 5 (o menos si no hay suficiente stock)
+            const maxSeleccionable = Math.min(stockDisponible, 5);
+
+            // Actualizar las opciones del selector de cantidad
+            quantitySelector.innerHTML = ''; // Vaciar las opciones actuales
+            for (let i = 1; i <= maxSeleccionable; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+                quantitySelector.appendChild(option);
+            }
+
+            // Habilitar el botón de agregar al carrito
+            agregarCarritoButton.disabled = false;
+
+            console.log('Talla seleccionada:', this.dataset.talla, 'Stock disponible:', stockDisponible, 'Max permitido:', maxSeleccionable);
         });
     });
+});
+
 </script>
 @endsection

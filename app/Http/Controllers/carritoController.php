@@ -37,7 +37,7 @@ class carritoController extends Controller
                             ->value('cantidad');
     
         if ($cantidad > $stockDisponible) {
-            return back()->withErrors(['error' => 'Stock insuficiente para esta talla.']);
+            return back()->withErrors(['error' => 'Lo sentimos, stock insuficiente, intenta con otra cantidad menor.']);
         }
     
         // Recuperar el carrito de la sesión
@@ -72,12 +72,15 @@ class carritoController extends Controller
                 ]
             ]);
         }
+
+        
     
         // Guardar el carrito actualizado en la sesión
         session()->put('carrito', $carrito);
     
         // Mensaje de éxito
         session()->flash('success', 'Producto agregado al carrito.');
+        
     
         // Redirigir a la vista del carrito o al detalle del producto
         return redirect()->back();

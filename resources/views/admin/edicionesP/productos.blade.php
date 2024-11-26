@@ -73,6 +73,45 @@
             padding: 15px;
         }
     }
+
+        /* Contenedor para la imagen */
+        .image-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    /* Capa superpuesta */
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Líneas de las tachas */
+    .line {
+        position: absolute;
+        width: 150%; /* Más ancho que la imagen */
+        height: 4px;
+        background-color: red;
+        opacity: 0.8;
+    }
+
+    /* Primera línea: diagonal de izquierda a derecha */
+    .line1 {
+        transform: rotate(-45deg);
+        transform-origin: center;
+    }
+
+    /* Segunda línea: diagonal de derecha a izquierda */
+    .line2 {
+        transform: rotate(45deg);
+        transform-origin: center;
+    }
 </style>
 
 @section('content')
@@ -91,28 +130,48 @@
     </div>
 
     <!-- Productos base -->
+
     <div class="row">
         @foreach ($productos as $producto)
             <div class="col-md-3 mb-4">
-                <div class="card h-100">
-                    @if($producto->imagen_producto_final)
-                        <a href="{{ route('vista_producto_detalle', ['id' => $producto->id]) }}">
-                            <img src="{{ $producto->imagen_producto_final }}" alt="Imagen de {{ $producto->nombre }}" class="card-img-top">
-                        </a>
+                <div class="card h-100 position-relative">
+                    @if ($producto->cantidad > 1)
+                        @if ($producto->imagen_producto_final)
+                            <a href="{{ route('vista_producto_detalle', ['id' => $producto->id]) }}">
+                                <img src="{{ $producto->imagen_producto_final }}" alt="Imagen de {{ $producto->nombre }}" class="card-img-top">
+                            </a>
+                        @else
+                            <a href="{{ route('vista_producto_detalle', ['id' => $producto->id]) }}">
+                                <p>Imagen no disponible</p>
+                            </a>
+                        @endif
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $producto->nombre }}</h5>
+                            <p class="card-text">Precio: ${{ number_format($producto->costo_precio_venta, 2) }}</p>
+                        </div>
                     @else
-                    <a href="{{ route('vista_producto_detalle', ['id' => $producto->id]) }}">
-                        <p>Imagen no disponible</p>
-                    </a>
-
+                        @if ($producto->imagen_producto_final)
+                            <div class="image-container">
+                                <img src="{{ $producto->imagen_producto_final }}" alt="Imagen de {{ $producto->nombre }}" class="card-img-top">
+                                <div class="overlay">
+                                    <div class="line line1"></div>
+                                    <div class="line line2"></div>
+                                </div>
+                            </div>
+                        @else
+                            <p>Imagen no disponible</p>
+                        @endif
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $producto->nombre }}</h5>
+                            <p class="text-danger">Agotado</p>
+                        </div>
                     @endif
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $producto->nombre }}</h5>
-                        <p class="card-text">Precio: ${{ number_format($producto->costo_precio_venta, 2) }}</p>
-                    </div>
                 </div>
             </div>
         @endforeach
     </div>
+
+
 
 
 

@@ -14,6 +14,7 @@
             <thead>
                 <tr class="table-light text-dark" style="font-family: 'Bebas Neue', cursive; font-size: 1.2rem;">
                     <th>Producto</th>
+                    <th>Talla</th>
                     <th>Precio</th>
                     <th>Cantidad</th>
                     <th>Total</th>
@@ -32,6 +33,7 @@
                                 <img src="{{ $item['attributes']['imagen'] ?? 'ruta-a-imagen-default.jpg' }}" alt="{{ $item['name'] }}" class="me-3 rounded-circle" style="width: 50px; height: 50px;">
                                 <span style="font-family: 'Inter', sans-serif;">{{ $item['name'] }}</span>
                             </td>
+                            <td>{{ $item['attributes']['talla'] }}</td>
                             <td style="font-family: 'Inter', sans-serif;">${{ number_format($item['price'], 2) }}</td>
                             <td>
                                 <input type="number" name="cantidad" value="{{ $item['quantity'] }}" min="1" class="form-control actualizar-cantidad text-center mx-auto" style="width: 80px; font-family: 'Inter', sans-serif;">

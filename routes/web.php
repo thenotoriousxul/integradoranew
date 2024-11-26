@@ -206,6 +206,7 @@ Route::prefix('admin/ediciones_productos')->group(function(){
 
 Route::prefix('admin/dashboard')->group(function(){
     Route::get('/menu',[dashController::class, 'menuPrincipal'])->name('dash.menu');
+    Route::get('/manual',[dashController::class,'manual'])->name('manual');
 });
 
 Route::get('/producto/{id}', action: [ediciones_productoController::class, 'detalle'])->name('vista_producto_detalle'); 
