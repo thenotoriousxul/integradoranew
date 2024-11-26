@@ -16,6 +16,7 @@ return new class extends Migration
         $table->string('nombre', 50);
         $table->enum('talla', ['CH', 'M', 'XL', 'XXL']);
         $table->string('imagen_producto_final', 255);
+        $table->string('imagen_producto_trasera', 255);
         $table->decimal('costo_fabrica', 10, 2);
         $table->decimal('costo_precio_venta', 10, 2);
         $table->integer('cantidad')->default(0);
