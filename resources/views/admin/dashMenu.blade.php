@@ -132,15 +132,15 @@
 <div class="dash-info">
     <div class="card">
         <h2>Ingresos Del Mes</h2>
-        <div class="table-info">$50,000</div>
+        <div class="table-info">{{ number_format($ingresosMes, 2)}}</div>
     </div>
     <div class="card">
-        <h2>Ventas del mes</h2>
-        <div class="table-info">1,200 unidades</div>
+        <h2>Numero ventas este mes</h2>
+        <div class="table-info">{{$ventasTotales}}</div>
     </div>
     <div class="card">
-        <h2>Nuevos clientes</h2>
-        <div class="table-info">75</div>
+        <h2>Nuevos clientes este mes</h2>
+        <div class="table-info">{{$nuevosClientes}}</div>
     </div>
 </div>
 

@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\carritoController;
+use App\Http\Controllers\dashController;
 use App\Http\Controllers\disenosController;
 use App\Http\Controllers\ediciones_productoController;
 use Spatie\Permission\Middlewares\RoleMiddleware;
@@ -116,11 +117,6 @@ return view('admin.layouts.dash');
 });
 
 
-Route::get('/dash/menu', function () {
-    return view('admin.dashMenu');
-})->name('dash.menu');
-
-
 Route::get('/dashorden', function () {
     return view('admin.dashOrdenes');
 });
@@ -192,6 +188,9 @@ Route::prefix('admin/ediciones_productos')->group(function(){
     Route::get('/filtros',[ediciones_productoController::class, 'filtro'])->name('filtros.productos');
 });
 
+Route::prefix('admin/dashboard')->group(function(){
+    Route::get('/menu',[dashController::class, 'menuPrincipal'])->name('dash.menu');
+});
 
 Route::get('/producto/{id}', action: [ediciones_productoController::class, 'detalle'])->name('vista_producto_detalle'); 
 

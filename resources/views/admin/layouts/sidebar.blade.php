@@ -125,7 +125,7 @@
     <div class="menu-container">
         <div class="page-container">
             <h3 class="title-section">Menú</h3>
-            <a class="item-side" href="{{ route('home') }}">
+            <a class="item-side" href="{{ route('dash.menu') }}">
                 <i class="fas fa-home"></i>
                 <span class="sidebar-text">Menú principal</span>
             </a>
