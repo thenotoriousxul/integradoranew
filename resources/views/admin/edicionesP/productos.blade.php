@@ -4,12 +4,12 @@
     img {
         height: 200px;
         width: 100%;
-        object-fit: cover; /* Para asegurarnos de que la imagen cubra el área correctamente */
-        border-radius: 8px; /* Bordes redondeados para las imágenes */
+        object-fit: cover;
+        border-radius: 8px;
     }
 
     .catalogo-header {
-        background-color: #f4f4f4; /* Fondo claro */
+        background-color: #f4f4f4;
         padding: 20px;
         margin-bottom: 20px;
         border-radius: 8px;
@@ -59,58 +59,41 @@
         font-size: 1rem;
     }
 
-    /* Diseño responsivo para pantallas más pequeñas */
-    @media (max-width: 768px) {
-        .catalogo-header h1 {
-            font-size: 2rem;
-        }
-
-        .catalogo-header p {
-            font-size: 1rem;
-        }
-
-        .card-body {
-            padding: 15px;
-        }
-    }
-
-        /* Contenedor para la imagen */
-        .image-container {
+    .image-container {
         position: relative;
-        display: inline-block;
+        height: 260px;
+        overflow: hidden;
     }
 
-    /* Capa superpuesta */
-    .overlay {
+    .image-main {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        object-fit: cover;
+        transition: opacity 0.3s ease-in-out;
+        z-index: 1;
     }
 
-    /* Líneas de las tachas */
-    .line {
+    .image-hover {
         position: absolute;
-        width: 150%; /* Más ancho que la imagen */
-        height: 4px;
-        background-color: red;
-        opacity: 0.8;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: opacity 0.5s ease-in-out;
+        opacity: 0;
+        z-index: 0;
     }
 
-    /* Primera línea: diagonal de izquierda a derecha */
-    .line1 {
-        transform: rotate(-45deg);
-        transform-origin: center;
+    .image-container:hover .image-main {
+        opacity: 0;
     }
 
-    /* Segunda línea: diagonal de derecha a izquierda */
-    .line2 {
-        transform: rotate(45deg);
-        transform-origin: center;
+    .image-container:hover .image-hover {
+        opacity: 1;
     }
 
     .filter-button-container {
@@ -138,101 +121,6 @@
         background-color: #333;
     }
 
-    .filter-icon {
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        margin-right: 10px;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3'%3E%3C/polygon%3E%3C/svg%3E");
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center;
-    }
-
-    .filter-text {
-        font-size: 14px;
-    }
-
-    @media (max-width: 768px) {
-        .btn-filter {
-            padding: 8px 15px;
-            font-size: 14px;
-        }
-
-        .filter-icon {
-            width: 16px;
-            height: 16px;
-            margin-right: 8px;
-        }
-
-        .filter-text {
-            font-size: 12px;
-        }
-    }
-
-    .offcanvas {
-        background-color: #f8f9fa;
-    }
-
-    .offcanvas-header {
-        background-color: #000;
-        color: #fff;
-        padding: 1rem;
-    }
-
-    .offcanvas-title {
-        font-size: 1.5rem;
-        font-weight: bold;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .btn-close {
-        filter: invert(1);
-    }
-
-    .offcanvas-body {
-        padding: 1.5rem;
-    }
-
-    .filter-section {
-        margin-bottom: 1.5rem;
-        border-bottom: 1px solid #e0e0e0;
-        padding-bottom: 1rem;
-    }
-
-    .filter-section:last-child {
-        border-bottom: none;
-    }
-
-    .filter-title {
-        font-size: 1.1rem;
-        font-weight: bold;
-        margin-bottom: 1rem;
-        color: #333;
-    }
-
-    .form-label {
-        font-weight: 500;
-        color: #555;
-    }
-
-    .form-control, .form-select {
-        border: 1px solid #ddd;
-        border-radius: 0;
-        padding: 0.5rem;
-    }
-
-    .form-control:focus, .form-select:focus {
-        box-shadow: none;
-        border-color: #000;
-    }
-
-
-    .btn-filter:hover {
-        background-color: #333;
-    }
-
     .btn-clear {
         background-color: transparent;
         color: #000;
@@ -250,6 +138,15 @@
         background-color: #000;
         color: #fff;
     }
+
+    .offcanvas-header {
+        background-color: #000;
+        color: #fff;
+    }
+
+    .offcanvas-body {
+        padding: 1.5rem;
+    }
 </style>
 
 @section('content')
@@ -263,43 +160,32 @@
 
     <div class="filter-button-container mb-4">
         <button class="btn-filter" type="button" data-bs-toggle="offcanvas" data-bs-target="#filtroOffcanvas" aria-controls="filtroOffcanvas">
-            <span class="filter-icon"></span>
             <span class="filter-text">Filtrar</span>
         </button>
     </div>
 
-    <!-- Productos base -->
-
+    <!-- Productos -->
     <div class="row">
         @foreach ($productos as $producto)
             <div class="col-md-3 mb-4">
-                <div class="card h-100 position-relative">
-                    @if ($producto->cantidad > 1)
-                        @if ($producto->imagen_producto_final)
-                            <a href="{{ route('vista_producto_detalle', ['id' => $producto->id]) }}">
-                                <img src="{{ $producto->imagen_producto_final }}" alt="Imagen de {{ $producto->nombre }}" class="card-img-top">
-                            </a>
-                        @else
-                            <a href="{{ route('vista_producto_detalle', ['id' => $producto->id]) }}">
-                                <p>Imagen no disponible</p>
-                            </a>
-                        @endif
+                <div class="card h-100">
+                    @if ($producto->cantidad > 0)
+                        <div class="image-container">
+                            <img src="{{ $producto->imagen_producto_final }}" alt="Imagen de {{ $producto->nombre }}" class="image-main">
+                            <img src="{{ $producto->imagen_producto_trasera }}" alt="Imagen trasera de {{ $producto->nombre }}" class="image-hover">
+                        </div>
                         <div class="card-body">
                             <h5 class="card-title">{{ $producto->nombre }}</h5>
                             <p class="card-text">Precio: ${{ number_format($producto->costo_precio_venta, 2) }}</p>
+                            <a href="{{ route('vista_producto_detalle', ['id' => $producto->id]) }}" class="btn btn-primary w-100">Ver detalles</a>
                         </div>
                     @else
-                        @if ($producto->imagen_producto_final)
-                            <div class="image-container">
-                                <img src="{{ $producto->imagen_producto_final }}" alt="Imagen de {{ $producto->nombre }}" class="card-img-top">
-                                <div class="overlay">
-                                    <div class="line line1"></div>
-                                    <div class="line line2"></div>
-                                </div>
+                        <div class="image-container">
+                            <img src="{{ $producto->imagen_producto_final }}" alt="Imagen de {{ $producto->nombre }}" class="image-main">
+                            <div class="overlay">
+                                <p class="text-danger">Agotado</p>
                             </div>
-                        @else
-                            <p>Imagen no disponible</p>
-                        @endif
+                        </div>
                         <div class="card-body">
                             <h5 class="card-title">{{ $producto->nombre }}</h5>
                             <p class="text-danger">Agotado</p>
@@ -310,10 +196,7 @@
         @endforeach
     </div>
 
-
-
-
-
+    <!-- Filtros -->
     <div class="offcanvas offcanvas-start" tabindex="-1" id="filtroOffcanvas" aria-labelledby="filtroOffcanvasLabel">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="filtroOffcanvasLabel">Filtros</h5>
@@ -332,34 +215,7 @@
                         <input type="number" name="costo_max" id="costo_max" class="form-control" value="{{ request('costo_max') }}">
                     </div>
                 </div>
-    
-                <div class="filter-section">
-                    <h6 class="filter-title">Filtrar por Tipo</h6>
-                    <div class="mb-3">
-                        <label for="tipo" class="form-label">Nombre producto</label>
-                        <input type="text" name="tipo" id="tipo" class="form-control" value="{{ request('tipo') }}">
-                    </div>
-                </div>
-    
-                <div class="filter-section">
-                    <h6 class="filter-title">Filtrar por Talla</h6>
-                    <div class="mb-3">
-                        <label for="talla" class="form-label">Talla</label>
-                        <select name="talla" id="talla" class="form-select">
-                            <option value="">-- Seleccionar la talla --</option>
-                            <option value="CH" {{ request('talla') == 'CH' ? 'selected' : '' }}>CH</option>
-                            <option value="M" {{ request('talla') == 'M' ? 'selected' : '' }}>M</option>
-                            <option value="XL" {{ request('talla') == 'XL' ? 'selected' : '' }}>XL</option>
-                            <option value="XXL" {{ request('talla') == 'XXL' ? 'selected' : '' }}>XXL</option>
-                        </select>
-                    </div>
-                </div>
-    
                 <button type="submit" class="btn btn-filter">Aplicar Filtros</button>
-            </form>
-    
-            <form method="GET" action="{{ route('mostrar.productos') }}">
-                <button type="submit" class="btn btn-clear">Limpiar Filtros</button>
             </form>
         </div>
     </div>

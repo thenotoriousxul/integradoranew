@@ -12,7 +12,7 @@
             <div class="col-md-3 mb-4">
                 <div class="card h-100 shadow-sm">
                     @if($producto->imagen_producto_final)
-                        <img src="{{ $producto->imagen_producto_final }}" class="card-img-top" alt="Imagen de {{ $producto->nombre }}">
+                    <img src="{{ $producto->imagen_producto_final ? asset($producto->imagen_producto_final) : 'https://png.pngtree.com/png-vector/20220120/ourmid/pngtree-black-t-shirt-template-png-image_4293336.png' }}" class="card-img-top" alt="Imagen de {{ $producto->nombre }}">
                     @else
                         <img src="https://png.pngtree.com/png-vector/20220120/ourmid/pngtree-black-t-shirt-template-png-image_4293336.png" class="card-img-top" alt="Imagen no disponible">
                     @endif

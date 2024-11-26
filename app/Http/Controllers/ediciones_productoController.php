@@ -13,15 +13,20 @@ class ediciones_productoController extends Controller
 {
     public function getProductos()
     {
-    $producto = ediciones_productos::where('rebaja', 0)->get();
-
-    $productos = $producto->groupBy(function ($item) {
-        // Convertimos a minúsculas para normalizar los nombres
-        return strtolower(trim($item->nombre));
-    })->map(function ($grupo) {
-        // Ordenamos por precio y seleccionamos el más caro
-        return $grupo->sortByDesc('costo_precio_venta')->first();
-    });
+      // Recupera los productos con rebaja = 0
+      $producto = ediciones_productos::where('rebaja', 0,)->where('estado', 'activo')->get();
+  
+      // Agrupa los productos por nombre
+      $productos = $producto->groupBy(function ($item) {
+          return strtolower(trim($item->nombre)); // Normaliza el nombre para agrupar
+      })->map(function ($grupo) {
+          return $grupo->sortByDesc(function ($item) {
+              return [
+                  $item->imagen_producto_trasera !== null ? 1 : 0, // Prioriza productos con imagen trasera
+                  $item->costo_precio_venta // Ordena por precio
+              ];
+          })->first(); // Selecciona el mejor producto del grupo
+      });
 
     // Pasamos los productos agrupados a la vista
     return view('admin.edicionesP.productos', compact('productos'));
@@ -63,6 +68,7 @@ class ediciones_productoController extends Controller
             'productos_id' => ['required','exists:productos,id'],
             'nombre' => ['required', 'string', 'max:55'],
             'imagen_producto_final'=>['nullable','image','max:2048'],
+            'imagen_producto_trasera'=>['nullable','image','max:2048'],
             'cantidad' => 'required|integer|min:1',
         ]);
 
@@ -74,10 +80,20 @@ class ediciones_productoController extends Controller
             Storage::disk('s3')->setVisibility($imagePath, 'public');
             $imageUrl = Storage::disk('s3')->url($imagePath); // Esto es un string con la URL
         }
+        
+        $imageUrlTrasera = null;
+
+        if ($request->hasFile('imagen_producto_trasera')) {
+            $imagePathTrasera = $request->file('imagen_producto_trasera')->store('ediciones_productos', 's3');
+            Storage::disk('s3')->setVisibility($imagePathTrasera, 'public');
+            $imageUrlTrasera = Storage::disk('s3')->url($imagePathTrasera); // Esto es un string con la URL
+
+        }
 
         $edicionProducto = ediciones_productos::create([
             'nombre' => $request->nombre,
             'imagen_producto_final' => $imageUrl,
+            'imagen_producto_trasera' => $imageUrlTrasera,
             'cantidad'=>$request->cantidad,
             'edicion_id'=>$request->edicion_id,
             'productos_id'=>$request->productos_id,
@@ -89,6 +105,7 @@ class ediciones_productoController extends Controller
         $productos = ediciones_productos::where('rebaja', 1)->get();
 
         return view('rebajas' , compact('productos'));
+        
     }
 
      public function filtro(Request $request){

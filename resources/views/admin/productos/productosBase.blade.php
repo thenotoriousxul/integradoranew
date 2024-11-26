@@ -55,10 +55,11 @@
                                 Acciones
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton-{{ $producto->id }}">
-                                
+                                @if (Auth::user()->hasRole('admin'))
                                 <li>
                                     <a class="dropdown-item" href="{{ route('editar.producto', $producto->id)}}}">Editar</a>
                                 </li>
+                                @endif
                                
                                 @if ($producto->estado == 'Activo')
                                     <li>

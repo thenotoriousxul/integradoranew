@@ -206,6 +206,7 @@
                 <span class="sidebar-text">Crear Orden</span>
             </a>
         </div>
+        @if (Auth::user()->hasRole('admin'))
         <div class="page-container">
             <h3 class="title-section">Configuración</h3>
             <a id="configuracion" class="item-side" href="">
@@ -218,9 +219,9 @@
                     <i class="fas fa-list"></i>
                     <span class="sidebar-text">Ver Usuarios</span>
                 </a>
-                <a class="item-side sub" href="">
+                <a class="item-side sub" href="{{route('registrar.empleados')}}">
                     <i class="fas fa-plus"></i>
-                    <span class="sidebar-text">Agregar Usuario</span>
+                    <span class="sidebar-text">Agregar empleado</span>
                 </a>
                 <a class="item-side sub" href="{{route('manual')}}">
                     <i class="fas fa-plus"></i>
@@ -228,6 +229,8 @@
                 </a>
             </div>
         </div>
+        @endif
+
         {{------------------------------- --}}
     </div>
 </aside>

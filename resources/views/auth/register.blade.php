@@ -123,6 +123,7 @@
                         <input id="pais" type="text" class="form-control form-control-sm" name="pais" required>
                         <div class="invalid-feedback">El país es obligatorio.</div>
                     </div>
+                    
 
                     <div class="d-grid mt-4">
                         <button type="submit" class="btn btn-dark btn-sm">{{ __('Registrarse') }}</button>

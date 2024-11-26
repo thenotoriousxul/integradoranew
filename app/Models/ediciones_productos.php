@@ -18,7 +18,8 @@ class ediciones_productos extends Model
         'precio_rebajado',
         'productos_id',
         'edicion_id',
-        'imagen_producto_final'
+        'imagen_producto_final',
+        'imagen_producto_trasera',
     ];
 
     public function edicion(){

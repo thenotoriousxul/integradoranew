@@ -1,4 +1,6 @@
 <?php
+
+use App\Actions\Fortify\CreateNewUser;
 use App\Http\Controllers\carritoController;
 use App\Http\Controllers\dashController;
 use App\Http\Controllers\disenosController;
@@ -13,6 +15,7 @@ use App\Http\Controllers\productoController;
 use App\Http\Controllers\proveedorController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EdicionController;
+use App\Http\Controllers\empleadoController;
 use App\Http\Controllers\EstampadoController;
 use App\Http\Controllers\PersonalizarController;
 use App\Http\Controllers\OrdenController;
@@ -209,6 +212,14 @@ Route::prefix('admin/dashboard')->group(function(){
     Route::get('/manual',[dashController::class,'manual'])->name('manual');
 });
 
+
+Route::get('registrar/empleado', function(){
+    return view('auth.register-empleado');
+})->name('registrar.empleados');
+
+Route::post('guardar/empleado', [empleadoController::class, 'registrarEmpleado'])->name('guardar.empleado');
+
+
 Route::prefix('cliente')->group(function(){
     Route::get('/dash', function(){
         return view('cliente.menuPrincipal');
@@ -216,10 +227,7 @@ Route::prefix('cliente')->group(function(){
 });
 
 Route::get('/producto/{id}', action: [ediciones_productoController::class, 'detalle'])->name('vista_producto_detalle'); 
-
 Route::get('/rebajas' , [ediciones_productoController::class, 'rebajas'])->name('rebajas');
-
-
 
 Route::get('/personalizacion', [PersonalizarController::class, 'mostrarCatalogoPersonalizable'])->name('personalizacion');
 Route::get('/personalizar/{productoId}', [PersonalizarController::class, 'personalizarProducto'])->name('personalizar.producto');

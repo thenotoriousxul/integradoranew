@@ -70,6 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+
   document.addEventListener('DOMContentLoaded', function() {
     const inventoryItem = document.getElementById('ediciones');
     const inventorySubmenu = document.getElementById('ediciones-submenu');

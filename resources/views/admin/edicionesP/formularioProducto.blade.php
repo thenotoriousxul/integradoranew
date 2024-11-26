@@ -58,6 +58,11 @@
                 <input type="file" name="imagen_producto_final" id="imagen_producto_final" class="form-control border rounded" style="background-color: #e9ecef; color: #495057;">
             </div>
 
+        <div class="mb-4">
+                <label class="form-label fw-semibold text-dark" for="imagen_producto_trasera">Ingresa la imagen del producto Trasera</label>
+                <input type="file" name="imagen_producto_trasera" id="imagen_producto_trasera" class="form-control border rounded" style="background-color: #e9ecef; color: #495057;">
+        </div>
+
         <!-- Botón de Envío -->
         <div class="text-center">
             <button type="submit" class="btn btn-success w-50">Agregar</button>
