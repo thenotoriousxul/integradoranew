@@ -16,10 +16,11 @@ return new class extends Migration
         $table->string('nombre', 50);
         $table->enum('talla', ['CH', 'M', 'XL', 'XXL']);
         $table->string('imagen_producto_final', 255);
-        $table->string('imagen_producto_trasera', 255);
+        $table->string('imagen_producto_trasera', 255)->default('Personalizada');
         $table->decimal('costo_fabrica', 10, 2);
         $table->decimal('costo_precio_venta', 10, 2);
         $table->integer('cantidad')->default(0);
+        $table->enum('estado',['activo','inactivo'])->default('activo');
         $table->boolean('rebaja')->default(false);
         $table->decimal('porcentaje_rebaja', 5,2)->default(0.00);
         $table->decimal('precio_rebajado', 10,2)->default(0.00);
