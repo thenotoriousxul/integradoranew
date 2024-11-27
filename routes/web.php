@@ -234,3 +234,6 @@ Route::get('/personalizar/{productoId}', [PersonalizarController::class, 'person
 
 
 
+Route::get('/test', function () {
+    return view('mail.mailCliente');
+});
