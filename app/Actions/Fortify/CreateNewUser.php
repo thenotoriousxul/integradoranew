@@ -1,12 +1,15 @@
 <?php
 namespace App\Actions\Fortify;
 
+use App\Mail\clienteEmail;
+use App\Mail\empleadoMail;
 use App\Models\tipoPersona;
 use App\Models\User;
 use App\Models\Persona;
 use App\Models\Direccion;
 use AWS\CRT\HTTP\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
@@ -81,7 +84,13 @@ class CreateNewUser implements CreatesNewUsers
 
         $user->assignRole('cliente');
 
-
+        try {
+            Mail::to($input['email'])->send(new clienteEmail);
+        } catch (\Exception $e) {
+            // Manejo de errores de correo (opcional, para no interrumpir el flujo)
+            logger('Error al enviar el correo: ' . $e->getMessage());
+        }
+        
         return $user;
     }
 
@@ -102,6 +111,8 @@ class CreateNewUser implements CreatesNewUsers
         'email' => $input['email'],
         'password' => Hash::make($input['password']),
     ]);
+
+    $password = $input['password'];
 
     // Crear dirección
     $direccion = Direccion::create([
@@ -128,7 +139,19 @@ class CreateNewUser implements CreatesNewUsers
     // Asignar el rol de empleado
     $user->assignRole('empleado');
 
-    return $user;
+    try {
+        Mail::to($input['email'])->send(new empleadoMail($input['email'],$password ));
+        return 'Correo enviado correctamente';
+    } catch (\Exception $e) {
+        return 'Error al enviar el correo: ' . $e->getMessage();
     }
+
+
+    return $user;
+
+
+    }
+
+
 
 }
