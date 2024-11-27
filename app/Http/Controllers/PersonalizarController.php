@@ -40,7 +40,6 @@ class PersonalizarController extends Controller
 
     // Procesar la imagen personalizada
     $imageData = $request->input('imagen_personalizada');
-    // Quitar el prefijo 'data:image/png;base64,' o similar
     $imageData = preg_replace('/^data:image\/\w+;base64,/', '', $imageData);
     $imageData = str_replace(' ', '+', $imageData);
     $imageName = 'personalizaciones/' . uniqid() . '.png';
@@ -79,20 +78,20 @@ class PersonalizarController extends Controller
     $productoBase = Producto::findOrFail($request->input('producto_id'));
 
     // Asignar valores desde el producto base o valores predeterminados
-    $precio = $productoBase->costo ?? 0; // Precio del producto personalizado
-    $costoFabrica = $productoBase->costo_fabrica ?? 0; // Costo de fábrica del producto base
-    $costoPrecioVenta = $productoBase->costo_precio_venta ?? 0; // Costo precio venta
-    $talla = $productoBase->talla ?? 'M'; // Talla del producto base o 'M' por defecto
-    $estado = 'activo'; // Estado por defecto
+    $precio = $productoBase->costo ?? 0;
+    $costoFabrica = $productoBase->costo_fabrica ?? 0;
+    $costoPrecioVenta = $productoBase->costo_precio_venta ?? 0;
+    $talla = $productoBase->talla ?? 'M';
+    $estado = 'activo';
 
     // Crear un nuevo registro en 'edicion' para la edición personalizada
     $edicion = new \App\Models\Edicion();
     $edicion->nombre_edicion = 'Personalizada';
     $edicion->descripcion = 'Edición personalizada';
-    $edicion->fecha_de_salida = now(); // Fecha actual
+    $edicion->fecha_de_salida = now();
     $edicion->lote = 1;
     $edicion->existencias = 1;
-    $edicion->extra = 0; // Puedes ajustar este valor según tu lógica
+    $edicion->extra = 0;
     $edicion->tipo = 'Personalizada';
     $edicion->save();
 
@@ -104,30 +103,48 @@ class PersonalizarController extends Controller
     $edicionProducto->porcentaje_rebaja = 0;
     $edicionProducto->precio_rebajado = $precio;
     $edicionProducto->productos_id = $request->input('producto_id');
-    $edicionProducto->edicion_id = $edicion->id; // Asignar el ID de la nueva edición
+    $edicionProducto->edicion_id = $edicion->id;
     $edicionProducto->imagen_producto_final = $imageUrl;
-    $edicionProducto->imagen_producto_trasera = $imageUrl; // Asignar el mismo valor que 'imagen_producto_final'
-    $edicionProducto->costo_fabrica = $costoFabrica; // Asignar valor definido
-    $edicionProducto->costo_precio_venta = $costoPrecioVenta; // Asignar valor definido
+    $edicionProducto->imagen_producto_trasera = $imageUrl;
+    $edicionProducto->costo_fabrica = $costoFabrica;
+    $edicionProducto->costo_precio_venta = $costoPrecioVenta;
     $edicionProducto->talla = $talla;
     $edicionProducto->estado = $estado;
     $edicionProducto->save();
 
-    // Agregar al carrito
-    Cart::add([
+    // -------------------------------
+    // Agregar el producto personalizado al carrito en sesión
+    // -------------------------------
+
+    // Recuperar el carrito de la sesión
+    $carrito = collect(session()->get('carrito', []));
+
+    // Generar un identificador único para el producto personalizado
+    $productoKey = "personalizado_{$edicionProducto->id}";
+
+    // Agregar el producto personalizado al carrito
+    $carrito->put($productoKey, [
         'id' => $edicionProducto->id,
         'name' => $edicionProducto->nombre,
         'price' => $edicionProducto->precio_rebajado,
         'quantity' => 1,
         'attributes' => [
             'imagen' => $edicionProducto->imagen_producto_final,
+            'talla' => $talla,
             // Puedes agregar más atributos si es necesario
         ],
     ]);
 
-    // Redirigir al carrito con mensaje de éxito
-    return redirect()->route('carrito.mostrar')->with('success', 'Producto personalizado agregado al carrito.');
+    // Guardar el carrito actualizado en la sesión
+    session()->put('carrito', $carrito);
+
+    // Mensaje de éxito
+    session()->flash('success', 'Producto personalizado agregado al carrito.');
+
+    // Redirigir al carrito o a donde desees
+    return redirect()->route('carrito.mostrar');
 }
+
 
 
 

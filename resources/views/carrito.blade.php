@@ -24,23 +24,23 @@
             <tbody id="carrito-body">
                 @if(empty($contenidoCarrito) || count($contenidoCarrito) === 0)
                 <tr>
-                    <td colspan="5" class="text-center text-white">Tu carrito está vacío.</td>
+                    <td colspan="6" class="text-center text-white">Tu carrito está vacío.</td>
                 </tr>
                 @else
-                    @foreach($contenidoCarrito as $item)
-                        <tr data-id="{{ $item['id'] }}">
+                    @foreach($contenidoCarrito as $key => $item)
+                        <tr data-id="{{ $key }}">
                             <td class="d-flex align-items-center justify-content-center">
-                                <img src="{{ $item['attributes']['imagen'] ?? 'ruta-a-imagen-default.jpg' }}" alt="{{ $item['name'] }}" class="me-3 rounded-circle" style="width: 50px; height: 50px;">
+                                <img src="{{ $item['attributes']['imagen'] ?? asset('img/default.jpg') }}" alt="{{ $item['name'] }}" class="me-3 rounded-circle" style="width: 50px; height: 50px;">
                                 <span style="font-family: 'Inter', sans-serif;">{{ $item['name'] }}</span>
                             </td>
-                            <td>{{ $item['attributes']['talla'] }}</td>
+                            <td>{{ $item['attributes']['talla'] ?? 'N/A' }}</td>
                             <td style="font-family: 'Inter', sans-serif;">${{ number_format($item['price'], 2) }}</td>
                             <td>
                                 <input type="number" name="cantidad" value="{{ $item['quantity'] }}" min="1" class="form-control actualizar-cantidad text-center mx-auto" style="width: 80px; font-family: 'Inter', sans-serif;">
                             </td>
                             <td class="subtotal" style="font-family: 'Inter', sans-serif;">${{ number_format($item['price'] * $item['quantity'], 2) }}</td>
                             <td>
-                                <button class="btn btn-sm btn-danger eliminar-producto" data-id="{{ $item['id'] }}" style="font-family: 'Bebas Neue', cursive;">Eliminar</button>
+                                <button class="btn btn-sm btn-danger eliminar-producto" data-id="{{ $key }}" style="font-family: 'Bebas Neue', cursive;">Eliminar</button>
                             </td>
                         </tr>
                     @endforeach
@@ -50,6 +50,7 @@
     </div>
 
     <div class="text-end mt-4">
+        <h3 id="carrito-total" style="font-family: 'Inter', sans-serif;">Total: ${{ number_format($totalMonto, 2) }}</h3>
         <button id="vaciar-carrito" class="btn btn-danger mt-3 px-4 py-2" style="font-family: 'Bebas Neue', cursive; font-size: 1.2rem;">Vaciar Carrito</button>
         <a href="{{ route('detalleOrden') }}" id="comprar-carrito" 
            class="btn btn-success mt-3 px-4 py-2 {{ empty($contenidoCarrito) || count($contenidoCarrito) === 0 ? 'disabled' : '' }}" 
@@ -60,48 +61,72 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
-
-    // Actualizar cantidad
-    document.querySelectorAll('.actualizar-cantidad').forEach(input => {
-        input.addEventListener('change', function () {
-            fetch(`/carrito/actualizar/${this.closest('tr').dataset.id}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken
-                },
-                body: JSON.stringify({ cantidad: this.value })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    this.closest('tr').querySelector('.subtotal').textContent = `$${data.subtotal.toFixed(2)}`;
-                    actualizarTotal(data.total);
-                }
+        // Actualizar cantidad
+        document.querySelectorAll('.actualizar-cantidad').forEach(input => {
+            input.addEventListener('change', function () {
+                fetch(`/carrito/actualizar/${this.closest('tr').dataset.id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: JSON.stringify({ cantidad: this.value })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        this.closest('tr').querySelector('.subtotal').textContent = `$${data.subtotal.toFixed(2)}`;
+                        actualizarTotal(data.total);
+                    }
+                });
             });
         });
+
+        // Eliminar producto
+        document.querySelectorAll('.eliminar-producto').forEach(button => {
+            button.addEventListener('click', function () {
+                const productoId = this.dataset.id;
+
+                fetch(`/carrito/eliminar/${productoId}`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Eliminar la fila de la tabla
+                        this.closest('tr').remove();
+                        actualizarTotal(data.total);
+
+                        // Si el carrito está vacío, mostrar mensaje
+                        if (data.total == 0) {
+                            document.querySelector('#carrito-body').innerHTML = '<tr><td colspan="6" class="text-center text-white">Tu carrito está vacío.</td></tr>';
+                            document.getElementById('comprar-carrito').classList.add('disabled');
+                        }
+                    }
+                });
+            });
+        });
+
+        // Vaciar carrito
+        document.getElementById('vaciar-carrito').addEventListener('click', () => {
+            fetch('/carrito/vaciar', {
+                method: 'POST',
+                headers: { 'X-CSRF-TOKEN': csrfToken }
+            }).then(() => {
+                location.reload(); 
+            }).catch(error => console.error('Error al vaciar el carrito:', error));
+        });
+
+        function actualizarTotal(total) {
+            document.querySelector('#carrito-total').textContent = `Total: $${total.toFixed(2)}`;
+        }
     });
-
-    document.getElementById('vaciar-carrito').addEventListener('click', () => {
-    fetch('/carrito/vaciar', {
-        method: 'POST',
-        headers: { 'X-CSRF-TOKEN': csrfToken }
-    }).then(() => {
-        location.reload(); 
-    }).catch(error => console.error('Error al vaciar el carrito:', error));
-});
-
-
-    function actualizarTotal(total) {
-        document.querySelector('#carrito-total').textContent = `Total: $${total.toFixed(2)}`;
-    }
-});
-
 </script>
-
-
 
 @section('styles')
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
@@ -109,7 +134,6 @@
     body {
         background-color: #121212;
         color: #fff;
-        min-width: ;
     }
     table th {
         border-bottom: 2px solid #343a40;
