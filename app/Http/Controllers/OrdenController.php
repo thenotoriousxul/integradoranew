@@ -67,17 +67,21 @@ class OrdenController extends Controller
 
         return redirect()->route('admins.ordenes.index')->with('success', 'Orden eliminada correctamente.');
     }
+    
     public function listarPedidos()
 {
     // Obtener el usuario autenticado
-    $usuario = auth()->user();
+    $tipoPersona = auth()->user()->persona->tipoPersona()->first();
 
-    // Filtrar las órdenes por el ID del cliente autenticado
-    $ordenes = Orden::where('tipo_personas_id', $usuario->id)
-        ->with('detalles.edicion') // Incluir detalles y ediciones relacionadas
-        ->get();
+    $ordenes = Orden::where('tipo_personas_id', $tipoPersona->id)
+    ->with(['detalles.edicion']) // Cargar relaciones
+    ->get();
 
+
+    // Retornar la vista con las órdenes
     return view('cliente.pedidos', compact('ordenes'));
 }
+
+
 
 }

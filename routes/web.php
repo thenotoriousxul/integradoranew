@@ -46,7 +46,7 @@ Route::get('/carrito', function () {
 
 
 Route::get('/perfil', function () {
-    return view('perfil'); 
+    return view('cliente.miInformacion'); 
 })->name('perfil');
 
 // Rutas protegidas para administrador y cliente
@@ -238,4 +238,9 @@ Route::post('/personalizar/guardar', [PersonalizarController::class, 'guardar'])
 
 Route::get('/test', function () {
     return view('mail.mailCliente');
+});
+
+
+Route::get('/eldashxd', function () {
+    return view('cliente.pedidos');
 });

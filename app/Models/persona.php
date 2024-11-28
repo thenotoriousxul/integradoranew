@@ -32,7 +32,7 @@ class persona extends Model
         }
     
         // Relación 1 a muchos con el modelo TipoPersona
-        public function tiposPersonas()
+        public function tipoPersona()
         {
             return $this->hasMany(tipoPersona::class, 'personas_id');
         }

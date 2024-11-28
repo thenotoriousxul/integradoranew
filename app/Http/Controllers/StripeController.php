@@ -75,18 +75,23 @@ class StripeController extends Controller
             ], 500);
         }
     }
-
+ 
     private function guardarOrden($carrito, $paymentIntent)
     {
         $total = $paymentIntent->amount_received / 100;
 
+        $usuario = auth()->user();
+
+        $tipoPersona = $usuario->persona->tipoPersona()->first();
+
+
         $orden = Orden::create([
-            'tipo_personas_id' => auth()->user()->id,
+            'tipo_personas_id' => $tipoPersona->id,
             'fecha_orden' => now(),
             'total' => $total,
             'envios_domicilio' => 1,
             'estado' => 'Pagada',
-        ]); 
+        ]);
 
         foreach ($carrito as $producto) {
             DetalleOrden::create([

@@ -44,6 +44,5 @@
     </div>
   
     <div class="eliconuser">
-      <i class="fas fa-user fa-lg"></i>
     </div>
   </header>
