@@ -49,6 +49,7 @@ Route::get('/perfil', function () {
     return view('cliente.miInformacion'); 
 })->name('perfil');
 
+
 // Rutas protegidas para administrador y cliente
 Route::middleware(['auth'])->group(function () {
     // Dashboard del administrador, restringido solo para usuarios con rol 'admin'
