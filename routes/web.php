@@ -127,7 +127,7 @@ Route::get('/dash/cliente', function () {
 
 
 // rutas exlusivas del administrrador
-Route::middleware(['role:administrador'])->group(function(){
+Route::middleware(['role:admin'])->group(function(){
     Route::prefix('admin/empleado')->group(function(){
         Route::get('registrar', function(){ return view('auth.register-empleado');})->name('registrar.empleados');
         Route::post('guardar/empleado', [empleadoController::class, 'registrarEmpleado'])->name('guardar.empleado');  
