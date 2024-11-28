@@ -210,11 +210,6 @@ Route::prefix('admin/ediciones_productos')->group(function(){
 });
 
 
-Route::prefix('admin/dashboard')->group(function(){
-    Route::get('/menu',[dashController::class], 'menuPrincipal')->name('dash.menu');
-    Route::get('/manual',[dashController::class,'manual'])->name('manual');
-});
-
 
 Route::get('registrar/empleado', function(){
     return view('auth.register-empleado');
@@ -238,4 +233,14 @@ Route::get('/test', function(){
 
 Route::get('/dash/cliente', function () {
     return view('cliente.pedidos');
+});
+
+
+//-- Rutas protegidas
+
+Route::middleware(['auth', 'role:admin'])->group(function() {
+    Route::prefix('admin/dashboard')->group(function(){
+        Route::get('/menu', [dashController::class, 'menuPrincipal'])->name('dash.menu');
+        Route::get('/manual', [dashController::class, 'manual'])->name('manual');
+    });
 });
