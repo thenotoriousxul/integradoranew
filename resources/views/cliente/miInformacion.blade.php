@@ -166,7 +166,7 @@
             </div>
         </section>
 
-        <input type="submit" class="logout-button">
+        <input type="submit" class="logout-button" value="Actualizar Direccion">
     </form>
 </div>
 @endsection
