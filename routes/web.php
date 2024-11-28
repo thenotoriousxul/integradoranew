@@ -45,9 +45,10 @@ Route::get('/carrito', function () {
 })->name('carrito');
 
 
-Route::get('/perfil', function () {
-    return view('cliente.miInformacion'); 
-})->name('perfil');
+
+
+
+Route::get('/perfil', [informacionClienteController::class, 'dashinfo'])->name('perfil')->middleware('auth');
 
 
 // Rutas protegidas para administrador y cliente

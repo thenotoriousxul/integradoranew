@@ -57,6 +57,15 @@
             width: 80px;
         }
 
+        p
+        {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e2e2e2;
+            border-radius: 4px;
+            background-color: #f6f6f6  
+        }
+
         input[type="text"],
         input[type="tel"],
         input[type="date"] {
@@ -66,13 +75,30 @@
             border-radius: 4px;
             background-color: #f6f6f6;
         }
+        .logout-button {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 2rem;
+            text-decoration: none;
+        
+        }
+
+        .logout-button:hover {
+            background-color: #333;
+        }
 </style>
 
 <div class="main-container">
     <header class="header">
         <a href="#" class="logo">OZEZ</a>
     </header>
-
+ 
  
         <section class="form-section">
             <h2 class="section-title">Datos personales</h2>
@@ -80,19 +106,19 @@
 
             <div class="form-row">
                 <div class="form-group">
-                    <input type="text" placeholder="Nombre *" required>
+                    <p>{{ $usuario->persona->nombre ?? 'Nombre no disponible' }}</p>
                 </div>
                 <div class="form-group">
-                    <input type="text" placeholder="Apellidos *" required>
+                    <p>{{$usuario->persona->apellido_paterno}} {{$usuario->persona->apellido_materno}} </p>
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
-                    <input type="date" placeholder="Fecha de Nacimiento *" required>
+                   <p>{{$usuario->persona->genero}}</p>
                 </div>
                 <div class="form-group phone-group">
-                    <input type="tel" placeholder="Teléfono móvil *" required>
+                    <p>{{$usuario->persona->numero_telefonico}}</p>
                 </div>
             </div>
         </section>
@@ -102,19 +128,19 @@
             
             <div class="form-row">
                 <div class="form-group">
-                    <input type="text" placeholder="Dirección *" required>
+                    <input type="text" value="{{$usuario->persona->direccion->calle}}">
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
-                    <input type="text" placeholder="Más información (Opcional)">
+                    <input type="text" value="{{$usuario->persona->direccion->colonia}}">
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
-                    <input type="text" placeholder="Código postal *" required>
+                    <input type="text" value="{{$usuario->persona->direccion->codigo_postal}}">
                 </div>
                 <div class="form-group">
                     <input type="text" placeholder="Municipio *" required>
@@ -123,22 +149,24 @@
 
             <div class="form-row">
                 <div class="form-group">
-                    <input type="text" placeholder="Ciudad *" required>
+                    <input type="text" value="{{$usuario->persona->direccion->numero_ext}}">
                 </div>
                 <div class="form-group">
-                    <input type="text" placeholder="Colonia *" required>
+                    <input type="text" value="{{$usuario->persona->direccion->numero_int}}">
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
-                    <input type="text" placeholder="Estado *" required>
+                    <input type="text" value="{{$usuario->persona->direccion->estado}}">
                 </div>
                 <div class="form-group">
-                    <input type="text" value="Mexico" readonly>
+                    <input type="text" value="{{$usuario->persona->direccion->pais}}">
                 </div>
             </div>
         </section>
+
+        <input type="submit" class="logout-button">
     </form>
 </div>
 @endsection
