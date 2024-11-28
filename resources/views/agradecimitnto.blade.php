@@ -20,7 +20,7 @@
 <div class="card shadow p-4 text-center" style="max-width: 400px;">
     <i class="bi bi-check-circle icon mb-3"></i>
     <h1 class="h3 mb-3">¡Gracias por tu compra!</h1>
-    <p class="mb-4">Tu pedido ha sido confirmado</p>
+    <p class="mb-4">Tu pedido ha sido confirmado gracias</p>
     
     <section class="bg-light p-3 rounded mb-4 text-start">
         
