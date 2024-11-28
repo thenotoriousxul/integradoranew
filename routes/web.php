@@ -209,6 +209,7 @@ Route::prefix('admin/ediciones_productos')->group(function(){
     Route::get('/filtros',[ediciones_productoController::class, 'filtro'])->name('filtros.productos');
 });
 
+
 Route::prefix('admin/dashboard')->group(function(){
     Route::get('/menu',[dashController::class], 'menuPrincipal')->name('dash.menu');
     Route::get('/manual',[dashController::class,'manual'])->name('manual');
