@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class historial_envios extends Model
+class Historial_envios extends Model
 {
     protected $table = 'historial_envios';
 
