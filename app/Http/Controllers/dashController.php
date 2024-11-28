@@ -39,7 +39,7 @@ class dashController extends Controller
     
 
 
-        return view('admin.dashmenu', [
+        return view('admin.dashboardMenu', [
             'ingresosMes'=>$ingresosMes,
             'ventasTotales'=>$ventasTotales,
             'nuevosClientes'=>$nuevosClientes,

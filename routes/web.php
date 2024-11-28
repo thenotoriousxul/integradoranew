@@ -238,10 +238,6 @@ Route::post('/personalizar/guardar', [PersonalizarController::class, 'guardar'])
 
 
 
-Route::get('/test', function () {
-    return view('mail.mailCliente');
-});
-
 
 Route::get('/eldashxd', function () {
     return view('cliente.pedidos');
