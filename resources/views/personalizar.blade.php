@@ -11,35 +11,28 @@
             <h3>Estampados Disponibles</h3>
             <div class="estampados d-flex flex-wrap">
                 @foreach($estampados as $estampado)
-                    <img onclick="agregarEstampado('{{ Storage::disk('s3')->url($estampado->imagen_estampado) }}', '{{ $estampado->id }}')" 
+                    <img onclick="agregarEstampado('{{ $estampado->imagen_estampado }}')" 
                          src="{{ Storage::disk('s3')->url($estampado->imagen_estampado) }}" 
                          alt="{{ $estampado->nombre }}" 
                          class="img-thumbnail m-2" 
                          title="{{ $estampado->nombre }}">
                 @endforeach
             </div>
-            <!-- Formulario para enviar los datos -->
-            <form id="personalizar-form" action="{{ route('personalizar.guardar') }}" method="POST">
-                @csrf
-                <input type="hidden" name="producto_id" value="{{ $producto->id }}">
-                <input type="hidden" name="estampado_id" id="estampado_id" value="">
-                <input type="hidden" name="imagen_personalizada" id="imagen_personalizada" value="">
-                <button type="button" onclick="guardarDiseno()" class="btn btn-success mt-3">Agregar al carrito</button>
-            </form>
-            <!-- Botón para eliminar objetos -->
+            <!-- Botones de Acción -->
             <div class="controls mt-3">
+                <button onclick="descargarImagen()" class="btn btn-success">Guardar Diseño</button>
                 <button onclick="eliminarObjeto()" class="btn btn-danger">Eliminar Objeto</button>
             </div>
         </div>
     </div>
 </div>
+
 <!-- Agregar la librería Fabric.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.0/fabric.min.js"></script>
 <script>
     const canvas = new fabric.Canvas('myCanvas');
     const productId = {{ $producto->id }};
     let playeraBounds = null;
-    let selectedEstampadoId = null;
 
     // Función para establecer la imagen de fondo
     function setBackground() {
@@ -53,14 +46,14 @@
             canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
             // Almacenar los límites de la playera
             playeraBounds = img.getBoundingRect();
-        }, { crossOrigin: 'Anonymous' }); // Añadir crossOrigin
+        });
     }
 
     // Restaurar el canvas al cargar
     restoreCanvas();
 
     // Agregar estampado al canvas
-    function agregarEstampado(imagePath, estampadoId) {
+    function agregarEstampado(imagePath) {
         fabric.Image.fromURL(imagePath, function(img) {
             img.set({
                 left: canvas.width / 2,
@@ -75,10 +68,7 @@
             canvas.add(img);
             canvas.setActiveObject(img);
             saveCanvas();
-            // Establecer el ID del estampado seleccionado
-            selectedEstampadoId = estampadoId;
-            document.getElementById('estampado_id').value = estampadoId;
-        }, { crossOrigin: 'Anonymous' }); // Añadir crossOrigin
+        });
     }
 
     // Eventos para restringir movimiento y escalado dentro de la playera
@@ -131,19 +121,12 @@
         saveCanvas();
     });
 
-    // Función para guardar el diseño y enviar el formulario
-    function guardarDiseno() {
-        try {
-            // Obtener la imagen del canvas
-            const canvasData = canvas.toDataURL('image/png');
-            // Establecer el valor en el input oculto
-            document.getElementById('imagen_personalizada').value = canvasData;
-            // Enviar el formulario
-            document.getElementById('personalizar-form').submit();
-        } catch (error) {
-            console.error('Error al guardar el diseño:', error);
-            alert('Ocurrió un error al guardar el diseño. Por favor, asegúrate de que todas las imágenes se cargaron correctamente.');
-        }
+    // Descargar la imagen del canvas
+    function descargarImagen() {
+        const link = document.createElement('a');
+        link.download = 'personalizacion.png';
+        link.href = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+        link.click();
     }
 
     // Eliminar el objeto seleccionado
@@ -169,6 +152,7 @@
         if (canvasData) {
             canvas.loadFromJSON(canvasData, function() {
                 canvas.renderAll();
+
                 // Asegurarse de que la imagen de fondo es la correcta después de restaurar
                 setBackground();
             });
