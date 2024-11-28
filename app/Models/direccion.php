@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class direccion extends Model
+class Direccion extends Model
 {
     protected $table = 'direcciones';
 
