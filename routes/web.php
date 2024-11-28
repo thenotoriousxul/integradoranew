@@ -222,12 +222,6 @@ Route::get('registrar/empleado', function(){
 Route::post('guardar/empleado', [empleadoController::class, 'registrarEmpleado'])->name('guardar.empleado');
 
 
-Route::prefix('cliente')->group(function(){
-    Route::get('/dash', function(){
-        return view('cliente.menuPrincipal');
-    });
-});
-
 Route::get('/producto/{id}', action: [ediciones_productoController::class, 'detalle'])->name('vista_producto_detalle'); 
 Route::get('/rebajas' , [ediciones_productoController::class, 'rebajas'])->name('rebajas');
 
@@ -237,8 +231,10 @@ Route::get('/personalizar/{productoId}', [PersonalizarController::class, 'person
 Route::post('/personalizar/guardar', [PersonalizarController::class, 'guardar'])->name('personalizar.guardar');
 
 
+Route::get('/test', function(){
+    return view('mail.mailCliente');
+});
 
-
-Route::get('/eldashxd', function () {
+Route::get('/dash/cliente', function () {
     return view('cliente.pedidos');
 });
