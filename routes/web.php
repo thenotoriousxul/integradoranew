@@ -45,31 +45,7 @@ Route::get('/carrito', function () {
 })->name('carrito');
 
 
-
-
-
 Route::get('/perfil', [informacionClienteController::class, 'dashinfo'])->name('perfil')->middleware('auth');
-
-
-// Rutas protegidas para administrador y cliente
-Route::middleware(['auth'])->group(function () {
-    // Dashboard del administrador, restringido solo para usuarios con rol 'admin'
-    Route::get('/admin/dashboard', function () {
-        if (!auth()->user()->hasRole('admin')) {
-            abort(403, 'No tienes acceso a esta página.');
-        }
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
-
-    // Dashboard del cliente, restringido solo para usuarios con rol 'cliente'
-    Route::get('/formulario/agregar/Producto', [formulariosController::class, 'formularioProducto'])->name('agregar.producto');
-    Route::post('/agregar/producto', [productoController::class, 'saveProducto'])->name('producto.save');
-
-    Route::get('/agregar/proveedor', [formulariosController::class, 'agregarProveedor'])->name('agregar.proveedor');
-    Route::get('/guardar/proveedor', [proveedorController::class, 'saveProveedor'])->name('guardar.proveedor');
-});
-
-
 
 
 // Rutas específicas para clientes usando el middleware directamente
@@ -82,7 +58,6 @@ Route::middleware(['auth'])->group(function () {
     })->name('cliente.dashboard');
 
     
-// RUTAS DEl PROCESO DE ORDEN -- EN CONSTRUCCION XD
 Route::post('/procesar-pago', [StripeController::class, 'procesarPago'])->name('procesarPago');
 Route::post('/create-payment-intent', [StripeController::class, 'createPaymentIntent'])->name('createPaymentIntent');
 
@@ -100,36 +75,11 @@ Route::get('/Datos/Cliente', function () {
 
 Route::get('/Detalle_Orden', [informacionClienteController::class, 'mostrarInformacionEnvio'])->name('detalleOrden')->middleware('auth');
 
-
 });
-
-// Rutas de acceso general
-
 
 Route::get('/envios', function () {
     return view('envios');
 })->name('envios');
-
-// Formularios y productos sin autenticación
-
-//Route::get('/productos/base', [productoController::class, 'getProductos'])->name('mostrar.productos');
-
-
-// Rutas de proveedores sin autenticación
-Route::get('/guardar/proveedor', [proveedorController::class, 'saveProveedor'])->name('guardar.proveedor');
-
-
-//Productos---------------------------------------------------
-//Route::get('/productos/base',[productoController::class, 'getProductos'])->name('mostrar.productos');
-
-
-Route::get('/agregar/proveedor',[formulariosController::class, 'agregarProveedor'])->name('agregar.proveedor');
-Route::get('/guardar/proveedor', [proveedorController::class, 'saveProveedor'])->name('guardar.proveedor');
-
-
-Route::get('/agregar/edicion',[formulariosController::class,'formularioEdicion'])->name('agregar.edicion');
-
-//Route::get('/producto/{id}', action: [ProductoController::class, 'detalle'])->name('vista_producto_detalle');
 
 
 // Rutas para gestionar el carrito
@@ -151,71 +101,10 @@ Route::get('/dashinventario', function () {
     return view('admin.dashInventario');
 });
 
-
-Route::prefix('admin/producto')->group(function(){
-    Route::get('/dash/productosBase', [productoController::class, 'dashProductos'])->name('dash.productosBase');
-    Route::patch('/dash/productoBase/activar/{id}', [productoController::class, 'activar'])->name('activar.producto');
-    Route::patch('/dash/productoBase/inactivar/{id}', [productoController::class, 'inactivar'])->name('inactivar.producto');
-    Route::get('dash/producto/editar/{id}', [productoController::class, 'editar'])->name('editar.producto');
-    Route::put('dash/productos/actualizar/{id}', [productoController::class, 'update'])->name('actualizar.producto');
-    Route::get('dash/productos/filtroPorPrecio',[productoController::class, 'filtrarPorPrecio'])->name('filtrar.precio');
-    Route::get('dash/productos/filtros',[productoController::class, 'filtros'])->name('filtros');
-});
-
-Route::prefix('admin/ediciones')->group(function () {
-    Route::get('/crear', [EdicionController::class, 'crearFormularioEdicion'])->name('ediciones.crear');
-    Route::post('/guardar', [EdicionController::class, 'guardarEdicion'])->name('ediciones.guardar');
-    Route::get('/listar', [EdicionController::class, 'listarEdiciones'])->name('ediciones.listar');
-    Route::get('/{id}/detalle', [EdicionController::class, 'detalleEdicion'])->name('ediciones.detalle');
-    Route::get('/{id}/editar', [EdicionController::class, 'editarFormularioEdicion'])->name('ediciones.editar');
-    Route::post('/{id}/actualizar', [EdicionController::class, 'actualizarEdicion'])->name('ediciones.actualizar');
-    Route::delete('/{id}/eliminar', [EdicionController::class, 'eliminarEdicion'])->name('ediciones.eliminar');
-});
-
-Route::prefix('admin/estampados')->group(function () {
-    Route::get('/listar', [EstampadoController::class, 'listarEstampados'])->name('estampados.listar');
-    Route::get('/crear', [EstampadoController::class, 'crearFormularioEstampado'])->name('estampados.crear');
-    Route::post('/guardar', [EstampadoController::class, 'guardarEstampado'])->name('estampados.guardar');
-    Route::get('/{id}/editar', [EstampadoController::class, 'editarFormularioEstampado'])->name('estampados.editar');
-    Route::post('/{id}/actualizar', [EstampadoController::class, 'actualizarEstampado'])->name('estampados.actualizar');
-    Route::delete('/{id}/eliminar', [EstampadoController::class, 'eliminarEstampado'])->name('estampados.eliminar');
-});
-
 Route::get('/pedidos', [OrdenController::class, 'listarPedidos'])->name('pedidos');
 
-
-
-Route::prefix('admins/ordenes')->group(function () {
-    Route::get('/', [OrdenController::class, 'index'])->name('admins.ordenes.index');
-    Route::get('/crear', [OrdenController::class, 'create'])->name('admins.ordenes.create');
-    Route::post('/guardar', [OrdenController::class, 'store'])->name('admins.ordenes.store');
-    Route::get('/{id}/editar', [OrdenController::class, 'edit'])->name('admins.ordenes.edit');
-    Route::put('/{id}/actualizar', [OrdenController::class, 'update'])->name('admins.ordenes.update');
-    Route::delete('/{id}/eliminar', [OrdenController::class, 'destroy'])->name('admins.ordenes.destroy');
-    Route::get('/{id}', [OrdenController::class, 'show'])->name('admins.ordenes.show');
-});
-
-Route::prefix('admin/diseños')->group(function(){
-    Route::get('/crear',[formulariosController::class, 'crearDiseño'])->name('crear.diseño');
-    Route::post('/guardar',[disenosController::class, 'storeDiseños'])->name('guardar.diseño');
-    Route::get('/diseños',[disenosController::class, 'getDiseños'])->name('mostrar.diseños');
-});
-
-
-Route::prefix('admin/ediciones_productos')->group(function(){
-    Route::get('/crear/producto',[ediciones_productoController::class, 'create'])->name('crear.producto');
-    Route::post('guardar/producto',[ediciones_productoController::class, 'store'])->name('store.productos');
-    Route::get('/productos/catalogo',[ediciones_productoController::class, 'getProductos'])->name('mostrar.productos');
-    Route::get('/filtros',[ediciones_productoController::class, 'filtro'])->name('filtros.productos');
-});
-
-
-
-Route::get('registrar/empleado', function(){
-    return view('auth.register-empleado');
-})->name('registrar.empleados');
-
-Route::post('guardar/empleado', [empleadoController::class, 'registrarEmpleado'])->name('guardar.empleado');
+Route::get('/productos/catalogo',[ediciones_productoController::class, 'getProductos'])->name('mostrar.productos');
+Route::get('/filtros',[ediciones_productoController::class, 'filtro'])->name('filtros.productos');
 
 
 Route::get('/producto/{id}', action: [ediciones_productoController::class, 'detalle'])->name('vista_producto_detalle'); 
@@ -236,11 +125,93 @@ Route::get('/dash/cliente', function () {
 });
 
 
-//-- Rutas protegidas
 
-Route::middleware(['auth', 'role:admin'])->group(function() {
-    Route::prefix('admin/dashboard')->group(function(){
-        Route::get('/menu', [dashController::class, 'menuPrincipal'])->name('dash.menu');
-        Route::get('/manual', [dashController::class, 'manual'])->name('manual');
+// rutas exlusivas del administrrador
+Route::middleware(['role:administrador'])->group(function(){
+    Route::prefix('admin/empleado')->group(function(){
+        Route::get('registrar', function(){ return view('auth.register-empleado');})->name('registrar.empleados');
+        Route::post('guardar/empleado', [empleadoController::class, 'registrarEmpleado'])->name('guardar.empleado');  
     });
+});
+
+
+
+//-- Rutas protegidas para el admin y el empleado
+Route::middleware(['role:admin|empleado'])->group(function () {
+
+    Route::prefix('admin/diseños')->group(function(){
+        Route::get('/crear',[formulariosController::class, 'crearDiseño'])->name('crear.diseño');
+        Route::post('/guardar',[disenosController::class, 'storeDiseños'])->name('guardar.diseño');
+        Route::get('/diseños',[disenosController::class, 'getDiseños'])->name('mostrar.diseños');
+    });
+
+    
+    Route::get('/agregar/proveedor',[formulariosController::class, 'agregarProveedor'])->name('agregar.proveedor');
+    Route::get('/guardar/proveedor', [proveedorController::class, 'saveProveedor'])->name('guardar.proveedor');
+    
+    Route::prefix('admin/ediciones')->group(function () {
+        Route::get('/crear', [EdicionController::class, 'crearFormularioEdicion'])->name('ediciones.crear');
+        Route::get('/agregar/edicion',[formulariosController::class,'formularioEdicion'])->name('agregar.edicion');
+        Route::post('/guardar', [EdicionController::class, 'guardarEdicion'])->name('ediciones.guardar');
+        Route::get('/listar', [EdicionController::class, 'listarEdiciones'])->name('ediciones.listar');
+        Route::get('/{id}/detalle', [EdicionController::class, 'detalleEdicion'])->name('ediciones.detalle');
+        Route::get('/{id}/editar', [EdicionController::class, 'editarFormularioEdicion'])->name('ediciones.editar');
+        Route::post('/{id}/actualizar', [EdicionController::class, 'actualizarEdicion'])->name('ediciones.actualizar');
+        Route::delete('/{id}/eliminar', [EdicionController::class, 'eliminarEdicion'])->name('ediciones.eliminar');
+    });
+
+    Route::prefix('admin/estampados')->group(function () {
+        Route::get('/listar', [EstampadoController::class, 'listarEstampados'])->name('estampados.listar');
+        Route::get('/crear', [EstampadoController::class, 'crearFormularioEstampado'])->name('estampados.crear');
+        Route::post('/guardar', [EstampadoController::class, 'guardarEstampado'])->name('estampados.guardar');
+        Route::get('/{id}/editar', [EstampadoController::class, 'editarFormularioEstampado'])->name('estampados.editar');
+        Route::post('/{id}/actualizar', [EstampadoController::class, 'actualizarEstampado'])->name('estampados.actualizar');
+        Route::delete('/{id}/eliminar', [EstampadoController::class, 'eliminarEstampado'])->name('estampados.eliminar');
+    });
+
+    Route::prefix('admin/producto')->group(function(){
+        Route::get('/dash/productosBase', [productoController::class, 'dashProductos'])->name('dash.productosBase');
+        Route::patch('/dash/productoBase/activar/{id}', [productoController::class, 'activar'])->name('activar.producto');
+        Route::patch('/dash/productoBase/inactivar/{id}', [productoController::class, 'inactivar'])->name('inactivar.producto');
+        Route::get('dash/producto/editar/{id}', [productoController::class, 'editar'])->name('editar.producto');
+        Route::put('dash/productos/actualizar/{id}', [productoController::class, 'update'])->name('actualizar.producto');
+        Route::get('dash/productos/filtroPorPrecio',[productoController::class, 'filtrarPorPrecio'])->name('filtrar.precio');
+        Route::get('dash/productos/filtros',[productoController::class, 'filtros'])->name('filtros');
+    });
+
+    Route::prefix('admins/ordenes')->group(function () {
+        Route::get('/', [OrdenController::class, 'index'])->name('admins.ordenes.index');
+        Route::get('/crear', [OrdenController::class, 'create'])->name('admins.ordenes.create');
+        Route::post('/guardar', [OrdenController::class, 'store'])->name('admins.ordenes.store');
+        Route::get('/{id}/editar', [OrdenController::class, 'edit'])->name('admins.ordenes.edit');
+        Route::put('/{id}/actualizar', [OrdenController::class, 'update'])->name('admins.ordenes.update');
+        Route::delete('/{id}/eliminar', [OrdenController::class, 'destroy'])->name('admins.ordenes.destroy');
+        Route::get('/{id}', [OrdenController::class, 'show'])->name('admins.ordenes.show');
+    });
+
+    Route::prefix('admin/ediciones_productos')->group(function(){
+        Route::get('/crear/producto',[ediciones_productoController::class, 'create'])->name('crear.producto');
+        Route::post('guardar/producto',[ediciones_productoController::class, 'store'])->name('store.productos');
+    });
+  
+    Route::get('/admin/dashboard/menu', [dashController::class, 'menuPrincipal'])->name('dash.menu');
+    Route::get('/admin/dashboard/manual', [dashController::class, 'manual'])->name('manual');
+});
+
+
+Route::middleware(['auth'])->group(function () {
+    // Dashboard del administrador, restringido solo para usuarios con rol 'admin'
+    Route::get('/admin/dashboard', function () {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403, 'No tienes acceso a esta página.');
+        }
+        return view('admin.dashboard');
+    })->name('admin.dashboard');
+
+    // Dashboard del cliente, restringido solo para usuarios con rol 'cliente'
+    Route::get('/formulario/agregar/Producto', [formulariosController::class, 'formularioProducto'])->name('agregar.producto');
+    Route::post('/agregar/producto', [productoController::class, 'saveProducto'])->name('producto.save');
+
+    Route::get('/agregar/proveedor', [formulariosController::class, 'agregarProveedor'])->name('agregar.proveedor');
+    Route::get('/guardar/proveedor', [proveedorController::class, 'saveProveedor'])->name('guardar.proveedor');
 });
