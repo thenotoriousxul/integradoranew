@@ -87,7 +87,7 @@
 
 <div class="main-container">
     <header class="header">
-        <a href="#" class="logo">PULL&BEAR</a>
+        <a href="#" class="logo">OZEZ</a>
     </header>
 
     <section>
