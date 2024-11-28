@@ -2,11 +2,11 @@
 
 use App\Actions\Fortify\CreateNewUser;
 use App\Http\Controllers\carritoController;
-use App\Http\Controllers\dashController;
 use App\Http\Controllers\disenosController;
 use App\Http\Controllers\ediciones_productoController;
 use App\Http\Controllers\informacionClienteController;
 use App\Http\Controllers\StripeController;
+use App\Http\Controllers\dashController;
 use Spatie\Permission\Middlewares\RoleMiddleware;
 use Spatie\Permission\Middlewares\PermissionMiddleware;
 use Spatie\Permission\Middlewares\RoleOrPermissionMiddleware;
@@ -210,7 +210,7 @@ Route::prefix('admin/ediciones_productos')->group(function(){
 });
 
 Route::prefix('admin/dashboard')->group(function(){
-    Route::get('/menu',[dashController::class, 'menuPrincipal'])->name('dash.menu');
+    Route::get('/menu',[dashController::class], 'menuPrincipal')->name('dash.menu');
     Route::get('/manual',[dashController::class,'manual'])->name('manual');
 });
 
