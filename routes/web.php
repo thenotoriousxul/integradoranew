@@ -19,6 +19,8 @@ use App\Http\Controllers\empleadoController;
 use App\Http\Controllers\EstampadoController;
 use App\Http\Controllers\PersonalizarController;
 use App\Http\Controllers\OrdenController;
+use App\Http\Controllers\S3ImageController;
+
 
 
 //prueba
@@ -230,11 +232,12 @@ Route::get('/producto/{id}', action: [ediciones_productoController::class, 'deta
 Route::get('/rebajas' , [ediciones_productoController::class, 'rebajas'])->name('rebajas');
 
 Route::get('/personalizacion', [PersonalizarController::class, 'mostrarCatalogoPersonalizable'])->name('personalizacion');
-Route::get('/personalizar/{productoId}', [PersonalizarController::class, 'personalizarProducto'])->name('personalizar.producto');
 
+Route::get('/personalizar/{productoId}', [PersonalizarController::class, 'personalizarProducto'])->name('personalizar.producto');
 Route::post('/personalizar/guardar', [PersonalizarController::class, 'guardar'])->name('personalizar.guardar');
 
 
+Route::get('/s3-image', [S3ImageController::class, 'getImage'])->name('s3.image');
 
 Route::get('/test', function () {
     return view('mail.mailCliente');

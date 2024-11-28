@@ -10,13 +10,17 @@
         <div class="estampados-container ml-4">
             <h3>Estampados Disponibles</h3>
             <div class="estampados d-flex flex-wrap">
-                @foreach($estampados as $estampado)
-                    <img onclick="agregarEstampado('{{ Storage::disk('s3')->url($estampado->imagen_estampado) }}', '{{ $estampado->id }}')" 
-                         src="{{ Storage::disk('s3')->url($estampado->imagen_estampado) }}" 
-                         alt="{{ $estampado->nombre }}" 
-                         class="img-thumbnail m-2" 
-                         title="{{ $estampado->nombre }}">
-                @endforeach
+            @foreach($estampados as $estampado)
+    <img onclick="agregarEstampado('{{ $estampado->imagen_estampado }}', '{{ $estampado->id }}')" 
+         src="{{ Storage::disk('s3')->url($estampado->imagen_estampado) }}" 
+         alt="{{ $estampado->nombre }}" 
+         class="img-thumbnail m-2" 
+         title="{{ $estampado->nombre }}">
+@endforeach
+
+
+
+
             </div>
             <!-- Formulario para enviar los datos -->
             <form id="personalizar-form" action="{{ route('personalizar.guardar') }}" method="POST">
@@ -61,25 +65,31 @@
 
     // Agregar estampado al canvas
     function agregarEstampado(imagePath, estampadoId) {
-        fabric.Image.fromURL(imagePath, function(img) {
-            img.set({
-                left: canvas.width / 2,
-                top: canvas.height / 2,
-                scaleX: 0.2,
-                scaleY: 0.2,
-                originX: 'center',
-                originY: 'center',
-                selectable: true,
-                evented: true
-            });
-            canvas.add(img);
-            canvas.setActiveObject(img);
-            saveCanvas();
-            // Establecer el ID del estampado seleccionado
-            selectedEstampadoId = estampadoId;
-            document.getElementById('estampado_id').value = estampadoId;
-        }, { crossOrigin: 'Anonymous' }); // Añadir crossOrigin
-    }
+    const proxyURL = `/s3-image?image=${encodeURIComponent(imagePath)}`;
+
+    fabric.Image.fromURL(proxyURL, function(img) {
+        img.set({
+            left: canvas.width / 2,
+            top: canvas.height / 2,
+            scaleX: 0.2,
+            scaleY: 0.2,
+            originX: 'center',
+            originY: 'center',
+            selectable: true,
+            evented: true
+        });
+        canvas.add(img);
+        canvas.setActiveObject(img);
+        saveCanvas();
+
+        // Establecer el ID del estampado seleccionado
+        document.getElementById('estampado_id').value = estampadoId;
+    });
+}
+
+
+
+
 
     // Eventos para restringir movimiento y escalado dentro de la playera
     canvas.on('object:moving', function(e) {
