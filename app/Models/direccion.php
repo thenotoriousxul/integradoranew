@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class direccion extends Model
+class Direccion extends Model
 {
     protected $table = 'direcciones';
 
@@ -17,7 +17,7 @@ class direccion extends Model
     'codigo_postal',
     'pais',
     ];
-
+     //
     public function envios()
     {
     return $this->hasMany(envios::class, 'direcciones_id');

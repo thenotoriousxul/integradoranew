@@ -15,4 +15,13 @@ class informacionClienteController extends Controller
         return view('detallaeOrden', compact('user'));
     }
 
+    public function dashinfo()
+    {
+        // Aquí se utiliza el modelo User correctamente
+        $usuario = auth()->user()->load('persona.direccion');
+
+        return view('cliente.miInformacion', compact('usuario'));
+    }
+
+    
 }

@@ -178,13 +178,45 @@
         </div>
         <div class="dashboard-section">
             <div class="section-header">
-                <h2 class="section-title">Productos más vendidos</h2>
+                <h2 class="section-title">Numero Ventas por mes</h2>
             </div>
             <div class="section-content">
-                <p>Aquí se mostraría la lista de productos más vendidos...</p>
+                <canvas id="ventasChart" width="400" height="200"></canvas>
             </div>
         </div>
     </div>
 </div>
 
+
+<script>
+  const ventasData = @json($ventas);
+
+  const meses = ventasData.map(item => item.mes);
+  const totalVentas = ventasData.map(item => item.total_ventas);
+
+  const ctx = document.getElementById('ventasChart').getContext('2d');
+    const ventasChart = new Chart(ctx, {
+    type: 'line', // Tipo de gráfico: líneas
+    data: {
+        labels: meses, // Etiquetas del eje X (meses)
+        datasets: [{
+            label: 'Ventas por mes',
+            data: totalVentas,
+            backgroundColor: 'rgba(100, 100, 235, 0.2)',
+            borderColor: 'rgba(255, 165, 0, 2)', 
+            borderWidth: 2,
+            fill: true, 
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+</script>
 @endsection

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
+
 class dashController extends Controller
 {
     public function menuPrincipal(){
@@ -28,11 +29,21 @@ class dashController extends Controller
         ->whereYear('created_at', now()->year)
         ->count();
 
+        $ventas = DB::table('ordenes')
+        ->select(DB::raw('YEAR(fecha_orden) as año'), DB::raw('MONTHNAME(fecha_orden) as mes'), DB::raw('COUNT(*) as total_ventas'))
+        ->groupBy(DB::raw('YEAR(fecha_orden), MONTH(fecha_orden), MONTHNAME(fecha_orden)')) // Agrupar por mes y año
+        ->orderBy(DB::raw('YEAR(fecha_orden)')) // Ordenar por año primero
+        ->orderBy(DB::raw('MONTH(fecha_orden)')) // Luego ordenar por el número del mes (1-12)
+        ->get();
 
-        return view('admin.dashmenu', [
+    
+
+
+        return view('admin.dashboardMenu', [
             'ingresosMes'=>$ingresosMes,
             'ventasTotales'=>$ventasTotales,
             'nuevosClientes'=>$nuevosClientes,
+            'ventas'=>$ventas,
         ]);
     }
 
@@ -42,4 +53,7 @@ class dashController extends Controller
 
         return $pdf->stream('manual_usuario.pdf');
     }
+
+
+    
 }

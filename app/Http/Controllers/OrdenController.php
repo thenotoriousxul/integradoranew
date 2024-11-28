@@ -28,7 +28,16 @@ class OrdenController extends Controller
             'envios_domicilio' => 'required|boolean',
         ]);
 
-        $orden = Orden::create($request->only(['tipo_personas_id', 'fecha', 'total', 'envios_domicilio']));
+        $fecha_orden = $request->get('fecha');
+
+        $orden = Orden::create([
+            'tipo_personas_id' => $request->tipo_personas_id,
+            'fecha_orden' => $fecha_orden,
+            'total' => $request->total,
+            'envios_domicilio' => $request->envios_domicilio,
+            'estado' => 'Pendiente',
+        ]);
+
 
         return redirect()->route('admins.ordenes.index')->with('success', 'Orden registrada correctamente.');
     }
@@ -67,17 +76,21 @@ class OrdenController extends Controller
 
         return redirect()->route('admins.ordenes.index')->with('success', 'Orden eliminada correctamente.');
     }
+    
     public function listarPedidos()
-{
-    // Obtener el usuario autenticado
-    $usuario = auth()->user();
+    {
+        $tipoPersona = auth()->user()->persona->tipoPersona()->first();
 
-    // Filtrar las órdenes por el ID del cliente autenticado
-    $ordenes = Orden::where('tipo_personas_id', $usuario->id)
-        ->with('detalles.edicion') // Incluir detalles y ediciones relacionadas
+
+
+        $ordenes = Orden::where('tipo_personas_id', $tipoPersona->id)
+        ->with(['detalles.edicion']) 
         ->get();
 
-    return view('cliente.pedidos', compact('ordenes'));
-}
+
+        return view('cliente.pedidos', compact('ordenes'));
+    }
+
+
 
 }
