@@ -171,6 +171,8 @@ Route::middleware(['role:admin|empleado'])->group(function () {
 
     Route::prefix('admin/producto')->group(function(){
         Route::get('/dash/productosBase', [productoController::class, 'dashProductos'])->name('dash.productosBase');
+        Route::get('/formulario/agregar/Producto', [formulariosController::class, 'formularioProducto'])->name('agregar.producto');
+        Route::post('/agregar/producto', [productoController::class, 'saveProducto'])->name('producto.save');    
         Route::patch('/dash/productoBase/activar/{id}', [productoController::class, 'activar'])->name('activar.producto');
         Route::patch('/dash/productoBase/inactivar/{id}', [productoController::class, 'inactivar'])->name('inactivar.producto');
         Route::get('dash/producto/editar/{id}', [productoController::class, 'editar'])->name('editar.producto');
@@ -208,10 +210,4 @@ Route::middleware(['auth'])->group(function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
 
-    // Dashboard del cliente, restringido solo para usuarios con rol 'cliente'
-    Route::get('/formulario/agregar/Producto', [formulariosController::class, 'formularioProducto'])->name('agregar.producto');
-    Route::post('/agregar/producto', [productoController::class, 'saveProducto'])->name('producto.save');
-
-    Route::get('/agregar/proveedor', [formulariosController::class, 'agregarProveedor'])->name('agregar.proveedor');
-    Route::get('/guardar/proveedor', [proveedorController::class, 'saveProveedor'])->name('guardar.proveedor');
 });
