@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Producto;
 use App\Models\Estampado;
 use Illuminate\Http\Request;
-use App\Models\ediciones_productos;
+use App\Models\EdicionesProductos;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 
@@ -85,7 +85,7 @@ class PersonalizarController extends Controller
         $edicion->tipo = 'Personalizada';
         $edicion->save();
 
-        $edicionProducto = new ediciones_productos();
+        $edicionProducto = new EdicionesProductos();
         $edicionProducto->nombre = 'Producto Personalizado';
         $edicionProducto->cantidad = 1;
         $edicionProducto->rebaja = 0;

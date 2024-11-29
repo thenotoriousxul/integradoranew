@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ediciones_productos;
+use App\Models\EdicionesProductos;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -13,7 +14,7 @@ class carritoController extends Controller
     public function agregarProducto(Request $request, $productoId)
     {
         // Buscar el producto
-        $producto = ediciones_productos::find($productoId);
+        $producto = EdicionesProductos::find($productoId);
         
         if (!$producto) {
             return response()->json(['message' => 'Producto no encontrado'], 404);
