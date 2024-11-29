@@ -7,9 +7,6 @@ use App\Models\Orden;
 use App\Models\pago;
 use Illuminate\Http\Request;
 use Stripe\Stripe;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\empleadoMail;
-use App\Mail\ordenMail;
 use Stripe\PaymentIntent;
 
 class StripeController extends Controller
@@ -44,6 +41,7 @@ class StripeController extends Controller
         }
     }
 
+    
     public function procesarPago(Request $request)
     {
         $carrito = session()->get('carrito', []);
@@ -65,9 +63,6 @@ class StripeController extends Controller
 
             $this->guardarPago($orden, $paymentIntent);
 
-            $usuario = auth()->user();
-
-            Mail::to($usuario->email)->send(new ordenMail($numeroPedido=$orden->id));
 
             return response()->json([
                 'success' => true,
@@ -80,7 +75,6 @@ class StripeController extends Controller
                 'message' => 'Hubo un error al procesar el pago: ' . $e->getMessage(),
             ], 500);
         }
-
     }
  
     private function guardarOrden($carrito, $paymentIntent)
