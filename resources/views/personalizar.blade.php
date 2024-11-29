@@ -46,7 +46,7 @@
     const canvas = new fabric.Canvas('myCanvas');
     const productId = {{ $producto->id }};
     let playeraBounds = null;
-    let selectedEstampadoId = null;
+    let logoObject = null; // Variable para almacenar el logo agregado
 
     // Función para establecer la imagen de fondo
     function setBackground() {
@@ -58,9 +58,8 @@
                 evented: false
             });
             canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
-            // Almacenar los límites de la playera
-            playeraBounds = img.getBoundingRect();
-        }, { crossOrigin: 'Anonymous' }); // Añadir crossOrigin
+            playeraBounds = img.getBoundingRect(); // Almacenar los límites de la playera
+        }, { crossOrigin: 'Anonymous' });
     }
 
     // Restaurar el canvas al cargar
@@ -68,35 +67,43 @@
 
     // Agregar estampado al canvas
     function agregarEstampado(imagePath, estampadoId) {
-    const proxyURL = `/s3-image?image=${encodeURIComponent(imagePath)}`;
+        if (logoObject) {
+            alert('Solo puedes agregar un logo a la vez. Elimina el logo actual antes de agregar otro.');
+            return;
+        }
 
-    fabric.Image.fromURL(proxyURL, function(img) {
-        img.set({
-            left: canvas.width / 2,
-            top: canvas.height / 2,
-            scaleX: 0.2,
-            scaleY: 0.2,
-            originX: 'center',
-            originY: 'center',
-            selectable: true,
-            evented: true
+        const proxyURL = `/s3-image?image=${encodeURIComponent(imagePath)}`;
+
+        fabric.Image.fromURL(proxyURL, function(img) {
+            img.set({
+                left: canvas.width / 2,
+                top: canvas.height / 2,
+                scaleX: 0.2,
+                scaleY: 0.2,
+                originX: 'center',
+                originY: 'center',
+                selectable: true,
+                evented: true
+            });
+
+            canvas.add(img);
+            canvas.setActiveObject(img);
+            saveCanvas();
+
+            // Asignar el logo al objeto global
+            logoObject = img;
+
+            // Establecer el ID del estampado seleccionado
+            document.getElementById('estampado_id').value = estampadoId;
         });
-        canvas.add(img);
-        canvas.setActiveObject(img);
-        saveCanvas();
-
-        // Establecer el ID del estampado seleccionado
-        document.getElementById('estampado_id').value = estampadoId;
-    });
-}
-
+    }
 
     // Eventos para restringir movimiento y escalado dentro de la playera
     canvas.on('object:moving', function(e) {
-        var obj = e.target;
+        const obj = e.target;
         if (obj === canvas.backgroundImage) return;
 
-        var objBounds = obj.getBoundingRect();
+        const objBounds = obj.getBoundingRect();
 
         // Restringir movimiento
         if (objBounds.left < playeraBounds.left) {
@@ -114,10 +121,10 @@
     });
 
     canvas.on('object:scaling', function(e) {
-        var obj = e.target;
+        const obj = e.target;
         if (obj === canvas.backgroundImage) return;
 
-        var objBounds = obj.getBoundingRect();
+        const objBounds = obj.getBoundingRect();
 
         // Restringir escalado
         if (objBounds.left < playeraBounds.left ||
@@ -141,13 +148,20 @@
         saveCanvas();
     });
 
-    // Función para guardar el diseño y enviar el formulario
+    // Guardar el diseño y enviar el formulario
     function guardarDiseno() {
+        if (!logoObject) {
+            alert('Debe agregar un logo antes de guardar el diseño.');
+            return;
+        }
+
         try {
             // Obtener la imagen del canvas
             const canvasData = canvas.toDataURL('image/png');
+
             // Establecer el valor en el input oculto
             document.getElementById('imagen_personalizada').value = canvasData;
+
             // Enviar el formulario
             document.getElementById('personalizar-form').submit();
         } catch (error) {
@@ -160,6 +174,11 @@
     function eliminarObjeto() {
         const activeObject = canvas.getActiveObject();
         if (activeObject && activeObject !== canvas.backgroundImage) {
+            if (activeObject === logoObject) {
+                logoObject = null; // Resetear la variable del logo si se elimina
+                document.getElementById('estampado_id').value = ''; // Limpiar el ID del estampado
+            }
+
             canvas.remove(activeObject);
             saveCanvas();
         } else {
@@ -167,13 +186,13 @@
         }
     }
 
+    // Descargar la imagen del diseño
     function descargarImagen() {
-    const link = document.createElement('a');
-    link.href = canvas.toDataURL({ format: 'png' }); // Generar la URL del diseño
-    link.download = 'mi_diseño.png'; // Nombre del archivo descargado
-    link.click();
-}
-
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL({ format: 'png' }); // Generar la URL del diseño
+        link.download = 'mi_diseño.png'; // Nombre del archivo descargado
+        link.click();
+    }
 
     // Guardar el estado del canvas en localStorage por producto
     function saveCanvas() {
@@ -187,15 +206,14 @@
         if (canvasData) {
             canvas.loadFromJSON(canvasData, function() {
                 canvas.renderAll();
-                // Asegurarse de que la imagen de fondo es la correcta después de restaurar
                 setBackground();
             });
         } else {
-            // Si no hay estado guardado, establecer la imagen de fondo
             setBackground();
         }
     }
 </script>
+
 
 <style>
     .personalization-container {
