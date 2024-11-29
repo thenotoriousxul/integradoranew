@@ -25,6 +25,6 @@ class DetalleOrden extends Model
 
     public function EdicionProducto()
     {
-        return $this->belongsTo(Ediciones_productos::class, 'ediciones_productos_id');
+        return $this->belongsTo(Edicionesproductos::class, 'ediciones_productos_id');
     }
 }

@@ -88,6 +88,6 @@ class OrdenController extends Controller
         return view('cliente.pedidos', compact('ordenes'));
     }
 
- 
+  
 
 }
