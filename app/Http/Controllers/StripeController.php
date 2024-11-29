@@ -8,6 +8,7 @@ use App\Models\Pago;
 use Illuminate\Http\Request;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
+use App\Models\User;
 
 class StripeController extends Controller
 {
