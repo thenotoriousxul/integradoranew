@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DetalleOrden;
 use App\Models\Orden;
-use App\Models\pago;
+use App\Models\Pago;
 use Illuminate\Http\Request;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
