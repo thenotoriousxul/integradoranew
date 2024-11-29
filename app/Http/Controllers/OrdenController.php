@@ -81,16 +81,13 @@ class OrdenController extends Controller
     {
         $tipoPersona = auth()->user()->persona->tipoPersona()->first();
 
-
-
         $ordenes = Orden::where('tipo_personas_id', $tipoPersona->id)
-        ->with(['detalles.edicion']) 
-        ->get();
-
-
+            ->with(['detalles.edicionProducto']) // Cambiado a la relación correcta
+            ->get();
+    
         return view('cliente.pedidos', compact('ordenes'));
     }
 
-
+  
 
 }

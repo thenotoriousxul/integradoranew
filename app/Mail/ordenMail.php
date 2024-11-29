@@ -4,22 +4,24 @@ namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class clienteEmail extends Mailable
+class ordenMail extends Mailable
 {
+
+    public $numeroPedido;
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($numeroPedido)
     {
-        //
+        $this->numeroPedido = $numeroPedido;
     }
 
     /**
@@ -29,7 +31,7 @@ class clienteEmail extends Mailable
     {
         return new Envelope(
             from: new Address('shop@ozez.store', 'ozez'),
-            subject: 'Bienvenido a esta familia',
+            subject: 'Gracias por tu compra',
         );
     }
 
@@ -39,7 +41,10 @@ class clienteEmail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.mailCliente',
+            view: 'mail.orden',
+            with:[
+                'numeroPedido'=>$this->numeroPedido,
+            ]
         );
     }
 

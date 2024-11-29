@@ -72,8 +72,6 @@ class EdicionesProductoController extends Controller
             'cantidad' => 'required|integer|min:1',
         ]);
 
-        /////
-
         $imageUrl = null;
 
         // Subida de la imagen a S3 y generación de la URL

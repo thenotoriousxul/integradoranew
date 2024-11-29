@@ -3,7 +3,6 @@
 use App\Actions\Fortify\CreateNewUser;
 use App\Http\Controllers\carritoController;
 use App\Http\Controllers\disenosController;
-use App\Http\Controllers\ediciones_productoController;
 use App\Http\Controllers\informacionClienteController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\dashController;
@@ -15,13 +14,14 @@ use App\Http\Controllers\productoController;
 use App\Http\Controllers\proveedorController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EdicionController;
+use App\Http\Controllers\EdicionesProductoController;
 use App\Http\Controllers\empleadoController;
 use App\Http\Controllers\EstampadoController;
 use App\Http\Controllers\PersonalizarController;
 use App\Http\Controllers\OrdenController;
 use App\Http\Controllers\S3ImageController;
-
-
+use App\Mail\ordenMail;
+use Illuminate\Support\Facades\Mail;
 
 //prueba
 // Rutas de acceso general
@@ -60,6 +60,10 @@ Route::middleware(['auth'])->group(function () {
     })->name('cliente.dashboard');
 
     
+// Route::post('/procesar-pago', [StripeController::class, 'procesarPago'])->name('procesarPago');
+// Route::post('/create-payment-intent', [StripeController::class, 'createPaymentIntent'])->name('createPaymentIntent');
+
+
 Route::post('/procesar-pago', [StripeController::class, 'procesarPago'])->name('procesarPago');
 Route::post('/create-payment-intent', [StripeController::class, 'createPaymentIntent'])->name('createPaymentIntent');
 
@@ -105,12 +109,11 @@ Route::get('/dashinventario', function () {
 
 Route::get('/pedidos', [OrdenController::class, 'listarPedidos'])->name('pedidos');
 
-Route::get('/productos/catalogo',[ediciones_productoController::class, 'getProductos'])->name('mostrar.productos');
-Route::get('/filtros',[ediciones_productoController::class, 'filtro'])->name('filtros.productos');
+Route::get('/productos/catalogo',[EdicionesProductoController::class, 'getProductos'])->name('mostrar.productos');
+Route::get('/filtros',[EdicionesProductoController::class, 'filtro'])->name('filtros.productos');
 
-
-Route::get('/producto/{id}', action: [ediciones_productoController::class, 'detalle'])->name('vista_producto_detalle'); 
-Route::get('/rebajas' , [ediciones_productoController::class, 'rebajas'])->name('rebajas');
+Route::get('/producto/{id}', action: [EdicionesProductoController::class, 'detalle'])->name('vista_producto_detalle'); 
+Route::get('/rebajas' , [EdicionesProductoController::class, 'rebajas'])->name('rebajas');
 
 Route::get('/personalizacion', [PersonalizarController::class, 'mostrarCatalogoPersonalizable'])->name('personalizacion');
 
@@ -119,10 +122,6 @@ Route::post('/personalizar/guardar', [PersonalizarController::class, 'guardar'])
 
 
 Route::get('/s3-image', [S3ImageController::class, 'getImage'])->name('s3.image');
-
-Route::get('/test', function(){
-    return view('mail.mailCliente');
-});
 
 Route::get('/dash/cliente', function () {
     return view('cliente.pedidos');
@@ -173,10 +172,12 @@ Route::middleware(['role:admin|empleado'])->group(function () {
         Route::delete('/{id}/eliminar', [EstampadoController::class, 'eliminarEstampado'])->name('estampados.eliminar');
     });
 
+    ////
+
     Route::prefix('admin/producto')->group(function(){
         Route::get('/dash/productosBase', [productoController::class, 'dashProductos'])->name('dash.productosBase');
         Route::get('/formulario/agregar/Producto', [formulariosController::class, 'formularioProducto'])->name('agregar.producto');
-        Route::post('/agregar/producto', [productoController::class, 'saveProducto'])->name('producto.save');    
+        Route::post('/agregar/producto', [productoController::class, 'saveProducto'])->name('producto.save');
         Route::patch('/dash/productoBase/activar/{id}', [productoController::class, 'activar'])->name('activar.producto');
         Route::patch('/dash/productoBase/inactivar/{id}', [productoController::class, 'inactivar'])->name('inactivar.producto');
         Route::get('dash/producto/editar/{id}', [productoController::class, 'editar'])->name('editar.producto');
@@ -196,8 +197,9 @@ Route::middleware(['role:admin|empleado'])->group(function () {
     });
 
     Route::prefix('admin/ediciones_productos')->group(function(){
-        Route::get('/crear/producto',[ediciones_productoController::class, 'create'])->name('crear.producto');
-        Route::post('guardar/producto',[ediciones_productoController::class, 'store'])->name('store.productos');
+        Route::get('/crear/producto',[EdicionesProductoController::class, 'create'])->name('crear.producto');
+        Route::post('guardar/producto',[EdicionesProductoController::class, 'store'])->name('store.productos');
+        Route::get('listar',[EdicionesProductoController::class, 'getProducts'])->name('listar.productos');
     });
   
     Route::get('/admin/dashboard/menu', [dashController::class, 'menuPrincipal'])->name('dash.menu');
@@ -215,4 +217,9 @@ Route::middleware(['auth'])->group(function () {
     })->name('admin.dashboard');
 
 });
+
+Route::get('test', function(){
+return view('mail.orden');
+});
+
 
