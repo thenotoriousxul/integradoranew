@@ -33,7 +33,7 @@ class carritoController extends Controller
         }
     
         // Verificar si hay suficiente stock para la talla seleccionada
-        $stockDisponible = ediciones_productos::where('nombre', $producto->nombre)
+        $stockDisponible = EdicionesProductos::where('nombre', $producto->nombre)
                             ->where('talla', $talla)
                             ->value('cantidad');
     
