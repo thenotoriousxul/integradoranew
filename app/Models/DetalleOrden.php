@@ -23,8 +23,8 @@ class DetalleOrden extends Model
         return $this->belongsTo(Orden::class, 'ordenes_id');
     }
 
-    public function edicion()
+    public function EdicionProducto()
     {
-        return $this->belongsTo(Edicion::class, 'edicion_id');
+        return $this->belongsTo(Ediciones_productos::class, 'ediciones_productos_id');
     }
 }

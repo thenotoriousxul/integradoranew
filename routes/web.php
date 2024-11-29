@@ -19,7 +19,9 @@ use App\Http\Controllers\empleadoController;
 use App\Http\Controllers\EstampadoController;
 use App\Http\Controllers\PersonalizarController;
 use App\Http\Controllers\OrdenController;
-
+use App\Http\Controllers\S3ImageController;
+use App\Mail\ordenMail;
+use Illuminate\Support\Facades\Mail;
 
 //prueba
 // Rutas de acceso general
@@ -106,19 +108,16 @@ Route::get('/pedidos', [OrdenController::class, 'listarPedidos'])->name('pedidos
 Route::get('/productos/catalogo',[ediciones_productoController::class, 'getProductos'])->name('mostrar.productos');
 Route::get('/filtros',[ediciones_productoController::class, 'filtro'])->name('filtros.productos');
 
-
 Route::get('/producto/{id}', action: [ediciones_productoController::class, 'detalle'])->name('vista_producto_detalle'); 
 Route::get('/rebajas' , [ediciones_productoController::class, 'rebajas'])->name('rebajas');
 
 Route::get('/personalizacion', [PersonalizarController::class, 'mostrarCatalogoPersonalizable'])->name('personalizacion');
-Route::get('/personalizar/{productoId}', [PersonalizarController::class, 'personalizarProducto'])->name('personalizar.producto');
 
+Route::get('/personalizar/{productoId}', [PersonalizarController::class, 'personalizarProducto'])->name('personalizar.producto');
 Route::post('/personalizar/guardar', [PersonalizarController::class, 'guardar'])->name('personalizar.guardar');
 
 
-Route::get('/test', function(){
-    return view('mail.mailCliente');
-});
+Route::get('/s3-image', [S3ImageController::class, 'getImage'])->name('s3.image');
 
 Route::get('/dash/cliente', function () {
     return view('cliente.pedidos');
@@ -172,7 +171,7 @@ Route::middleware(['role:admin|empleado'])->group(function () {
     Route::prefix('admin/producto')->group(function(){
         Route::get('/dash/productosBase', [productoController::class, 'dashProductos'])->name('dash.productosBase');
         Route::get('/formulario/agregar/Producto', [formulariosController::class, 'formularioProducto'])->name('agregar.producto');
-        Route::post('/agregar/producto', [productoController::class, 'saveProducto'])->name('producto.save');    
+        Route::post('/agregar/producto', [productoController::class, 'saveProducto'])->name('producto.save');
         Route::patch('/dash/productoBase/activar/{id}', [productoController::class, 'activar'])->name('activar.producto');
         Route::patch('/dash/productoBase/inactivar/{id}', [productoController::class, 'inactivar'])->name('inactivar.producto');
         Route::get('dash/producto/editar/{id}', [productoController::class, 'editar'])->name('editar.producto');
@@ -194,6 +193,7 @@ Route::middleware(['role:admin|empleado'])->group(function () {
     Route::prefix('admin/ediciones_productos')->group(function(){
         Route::get('/crear/producto',[ediciones_productoController::class, 'create'])->name('crear.producto');
         Route::post('guardar/producto',[ediciones_productoController::class, 'store'])->name('store.productos');
+        Route::get('listar',[ediciones_productoController::class, 'getProducts'])->name('listar.productos');
     });
   
     Route::get('/admin/dashboard/menu', [dashController::class, 'menuPrincipal'])->name('dash.menu');
@@ -211,3 +211,21 @@ Route::middleware(['auth'])->group(function () {
     })->name('admin.dashboard');
 
 });
+
+Route::get('test', function(){
+return view('mail.orden');
+});
+
+
+
+Route::get('/test-email', function () {
+    $testEmail = 'jorgerenteriareyes4@gmail.com'; 
+
+    try {
+        Mail::to($testEmail)->send(new ordenMail());
+        return 'Correo enviado correctamente a ' . $testEmail;
+    } catch (\Exception $e) {
+        return 'Error al enviar el correo: ' . $e->getMessage();
+    }
+});
+
