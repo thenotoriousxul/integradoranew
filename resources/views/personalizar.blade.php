@@ -19,9 +19,6 @@
          title="{{ $estampado->nombre }}">
 @endforeach
 
-
-
-
             </div>
             <!-- Formulario para enviar los datos -->
             <form id="personalizar-form" action="{{ route('personalizar.guardar') }}" method="POST">
@@ -83,7 +80,8 @@
                 originX: 'center',
                 originY: 'center',
                 selectable: true,
-                evented: true
+                evented: true,
+                estampadoId: estampadoId // Propiedad personalizada
             });
 
             canvas.add(img);
@@ -196,7 +194,7 @@
 
     // Guardar el estado del canvas en localStorage por producto
     function saveCanvas() {
-        const canvasData = JSON.stringify(canvas.toJSON(['objects']));
+        const canvasData = JSON.stringify(canvas.toJSON(['objects', 'estampadoId']));
         localStorage.setItem('canvasState_' + productId, canvasData);
     }
 
@@ -207,12 +205,21 @@
             canvas.loadFromJSON(canvasData, function() {
                 canvas.renderAll();
                 setBackground();
+
+                // Buscar y reasignar el logoObject
+                canvas.getObjects().forEach(obj => {
+                    if (obj.type === 'image' && obj !== canvas.backgroundImage) {
+                        logoObject = obj; // Reasignar el logo si se encuentra
+                        document.getElementById('estampado_id').value = logoObject.estampadoId || '';
+                    }
+                });
             });
         } else {
             setBackground();
         }
     }
 </script>
+
 
 
 <style>

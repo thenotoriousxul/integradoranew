@@ -33,7 +33,6 @@ class PersonalizarController extends Controller
 
     public function guardar(Request $request)
 {
-    dd($request->all());
     // Validar los datos recibidos
     $request->validate([
         'producto_id' => 'required|exists:productos,id',
