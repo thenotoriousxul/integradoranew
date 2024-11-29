@@ -32,8 +32,10 @@
             </form>
             <!-- Botón para eliminar objetos -->
             <div class="controls mt-3">
-                <button onclick="eliminarObjeto()" class="btn btn-danger">Eliminar Objeto</button>
-            </div>
+        <button onclick="eliminarObjeto()" class="btn btn-danger">Eliminar Objeto</button>
+        <button onclick="descargarImagen()" class="btn btn-primary">Descargar Diseño</button>
+        </div>
+
         </div>
     </div>
 </div>
@@ -162,6 +164,14 @@
             alert('Seleccione un objeto para eliminar.');
         }
     }
+
+    function descargarImagen() {
+    const link = document.createElement('a');
+    link.href = canvas.toDataURL({ format: 'png' }); // Generar la URL del diseño
+    link.download = 'mi_diseño.png'; // Nombre del archivo descargado
+    link.click();
+}
+
 
     // Guardar el estado del canvas en localStorage por producto
     function saveCanvas() {
