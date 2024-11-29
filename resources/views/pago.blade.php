@@ -14,7 +14,7 @@
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            background: #f8f9fa;
+            background: #ffffff;
             margin-bottom: 1rem;
         }
         #submit-payment {
