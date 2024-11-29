@@ -41,6 +41,7 @@ class StripeController extends Controller
         }
     }
 
+    
     public function procesarPago(Request $request)
     {
         $carrito = session()->get('carrito', []);
