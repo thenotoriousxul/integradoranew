@@ -3,7 +3,6 @@
 use App\Actions\Fortify\CreateNewUser;
 use App\Http\Controllers\carritoController;
 use App\Http\Controllers\disenosController;
-use App\Http\Controllers\ediciones_productoController;
 use App\Http\Controllers\informacionClienteController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\dashController;
@@ -15,6 +14,7 @@ use App\Http\Controllers\productoController;
 use App\Http\Controllers\proveedorController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EdicionController;
+use App\Http\Controllers\EdicionesProductoController;
 use App\Http\Controllers\empleadoController;
 use App\Http\Controllers\EstampadoController;
 use App\Http\Controllers\PersonalizarController;
@@ -105,11 +105,11 @@ Route::get('/dashinventario', function () {
 
 Route::get('/pedidos', [OrdenController::class, 'listarPedidos'])->name('pedidos');
 
-Route::get('/productos/catalogo',[ediciones_productoController::class, 'getProductos'])->name('mostrar.productos');
-Route::get('/filtros',[ediciones_productoController::class, 'filtro'])->name('filtros.productos');
+Route::get('/productos/catalogo',[EdicionesProductoController::class, 'getProductos'])->name('mostrar.productos');
+Route::get('/filtros',[EdicionesProductoController::class, 'filtro'])->name('filtros.productos');
 
-Route::get('/producto/{id}', action: [ediciones_productoController::class, 'detalle'])->name('vista_producto_detalle'); 
-Route::get('/rebajas' , [ediciones_productoController::class, 'rebajas'])->name('rebajas');
+Route::get('/producto/{id}', action: [EdicionesProductoController::class, 'detalle'])->name('vista_producto_detalle'); 
+Route::get('/rebajas' , [EdicionesProductoController::class, 'rebajas'])->name('rebajas');
 
 Route::get('/personalizacion', [PersonalizarController::class, 'mostrarCatalogoPersonalizable'])->name('personalizacion');
 
@@ -191,9 +191,9 @@ Route::middleware(['role:admin|empleado'])->group(function () {
     });
 
     Route::prefix('admin/ediciones_productos')->group(function(){
-        Route::get('/crear/producto',[ediciones_productoController::class, 'create'])->name('crear.producto');
-        Route::post('guardar/producto',[ediciones_productoController::class, 'store'])->name('store.productos');
-        Route::get('listar',[ediciones_productoController::class, 'getProducts'])->name('listar.productos');
+        Route::get('/crear/producto',[EdicionesProductoController::class, 'create'])->name('crear.producto');
+        Route::post('guardar/producto',[EdicionesProductoController::class, 'store'])->name('store.productos');
+        Route::get('listar',[EdicionesProductoController::class, 'getProducts'])->name('listar.productos');
     });
   
     Route::get('/admin/dashboard/menu', [dashController::class, 'menuPrincipal'])->name('dash.menu');
@@ -216,16 +216,4 @@ Route::get('test', function(){
 return view('mail.orden');
 });
 
-
-
-Route::get('/test-email', function () {
-    $testEmail = 'jorgerenteriareyes4@gmail.com'; 
-
-    try {
-        Mail::to($testEmail)->send(new ordenMail());
-        return 'Correo enviado correctamente a ' . $testEmail;
-    } catch (\Exception $e) {
-        return 'Error al enviar el correo: ' . $e->getMessage();
-    }
-});
 
