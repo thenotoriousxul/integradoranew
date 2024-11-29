@@ -14,7 +14,7 @@ class ediciones_productoController extends Controller
     public function getProductos()
     {
       // Recupera los productos con rebaja = 0
-      $producto = ediciones_productos::where('rebaja', 0,)->where('estado', 'activo')->where('personalizada', 0)->get();
+      $producto = Ediciones_productos::where('rebaja', 0,)->where('estado', 'activo')->where('personalizada', 0)->get();
   
       // Agrupa los productos por nombre
       $productos = $producto->groupBy(function ($item) {
@@ -35,12 +35,12 @@ class ediciones_productoController extends Controller
 
     public function detalle($id)
     {
-    $producto = ediciones_productos::findOrFail($id);
+    $producto = Ediciones_productos::findOrFail($id);
     
    
         // Obtener todas las tallas asociadas al producto normalizando el nombre
          // Obtener todas las tallas asociadas al producto por nombre
-        $tallas = ediciones_productos::whereRaw('LOWER(nombre) = ?', [strtolower(trim($producto->nombre))])
+        $tallas = Ediciones_productos::whereRaw('LOWER(nombre) = ?', [strtolower(trim($producto->nombre))])
         ->get()
         ->map(function ($item) {
             return [
@@ -90,7 +90,7 @@ class ediciones_productoController extends Controller
 
         }
 
-        $edicionProducto = ediciones_productos::create([
+        $edicionProducto = Ediciones_productos::create([
             'nombre' => $request->nombre,
             'imagen_producto_final' => $imageUrl,
             'imagen_producto_trasera' => $imageUrlTrasera,
@@ -102,7 +102,7 @@ class ediciones_productoController extends Controller
     }
 
     public function rebajas() {
-        $productos = ediciones_productos::where('rebaja', 1)->get();
+        $productos = Ediciones_productos::where('rebaja', 1)->get();
 
         return view('rebajas' , compact('productos'));
         
@@ -134,7 +134,7 @@ class ediciones_productoController extends Controller
     }
 
     public function getProducts() {
-        $productos = ediciones_productos::paginate(15);
+        $productos = Ediciones_productos::paginate(15);
 
         return view('admin.edicionesP.listar', compact('productos'));
 
