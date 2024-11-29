@@ -64,7 +64,7 @@ class EdicionesProductoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'edicion_id' => ['required', 'exists:ediciones,id'],
+            'edicion_id' => ['required', 'exists:edicion,id'],
             'productos_id' => ['required', 'exists:productos,id'],
             'nombre' => ['required', 'string', 'max:55'],
             'imagen_producto_final' => ['nullable', 'image', 'max:2048'],
