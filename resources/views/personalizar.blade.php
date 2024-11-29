@@ -3,6 +3,7 @@
 @section('content')
 <div class="container">
     <h1 class="text-center">Personaliza tu playera</h1>
+    <br>
     <div class="personalization-container d-flex flex-row flex-wrap align-items-start justify-content-center">
         <div class="canvas-container">
             <canvas id="myCanvas" width="550" height="600"></canvas>
@@ -35,9 +36,10 @@
         <button onclick="eliminarObjeto()" class="btn btn-danger">Eliminar Objeto</button>
         <button onclick="descargarImagen()" class="btn btn-primary">Descargar Diseño</button>
         </div>
-
         </div>
     </div>
+    <br>
+    <br>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.0/fabric.min.js"></script>
 <script>

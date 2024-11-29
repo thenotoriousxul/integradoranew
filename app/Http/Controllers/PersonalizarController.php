@@ -117,7 +117,7 @@ class PersonalizarController extends Controller
         session()->put('carrito', $carrito);
 
         // Mensaje de éxito
-        return redirect()->route('carrito.mostrar')->with('success', 'Producto personalizado agregado al carrito.');
+        return redirect()->route('detalleOrden')->with('success', 'Producto personalizado agregado al carrito.');
     } catch (\Exception $e) {
         Log::error('Error al guardar el diseño personalizado:', ['error' => $e->getMessage()]);
         return redirect()->back()->with('error', 'Ocurrió un error al guardar el producto personalizado. Inténtalo nuevamente.');

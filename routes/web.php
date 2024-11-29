@@ -215,3 +215,4 @@ Route::middleware(['auth'])->group(function () {
     })->name('admin.dashboard');
 
 });
+
