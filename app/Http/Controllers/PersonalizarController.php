@@ -99,6 +99,7 @@ class PersonalizarController extends Controller
         $edicionProducto->costo_precio_venta = $productoBase->costo_precio_venta ?? 0;
         $edicionProducto->talla = $productoBase->talla ?? 'M';
         $edicionProducto->estado = 'activo';
+        $edicionProducto->personalizada = true;
         $edicionProducto->save();
 
         // Agregar al carrito

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('nombre', 50);
             $table->integer('cantidad')->default(0);
-            $table->double('costo');
+            $table->double('costo')->default(0);
             $table->timestamps();
         });
     }

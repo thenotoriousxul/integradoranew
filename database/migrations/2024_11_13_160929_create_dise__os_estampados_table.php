@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('disenos_estampados', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('estampados_id')->unsigned()->index('fk_disenos_estampados_estampados1'); // unsigned bigInteger
-            $table->bigInteger('disenos_id')->unsigned()->index('fk_disenos_estampados_disenos1'); // unsigned bigInteger
+            $table->bigInteger('estampado_id')->unsigned()->index('fk_disenos_estampados_estampados1'); // unsigned bigInteger
+            $table->bigInteger('diseno_id')->unsigned()->index('fk_disenos_estampados_disenos1'); // unsigned bigInteger
             $table->timestamps();
         });
     }

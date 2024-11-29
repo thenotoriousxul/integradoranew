@@ -143,13 +143,20 @@
                     <i class="fas fa-plus"></i>
                     <span class="sidebar-text">Crear producto catalogo</span>
                 </a>
-                <a class="item-side sub" href="{{ route('dash.productosBase') }}">
+
+                <a class="item-side sub" href="{{ route('listar.productos') }}">
                     <i class="fa-solid fa-list-check"></i>
-                    <span class="sidebar-text">Lista Productos Base</span>
+                    <span class="sidebar-text">Listar Producto Catalogo</span>
                 </a>
+
                 <a class="item-side sub" href="{{ route('agregar.producto') }}">
                     <i class="fas fa-plus"></i>
                     <span class="sidebar-text">Agregar Producto Base</span>
+                </a>
+
+                <a class="item-side sub" href="{{ route('dash.productosBase') }}">
+                    <i class="fa-solid fa-list-check"></i>
+                    <span class="sidebar-text">Lista Productos Base</span>
                 </a>
             </div>
             <a id="ediciones" class="item-side" href="">

@@ -14,7 +14,7 @@ class ediciones_productoController extends Controller
     public function getProductos()
     {
       // Recupera los productos con rebaja = 0
-      $producto = ediciones_productos::where('rebaja', 0,)->where('estado', 'activo')->get();
+      $producto = ediciones_productos::where('rebaja', 0,)->where('estado', 'activo')->where('personalizada', 0)->get();
   
       // Agrupa los productos por nombre
       $productos = $producto->groupBy(function ($item) {
@@ -98,7 +98,7 @@ class ediciones_productoController extends Controller
             'edicion_id'=>$request->edicion_id,
             'productos_id'=>$request->productos_id,
         ]);
-        return redirect()->route('mostrar.productos');
+        return redirect()->route('listar.productos');
     }
 
     public function rebajas() {
@@ -131,5 +131,12 @@ class ediciones_productoController extends Controller
 
     
         return view('admin.edicionesP.productos', compact('productos'));
+    }
+
+    public function getProducts() {
+        $productos = ediciones_productos::paginate(15);
+
+        return view('admin.edicionesP.listar', compact('productos'));
+
     }
 }
