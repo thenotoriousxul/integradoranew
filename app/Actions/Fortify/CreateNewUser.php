@@ -3,7 +3,7 @@ namespace App\Actions\Fortify;
 
 use App\Mail\clienteEmail;
 use App\Mail\empleadoMail;
-use App\Models\tipoPersona;
+use App\Models\TipoPersona;
 use App\Models\User;
 use App\Models\Persona;
 use App\Models\Direccion;
@@ -74,7 +74,7 @@ class CreateNewUser implements CreatesNewUsers
             'numero_telefonico' => $input['numero_telefonico'],
         ]);
     
-        tipoPersona::create([
+        TipoPersona::create([
             'personas_id' => $persona->id,
             'tipo_persona'=> 'Cliente'
 
