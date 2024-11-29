@@ -107,8 +107,11 @@
                     <div class="order-item">
                         <img src="/placeholder.svg?height=80&width=80" alt="Camiseta básica" class="item-image">
                         <div class="item-info">
-                            <div class="item-name">Camiseta básica</div>
-                            <div class="item-details">Talla: M | Color: Negro | Cantidad: 2</div>
+                            @foreach ($orden->detalles as $detalle)
+                            <div class="item-name"> {{ $detalle->edicionProducto->nombre }}</div>
+                            <div class="item-details">Talla: {{ $detalle->edicionProducto->talla }}  Cantidad: {{ $detalle->cantidad }}</div>
+                        @endforeach
+                            
                         </div>
                     </div>
                     

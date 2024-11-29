@@ -19,6 +19,7 @@ return new class extends Migration
             $table->decimal('costo', 10, 2);
             $table->integer('lote');
             $table->string('imagen_producto');
+            $table->enum('estado', ['Activo', 'Inactivo'])->default('Activo'); // Define la columna 'estado'
             $table->boolean('producto_personalizar')->default(false);
             $table->timestamps();
         });

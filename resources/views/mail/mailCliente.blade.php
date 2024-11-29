@@ -10,7 +10,7 @@
     <table cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; margin: 0 auto; background-color: #ffffff;">
         <tr>
             <td style="padding: 0px 20px; text-align: center;">
-                <img src="{{asset('img/ozeztrc.png')}}" alt="Logo Adidas" style="max-width: 80px;">
+                <img src="{{asset('img/ozeztrc.png')}}" alt="Logo ozez" style="max-width: 80px;">
             </td>
         </tr>
         <tr>
@@ -27,7 +27,7 @@
                 <table cellpadding="0" cellspacing="0" width="100%">
                     <tr>
                         <td width="50%" style="padding-right: 10px;">
-                            <img src="{{asset('img/second.jpeg')}}" alt="Adidas Camiseta Trefoil" style="width: 70%; max-width: 280px; height: auto;">
+                            <img src="{{asset('img/second.jpeg')}}" alt="ozez Camiseta Trefoil" style="width: 70%; max-width: 280px; height: auto;">
                         </td>
                         <td width="50%" style="padding-left: 10px; vertical-align: top;">
                             <h2 style="color: #000000; font-size: 22px; margin: 0 0 15px; text-transform: uppercase;">T SHIRT KEEP IT SIMPLe</h2>
@@ -51,7 +51,7 @@
         </tr>
         <tr>
             <td style="padding: 0;">
-                <img src="{{asset('img/lanzamiento.jpeg')}}" alt="Adidas Camisetas" style="width: 100%; max-width: 600px; height: auto;">
+                <img src="{{asset('img/lanzamiento.jpeg')}}" alt="ozez Camisetas" style="width: 100%; max-width: 600px; height: auto;">
                 <a href="#" style="display: inline-block; background-color: #000000; color: #ffffff; text-decoration: none; padding: 10px 20px; font-weight: bold; text-transform: uppercase; font-size: 12px;">Nuevo lanzamiento</a>
             </td>
         </tr>
@@ -61,7 +61,7 @@
                     © 2024 Ozez. Todos los derechos reservados.
                 </p>
                 <p style="color: #666666; font-size: 12px; margin: 10px 0 0;">
-                    Recibiste este correo porque iniciaste sesión en tu cuenta de Adidas Camisetas.
+                    Recibiste este correo porque iniciaste sesión en tu cuenta de ozez Camisetas.
                     Si no fuiste tú, por favor <a href="#" style="color: #000000; text-decoration: underline;">contáctanos</a>.
                 </p>
             </td>
