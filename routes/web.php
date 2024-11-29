@@ -60,8 +60,14 @@ Route::middleware(['auth'])->group(function () {
     })->name('cliente.dashboard');
 
     
-Route::post('/procesar-pago', [StripeController::class, 'procesarPago'])->name('procesarPago');
-Route::post('/create-payment-intent', [StripeController::class, 'createPaymentIntent'])->name('createPaymentIntent');
+// Route::post('/procesar-pago', [StripeController::class, 'procesarPago'])->name('procesarPago');
+// Route::post('/create-payment-intent', [StripeController::class, 'createPaymentIntent'])->name('createPaymentIntent');
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('/create-payment-intent', [StripeController::class, 'createPaymentIntent'])->name('createPaymentIntent');
+    Route::post('/procesar-pago', [StripeController::class, 'procesarPago'])->name('procesarPago');
+});
 
 Route::get('/agradecimiento', function () {
     return view('agradecimitnto');
