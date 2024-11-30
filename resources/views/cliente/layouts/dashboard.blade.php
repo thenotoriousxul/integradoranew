@@ -6,6 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ $title ?? 'Dashboard' }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+        crossorigin="anonymous"
+    />
     <style>
         * {
             margin: 0;
@@ -15,15 +21,13 @@
         }
 
         body {
-            display: flex;
             min-height: 100vh;
             background-color: #fff;
         }
 
         .contenedor {
             display: flex;
-            flex-direction: row;
-            flex-grow: 1;
+            min-height: 100vh;
         }
 
         .contenido {
@@ -31,37 +35,65 @@
             padding: 20px;
         }
 
-        aside {
-            width: 200px;
-            background-color: lightblue;
-            padding: 20px;
+        #sidebar {
+            width: 400px;
+            transition: transform 0.3s ease-in-out;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 2rem;
+        @media (max-width: 768px) {
+            #sidebar {
+                position: fixed;
+                top: 0;
+                right: 0;
+                height: 100%;
+                transform: translateX(100%);
+            }
         }
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            text-decoration: none;
-            color: #000;
+        #sidebar.active {
+            transform: translateX(0);
         }
 
-        .section-title {
-            font-size: 1.25rem;
-            margin-bottom: 1.5rem;
-            font-weight: 500;
+        .hamburger {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            cursor: pointer;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        @media (min-width: 769px) {
+            .hamburger {
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="hamburger" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </div>
+
     <div class="contenedor">
         <main class="contenido">
             @yield('content')
         </main>
+        
         @include('cliente.layouts.sidebar')
     </div>
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"
+    ></script>
+    <script src="{{ asset('js/sidebaruser.js') }}" defer></script>
+
 </body>
 </html>
+
+
+

@@ -1,64 +1,26 @@
+<aside id="sidebar" class="bg-light border-start p-4">
+    <div class="mb-4">Hola !!</div>
+    <nav class="nav flex-column mb-4">
+        <a href="{{ url('/') }}" class="nav-link text-secondary py-2">Tienda</a>
+        <a href="{{ route('pedidos') }}" class="nav-link text-secondary py-2">Mis compras</a>
+        <a href="{{ route('perfil') }}" class="nav-link text-secondary py-2">Datos personales</a>
+        <a href="#" class="nav-link text-secondary py-2">Atención al cliente</a>
+    </nav>
+    <a class="btn btn-dark w-100 py-3 rounded-3" href="{{ route('logout') }}"
+       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+        {{ __('Cerrar sesion') }}
+    </a>
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+        @csrf
+    </form>
+</aside>
+
 <style>
-    .sidebar {
-            width: 400px;
-            padding: 2rem;
-            border-left: 1px solid #e2e2e2;
-            background-color: #f9f9f9;
-        }
-
-        .menu-item {
-            display: flex;
-            align-items: center;
-            padding: 0.75rem 0;
-            text-decoration: none;
-            color: #666;
-        }
-
-        .menu-item:hover {
-            color: #000;
-        }
-
-        .logout-button {
-            display: block;
-            width: 100%;
-            padding: 1rem;
-            background-color: #000;
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            margin-top: 2rem;
-            text-decoration: none;
-        
-        }
-
-        .logout-button:hover {
-            background-color: #333;
-        }
-        .menu-item i {
-            width: 20px;
-            margin-right: 10px;
-        }
-        .sidecont { 
-            display: flex; 
-            justify-content: flex-end; 
-            height: 100vh; 
-             }
+    .nav-link:hover {
+        color: #000 !important;
+    }
+    .btn-dark:hover {
+        background-color: #333;
+    }
 </style>
-<div class="sidecont">
-    <aside class="sidebar">
-        <div>Hola !!</div>
-        <nav>
-            <a href="{{ url('/') }}" class="menu-item">Tienda</a>
-            <a href="{{ route('pedidos') }}" class="menu-item">Mis compras</a>
-            <a href="{{ route('perfil') }}" class="menu-item">Datos personales</a>
-            <a href="#" class="menu-item">Atención al cliente</a>
-        </nav>
-        <a class="logout-button" href="{{ route('logout') }}"
-        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-        {{ __('Cerrar sesion') }}</a>
-        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-             @csrf
-       </form>
-    </aside>
-</div>
+

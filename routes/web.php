@@ -223,3 +223,4 @@ return view('mail.orden');
 });
 
 
+Route::put('/direccion/actualizar/{id}', [informacionClienteController::class, 'actualizarDireccion'])->name('direccion.actualizar');
