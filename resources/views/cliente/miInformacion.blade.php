@@ -1,6 +1,17 @@
 @extends('cliente.layouts.dashboard')
 
 @section('content')
+
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
 <div class="container">
     <header class="text-center mb-5">
         <h1 class="h2">OZEZ</h1>
@@ -12,16 +23,20 @@
                 <h2 class="h5 mb-4">Datos personales</h2>
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <p class="form-control">{{ $usuario->persona->nombre ?? 'Nombre no disponible' }}</p>
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <p id="nombre" class="form-control">{{ $usuario->persona->nombre ?? 'Nombre no disponible' }}</p>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <p class="form-control">{{$usuario->persona->apellido_paterno}} {{$usuario->persona->apellido_materno}}</p>
+                        <label for="apellido_p" class="form-label">Apellido paterno</label>
+                        <p id="apellido_p" class="form-control">{{$usuario->persona->apellido_paterno}} {{$usuario->persona->apellido_materno}}</p>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <p class="form-control">{{$usuario->persona->genero}}</p>
+                        <label for="apellido_m" class="form-label">Apellido Materno</label>
+                        <p id="apellido_m" class="form-control">{{$usuario->persona->genero}}</p>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <p class="form-control">{{$usuario->persona->numero_telefonico}}</p>
+                        <label for="telefono" class="form-label">Telefono</label>
+                        <p id="telefono" class="form-control">{{$usuario->persona->numero_telefonico}}</p>
                     </div>
                 </div>
             </section>
@@ -33,24 +48,31 @@
                     <h2 class="h5 mb-4">Dirección</h2>
                     <div class="row">
                         <div class="col-12 mb-3">
+                            <label for="calle" class="form-label">Calle</label>
                             <input type="text" class="form-control" name="calle" id="calle" value="{{ $usuario->persona->direccion->calle }}">
                         </div>
                         <div class="col-12 mb-3">
+                            <label for="colonia" class="form-label">Colonia</label>
                             <input type="text" class="form-control" name="colonia" id="colonia" value="{{ $usuario->persona->direccion->colonia }}">
                         </div>
                         <div class="col-12 mb-3">
+                            <label for="codigo_postal" class="form-label">Código Postal</label>
                             <input type="text" class="form-control" name="codigo_postal" id="codigo_postal" value="{{ $usuario->persona->direccion->codigo_postal }}">
                         </div>
                         <div class="col-md-6 mb-3">
+                            <label for="numero_ext" class="numero_ext">Numero exterior</label>
                             <input type="text" class="form-control" name="numero_ext" id="numero_ext" value="{{ $usuario->persona->direccion->numero_ext }}">
                         </div>
                         <div class="col-md-6 mb-3">
+                            <label for="numero_int" class="form-label">Numero interior</label>
                             <input type="text" class="form-control" name="numero_int" id="numero_int" value="{{ $usuario->persona->direccion->numero_int }}">
                         </div>
                         <div class="col-md-6 mb-3">
+                            <label for="estado" class="form-label">Estado</label>
                             <input type="text" class="form-control" name="estado" id="estado" value="{{ $usuario->persona->direccion->estado }}">
                         </div>
                         <div class="col-md-6 mb-3">
+                            <label for="pais" class="form-label">Pais</label>
                             <input type="text" class="form-control" name="pais" id="pais" value="{{ $usuario->persona->direccion->pais }}">
                         </div>
                     </div>

@@ -1,127 +1,66 @@
 @extends('cliente.layouts.dashboard')
 
 @section('content')
-
-<style>
-
-.main-container {
-            padding: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            text-decoration: none;
-            color: #000;
-        }
-
-        .section-title {
-            font-size: 1.25rem;
-            margin-bottom: 1.5rem;
-            font-weight: 500;
-        }
-
-        .orders-list {
-            display: grid;
-            gap: 1.5rem;
-        }
-
-        .order-card {
-            border: 1px solid #e2e2e2;
-            border-radius: 4px;
-            padding: 1.5rem;
-        }
-
-        .order-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-        }
-
-        .order-number {
-            font-weight: bold;
-        }
-
-        .order-date {
-            color: #666;
-        }
-
-        .order-details {
-            display: grid;
-            gap: 1rem;
-        }
-
-        .order-item {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .item-image {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 4px;
-        }
-
-        .item-info {
-            flex: 1;
-        }
-
-        .item-name {
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-        }
-
-        .item-details {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .order-total {
-            text-align: right;
-            font-weight: bold;
-            margin-top: 1rem;
-        }
-</style>
-
-<div class="main-container">
-    <header class="header">
-        <a href="#" class="logo">OZEZ</a>
+<div class="container">
+    <header class="text-center mb-5">
+        <h1 class="h2">OZEZ</h1>
     </header>
 
-    <section>
-        <h2 class="section-title">Mis Órdenes</h2>
-        
-        @if ($ordenes->isEmpty())
-        <p>No tienes pedidos registrados.</p>
-    @else
-    @foreach ($ordenes as $orden)
-        <div class="orders-list">
-            <div class="order-card">
-                <div class="order-header">
-                    <span class="order-number">Orden {{ $orden->id }}</span>
-                    <span class="order-date">{{ $orden->fecha }}</span>
-                </div>
-                <div class="order-details">
-                    <div class="order-item">
-                        <img src="/placeholder.svg?height=80&width=80" alt="Camiseta básica" class="item-image">
-                        <div class="item-info">
-                            @foreach ($orden->detalles as $detalle)
-                            <div class="item-name"> {{ $detalle->edicionProducto->nombre }}</div>
-                            <div class="item-details">Talla: {{ $detalle->edicionProducto->talla }}  Cantidad: {{ $detalle->cantidad }}</div>
-                        @endforeach
-                            
+    <div class="row">
+        <div class="col-md-11 mx-auto">
+            <section class="mb-5">
+                <h2 class="h5 mb-4">Mis Órdenes</h2>
+                @if ($ordenes->isEmpty())
+                    <p>No tienes pedidos registrados.</p>
+                @else
+                    @foreach ($ordenes as $orden)
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between mb-3">
+                                    <span class="fw-bold">Orden {{ $orden->id }}</span>
+                                    <span class="text-muted">{{ $orden->fecha }}</span>
+                                </div>
+                                @foreach ($orden->detalles as $detalle)
+                                    <div class="row mb-3">
+                                        <div class="col-md-2">
+                                            <img src="/placeholder.svg?height=80&width=80" alt="{{ $detalle->edicionProducto->nombre }}" class="img-fluid rounded">
+                                        </div>
+                                        <div class="col-md-10">
+                                            <h3 class="h6 mb-2">{{ $detalle->edicionProducto->nombre }}</h3>
+                                            <p class="mb-1">Talla: {{ $detalle->edicionProducto->talla }}</p>
+                                            <p class="mb-1">Cantidad: {{ $detalle->cantidad }}</p>
+                                        </div>
+                                    </div>
+                                @endforeach
+                                <div class="text-end">
+                                    <p class="fw-bold mb-0">Total: ${{ number_format($orden->total, 2) }}</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    
-                </div>
-                <div class="order-total">${{ number_format($orden->total, 2) }}</div>
-            </div>
-            @endforeach
-            @endif
-
+                    @endforeach
+                @endif
+            </section>
         </div>
-    </section>
+    </div>
 </div>
+
+<style>
+    .container {
+        max-width: 900px;
+    }
+    .card {
+        background-color: #f6f6f6;
+        border: 1px solid #e2e2e2;
+        border-radius: 4px;
+    }
+    .card-body {
+        padding: 1.5rem;
+    }
+    img {
+        object-fit: cover;
+        width: 80px;
+        height: 80px;
+    }
+</style>
+
 @endsection

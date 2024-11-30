@@ -27,6 +27,18 @@ class informacionClienteController extends Controller
     {
         $direccion = Direccion::findOrFail($id);
 
+
+        $diasRestriccion = 30; 
+        $ultimaActualizacion = $direccion->updated_at;
+
+    if ($ultimaActualizacion && now()->diffInDays($ultimaActualizacion) < $diasRestriccion) {
+        $diasFaltantes = $diasRestriccion - now()->diffInDays($ultimaActualizacion);
+
+        return redirect()->back()->withErrors([
+            'message' => "No puedes actualizar tu dirección. Debes esperar $diasFaltantes días más."
+        ]);
+    }
+
         $direccion->update([
             'calle' => $request->calle,
             'colonia' => $request->colonia,

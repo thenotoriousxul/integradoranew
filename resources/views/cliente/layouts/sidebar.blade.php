@@ -1,4 +1,4 @@
-<aside id="sidebar" class="bg-light border-start p-4">
+<aside id="sidebar" class="bg-light border-start p-4 sidebar-container">
     <div class="mb-4">Hola !!</div>
     <nav class="nav flex-column mb-4">
         <a href="{{ url('/') }}" class="nav-link text-secondary py-2">Tienda</a>
@@ -21,6 +21,19 @@
     }
     .btn-dark:hover {
         background-color: #333;
+    }
+    @media (max-width: 768px) {
+        .sidebar-container {
+            transform: translateX(-100%);
+            width: 100%;
+            max-width: 320px;
+        }
+        .sidebar-container.hidden {
+            transform: translateX(-100%);
+        }
+        .sidebar-container.visible {
+            transform: translateX(0);
+        }
     }
 </style>
 
