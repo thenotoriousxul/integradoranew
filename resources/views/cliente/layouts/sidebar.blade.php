@@ -1,5 +1,5 @@
 <aside id="sidebar" class="bg-light border-start p-4 sidebar-container">
-    <div class="mb-4">Hola !!</div>
+    <div class="mb-4">Hola !! {{ Auth::user()->name }}</div>
     <nav class="nav flex-column mb-4">
         <a href="{{ url('/') }}" class="nav-link text-secondary py-2">Tienda</a>
         <a href="{{ route('pedidos') }}" class="nav-link text-secondary py-2">Mis compras</a>

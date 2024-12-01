@@ -73,5 +73,4 @@ class informacionClienteController extends Controller
         return response()->json($productosComprados);
     }
     
-    
 }

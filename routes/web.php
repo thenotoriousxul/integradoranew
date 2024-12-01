@@ -230,4 +230,3 @@ Route::put('/direccion/actualizar/{id}', [informacionClienteController::class, '
 Route::get('/envios-pendientes', [informacionClienteController::class, 'mostrarenvios'])->name('envios.pendientes');
 
 Route::get('/envios-detalles/{id}', [informacionClienteController::class, 'obtenerDetallesProducto'])->name('envios.detallesProducto');
-
