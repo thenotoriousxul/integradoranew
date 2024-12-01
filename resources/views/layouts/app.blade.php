@@ -304,22 +304,23 @@
                                     <td colspan="3" class="text-center">Tu carrito está vacío.</td>
                                 </tr>
                                 @else
-                                    @foreach($contenidoCarrito as $item)
-                                        <tr data-id="{{ $item['id'] }}">
-                                            <td>
-                                                <img src="{{ $item['attributes']['imagen'] ?? asset('img/default.jpg') }}" alt="{{ $item['name'] }}" style="width: 80px; height: 60px;">
-                                                {{ $item['name'] }}
-                                            </td>
-                                            <td>{{ $item['attributes']['talla'] }}</td>
-                                            <td>
-                                                <input type="number" name="cantidad" value="{{ $item['quantity'] }}" min="1" class="form-control actualizar-cantidad text-center mx-auto" style="width: 80px; font-family: 'Inter', sans-serif;">
-                                            </td>
-                                            <td>${{ number_format($item['price'], 2) }}</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-danger eliminar-producto" data-id="{{ $item['id'] }}">Eliminar</button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                @foreach($contenidoCarrito as $key => $item)
+                                <tr data-id="{{ $key }}">
+                                    <td>
+                                        <img src="{{ $item['attributes']['imagen'] ?? asset('img/default.jpg') }}" alt="{{ $item['name'] }}" style="width: 80px; height: 60px;">
+                                        {{ $item['name'] }}
+                                    </td>
+                                    <td>{{ $item['attributes']['talla'] }}</td>
+                                    <td>
+                                        <input type="number" name="cantidad" value="{{ $item['quantity'] }}" min="1" class="form-control actualizar-cantidad text-center mx-auto" style="width: 80px; font-family: 'Inter', sans-serif;">
+                                    </td>
+                                    <td>${{ number_format($item['price'], 2) }}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-danger eliminar-producto" data-id="{{ $key }}">Eliminar</button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            
                                 @endif
                             </tbody>
                         </table>

@@ -101,7 +101,7 @@ class StripeController extends Controller
                 'cantidad' => $producto['quantity'],
                 'total' => $producto['price'] * $producto['quantity'],
             ]);
-        }
+        } 
 
         session()->forget('carrito');
 

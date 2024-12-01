@@ -73,7 +73,7 @@ class carritoController extends Controller
                 ]
             ]);
         }
-
+ 
         
     
         // Guardar el carrito actualizado en la sesión
