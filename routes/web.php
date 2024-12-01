@@ -226,3 +226,8 @@ return view('mail.orden');
 
 
 Route::put('/direccion/actualizar/{id}', [informacionClienteController::class, 'actualizarDireccion'])->name('direccion.actualizar');
+
+Route::get('/envios-pendientes', [informacionClienteController::class, 'mostrarenvios'])->name('envios.pendientes');
+
+Route::get('/envios-detalles/{id}', [informacionClienteController::class, 'obtenerDetallesProducto'])->name('envios.detallesProducto');
+

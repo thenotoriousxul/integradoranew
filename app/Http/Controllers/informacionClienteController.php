@@ -6,6 +6,8 @@ use App\Http\Requests\direccionRequest;
 use App\Models\Direccion;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
+
 
 class informacionClienteController extends Controller
 {
@@ -51,5 +53,25 @@ class informacionClienteController extends Controller
 
         return redirect()->route('perfil')->with('success', 'Direccion actualizada exitosamente.');
     }
+
+    public function mostrarenvios()
+    {
+        $userId = auth()->id();
+    
+        $enviosPendientes = DB::table('vista_envios_pendientes')
+            ->where('usuario_id', $userId)
+            ->get();
+
+        return view('cliente.estadoenvios', ['envios' => $enviosPendientes]);
+    }
+    public function obtenerDetallesProducto($ordenId)
+    {
+        $productosComprados = DB::table('vista_detalle_productos_comprados')
+            ->where('orden_id', $ordenId)
+            ->get();
+    
+        return response()->json($productosComprados);
+    }
+    
     
 }
