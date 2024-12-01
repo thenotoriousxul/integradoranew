@@ -30,7 +30,7 @@
             </form>
             <!-- Botón para eliminar objetos -->
             <div class="controls mt-3">
-        <button onclick="eliminarObjeto()" class="btn btn-danger">Eliminar Objeto</button>
+            <button onclick="eliminarTodosLosEstampados()" class="btn btn-danger">Eliminar estampado</button>
         <button onclick="descargarImagen()" class="btn btn-primary">Descargar Diseño</button>
         </div>
         </div>
@@ -167,22 +167,7 @@
             alert('Ocurrió un error al guardar el diseño. Por favor, asegúrate de que todas las imágenes se cargaron correctamente.');
         }
     }
-
-    // Eliminar el objeto seleccionado
-    function eliminarObjeto() {
-        const activeObject = canvas.getActiveObject();
-        if (activeObject && activeObject !== canvas.backgroundImage) {
-            if (activeObject === logoObject) {
-                logoObject = null; // Resetear la variable del logo si se elimina
-                document.getElementById('estampado_id').value = ''; // Limpiar el ID del estampado
-            }
-
-            canvas.remove(activeObject);
-            saveCanvas();
-        } else {
-            alert('Seleccione un objeto para eliminar.');
-        }
-    }
+   
 
     // Descargar la imagen del diseño
     function descargarImagen() {
@@ -218,6 +203,87 @@
             setBackground();
         }
     }
+
+    function ajustarCanvas() {
+    const containerWidth = document.querySelector('.canvas-container').offsetWidth;
+    const scaleFactor = containerWidth / playeraBounds.width;
+
+    // Ajustar el canvas según el tamaño del contenedor
+    canvas.setWidth(playeraBounds.width * scaleFactor);
+    canvas.setHeight(playeraBounds.height * scaleFactor);
+
+    // Escalar todos los objetos en el canvas
+    canvas.getObjects().forEach(obj => {
+        obj.scaleX = obj.scaleX * scaleFactor;
+        obj.scaleY = obj.scaleY * scaleFactor;
+        obj.left = obj.left * scaleFactor;
+        obj.top = obj.top * scaleFactor;
+        obj.setCoords();
+    });
+
+    canvas.renderAll();
+}
+
+
+    function eliminarTodosLosEstampados() {
+    const objects = canvas.getObjects().filter(obj => obj !== canvas.backgroundImage); // Excluir la imagen de fondo
+
+    objects.forEach(obj => canvas.remove(obj));
+
+    logoObject = null;
+    document.getElementById('estampado_id').value = '';
+
+    canvas.discardActiveObject();
+    canvas.renderAll();
+
+    saveCanvas();
+    alert('Todos los estampados han sido eliminados.');
+}
+
+function load() {
+    const timestamp = new Date().getTime(); // Cache-busting
+    const imageUrl = '{{ $producto->imagen_producto }}' + '?t=' + timestamp;
+
+    fabric.Image.fromURL(imageUrl, function(img) {
+        // Ajustar el tamaño del canvas al tamaño de la imagen
+        canvas.setWidth(img.width);
+        canvas.setHeight(img.height);
+
+        // Escalar la imagen para que se adapte al contenedor responsivo
+        const containerWidth = document.querySelector('.canvas-container').offsetWidth;
+        const scaleFactor = containerWidth / img.width;
+
+        img.set({
+            originX: 'left',
+            originY: 'top',
+            scaleX: scaleFactor,
+            scaleY: scaleFactor,
+            selectable: false,
+            evented: false
+        });
+
+        canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
+
+        // Ajustar las dimensiones visibles del canvas
+        canvas.setWidth(img.width * scaleFactor);
+        canvas.setHeight(img.height * scaleFactor);
+        canvas.renderAll();
+
+        playeraBounds = {
+            left: 0,
+            top: 0,
+            width: canvas.width,
+            height: canvas.height
+        };
+    }, { crossOrigin: 'Anonymous' });
+
+    window.addEventListener('resize', ajustarCanvas);
+    load();
+
+}
+
+
+
 </script>
 
 
