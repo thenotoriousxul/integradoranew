@@ -25,7 +25,7 @@
                                 <del>${{ number_format($producto->costo_precio_venta, 2) }}</del>
                             @endif
                         </p>
-                        
+                         
                         <p class="{{ $producto->rebaja ? 'text-danger fw-bold' : 'fw-bold' }}">
                             ${{ number_format($producto->rebaja ? $producto->precio_rebajado : $producto->costo_precio_venta, 2) }}
                             @if($producto->rebaja)

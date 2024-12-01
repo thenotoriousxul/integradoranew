@@ -44,10 +44,11 @@ class carritoController extends Controller
         $productoTallaKey = "{$productoId}_{$talla}";
     
         if ($carrito->has($productoTallaKey)) {
+            $precio = $producto->rebaja ? $producto->precio_rebajado : $producto->costo_precio_venta; // Usa el precio rebajado si hay rebaja
             $carrito->put($productoTallaKey, [
                 'id' => $producto->id,
                 'name' => $producto->nombre,
-                'price' => $producto->costo_precio_venta,
+                'price' => $precio,
                 'quantity' => $carrito[$productoTallaKey]['quantity'] + $cantidad,
                 'attributes' => [
                     'imagen' => $producto->imagen_producto_final,
@@ -55,10 +56,11 @@ class carritoController extends Controller
                 ]
             ]);
         } else {
+            $precio = $producto->rebaja ? $producto->precio_rebajado : $producto->costo_precio_venta; // Usa el precio rebajado si hay rebaja
             $carrito->put($productoTallaKey, [
                 'id' => $producto->id,
                 'name' => $producto->nombre,
-                'price' => $producto->costo_precio_venta,
+                'price' => $precio,
                 'quantity' => $cantidad,
                 'attributes' => [
                     'imagen' => $producto->imagen_producto_final,

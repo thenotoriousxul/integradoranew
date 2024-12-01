@@ -134,8 +134,11 @@
         </div>
         <div class="col-md-6">
             <h1 class="product-title">{{ ucfirst($producto->nombre) }}</h1>
+            @if($producto->rebaja)
+            <div class="product-price"> ${{ number_format($producto->rebaja ? $producto->precio_rebajado : $producto->costo_precio_venta, 2) }}</div>            
+            @else
             <div class="product-price">${{ number_format($producto->costo_precio_venta, 2) }}</div>
-
+            @endif
             <div class="mb-4">
                 <label class="form-label">Medidas</label>
                 <div class="size-options">
@@ -155,7 +158,7 @@
                     @endforeach
                 </div>
             </div>
-
+ 
             <form action="{{ route('carrito.agregar', $producto->id) }}" method="POST">
                 @csrf
                 <input type="hidden" name="talla" id="talla-seleccionada" value="">

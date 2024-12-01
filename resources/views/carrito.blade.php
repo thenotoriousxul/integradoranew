@@ -62,7 +62,6 @@
 <script>
 
     document.addEventListener('DOMContentLoaded', () => {
-        const urlEliminar = '/carrito/eliminar/:id';
 
         const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
