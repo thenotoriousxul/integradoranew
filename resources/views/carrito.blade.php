@@ -86,6 +86,43 @@
         function actualizarTotal(total) {
             document.querySelector('#carrito-total').textContent = `Total: $${parseFloat(total).toFixed(2)}`;
         }
+
+        const urlEliminar = "{{ route('carrito.eliminar', ':id') }}";
+
+
+document.querySelectorAll('.eliminar-producto').forEach(button => {
+    button.addEventListener('click', function () {
+        const idProducto = this.dataset.id;
+        const url = urlEliminar.replace(':id', idProducto);
+
+        fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+
+            if (data.success) {
+                // Remover fila sin recargar la página
+                this.closest('tr').remove();
+                const total = parseFloat(data.total);
+
+                if (total <= 0) {
+
+                location.reload();
+
+                }
+                else{
+                    const carritoTotal = document.querySelector('#carrito-total');
+                    carritoTotal.textContent = `Total: $${total.toFixed(2)}`;
+                }
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+});
     });
 </script>
 

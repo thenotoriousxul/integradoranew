@@ -265,9 +265,8 @@
 
                         <!-- Carrito -->
                         <li class="nav-item position-relative">
-                            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#cartModal">
+                            <a class="nav-link" href="{{ route('carrito.mostrar') }}">
                                 <i class="fas fa-shopping-cart"></i>
-                                <span class="total-cart">${{ number_format($totalMonto ?? 0, 2, '.', ',') }}</span>
                             </a>
                         </li>
                     </ul>
@@ -278,54 +277,7 @@
         <main class="m-0 p-0">
             @yield('content')
         </main>
- 
-        <div class="modal fade carti" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="cartModalLabel">Productos en el carrito</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Producto</th>
-                                    <th>Talla</th>
-                                    <th>Cantidad</th>
-                                    <th>Precio</th>
-                                    <th>Quitar</th>
-                                    
-                                </tr>
-                            </thead>
-                            <tbody id="carrito-body">
-                                @if(empty($contenidoCarrito) || count($contenidoCarrito) === 0)
-                                <tr>
-                                    <td colspan="6" class="text-center text-white">Tu carrito está vacío.</td>
-                                </tr>
-                                @else
-                                    @foreach($contenidoCarrito as $key => $item)
-                                        <tr data-id="{{ $key }}">
-                                            <td>{{ $item['name'] }}</td>
-                                            <td>{{ $item['attributes']['talla'] }}</td>
-                                            <td>${{ number_format($item['price'], 2) }}</td>
-                                            <td>{{ $item['quantity'] }}</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-danger eliminar-producto" data-id="{{ $key }}">Eliminar</button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endif
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <a href="{{ route('carrito.mostrar') }}" class="btn btn-primary">Ver Carrito</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+
 
         <footer>
             <div class="footer-content">
@@ -365,43 +317,6 @@
             setTimeout(() => {
                 loadingScreen.style.display = 'none';
             }, 500); 
-        });
-
-        const urlEliminar = "{{ route('carrito.eliminar', ':id') }}";
-
-
-        document.querySelectorAll('.eliminar-producto').forEach(button => {
-            button.addEventListener('click', function () {
-                const idProducto = this.dataset.id;
-                const url = urlEliminar.replace(':id', idProducto);
-
-                fetch(url, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-
-                    if (data.success) {
-                        // Remover fila sin recargar la página
-                        this.closest('tr').remove();
-                        const total = parseFloat(data.total);
-
-                        if (total <= 0) {
- 
-                        location.reload();
-
-                        }
-                        else{
-                            const carritoTotal = document.querySelector('#carrito-total');
-                            carritoTotal.textContent = `Total: $${total.toFixed(2)}`;
-                        }
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-            });
         });
 
     </script>
