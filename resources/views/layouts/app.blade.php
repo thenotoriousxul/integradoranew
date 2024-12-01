@@ -301,26 +301,20 @@
                             <tbody id="carrito-body">
                                 @if(empty($contenidoCarrito) || count($contenidoCarrito) === 0)
                                 <tr>
-                                    <td colspan="3" class="text-center">Tu carrito está vacío.</td>
+                                    <td colspan="6" class="text-center text-white">Tu carrito está vacío.</td>
                                 </tr>
                                 @else
-                                @foreach($contenidoCarrito as $key => $item)
-                                <tr data-id="{{ $key }}">
-                                    <td>
-                                        <img src="{{ $item['attributes']['imagen'] ?? asset('img/default.jpg') }}" alt="{{ $item['name'] }}" style="width: 80px; height: 60px;">
-                                        {{ $item['name'] }}
-                                    </td>
-                                    <td>{{ $item['attributes']['talla'] }}</td>
-                                    <td>
-                                        <input type="number" name="cantidad" value="{{ $item['quantity'] }}" min="1" class="form-control actualizar-cantidad text-center mx-auto" style="width: 80px; font-family: 'Inter', sans-serif;">
-                                    </td>
-                                    <td>${{ number_format($item['price'], 2) }}</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-danger eliminar-producto" data-id="{{ $key }}">Eliminar</button>
-                                    </td>
-                                </tr>
-                            @endforeach
-                            
+                                    @foreach($contenidoCarrito as $key => $item)
+                                        <tr data-id="{{ $key }}">
+                                            <td>{{ $item['name'] }}</td>
+                                            <td>{{ $item['attributes']['talla'] }}</td>
+                                            <td>${{ number_format($item['price'], 2) }}</td>
+                                            <td>{{ $item['quantity'] }}</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-danger eliminar-producto" data-id="{{ $key }}">Eliminar</button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 @endif
                             </tbody>
                         </table>
@@ -389,16 +383,27 @@
                 })
                 .then(response => response.json())
                 .then(data => {
+
                     if (data.success) {
                         // Remover fila sin recargar la página
                         this.closest('tr').remove();
-                        // Actualizar el total del carrito si es necesario
-                        // document.querySelector('#total-carrito').innerText = `Total: $${data.total.toFixed(2)}`;
+                        const total = parseFloat(data.total);
+
+                        if (total <= 0) {
+ 
+                        location.reload();
+
+                        }
+                        else{
+                            const carritoTotal = document.querySelector('#carrito-total');
+                            carritoTotal.textContent = `Total: $${total.toFixed(2)}`;
+                        }
                     }
                 })
                 .catch(error => console.error('Error:', error));
             });
         });
+
     </script>
 
 </body>

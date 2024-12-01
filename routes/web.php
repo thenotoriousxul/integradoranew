@@ -89,15 +89,17 @@ Route::get('/envios', function () {
 
 
 // Rutas para gestionar el carrito
-Route::get('/carrito', [CarritoController::class, 'mostrarCarrito'])->name('carrito.mostrar');
-Route::post('/carrito/agregar/{id}', [CarritoController::class, 'agregarProducto'])->name('carrito.agregar');
-Route::put('/carrito/actualizar/{id}', [CarritoController::class, 'actualizarCantidad'])->name('carrito.actualizar');
-Route::delete('/carrito/eliminar/{id}', [CarritoController::class, 'eliminarProducto'])->name('carrito.eliminar');
-Route::post('/carrito/vaciar', [CarritoController::class, 'vaciarCarrito'])->name('carrito.vaciar');
+Route::get('/carrito', [carritoController::class, 'mostrarCarrito'])->name('carrito.mostrar');
+Route::post('/carrito/agregar/{id}', [carritoController::class, 'agregarProducto'])->name('carrito.agregar');
+Route::put('/carrito/actualizar/{id}', [carritoController::class, 'actualizarCantidad'])->name('carrito.actualizar');
+Route::delete('/carrito/eliminar/{id}', [carritoController::class, 'eliminarProducto'])->name('carrito.eliminar');
+Route::post('/carrito/vaciar', [carritoController::class, 'vaciarCarrito'])->name('carrito.vaciar');
+
+
+
 Route::get('dash', function(){
 return view('admin.layouts.dash');
 });
-
 
 Route::get('/dashorden', function () {
     return view('admin.dashOrdenes');
