@@ -12,6 +12,12 @@
         font-size: 0.85rem;
         margin-top: 5px;
     }
+    .form-section {
+        display: none;
+    }
+    .form-section.active {
+        display: block;
+    }
 </style>
 @if ($errors->any())
     <div class="alert alert-danger">
@@ -38,104 +44,115 @@
                 <form method="POST" action="{{ route('register') }}" id="registerForm">
                     @csrf
 
-                    <!-- Usuario -->
-                    <h4 class="text-dark mb-3" style="font-size: 1rem;">{{ __('Información de Usuario') }}</h4>
-                    <div class="mb-2">
-                        <label for="name" class="form-label" style="font-size: 0.85rem;">{{ __('Nombre de usuario') }}</label>
-                        <input id="name" type="text" class="form-control form-control-sm" name="name" required>
-                        <div class="invalid-feedback">El nombre de usuario es obligatorio.</div>
-                    </div>
-                    <div class="mb-2">
-                        <label for="email" class="form-label" style="font-size: 0.85rem;">{{ __('Correo') }}</label>
-                        <input id="email" type="email" class="form-control form-control-sm" name="email" required>
-                        <div id="email-hint" class="email-hint"></div>
-                        <div class="invalid-feedback">Debe ingresar un correo válido.</div>
-                    </div>
-                    <div class="mb-2">
-                        <label for="password" class="form-label" style="font-size: 0.85rem;">{{ __('Contraseña') }}</label>
-                        <input id="password" type="password" class="form-control form-control-sm" name="password" required minlength="8">
-                        <div id="password-hint" class="password-hint"></div>
-                        <div class="invalid-feedback">La contraseña debe tener al menos 8 caracteres.</div>
-                    </div>
-                    <div class="mb-2">
-                        <label for="password_confirmation" class="form-label" style="font-size: 0.85rem;">{{ __('Confirmar contraseña') }}</label>
-                        <input id="password_confirmation" type="password" class="form-control form-control-sm" name="password_confirmation" required>
-                        <div id="confirm-password-hint" class="confirm-password-hint"></div>
-                        <div class="invalid-feedback">Las contraseñas deben coincidir.</div>
-                    </div>
-
-                    <!-- Información personal -->
-                    <h4 class="text-dark mt-4 mb-3" style="font-size: 1rem;">{{ __('Información Personal') }}</h4>
-                    <div class="mb-2">
-                        <label for="nombre" class="form-label" style="font-size: 0.85rem;">{{ __('Nombre') }}</label>
-                        <input id="nombre" type="text" class="form-control form-control-sm" name="nombre" required>
-                        <div class="invalid-feedback">El nombre es obligatorio.</div>
-                    </div>
-                    <div class="mb-2">
-                        <label for="apellido_paterno" class="form-label" style="font-size: 0.85rem;">{{ __('Apellido Paterno') }}</label>
-                        <input id="apellido_paterno" type="text" class="form-control form-control-sm" name="apellido_paterno" required>
-                        <div class="invalid-feedback">El apellido paterno es obligatorio.</div>
-                    </div>
-                    <div class="mb-2">
-                        <label for="apellido_materno" class="form-label" style="font-size: 0.85rem;">{{ __('Apellido Materno') }}</label>
-                        <input id="apellido_materno" type="text" class="form-control form-control-sm" name="apellido_materno" required>
-                        <div class="invalid-feedback">El apellido materno es obligatorio.</div>
-                    </div>
-                    
-                    <div class="mb-2">
-                        <label for="genero" class="form-label" style="font-size: 0.85rem;">{{ __('Género') }}</label>
-                        <select id="genero" class="form-select form-select-sm" name="genero" required>
-                            <option value="M">{{ __('Masculino') }}</option>
-                            <option value="F">{{ __('Femenino') }}</option>
-                        </select>
-                        <div class="invalid-feedback">El género es obligatorio.</div>
-                    </div>
-                    <div class="mb-2">
-                        <label for="numero_telefonico" class="form-label" style="font-size: 0.85rem;">{{ __('Número Telefónico') }}</label>
-                        <input id="numero_telefonico" type="text" class="form-control form-control-sm" name="numero_telefonico" required pattern="\d+">
-                        <div class="invalid-feedback">El número telefónico es obligatorio y debe ser numérico.</div>
+                    <!-- Sección 1: Información de Usuario -->
+                    <div id="section1" class="form-section active">
+                        <h4 class="text-dark mb-3" style="font-size: 1rem;">{{ __('Información de Usuario') }}</h4>
+                        <div class="mb-2">
+                            <label for="name" class="form-label" style="font-size: 0.85rem;">{{ __('Nombre de usuario') }}</label>
+                            <input id="name" type="text" class="form-control form-control-sm" name="name" required>
+                            <div class="invalid-feedback">El nombre de usuario es obligatorio.</div>
+                        </div>
+                        <div class="mb-2">
+                            <label for="email" class="form-label" style="font-size: 0.85rem;">{{ __('Correo') }}</label>
+                            <input id="email" type="email" class="form-control form-control-sm" name="email" required>
+                            <div id="email-hint" class="email-hint"></div>
+                            <div class="invalid-feedback">Debe ingresar un correo válido.</div>
+                        </div>
+                        <div class="mb-2">
+                            <label for="password" class="form-label" style="font-size: 0.85rem;">{{ __('Contraseña') }}</label>
+                            <input id="password" type="password" class="form-control form-control-sm" name="password" required minlength="8">
+                            <div id="password-hint" class="password-hint"></div>
+                            <div class="invalid-feedback">La contraseña debe tener al menos 8 caracteres.</div>
+                        </div>
+                        <div class="mb-2">
+                            <label for="password_confirmation" class="form-label" style="font-size: 0.85rem;">{{ __('Confirmar contraseña') }}</label>
+                            <input id="password_confirmation" type="password" class="form-control form-control-sm" name="password_confirmation" required>
+                            <div id="confirm-password-hint" class="confirm-password-hint"></div>
+                            <div class="invalid-feedback">Las contraseñas deben coincidir.</div>
+                        </div>
+                        <div class="d-grid mt-4">
+                            <button type="button" class="btn btn-dark btn-sm" onclick="nextSection(2)">{{ __('Siguiente') }}</button>
+                        </div>
                     </div>
 
-                    <!-- Dirección -->
-                    <h4 class="text-dark mt-4 mb-3" style="font-size: 1rem;">{{ __('Dirección') }}</h4>
-                    <div class="mb-2">
-                        <label for="calle" class="form-label" style="font-size: 0.85rem;">{{ __('Calle') }}</label>
-                        <input id="calle" type="text" class="form-control form-control-sm" name="calle" required>
-                        <div class="invalid-feedback">La calle es obligatoria.</div>
+                    <!-- Sección 2: Información Personal -->
+                    <div id="section2" class="form-section">
+                        <h4 class="text-dark mt-4 mb-3" style="font-size: 1rem;">{{ __('Información Personal') }}</h4>
+                        <div class="mb-2">
+                            <label for="nombre" class="form-label" style="font-size: 0.85rem;">{{ __('Nombre') }}</label>
+                            <input id="nombre" type="text" class="form-control form-control-sm" name="nombre" required>
+                            <div class="invalid-feedback">El nombre es obligatorio.</div>
+                        </div>
+                        <div class="mb-2">
+                            <label for="apellido_paterno" class="form-label" style="font-size: 0.85rem;">{{ __('Apellido Paterno') }}</label>
+                            <input id="apellido_paterno" type="text" class="form-control form-control-sm" name="apellido_paterno" required>
+                            <div class="invalid-feedback">El apellido paterno es obligatorio.</div>
+                        </div>
+                        <div class="mb-2">
+                            <label for="apellido_materno" class="form-label" style="font-size: 0.85rem;">{{ __('Apellido Materno') }}</label>
+                            <input id="apellido_materno" type="text" class="form-control form-control-sm" name="apellido_materno" required>
+                            <div class="invalid-feedback">El apellido materno es obligatorio.</div>
+                        </div>
+                        <div class="mb-2">
+                            <label for="genero" class="form-label" style="font-size: 0.85rem;">{{ __('Género') }}</label>
+                            <select id="genero" class="form-select form-select-sm" name="genero" required>
+                                <option value="M">{{ __('Masculino') }}</option>
+                                <option value="F">{{ __('Femenino') }}</option>
+                            </select>
+                            <div class="invalid-feedback">El género es obligatorio.</div>
+                        </div>
+                        <div class="mb-2">
+                            <label for="numero_telefonico" class="form-label" style="font-size: 0.85rem;">{{ __('Número Telefónico') }}</label>
+                            <input id="numero_telefonico" type="text" class="form-control form-control-sm" name="numero_telefonico" required pattern="\d+">
+                            <div class="invalid-feedback">El número telefónico es obligatorio y debe ser numérico.</div>
+                        </div>
+                        <div class="d-grid mt-4">
+                            <button type="button" class="btn btn-secondary btn-sm mb-2" onclick="prevSection(1)">{{ __('Anterior') }}</button>
+                            <button type="button" class="btn btn-dark btn-sm" onclick="nextSection(3)">{{ __('Siguiente') }}</button>
+                        </div>
                     </div>
-                    <div class="mb-2">
-                        <label for="numero_ext" class="form-label" style="font-size: 0.85rem;">{{ __('Número exterior') }}</label>
-                        <input id="numero_ext" type="text" class="form-control form-control-sm" name="numero_ext" required>
-                        <div class="invalid-feedback">El número exterior es obligatorio.</div>
-                    </div>
-                    <div class="mb-2">
-                        <label for="numero_int" class="form-label" style="font-size: 0.85rem;">{{ __('Número interior (opcional)') }}</label>
-                        <input id="numero_int" type="text" class="form-control form-control-sm" name="numero_int">
-                    </div>
-                    <div class="mb-2">
-                        <label for="colonia" class="form-label" style="font-size: 0.85rem;">{{ __('Colonia') }}</label>
-                        <input id="colonia" type="text" class="form-control form-control-sm" name="colonia" required>
-                        <div class="invalid-feedback">La colonia es obligatoria.</div>
-                    </div>
-                    <div class="mb-2">
-                        <label for="estado" class="form-label" style="font-size: 0.85rem;">{{ __('Estado') }}</label>
-                        <input id="estado" type="text" class="form-control form-control-sm" name="estado" required>
-                        <div class="invalid-feedback">El estado es obligatorio.</div>
-                    </div>
-                    <div class="mb-2">
-                        <label for="codigo_postal" class="form-label" style="font-size: 0.85rem;">{{ __('Código Postal') }}</label>
-                        <input id="codigo_postal" type="text" class="form-control form-control-sm" name="codigo_postal" required pattern="\d{5}">
-                        <div class="invalid-feedback">El código postal debe tener 5 dígitos.</div>
-                    </div>
-                    <div class="mb-2">
-                        <label for="pais" class="form-label" style="font-size: 0.85rem;">{{ __('País') }}</label>
-                        <input id="pais" type="text" class="form-control form-control-sm" name="pais" required>
-                        <div class="invalid-feedback">El país es obligatorio.</div>
-                    </div>
-                    
 
-                    <div class="d-grid mt-4">
-                        <button type="submit" class="btn btn-dark btn-sm">{{ __('Registrarse') }}</button>
+                    <!-- Sección 3: Dirección -->
+                    <div id="section3" class="form-section">
+                        <h4 class="text-dark mt-4 mb-3" style="font-size: 1rem;">{{ __('Dirección') }}</h4>
+                        <div class="mb-2">
+                            <label for="calle" class="form-label" style="font-size: 0.85rem;">{{ __('Calle') }}</label>
+                            <input id="calle" type="text" class="form-control form-control-sm" name="calle" required>
+                            <div class="invalid-feedback">La calle es obligatoria.</div>
+                        </div>
+                        <div class="mb-2">
+                            <label for="numero_ext" class="form-label" style="font-size: 0.85rem;">{{ __('Número exterior') }}</label>
+                            <input id="numero_ext" type="text" class="form-control form-control-sm" name="numero_ext" required>
+                            <div class="invalid-feedback">El número exterior es obligatorio.</div>
+                        </div>
+                        <div class="mb-2">
+                            <label for="numero_int" class="form-label" style="font-size: 0.85rem;">{{ __('Número interior (opcional)') }}</label>
+                            <input id="numero_int" type="text" class="form-control form-control-sm" name="numero_int">
+                        </div>
+                        <div class="mb-2">
+                            <label for="colonia" class="form-label" style="font-size: 0.85rem;">{{ __('Colonia') }}</label>
+                            <input id="colonia" type="text" class="form-control form-control-sm" name="colonia" required>
+                            <div class="invalid-feedback">La colonia es obligatoria.</div>
+                        </div>
+                        <div class="mb-2">
+                            <label for="estado" class="form-label" style="font-size: 0.85rem;">{{ __('Estado') }}</label>
+                            <input id="estado" type="text" class="form-control form-control-sm" name="estado" required>
+                            <div class="invalid-feedback">El estado es obligatorio.</div>
+                        </div>
+                        <div class="mb-2">
+                            <label for="codigo_postal" class="form-label" style="font-size: 0.85rem;">{{ __('Código Postal') }}</label>
+                            <input id="codigo_postal" type="text" class="form-control form-control-sm" name="codigo_postal" required pattern="\d{5}">
+                            <div class="invalid-feedback">El código postal debe tener 5 dígitos.</div>
+                        </div>
+                        <div class="mb-2">
+                            <label for="pais" class="form-label" style="font-size: 0.85rem;">{{ __('País') }}</label>
+                            <input id="pais" type="text" class="form-control form-control-sm" name="pais" required>
+                            <div class="invalid-feedback">El país es obligatorio.</div>
+                        </div>
+                        <div class="d-grid mt-4">
+                            <button type="button" class="btn btn-secondary btn-sm mb-2" onclick="prevSection(2)">{{ __('Anterior') }}</button>
+                            <button type="submit" class="btn btn-dark btn-sm">{{ __('Registrarse') }}</button>
+                        </div>
                     </div>
                 </form>
 
@@ -152,6 +169,16 @@
 </div>
 
 <script>
+    function nextSection(sectionNumber) {
+        document.getElementById(`section${sectionNumber - 1}`).classList.remove('active');
+        document.getElementById(`section${sectionNumber}`).classList.add('active');
+    }
+
+    function prevSection(sectionNumber) {
+        document.getElementById(`section${sectionNumber + 1}`).classList.remove('active');
+        document.getElementById(`section${sectionNumber}`).classList.add('active');
+    }
+
     document.getElementById('registerForm').addEventListener('submit', function(event) {
         const form = this;
         const inputs = form.querySelectorAll('input, select');
