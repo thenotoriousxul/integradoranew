@@ -196,6 +196,10 @@
                 </a>
             </div>
 
+            <a id="personalizadas" class="item-side" href="{{ route('admin.personalizar') }}">
+                <i class="fas fa-box"></i>
+                <span class="sidebar-text">Personalizadas</span>
+            </a>            
 
             <a class="item-side" href="/dash/gestor/historial">
                 <i class="fas fa-history"></i>
