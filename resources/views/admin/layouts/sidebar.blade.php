@@ -216,6 +216,10 @@
                 <i class="fas fa-plus"></i>
                 <span class="sidebar-text">Crear Orden</span>
             </a>
+            <a id="Reporte" class="item-side" href="{{ route('admin.reporteVentas') }}">
+                <i class="fas fa-box"></i>
+                <span class="sidebar-text">Reporte Ventas</span>
+            </a>   
         </div>
         @if (Auth::user()->hasRole('admin'))
         <div class="page-container">
