@@ -286,6 +286,159 @@
             font-size: 3rem;
         }
     }
+
+
+
+
+    .promo-banner {
+        position: relative;
+        width: 100%;
+        height: 300px;
+        overflow: hidden;
+        background: linear-gradient(to bottom right, #8e9f4b, #23212c, #a7a7a7);
+    }
+
+    .background {
+        position: absolute;
+        inset: 0;
+    }
+
+    .blur-circle {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(100px);
+        opacity: 0.3;
+        animation: pulse 4s infinite alternate;
+    }
+
+    .circle1 {
+        top: 33%;
+        left: 25%;
+        width: 400px;
+        height: 400px;
+        background-color: rgba(0, 89, 255, 0.7);
+    }
+
+    .circle2 {
+        top: 50%;
+        right: 33%;
+        width: 300px;
+        height: 300px;
+        background-color: rgba(192, 180, 142, 0.897);
+        animation-delay: 2s;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        100% { transform: scale(1.1); }
+    }
+
+    .content {
+        position: relative;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 20px;
+        color: #6b774f;
+    }
+
+    .subtitle {
+        font-size: 18px;
+        font-weight: 500;
+        margin-bottom: 10px;
+    }
+
+    .title {
+        font-size: 48px;
+        font-weight: bold;
+        margin: 0 0 20px;
+    }
+
+    .cta-button {
+        background-color: white;
+        color: black;
+        border: none;
+        padding: 10px 30px;
+        font-size: 16px;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .cta-button:hover {
+        background-color: rgba(255, 255, 255, 0.9);
+    }
+
+    .details {
+        margin-top: 15px;
+        font-size: 15px;
+    }
+
+    .details p {
+        margin: 5px 0;
+    }
+
+    .disclaimer {
+        font-size: 12px;
+        margin-top: 15px;
+    }
+
+    @media (max-width: 768px) {
+        .title {
+            font-size: 36px;
+        }
+    }
+   
+    #product-gallery {
+    background-color: black;
+    padding: 2rem 0;
+}
+
+#product-gallery .card {
+    background-color: black;
+    border: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#product-gallery .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+}
+
+#product-gallery .card-img-top {
+    object-fit: cover;
+    height: 300px;
+    width: 100%;
+    border-radius: 8px;
+}
+
+#product-gallery .card-text {
+    font-size: 1.1rem;
+    color: white;
+}
+
+#product-gallery h2, 
+#product-gallery p.lead {
+    color: white;
+}
+
+@media (max-width: 768px) {
+    #product-gallery .card-img-top {
+        height: 250px;
+    }
+}
+
+@media (max-width: 576px) {
+    #product-gallery .card-img-top {
+        height: 200px;
+    }
+}
+
+
+
 </style>
 
 
@@ -301,7 +454,7 @@
     </div>
 
 
-    <div class="animacion">
+    {{-- <div class="animacion">
         <div class="logo-container">
             <span>Innovación en Cada Puntada</span>
             <span>Diseños que Definen tu Estilo</span>
@@ -311,17 +464,36 @@
             <span>Calidad y Personalización en un Solo Lugar</span>
             <span>Viste tu Estilo, Viste OZEZ</span>
         </div>
-    </div>
+    </div> --}}
 
-    <div class="catalogo py-5 text-center">
+    {{-- <div class="catalogo py-5 text-center">
         <div class="container">
             <h2 class="display-5 font-weight-bold">Explora Nuestro Catálogo</h2>
             <p class="lead mb-4">Descubre nuestra amplia variedad de playeras únicas, diseñadas para adaptarse a cada estilo. Ya sea que busques algo moderno, clásico o completamente personalizado, OZEZ tiene algo para ti.</p>
             <a href="{{route('mostrar.productos')}}" class="btn btn-dark" style="font-size: 2rem; padding: 15px 30px;">Ir al Catálogo</a>
         </div>
+    </div> --}}
+
+    <div class="promo-banner">
+        <div class="background">
+            <div class="blur-circle circle1"></div>
+            <div class="blur-circle circle2"></div>
+        </div>
+        <div class="content">
+            <p class="subtitle">Más artículos añadidos</p>
+            <h2 class="title">Promociones hasta -50%</h2>
+            <a href="{{route('mostrar.productos')}}">
+            <button class="cta-button">Ir al catalogo</button>
+            </a>
+            <div class="details">
+                <p>En artículos seleccionados</p>
+                <p>En tiendas y online</p>
+            </div>
+            <p class="disclaimer">No acumulable a otras promociones. Válido hasta el 05/01.</p>
+        </div>
     </div>
 
-    <div class="animacion">
+    {{-- <div class="animacion">
         <div class="logo-container">
             <span>Personalización al Máximo</span>
             <span>Estilo Único para Cada Personalidad</span>
@@ -330,56 +502,62 @@
             <span>Viste la Diferencia</span>
             <span>Innovación en Cada Puntada</span>
         </div>
-    </div>
+    </div> --}}
 
-    <div id="product-gallery" class="container-fluid mt-5 mb-5">
+    <div id="product-gallery" class="container-fluid " style="background-color: black; padding: 2rem 0;">
         <div class="text-center mb-4">
-            <h2 class="display-5 font-weight-bold">Productos Destacados</h2>
-            <p class="lead">Explora nuestras prendas más populares y seleccionadas por nuestros clientes como sus favoritas.</p>
+            <h2 class="display-5 font-weight-bold" style="color: white;">Productos Destacados</h2>
+            <p class="lead" style="color: white;">Explora nuestras prendas más populares y seleccionadas por nuestros clientes como sus favoritas.</p>
         </div>
         <div class="row g-4">
-            <div class="col-md-3">
-                <div class="card h-100 shadow-sm">
-                    <a href="{{ route('producto.detalle') }}">
-                        <img src="{{ asset('img/first.jpeg') }}" class="card-img-top" alt="Playera 1 - Estilo único">
+            <!-- Producto 1 -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card h-100 shadow-sm" style="background-color: black; border: none;">
+                    <a href="#">
+                        <img src="{{ asset('img/first.jpeg') }}" class="card-img-top" alt="Producto 1">
                     </a>
                     <div class="card-body text-center">
-                        <p class="card-text">¡Resalta tu estilo con nuestras playeras exclusivas!</p>
+                        <p class="card-text" style="color: white;">¡Resalta tu estilo con nuestras playeras exclusivas!</p>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card h-100 shadow-sm">
-                    <a href="{{ route('producto.detalle') }}">
-                        <img src="{{ asset('img/second.jpeg') }}" class="card-img-top" alt="Playera 2 - Diseño original">
+            <!-- Producto 2 -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card h-100 shadow-sm" style="background-color: black; border: none;">
+                    <a href="#">
+                        <img src="{{ asset('img/second.jpeg') }}" class="card-img-top" alt="Producto 2">
                     </a>
                     <div class="card-body text-center">
-                        <p class="card-text">Combina autenticidad y comodidad con cada diseño.</p>
+                        <p class="card-text" style="color: white;">Combina autenticidad y comodidad con cada diseño.</p>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card h-100 shadow-sm">
-                    <a href="{{ route('producto.detalle') }}">
-                        <img src="{{ asset('img/third.jpeg') }}" class="card-img-top" alt="Playera 3 - Inspiración en cada detalle">
+            <!-- Producto 3 -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card h-100 shadow-sm" style="background-color: black; border: none;">
+                    <a href="#">
+                        <img src="{{ asset('img/third.jpeg') }}" class="card-img-top" alt="Producto 3">
                     </a>
                     <div class="card-body text-center">
-                        <p class="card-text">Encuentra la inspiración en cada detalle de nuestras playeras.</p>
+                        <p class="card-text" style="color: white;">Encuentra la inspiración en cada detalle de nuestras playeras.</p>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card h-100 shadow-sm">
-                    <a href="{{ route('producto.detalle') }}">
-                        <img src="{{ asset('img/fourth.jpeg') }}" class="card-img-top" alt="Playera 4 - Marca la diferencia">
+            <!-- Producto 4 -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card h-100 shadow-sm" style="background-color: black; border: none;">
+                    <a href="#">
+                        <img src="{{ asset('img/fourth.jpeg') }}" class="card-img-top" alt="Producto 4">
                     </a>
                     <div class="card-body text-center">
-                        <p class="card-text">¡Elige el modelo que habla de ti y marca la diferencia!</p>
+                        <p class="card-text" style="color: white;">¡Elige el modelo que habla de ti y marca la diferencia!</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    
+    
 
     <div class="animacion">
         <div class="logo-container">

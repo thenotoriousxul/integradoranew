@@ -263,12 +263,14 @@
                             </li>
                         @endguest
 
+                        @if(!Auth::user()->hasRole('admin'))
                         <!-- Carrito -->
                         <li class="nav-item position-relative">
                             <a class="nav-link" href="{{ route('carrito.mostrar') }}">
                                 <i class="fas fa-shopping-cart"></i>
                             </a>
                         </li>
+                        @endif
                     </ul>
                 </div>
             </div>

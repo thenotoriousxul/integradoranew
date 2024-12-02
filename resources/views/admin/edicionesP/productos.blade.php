@@ -177,7 +177,9 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ $producto->nombre }}</h5>
                             <p class="card-text">Precio: ${{ number_format($producto->costo_precio_venta, 2) }}</p>
+                            @if(!Auth::user()->hasRole('admin'))
                             <a href="{{ route('vista_producto_detalle', ['id' => $producto->id]) }}" class="btn btn-primary w-100">Ver detalles</a>
+                            @endif
                         </div>
                     @else
                         <div class="image-container">
