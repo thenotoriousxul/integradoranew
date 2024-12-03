@@ -29,23 +29,32 @@ class PersonalizarController extends Controller
     }
 
     public function mostrarDetalle($id)
-    {
-        $producto = EdicionesProductos::findOrFail($id);
-    
-        // Agrupar las tallas relacionadas al producto
-        $tallas = EdicionesProductos::where('nombre', $producto->nombre)
-            ->select('talla', DB::raw('SUM(cantidad) as cantidad'))
-            ->groupBy('talla')
-            ->get()
-            ->map(function ($item) {
-                return [
-                    'talla' => $item->talla,
-                    'cantidad' => $item->cantidad,
-                ];
-            });
-            dd($tallas);
-        return view('detallepersonalizada', compact('producto', 'tallas'));
-    }
+{
+    $producto = EdicionesProductos::findOrFail($id);
+
+    // Agrupar las tallas relacionadas al producto
+    $tallas = EdicionesProductos::where('nombre', $producto->nombre)
+        ->select('talla', DB::raw('SUM(cantidad) as cantidad'))
+        ->groupBy('talla')
+        ->get()
+        ->toArray(); // Convertir a un array
+
+    return view('detallepersonalizada', compact('producto', 'tallas'));
+}
+
+public function personalizarProducto()
+{
+    // Obtener todos los estampados disponibles y ajustar el path relativo
+    $estampados = Estampado::all()->map(function ($estampado) {
+        // Asegurarse de que la URL esté correctamente formateada
+        $estampado->imagen_estampado = Storage::disk('s3')->url($estampado->imagen_estampado);
+        return $estampado;
+    });
+
+    // Renderizar vista con los estampados dinámicos
+    return view('admin.personalizar.personalizarAdmin', compact('estampados'));
+}
+
     
 
 }
