@@ -20,6 +20,7 @@ class EdicionesProductos extends Model
         'edicion_id',
         'imagen_producto_final',
         'imagen_producto_trasera',
+        'personalizada', 
     ];
 
     public function edicion(){

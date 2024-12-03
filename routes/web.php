@@ -22,6 +22,7 @@ use App\Http\Controllers\OrdenController;
 use App\Http\Controllers\S3ImageController;
 use App\Mail\ordenMail;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\EdicionPersonalizadaController;
 
 //prueba
 // Rutas de acceso general
@@ -234,3 +235,9 @@ Route::get('/envios-pendientes', [informacionClienteController::class, 'mostrare
 Route::get('/envios-detalles/{id}', [informacionClienteController::class, 'obtenerDetallesProducto'])->name('envios.detallesProducto');
 
 Route::get('/personalizarAdmin', [PersonalizarController::class, 'personalizarProducto'])->name('admin.personalizar');
+
+
+Route::prefix('admin/ediciones_personalizadas')->name('admin.ediciones_personalizadas.')->group(function () {
+    Route::get('/crear', [EdicionPersonalizadaController::class, 'create'])->name('create');
+    Route::post('/crear', [EdicionPersonalizadaController::class, 'store'])->name('store');
+});

@@ -144,6 +144,11 @@
                     <span class="sidebar-text">Crear producto catalogo</span>
                 </a>
 
+                <a class="item-side sub" href="{{ route('admin.ediciones_personalizadas.create') }}">
+                    <i class="fas fa-plus"></i>
+                    <span class="sidebar-text">Crear producto personalizado</span>
+                </a>
+
                 <a class="item-side sub" href="{{ route('listar.productos') }}">
                     <i class="fa-solid fa-list-check"></i>
                     <span class="sidebar-text">Listar Producto Catalogo</span>

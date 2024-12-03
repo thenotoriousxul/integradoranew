@@ -1,22 +1,51 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mt-4">
-    <h1 class="text-center mb-4">Seleccione un producto a personalizar</h1>
-    <div class="row">
-        @foreach($productos as $producto)
-<div class="col-md-4">
-    <div class="card">
-        <img src="{{ $producto->imagen_producto }}" class="card-img-top" alt="Imagen de {{ $producto->tipo }}">
-        <div class="card-body">
-            <h5 class="card-title">{{ $producto->tipo }}</h5>
-            <p class="card-text">Color: {{ $producto->color }}</p>
-            <a href="{{ route('personalizar.producto', $producto->id) }}" class="btn btn-primary">Personalizar</a>
-        </div>
-    </div>
-</div>
-@endforeach
+<style>
+    img {
+        height: 300px;
+        width: 200px;
+        object-fit: cover;
+    }
 
+    .card {
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+    }
+</style>
+
+<div class="container py-4">
+    <div class="text-center mb-5">
+        <p class="lead">Explora nuestras ediciones personalizadas.</p>
     </div>
+
+    <h1 class="mb-4 text-center">Ediciones Personalizadas</h1>
+    <div class="row">
+        @forelse ($productos as $producto)
+            <div class="col-md-3 mb-4">
+                <div class="card h-100 shadow-sm">
+                    @if($producto->imagen_producto_final)
+                        <img src="{{ $producto->imagen_producto_final }}" alt="Imagen de {{ $producto->nombre }}" class="card-img-top">
+                    @else
+                        <p>Imagen no disponible</p>
+                    @endif
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $producto->nombre }}</h5>
+                        <p class="card-text">Cantidad: {{ $producto->cantidad }}</p>
+                        <p class="card-text">Estado: {{ ucfirst($producto->estado) }}</p>
+                    </div>
+                </div>
+            </div>
+        @empty
+            <div class="col-12">
+                <p class="text-center">No hay ediciones personalizadas disponibles en este momento.</p>
+            </div>
+        @endforelse
+    </div>
+
 </div>
 @endsection
