@@ -29,19 +29,19 @@ class PersonalizarController extends Controller
      * @param  int  $id
      * @return \Illuminate\View\View
      */
-    public function personalizarProducto($id)
-    {
-        $producto = Producto::findOrFail($id);
+    public function personalizarProducto()
+{
+    // Obtener todos los estampados disponibles y ajustar el path relativo
+    $estampados = Estampado::all()->map(function ($estampado) {
+        // Asegurarse de que la URL esté correctamente formateada
+        $estampado->imagen_estampado = Storage::disk('s3')->url($estampado->imagen_estampado);
+        return $estampado;
+    });
 
-        // Obtener todos los estampados disponibles y ajustar el path relativo
-        $estampados = Estampado::all()->map(function ($estampado) {
-            // Asegurarse de que la URL esté correctamente formateada
-            $estampado->imagen_estampado = ltrim(parse_url($estampado->imagen_estampado, PHP_URL_PATH), '/');
-            return $estampado;
-        });
+    // Renderizar vista con los estampados dinámicos
+    return view('admin.personalizar.personalizarAdmin', compact('estampados'));
+}
 
-        return view('personalizar', compact('producto', 'estampados'));
-    }
 
     /**
      * Guardar el diseño personalizado.
