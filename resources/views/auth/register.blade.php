@@ -252,8 +252,15 @@
       // Cargar los datos de países y estados
       const countriesStates = {
         "US": ["California", "Texas", "Florida", "New York"],
-        "MX": ["Ciudad de México", "Jalisco", "Nuevo León", "Yucatán"],
-        "CA": ["Ontario", "Quebec", "British Columbia", "Alberta"]
+        "MX": [
+            "Aguascalientes", "Baja California", "Baja California Sur", "Campeche", 
+            "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima", 
+            "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo", 
+            "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca", 
+            "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa", 
+            "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán", "Zacatecas"
+        ],
+       "CA": ["Ontario", "Quebec", "British Columbia", "Alberta"]
     };
 
     const countrySelect = document.getElementById('country-select');

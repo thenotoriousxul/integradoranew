@@ -172,7 +172,7 @@ Route::middleware(['role:admin|empleado'])->group(function () {
         Route::delete('/{id}/eliminar', [EstampadoController::class, 'eliminarEstampado'])->name('estampados.eliminar');
     });
 
-    ////
+    //// 
 
     Route::prefix('admin/producto')->group(function(){
         Route::get('/dash/productosBase', [productoController::class, 'dashProductos'])->name('dash.productosBase');
@@ -224,9 +224,17 @@ return view('mail.orden');
 
 
 
-Route::get('/reporteAdmin', function () {
-    return view('admin.ordenes.reporteVentas');
-})->name('admin.reporteVentas');
+Route::get('/reporteAdmin', [dashController::class, 'reporteVentas'])->name('admin.reporteVentas');
+
+
+Route::get('/agregarProveedor', function () {
+    return view('admin.proveedores.agregarProveedor');
+})->name('admin.agregarProveedor');
+
+
+
+
+Route::get('/proveedores', [proveedorController::class, 'index'])->name('proveedores.index');
 
 Route::put('/direccion/actualizar/{id}', [informacionClienteController::class, 'actualizarDireccion'])->name('direccion.actualizar');
 
@@ -241,3 +249,5 @@ Route::prefix('admin/ediciones_personalizadas')->name('admin.ediciones_personali
     Route::get('/crear', [EdicionPersonalizadaController::class, 'create'])->name('create');
     Route::post('/crear', [EdicionPersonalizadaController::class, 'store'])->name('store');
 });
+Route::post('/proveedor/nuevo', [proveedorController::class, 'nuevoproveedor'])->name('nuevoproveedor');
+

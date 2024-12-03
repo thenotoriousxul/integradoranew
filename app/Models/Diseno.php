@@ -19,5 +19,10 @@ class Diseno extends Model
         return $this->belongsToMany(Estampado::class, 'disenos_estampados', 'diseno_id', 'estampado_id');
     }
     
+    public function proveedor()
+{
+    return $this->belongsTo(Proveedor::class, 'proveedores_id');
+}
+
 
 }
