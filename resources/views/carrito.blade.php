@@ -19,6 +19,7 @@
         <table class="table table-dark table-hover text-center align-middle">
             <thead>
                 <tr class="table-light text-dark">
+                    <th>Imagen</th> <!-- Nueva columna para imagen -->
                     <th>Producto</th>
                     <th>Talla</th>
                     <th>Precio</th>
@@ -30,15 +31,19 @@
             <tbody id="carrito-body">
                 @if(empty($contenidoCarrito) || count($contenidoCarrito) === 0)
                 <tr>
-                    <td colspan="6" class="text-center text-white">Tu carrito está vacío.</td>
+                    <td colspan="7" class="text-center text-white">Tu carrito está vacío.</td>
                 </tr>
                 @else
                     @foreach($contenidoCarrito as $key => $item)
                         <tr data-id="{{ $key }}">
+                            <td>
+                                <!-- Mostrar la imagen del producto -->
+                                <img src="{{ $item['attributes']['imagen'] }}" alt="{{ $item['name'] }}" class="img-fluid" style="width: 50px; height: 50px; object-fit: cover;">
+                            </td>
                             <td>{{ $item['name'] }}</td>
                             <td>{{ $item['attributes']['talla'] }}</td>
                             <td>${{ number_format($item['price'], 2) }}</td>
-                            <td>  {{ $item['quantity'] }} 
+                            <td>{{ $item['quantity'] }}</td>
                             <td class="subtotal">${{ number_format($item['price'] * $item['quantity'], 2) }}</td>
                             <td>
                                 <button class="btn btn-sm btn-danger eliminar-producto" data-id="{{ $key }}">Eliminar</button>
@@ -55,11 +60,10 @@
             <a href="{{ route('detalleOrden') }}" id="comprar-carrito" class="btn btn-success mt-3 {{ empty($contenidoCarrito) || count($contenidoCarrito) === 0 ? 'disabled' : '' }}">Continuar con la compra</a>
         </div>
         
-    
+    </div>
 </div>
 
 <script>
-
     document.addEventListener('DOMContentLoaded', () => {
 
         const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
@@ -74,11 +78,11 @@
             })
             .then(response => response.json())
             .then(data => {
-        if (data.success) {
-            window.location.reload(); 
-        }
-    })
-    .catch(error => console.error('Error:', error));            
+                if (data.success) {
+                    window.location.reload(); 
+                }
+            })
+            .catch(error => console.error('Error:', error));            
         });
 
         function actualizarTotal(total) {
@@ -87,44 +91,38 @@
 
         const urlEliminar = "{{ route('carrito.eliminar', ':id') }}";
 
+        document.querySelectorAll('.eliminar-producto').forEach(button => {
+            button.addEventListener('click', function () {
+                const idProducto = this.dataset.id;
+                const url = urlEliminar.replace(':id', idProducto);
 
-document.querySelectorAll('.eliminar-producto').forEach(button => {
-    button.addEventListener('click', function () {
-        const idProducto = this.dataset.id;
-        const url = urlEliminar.replace(':id', idProducto);
+                fetch(url, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
 
-        fetch(url, {
-            method: 'DELETE',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
+                    if (data.success) {
+                        // Remover fila sin recargar la página
+                        this.closest('tr').remove();
+                        const total = parseFloat(data.total);
 
-            if (data.success) {
-                // Remover fila sin recargar la página
-                this.closest('tr').remove();
-                const total = parseFloat(data.total);
-
-                if (total <= 0) {
-
-                location.reload();
-
-                }
-                else{
-                    const carritoTotal = document.querySelector('#carrito-total');
-                    carritoTotal.textContent = `Total: $${total.toFixed(2)}`;
-                }
-            }
-        })
-        .catch(error => console.error('Error:', error));
-    });
-});
+                        if (total <= 0) {
+                            location.reload();
+                        } else {
+                            const carritoTotal = document.querySelector('#carrito-total');
+                            carritoTotal.textContent = `Total: $${total.toFixed(2)}`;
+                        }
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        });
     });
 </script>
-
-
 
 @section('styles')
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
@@ -141,4 +139,5 @@ document.querySelectorAll('.eliminar-producto').forEach(button => {
     }
 </style>
 @endsection
+
 @endsection

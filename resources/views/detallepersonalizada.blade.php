@@ -28,7 +28,7 @@
             <div class="mb-4">
                 <label class="form-label">Tallas Disponibles:</label>
                 <div class="size-options d-flex flex-wrap gap-2">
-                    @forelse ($tallas as $talla)
+                    @foreach ($tallas as $talla)
                         @if ($talla['cantidad'] > 0)
                             <button type="button" 
                                 class="btn btn-outline-primary size-option available" 
@@ -45,9 +45,7 @@
                                 {{ $talla['talla'] }}
                             </button>
                         @endif
-                    @empty
-                        <p>No hay tallas disponibles para este producto.</p>
-                    @endforelse
+                    @endforeach
                 </div>
             </div>
 
