@@ -232,6 +232,7 @@ return view('mail.orden');
 
 Route::get('/reporteAdmin', [dashController::class, 'reporteVentas'])->name('admin.reporteVentas');
 
+Route::get('/pdf/reporte', [dashController::class, 'pdfReporteVentas'])->name('pdf.reporte');
 
 Route::get('/agregarProveedor', function () {
     return view('admin.proveedores.agregarProveedor');

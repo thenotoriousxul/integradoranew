@@ -12,6 +12,7 @@
 @endsection
 
 @section('content')
+
 <div class="container mt-4">
     <h2 class="text-center">Reporte de Ventas</h2>
     <table id="ReporteVentas" class="table table-striped" style="width:100%">
@@ -50,6 +51,11 @@
             @endforeach
         </tbody>
     </table>
+    
+    <a href="{{ route('pdf.reporte') }}">
+        <button class="btn btn-success">Guardar PDF</button>
+    </a>
+    
 </div>
 
 @endsection
