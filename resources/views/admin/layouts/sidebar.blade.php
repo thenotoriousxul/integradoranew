@@ -230,7 +230,7 @@
                 <i class="fas fa-chevron-down abajo"></i>
             </a>
             <div id="configuracion-submenu" class="submenu">
-                <a class="item-side sub" href="">
+                <a class="item-side sub" href="{{route('listar.usurios')}}">
                     <i class="fas fa-list"></i>
                     <span class="sidebar-text">Ver Usuarios</span>
                 </a>

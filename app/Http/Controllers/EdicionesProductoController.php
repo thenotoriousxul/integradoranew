@@ -175,4 +175,33 @@ class EdicionesProductoController extends Controller
         return redirect()->route('listar.productos')
         ->with('success', 'el producto se ah inactivado correcamente.');
     }
+
+    public function filtroRebaja(Request $request){
+        $request->validate([
+            'costo_min' => ['nullable', 'numeric', 'min:0'],
+            'costo_max' => ['nullable', 'numeric', 'min:0'],
+            'talla' => ['nullable', 'in:CH,M,XL,XXL'],
+            'nombre' => ['nullable', 'string', 'max:100'],
+            'orden' => ['nullable', 'in:precio_asc,precio_desc,nombre'] // Validación para el orden
+        ]);
+
+        $costo_min = $request->input('costo_min') === '' ? null : $request->input('costo_min');
+        $costo_max = $request->input('costo_max') === '' ? null : $request->input('costo_max');
+        $talla = $request->input('talla') === '' ? null : $request->input('talla');
+        $nombre = $request->input('nombre') === '' ? null : $request->input('nombre');
+        $orden = $request->input('orden') === '' ? null : $request->input('orden');
+
+        $productos = DB::select('call filtrarRebajas(?,?,?,?,?)', [
+            $costo_min,
+            $costo_max,
+            $nombre,
+            $talla,
+            $orden,
+        ]);
+
+
+        return view('rebajas', compact('productos'));
+
+
+    }
 }

@@ -20,6 +20,7 @@ use App\Http\Controllers\EstampadoController;
 use App\Http\Controllers\PersonalizarController;
 use App\Http\Controllers\OrdenController;
 use App\Http\Controllers\S3ImageController;
+use App\Http\Controllers\userController;
 use App\Mail\ordenMail;
 use Illuminate\Support\Facades\Mail;
 
@@ -116,7 +117,6 @@ Route::get('/productos/catalogo',[EdicionesProductoController::class, 'getProduc
 Route::get('/filtros',[EdicionesProductoController::class, 'filtro'])->name('filtros.productos');
 
 Route::get('/producto/{id}', action: [EdicionesProductoController::class, 'detalle'])->name('vista_producto_detalle'); 
-Route::get('/rebajas' , [EdicionesProductoController::class, 'rebajas'])->name('rebajas');
 
 Route::get('/personalizacion', [PersonalizarController::class, 'mostrarCatalogoPersonalizable'])->name('personalizacion');
 
@@ -136,7 +136,8 @@ Route::middleware(['role:admin'])->group(function(){
     });
 });
 
-
+Route::get('/rebajas' , [EdicionesProductoController::class, 'rebajas'])->name('rebajas');
+Route::get('rebaja/filtro', [EdicionesProductoController::class, 'filtroRebaja'])->name('filtros.rebajas');
 
 //-- Rutas protegidas para el admin y el empleado
 Route::middleware(['role:admin|empleado'])->group(function () {
@@ -150,7 +151,8 @@ Route::middleware(['role:admin|empleado'])->group(function () {
     
     Route::get('/agregar/proveedor',[formulariosController::class, 'agregarProveedor'])->name('agregar.proveedor');
     Route::get('/guardar/proveedor', [proveedorController::class, 'saveProveedor'])->name('guardar.proveedor');
-    
+
+
     Route::prefix('admin/ediciones')->group(function () {
         Route::get('/crear', [EdicionController::class, 'crearFormularioEdicion'])->name('ediciones.crear');
         Route::get('/agregar/edicion',[formulariosController::class,'formularioEdicion'])->name('agregar.edicion');
@@ -234,3 +236,7 @@ Route::get('/envios-pendientes', [informacionClienteController::class, 'mostrare
 Route::get('/envios-detalles/{id}', [informacionClienteController::class, 'obtenerDetallesProducto'])->name('envios.detallesProducto');
 
 Route::get('/personalizarAdmin', [PersonalizarController::class, 'personalizarProducto'])->name('admin.personalizar');
+
+
+
+Route::get('/usuarios/listar', [UserController::class, 'listar'])->name('listar.usurios');

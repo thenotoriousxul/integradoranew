@@ -201,7 +201,7 @@
     <!-- Filtros -->
     <div class="offcanvas offcanvas-start" tabindex="-1" id="filtroOffcanvas" aria-labelledby="filtroOffcanvasLabel">
         <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="filtroOffcanvasLabel">Filtros</h5>
+            <h5 class="offcanvas-title" id="filtroOffcanvasLabel">Selecciona el filtro</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
@@ -215,6 +215,15 @@
                     <div class="mb-3">
                         <label for="costo_max" class="form-label">Costo Máximo</label>
                         <input type="number" name="costo_max" id="costo_max" class="form-control" value="{{ request('costo_max') }}">
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h6 class="filter-title">Filtrar por Nombre</h6>
+
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">nombre</label>
+                        <input type="text" name="nombre" id="nombre" class="form-control" value="{{ request('nombre') }}">
                     </div>
                 </div>
                 <button type="submit" class="btn btn-dark">Aplicar Filtros</button>
