@@ -23,6 +23,7 @@ use App\Http\Controllers\S3ImageController;
 use App\Http\Controllers\userController;
 use App\Mail\ordenMail;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\EdicionPersonalizadaController;
 
 //prueba
 // Rutas de acceso general
@@ -119,6 +120,8 @@ Route::get('/filtros',[EdicionesProductoController::class, 'filtro'])->name('fil
 Route::get('/producto/{id}', action: [EdicionesProductoController::class, 'detalle'])->name('vista_producto_detalle'); 
 
 Route::get('/personalizacion', [PersonalizarController::class, 'mostrarCatalogoPersonalizable'])->name('personalizacion');
+
+Route::get('/personalizacion/{id}', [PersonalizarController::class, 'mostrarDetalle'])->name('personalizacion.detalle');
 
 Route::get('/s3-image', [S3ImageController::class, 'getImage'])->name('s3.image');
 
@@ -247,6 +250,11 @@ Route::get('/envios-detalles/{id}', [informacionClienteController::class, 'obten
 
 Route::get('/personalizarAdmin', [PersonalizarController::class, 'personalizarProducto'])->name('admin.personalizar');
 
+
+Route::prefix('admin/ediciones_personalizadas')->name('admin.ediciones_personalizadas.')->group(function () {
+    Route::get('/crear', [EdicionPersonalizadaController::class, 'create'])->name('create');
+    Route::post('/crear', [EdicionPersonalizadaController::class, 'store'])->name('store');
+});
 Route::post('/proveedor/nuevo', [proveedorController::class, 'nuevoproveedor'])->name('nuevoproveedor');
 
 
