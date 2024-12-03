@@ -16,13 +16,15 @@
                 <th>ID</th>
                 <th>Nombre</th>
                 <th>Talla</th>
-                <th>Imagen Producto Final</th>
-                <th>Imagen Producto Trasera</th>
+                <th>Imagen Frente</th>
+                <th>Imagen Trasera</th>
                 <th>Costo Fábrica</th>
                 <th>Costo Precio Venta</th>
                 <th>Stock</th>
-                <th>Estado</th>
                 <th>Personalizada</th>
+                <th>rebaja</th>
+                <th>Precio de rebaja</th>
+                <th>Estado</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -49,12 +51,14 @@
                     <td>{{ number_format($producto->costo_fabrica, 2) }}</td>
                     <td>{{ number_format($producto->costo_precio_venta, 2) }}</td>
                     <td>{{ $producto->cantidad }}</td>
+                    <td>{{ $producto->personalizada ? 'Sí' : 'No' }}</td>
+                    <td>{{ $producto->rebaja ? 'Con rebaja' : 'Sin rebaja' }}</td>
+                    <td>{{ number_format($producto->rebaja, 2) }}</td>
                     <td>
                         <span class="badge {{ $producto->estado == 'activo' ? 'bg-success' : 'bg-danger' }}">
                             {{ ucfirst($producto->estado) }}
                         </span>
                     </td>
-                    <td>{{ $producto->personalizada ? 'Sí' : 'No' }}</td>
                     <td>
                         <div class="dropdown">
                             <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton-{{ $producto->id }}" data-bs-toggle="dropdown" aria-expanded="false">
@@ -64,15 +68,23 @@
                                 <li>
                                     <a class="dropdown-item" href="#', $producto->id) }}">Editar</a>
                                 </li>
+                             @if ($producto->estado == 'activo')
                                 <li>
-                                    <form method="POST" action="#', $producto->id) }}" style="display:inline;">
+                                    <form method="POST" action="{{ route('inactivar', $producto->id) }}" style="display:inline;">
                                         @csrf
                                         @method('PATCH')
-                                        <button type="submit" class="dropdown-item">
-                                            {{ $producto->estado == 'activo' ? 'Inactivar' : 'Activar' }}
-                                        </button>
+                                        <button type="submit" class="dropdown-item">Inactivar</button>
                                     </form>
                                 </li>
+                            @else
+                                <li>
+                                    <form method="POST" action="{{ route('activar', $producto->id) }}" style="display:inline;">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="dropdown-item">Activar</button>
+                                    </form>
+                                </li>
+                            @endif
                                 <li>
                                     <form method="POST" action="#', $producto->id) }}" style="display:inline;">
                                         @csrf

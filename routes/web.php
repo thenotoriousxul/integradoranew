@@ -20,8 +20,10 @@ use App\Http\Controllers\EstampadoController;
 use App\Http\Controllers\PersonalizarController;
 use App\Http\Controllers\OrdenController;
 use App\Http\Controllers\S3ImageController;
+use App\Http\Controllers\userController;
 use App\Mail\ordenMail;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\EdicionPersonalizadaController;
 
 //prueba
 // Rutas de acceso general
@@ -31,7 +33,7 @@ Route::get('/', function () {
 
 Route::get('/catalogo', function () {
     return view('catalogo');
-});
+})->name('catalogo');
 
 
 Route::get('/carrito', function () {
@@ -116,9 +118,10 @@ Route::get('/productos/catalogo',[EdicionesProductoController::class, 'getProduc
 Route::get('/filtros',[EdicionesProductoController::class, 'filtro'])->name('filtros.productos');
 
 Route::get('/producto/{id}', action: [EdicionesProductoController::class, 'detalle'])->name('vista_producto_detalle'); 
-Route::get('/rebajas' , [EdicionesProductoController::class, 'rebajas'])->name('rebajas');
 
 Route::get('/personalizacion', [PersonalizarController::class, 'mostrarCatalogoPersonalizable'])->name('personalizacion');
+
+Route::get('/personalizacion/{id}', [PersonalizarController::class, 'mostrarDetalle'])->name('personalizacion.detalle');
 
 Route::get('/s3-image', [S3ImageController::class, 'getImage'])->name('s3.image');
 
@@ -136,7 +139,8 @@ Route::middleware(['role:admin'])->group(function(){
     });
 });
 
-
+Route::get('/rebajas' , [EdicionesProductoController::class, 'rebajas'])->name('rebajas');
+Route::get('rebaja/filtro', [EdicionesProductoController::class, 'filtroRebaja'])->name('filtros.rebajas');
 
 //-- Rutas protegidas para el admin y el empleado
 Route::middleware(['role:admin|empleado'])->group(function () {
@@ -150,7 +154,8 @@ Route::middleware(['role:admin|empleado'])->group(function () {
     
     Route::get('/agregar/proveedor',[formulariosController::class, 'agregarProveedor'])->name('agregar.proveedor');
     Route::get('/guardar/proveedor', [proveedorController::class, 'saveProveedor'])->name('guardar.proveedor');
-    
+
+
     Route::prefix('admin/ediciones')->group(function () {
         Route::get('/crear', [EdicionController::class, 'crearFormularioEdicion'])->name('ediciones.crear');
         Route::get('/agregar/edicion',[formulariosController::class,'formularioEdicion'])->name('agregar.edicion');
@@ -198,6 +203,8 @@ Route::middleware(['role:admin|empleado'])->group(function () {
     Route::prefix('admin/ediciones_productos')->group(function(){
         Route::get('/crear/producto',[EdicionesProductoController::class, 'create'])->name('crear.producto');
         Route::post('guardar/producto',[EdicionesProductoController::class, 'store'])->name('store.productos');
+        Route::patch('activar/producto/{id}',[EdicionesProductoController::class, 'activar'])->name('activar');
+        Route::patch('inactivar/producto/{id}',[EdicionesProductoController::class, 'inactivar'])->name('inactivar');
         Route::get('listar',[EdicionesProductoController::class, 'getProducts'])->name('listar.productos');
     });
   
@@ -243,5 +250,14 @@ Route::get('/envios-detalles/{id}', [informacionClienteController::class, 'obten
 
 Route::get('/personalizarAdmin', [PersonalizarController::class, 'personalizarProducto'])->name('admin.personalizar');
 
+
+Route::prefix('admin/ediciones_personalizadas')->name('admin.ediciones_personalizadas.')->group(function () {
+    Route::get('/crear', [EdicionPersonalizadaController::class, 'create'])->name('create');
+    Route::post('/crear', [EdicionPersonalizadaController::class, 'store'])->name('store');
+});
 Route::post('/proveedor/nuevo', [proveedorController::class, 'nuevoproveedor'])->name('nuevoproveedor');
 
+
+
+
+Route::get('/usuarios/listar', [UserController::class, 'listar'])->name('listar.usurios');

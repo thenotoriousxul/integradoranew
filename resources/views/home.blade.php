@@ -295,7 +295,7 @@
         width: 100%;
         height: 300px;
         overflow: hidden;
-        background: linear-gradient(to bottom right, #8e9f4b, #23212c, #a7a7a7);
+        background: linear-gradient(to bottom right, #74756e, #1d192f, #89c8c8);
     }
 
     .background {
@@ -324,7 +324,7 @@
         right: 33%;
         width: 300px;
         height: 300px;
-        background-color: rgba(192, 180, 142, 0.897);
+        background-color: rgba(246, 246, 246, 0.897);
         animation-delay: 2s;
     }
 
@@ -342,7 +342,7 @@
         justify-content: center;
         text-align: center;
         padding: 20px;
-        color: #6b774f;
+        color: #ffffff;
     }
 
     .subtitle {
@@ -425,6 +425,13 @@
     color: white;
 }
 
+
+@media (max-width: 1560px) {
+    #product-gallery .card-img-top {
+        height: 420px;
+    }
+}
+
 @media (max-width: 768px) {
     #product-gallery .card-img-top {
         height: 250px;
@@ -436,6 +443,7 @@
         height: 200px;
     }
 }
+
 
 
 
@@ -474,24 +482,6 @@
         </div>
     </div> --}}
 
-    <div class="promo-banner">
-        <div class="background">
-            <div class="blur-circle circle1"></div>
-            <div class="blur-circle circle2"></div>
-        </div>
-        <div class="content">
-            <p class="subtitle">Más artículos añadidos</p>
-            <h2 class="title">Promociones hasta -50%</h2>
-            <a href="{{route('mostrar.productos')}}">
-            <button class="cta-button">Ir al catalogo</button>
-            </a>
-            <div class="details">
-                <p>En artículos seleccionados</p>
-                <p>En tiendas y online</p>
-            </div>
-            <p class="disclaimer">No acumulable a otras promociones. Válido hasta el 05/01.</p>
-        </div>
-    </div>
 
     {{-- <div class="animacion">
         <div class="logo-container">
@@ -554,6 +544,37 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    
+
+    <div class="animacion">
+        <div class="logo-container">
+            <span>Exprésate con OZEZ</span>
+            <span>Diseño Exclusivo, Estilo Único</span>
+            <span>Vive tu Moda con OZEZ</span>
+            <span>Edición Limitada para Personalidades Únicas</span>
+            <span>Calidad y Estilo en Cada Costura</span>
+            <span>Hazlo Personal, Hazlo OZEZ</span>
+        </div>
+    </div>
+
+    <div class="promo-banner">
+        <div class="background">
+            <div class="blur-circle circle1"></div>
+            <div class="blur-circle circle2"></div>
+        </div>
+        <div class="content">
+            <p class="subtitle">Más artículos añadidos</p>
+            <h2 class="title">Promociones hasta -50%</h2>
+            <a href="{{route('mostrar.productos')}}">
+            <button class="cta-button">Ir al catalogo</button>
+            </a>
+            <div class="details">
+                <p>En artículos seleccionados</p>
+                <p>En tiendas y online</p>
+            </div>
+            <p class="disclaimer">No acumulable a otras promociones. Válido hasta el 05/01.</p>
         </div>
     </div>
     
