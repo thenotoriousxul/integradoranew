@@ -225,6 +225,13 @@ Route::get('test', function(){
 return view('mail.orden');
 });
 
+Route::get('/personalizarAdmin', function () {
+    return view('admin.personalizar.personalizarAdmin');
+})->name('admin.personalizar');
+
+Route::get('/reporteAdmin', function () {
+    return view('admin.ordenes.reporteVentas');
+})->name('admin.reporteVentas');
 
 Route::put('/direccion/actualizar/{id}', [informacionClienteController::class, 'actualizarDireccion'])->name('direccion.actualizar');
 

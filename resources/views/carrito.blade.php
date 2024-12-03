@@ -38,8 +38,7 @@
                             <td>{{ $item['name'] }}</td>
                             <td>{{ $item['attributes']['talla'] }}</td>
                             <td>${{ number_format($item['price'], 2) }}</td>
-                            <td> <input type="number" name="cantidad" value="{{ $item['quantity'] }}"
-                                min="1" class="form-control actualizar-cantidad" style="width: 80px;"></td>
+                            <td>  {{ $item['quantity'] }} 
                             <td class="subtotal">${{ number_format($item['price'] * $item['quantity'], 2) }}</td>
                             <td>
                                 <button class="btn btn-sm btn-danger eliminar-producto" data-id="{{ $key }}">Eliminar</button>

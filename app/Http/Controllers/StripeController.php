@@ -97,7 +97,7 @@ class StripeController extends Controller
             'fecha_orden' => now(),
             'total' => $total,
             'envios_domicilio' => 1,
-            'estado' => 'Pagada',
+            'estado' => 'Pendiente',
         ]);
 
         foreach ($carrito as $producto) {
@@ -125,6 +125,8 @@ class StripeController extends Controller
             'estado' => 'pagado',
             'num_referencia' => $paymentIntent->id, 
         ]);
+
+        $orden->update([ 'estado' => 'Pagada', ]);
     }
 
     private function obtenerPaymentIntentDesdeStripe($paymentIntentId)
