@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app.name', 'OZEZ') }}</title>
+    <title>{{ config('app.name', 'Laravel') }}</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -122,6 +122,8 @@
             color: #000;
             overflow: hidden;
             border-top: 2px solid black;
+            flex-shrink: 0; 
+
         }
         
         .footer-content {
@@ -277,9 +279,9 @@
             </div>
         </nav>
  
-        <main class="m-0 p-0">
-            @yield('content')
-        </main>
+    <main class="flex-grow-1 m-0 p-0">
+    @yield('content')
+    </main>
 
 
         <footer>

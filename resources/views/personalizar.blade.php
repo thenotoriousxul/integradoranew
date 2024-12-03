@@ -26,7 +26,7 @@
                 <input type="hidden" name="producto_id" value="{{ $producto->id }}">
                 <input type="hidden" name="estampado_id" id="estampado_id" value="">
                 <input type="hidden" name="imagen_personalizada" id="imagen_personalizada" value="">
-                <button type="button" onclick="guardarDiseno()" class="btn btn-success mt-3">Agregar al carrito</button>
+                <button type="button" onclick="guardarDiseno()" class="btn btn-success mt-3">Comprar</button>
             </form>
             <!-- Botón para eliminar objetos -->
             <div class="controls mt-3">
@@ -184,25 +184,40 @@
     }
 
     // Restaurar el estado del canvas desde localStorage
-    function restoreCanvas() {
-        const canvasData = localStorage.getItem('canvasState_' + productId);
-        if (canvasData) {
-            canvas.loadFromJSON(canvasData, function() {
-                canvas.renderAll();
-                setBackground();
-
-                // Buscar y reasignar el logoObject
-                canvas.getObjects().forEach(obj => {
-                    if (obj.type === 'image' && obj !== canvas.backgroundImage) {
-                        logoObject = obj; // Reasignar el logo si se encuentra
-                        document.getElementById('estampado_id').value = logoObject.estampadoId || '';
-                    }
-                });
-            });
-        } else {
+function restoreCanvas() {
+    const canvasData = localStorage.getItem('canvasState_' + productId);
+    if (canvasData) {
+        canvas.loadFromJSON(canvasData, function() {
+            canvas.renderAll();
             setBackground();
-        }
+        });
+    } else {
+        setBackground();
     }
+}
+
+// Ajustar el tamaño del canvas y su contenido al redimensionar la ventana
+window.addEventListener('resize', () => {
+    if (playeraBounds) {
+        const containerWidth = document.querySelector('.canvas-container').offsetWidth;
+        const scaleFactor = containerWidth / playeraBounds.width;
+
+        // Ajustar el tamaño del canvas
+        canvas.setWidth(playeraBounds.width * scaleFactor);
+        canvas.setHeight(playeraBounds.height * scaleFactor);
+
+        // Escalar todos los objetos dentro del canvas
+        canvas.getObjects().forEach(obj => {
+            obj.scaleX = obj.scaleX * scaleFactor;
+            obj.scaleY = obj.scaleY * scaleFactor;
+            obj.left = obj.left * scaleFactor;
+            obj.top = obj.top * scaleFactor;
+            obj.setCoords();
+        });
+
+        canvas.renderAll();
+    }
+});
 
     function ajustarCanvas() {
     const containerWidth = document.querySelector('.canvas-container').offsetWidth;

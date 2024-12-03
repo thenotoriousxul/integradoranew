@@ -120,10 +120,6 @@ Route::get('/rebajas' , [EdicionesProductoController::class, 'rebajas'])->name('
 
 Route::get('/personalizacion', [PersonalizarController::class, 'mostrarCatalogoPersonalizable'])->name('personalizacion');
 
-Route::get('/personalizar/{productoId}', [PersonalizarController::class, 'personalizarProducto'])->name('personalizar.producto');
-Route::post('/personalizar/guardar', [PersonalizarController::class, 'guardar'])->name('personalizar.guardar');
-
-
 Route::get('/s3-image', [S3ImageController::class, 'getImage'])->name('s3.image');
 
 Route::get('/dash/cliente', function () {
@@ -225,9 +221,7 @@ Route::get('test', function(){
 return view('mail.orden');
 });
 
-Route::get('/personalizarAdmin', function () {
-    return view('admin.personalizar.personalizarAdmin');
-})->name('admin.personalizar');
+
 
 Route::get('/reporteAdmin', function () {
     return view('admin.ordenes.reporteVentas');
@@ -238,3 +232,5 @@ Route::put('/direccion/actualizar/{id}', [informacionClienteController::class, '
 Route::get('/envios-pendientes', [informacionClienteController::class, 'mostrarenvios'])->name('envios.pendientes');
 
 Route::get('/envios-detalles/{id}', [informacionClienteController::class, 'obtenerDetallesProducto'])->name('envios.detallesProducto');
+
+Route::get('/personalizarAdmin', [PersonalizarController::class, 'personalizarProducto'])->name('admin.personalizar');
