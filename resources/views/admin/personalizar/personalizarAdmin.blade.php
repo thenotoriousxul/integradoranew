@@ -3,7 +3,6 @@
 @section('content')
     <!-- Estilos Personalizados -->
     <style>
-        /* Manteniendo los estilos existentes */
         .custom-container {
             display: flex;
             flex-direction: row;
@@ -68,6 +67,21 @@
             border-color: #333;
         }
 
+        .color-btn {
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            border: none;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .btn-red { background-color: red; }
+        .btn-blue { background-color: blue; }
+        .btn-black { background-color: black; }
+        .btn-white { background-color: white; border: 1px solid #ddd; }
+        .btn-cream { background-color: #e1c699; }
+
         @media (max-width: 992px) {
             .custom-container {
                 flex-direction: column;
@@ -120,9 +134,19 @@
         <!-- Estampados Disponibles -->
         <div class="custom-card">
             <div class="card-header">
-                Estampados Disponibles
+                Configuración y Estampados
             </div>
             <div class="card-body">
+                <h3>Colores</h3>
+                <div class="d-flex flex-wrap">
+                    <button class="color-btn btn-white" onclick="cambiarColor('#ffffff')"></button>
+                    <button class="color-btn btn-red" onclick="cambiarColor('#ff0000')"></button>
+                    <button class="color-btn btn-blue" onclick="cambiarColor('#0000ff')"></button>
+                    <button class="color-btn btn-black" onclick="cambiarColor('#000000')"></button>
+                    <button class="color-btn btn-cream" onclick="cambiarColor('#e1c699')"></button>
+                </div>
+                <br>
+                <h3>Estampados</h3>
                 <div class="body-imagenes">
                     @foreach($estampados as $estampado)
                         <img 
@@ -159,7 +183,20 @@
             });
         }
 
-        // Agregar estampado al canvas
+        // Cambiar color de la playera
+        function cambiarColor(color) {
+            if (playera) {
+                playera.filters = [];
+                playera.filters.push(new fabric.Image.filters.BlendColor({
+                    color: color,
+                    mode: 'multiply'
+                }));
+                playera.applyFilters();
+                canvas.renderAll();
+            }
+        }
+
+        // Agregar estampado
         function agregarEstampado(imagePath) {
             if (logoObject) {
                 alert('Solo puedes agregar un estampado a la vez. Elimina el actual antes de agregar otro.');
