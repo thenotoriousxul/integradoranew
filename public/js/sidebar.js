@@ -85,3 +85,14 @@ document.addEventListener("DOMContentLoaded", () => {
       inventorySubmenu.style.display = inventorySubmenu.style.display === 'none' ? 'block' : 'none';
     });
   });
+
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const inventoryItem = document.getElementById('proveedores');
+    const inventorySubmenu = document.getElementById('proveedores-submenu');
+    
+    inventoryItem.addEventListener('click', function(e) {
+      e.preventDefault();
+      inventorySubmenu.style.display = inventorySubmenu.style.display === 'none' ? 'block' : 'none';
+    });
+  });

@@ -196,6 +196,22 @@
                 </a>
             </div>
 
+            <a id="proveedores" class="item-side" href="">
+                <i class="fas fa-box"></i>
+                <span class="sidebar-text">Proveedores</span>
+                <i class="fas fa-chevron-down abajo"></i>
+            </a>
+            <div id="proveedores-submenu" class="submenu">
+                <a class="item-side sub" href="{{ route('admin.listarProveedor') }}">
+                    <i class="fa-solid fa-list-check"></i>
+                    <span class="sidebar-text">Lista Proveedores</span>
+                </a>
+                <a class="item-side sub" href="{{ route('admin.agregarProveedor') }}"> 
+                    <i class="fas fa-plus"></i>
+                    <span class="sidebar-text">Agregar Proveedor</span>
+                </a>
+            </div>
+
             <a id="personalizadas" class="item-side" href="{{ route('admin.personalizar') }}">
                 <i class="fas fa-box"></i>
                 <span class="sidebar-text">Personalizadas</span>
