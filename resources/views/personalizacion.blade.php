@@ -36,6 +36,28 @@
         color: #ffffff;
         box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
     }
+
+    .whatsapp-info {
+        margin-top: 30px;
+        font-size: 16px;
+        color: #333;
+        text-align: center;
+    }
+
+    .whatsapp-info a {
+        color: #25D366;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .whatsapp-info a:hover {
+        color: #128C7E;
+    }
+
+    .whatsapp-icon {
+        font-size: 24px;
+        margin-left: 8px;
+    }
 </style>
 
 <div class="container py-4">
@@ -68,6 +90,16 @@
                 <p class="text-center">No hay ediciones personalizadas disponibles en este momento.</p>
             </div>
         @endforelse
+    </div>
+
+    <!-- Mensaje informativo después de todos los productos -->
+    <div class="whatsapp-info">
+        <p>¿Te gustaría un diseño personalizado? Si tienes alguna idea en mente, no dudes en <a href="https://wa.me/528718974991?text=Hola,%20quiero%20saber%20más%20sobre%20el%20diseño%20personalizado" target="_blank">contactarnos por WhatsApp</a>. ¡Estaremos encantados de ayudarte!</p>
+        <a href="https://wa.me/528718974991?text=Hola,%20quiero%20saber%20más%20sobre%20el%20diseño%20personalizado" 
+           class="whatsapp-icon" 
+           target="_blank">
+            <i class="bi bi-whatsapp"></i>
+        </a>
     </div>
 </div>
 @endsection

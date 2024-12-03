@@ -78,19 +78,11 @@
 
         sizeOptions.forEach(option => {
             option.addEventListener('click', function() {
-                // Remover la clase 'active' de todas las opciones
                 sizeOptions.forEach(opt => opt.classList.remove('active'));
-
-                // Agregar la clase 'active' a la opción seleccionada
                 this.classList.add('active');
-
-                // Actualizar el campo oculto con la talla seleccionada
                 hiddenTallaInput.value = this.dataset.talla;
 
-                // Obtener el stock disponible para la talla seleccionada
                 const stockDisponible = parseInt(this.dataset.cantidad);
-
-                // Actualizar las opciones del selector de cantidad
                 quantitySelector.innerHTML = '';
                 for (let i = 1; i <= Math.min(stockDisponible, 5); i++) {
                     const option = document.createElement('option');
@@ -99,7 +91,6 @@
                     quantitySelector.appendChild(option);
                 }
 
-                // Habilitar el botón de agregar al carrito y el selector
                 agregarCarritoButton.disabled = false;
                 quantitySelector.disabled = false;
             });

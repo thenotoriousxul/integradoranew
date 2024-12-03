@@ -263,3 +263,4 @@ Route::post('/proveedor/nuevo', [proveedorController::class, 'nuevoproveedor'])-
 Route::get('/usuarios/listar', [UserController::class, 'listar'])->name('listar.usurios');
 
 Route::post('/carrito/agregar/{productoId}', [EdicionPersonalizadaController::class, 'agregarAlCarrito'])->name('carrito.agregar');
+
