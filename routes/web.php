@@ -200,8 +200,8 @@ Route::middleware(['role:admin|empleado'])->group(function () {
     Route::prefix('admin/ediciones_productos')->group(function(){
         Route::get('/crear/producto',[EdicionesProductoController::class, 'create'])->name('crear.producto');
         Route::post('guardar/producto',[EdicionesProductoController::class, 'store'])->name('store.productos');
-        Route::patch('activar/producto/{id}',[EdicionesProductoController::class, 'activar'])->name('activar.producto');
-        Route::patch('inactivar/producto/{id}',[EdicionesProductoController::class, 'inactivar'])->name('inactivar.producto');
+        Route::patch('activar/producto/{id}',[EdicionesProductoController::class, 'activar'])->name('activar');
+        Route::patch('inactivar/producto/{id}',[EdicionesProductoController::class, 'inactivar'])->name('inactivar');
         Route::get('listar',[EdicionesProductoController::class, 'getProducts'])->name('listar.productos');
     });
   
