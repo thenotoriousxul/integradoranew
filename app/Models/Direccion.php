@@ -26,5 +26,10 @@ class Direccion extends Model
     {
         return $this->hasOne(Persona::class, 'direcciones_id');
     }
+    public function proveedores()
+{
+    return $this->hasMany(Proveedor::class, 'direcciones_id');
+}
+
 
 }

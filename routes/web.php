@@ -173,7 +173,7 @@ Route::middleware(['role:admin|empleado'])->group(function () {
         Route::delete('/{id}/eliminar', [EstampadoController::class, 'eliminarEstampado'])->name('estampados.eliminar');
     });
 
-    ////
+    //// 
 
     Route::prefix('admin/producto')->group(function(){
         Route::get('/dash/productosBase', [productoController::class, 'dashProductos'])->name('dash.productosBase');
@@ -229,6 +229,16 @@ return view('mail.orden');
 
 Route::get('/reporteAdmin', [dashController::class, 'reporteVentas'])->name('admin.reporteVentas');
 
+
+Route::get('/agregarProveedor', function () {
+    return view('admin.proveedores.agregarProveedor');
+})->name('admin.agregarProveedor');
+
+
+
+
+Route::get('/proveedores', [proveedorController::class, 'index'])->name('proveedores.index');
+
 Route::put('/direccion/actualizar/{id}', [informacionClienteController::class, 'actualizarDireccion'])->name('direccion.actualizar');
 
 Route::get('/envios-pendientes', [informacionClienteController::class, 'mostrarenvios'])->name('envios.pendientes');
@@ -236,6 +246,9 @@ Route::get('/envios-pendientes', [informacionClienteController::class, 'mostrare
 Route::get('/envios-detalles/{id}', [informacionClienteController::class, 'obtenerDetallesProducto'])->name('envios.detallesProducto');
 
 Route::get('/personalizarAdmin', [PersonalizarController::class, 'personalizarProducto'])->name('admin.personalizar');
+
+Route::post('/proveedor/nuevo', [proveedorController::class, 'nuevoproveedor'])->name('nuevoproveedor');
+
 
 
 
