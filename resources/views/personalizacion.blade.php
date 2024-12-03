@@ -10,11 +10,31 @@
 
     .card {
         transition: transform 0.3s, box-shadow 0.3s;
+        border: 1px solid #e3e5e8;
+        border-radius: 8px;
     }
 
     .card:hover {
         transform: translateY(-10px);
         box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-details {
+        background-color: #5865F2;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 5px;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+    }
+
+    .btn-details:hover {
+        background-color: #4752c4;
+        color: #ffffff;
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
     }
 </style>
 
@@ -31,12 +51,15 @@
                     @if($producto->imagen_producto_final)
                         <img src="{{ $producto->imagen_producto_final }}" alt="Imagen de {{ $producto->nombre }}" class="card-img-top">
                     @else
-                        <p>Imagen no disponible</p>
+                        <div class="d-flex justify-content-center align-items-center" style="height: 300px; background-color: #f6f6f6;">
+                            <p>Imagen no disponible</p>
+                        </div>
                     @endif
-                    <div class="card-body">
+                    <div class="card-body text-center">
                         <h5 class="card-title">{{ $producto->nombre }}</h5>
                         <p class="card-text">Cantidad: {{ $producto->cantidad }}</p>
                         <p class="card-text">Estado: {{ ucfirst($producto->estado) }}</p>
+                        <a href="{{ route('personalizacion.detalle', $producto->id) }}" class="btn btn-details">Ver Detalle</a>
                     </div>
                 </div>
             </div>
@@ -46,6 +69,5 @@
             </div>
         @endforelse
     </div>
-
 </div>
 @endsection

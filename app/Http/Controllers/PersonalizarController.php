@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\EdicionesProductos;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
+
 
 class PersonalizarController extends Controller
 {
@@ -25,4 +27,25 @@ class PersonalizarController extends Controller
 
         return view('personalizacion', compact('productos'));
     }
+
+    public function mostrarDetalle($id)
+    {
+        $producto = EdicionesProductos::findOrFail($id);
+    
+        // Agrupar las tallas relacionadas al producto
+        $tallas = EdicionesProductos::where('nombre', $producto->nombre)
+            ->select('talla', DB::raw('SUM(cantidad) as cantidad'))
+            ->groupBy('talla')
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'talla' => $item->talla,
+                    'cantidad' => $item->cantidad,
+                ];
+            });
+            dd($tallas);
+        return view('detallepersonalizada', compact('producto', 'tallas'));
+    }
+    
+
 }

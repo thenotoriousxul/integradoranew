@@ -121,6 +121,8 @@ Route::get('/rebajas' , [EdicionesProductoController::class, 'rebajas'])->name('
 
 Route::get('/personalizacion', [PersonalizarController::class, 'mostrarCatalogoPersonalizable'])->name('personalizacion');
 
+Route::get('/personalizacion/{id}', [PersonalizarController::class, 'mostrarDetalle'])->name('personalizacion.detalle');
+
 Route::get('/s3-image', [S3ImageController::class, 'getImage'])->name('s3.image');
 
 Route::get('/dash/cliente', function () {
