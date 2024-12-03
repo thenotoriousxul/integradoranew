@@ -1,12 +1,22 @@
 @extends('layouts.auth')
 @section('content')
 <style>
-    .step {
-        display: none; /* Oculta todos los pasos por defecto */
+    body {
+        font-family: 'Inter', sans-serif;
     }
-
-    .step.active {
-        display: block; /* Muestra solo el paso activo */
+    .title {
+        font-family: 'Inter', sans-serif;
+        font-weight: bold;
+    }
+    .password-hint, .email-hint, .confirm-password-hint {
+        font-size: 0.85rem;
+        margin-top: 5px;
+    }
+    .form-section {
+        display: none;
+    }
+    .form-section.active {
+        display: block;
     }
 </style>
 @if ($errors->any())
@@ -29,140 +39,163 @@
                     <h2 class="title">{{ __('Registrar Empleado') }}</h2>
                 </div>
 
-                <form id="multiStepForm" method="POST" action="{{ route('guardar.empleado') }}">
+                <form method="POST" action="{{ route('guardar.empleado') }}" id="registerForm">
                     @csrf
-                    <!-- Paso 1: Información de Usuario -->
-                    <div class="step active">
-                        <h4>Información de Usuario</h4>
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Nombre de Usuario</label>
-                            <input id="name" type="text" name="name" class="form-control" required>
+
+                    <!-- Sección 1: Información de Usuario -->
+                    <div id="section1" class="form-section active">
+                        <h4 class="text-dark mb-3">{{ __('Información de Usuario') }}</h4>
+                        <div class="mb-2">
+                            <label for="name" class="form-label">{{ __('Nombre de Usuario') }}</label>
+                            <input id="name" type="text" class="form-control" name="name" required>
+                            <div class="invalid-feedback">El nombre de usuario es obligatorio.</div>
                         </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Correo Electrónico</label>
-                            <input id="email" type="email" name="email" class="form-control" required>
+                        <div class="mb-2">
+                            <label for="email" class="form-label">{{ __('Correo') }}</label>
+                            <input id="email" type="email" class="form-control" name="email" required>
+                            <div id="email-hint" class="email-hint"></div>
+                            <div class="invalid-feedback">Debe ingresar un correo válido.</div>
                         </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Contraseña</label>
-                            <input id="password" type="password" name="password" class="form-control" required>
+                        <div class="mb-2">
+                            <label for="password" class="form-label">{{ __('Contraseña') }}</label>
+                            <input id="password" type="password" class="form-control" name="password" required minlength="8">
+                            <div id="password-hint" class="password-hint"></div>
+                            <div class="invalid-feedback">La contraseña debe tener al menos 8 caracteres.</div>
                         </div>
-                        <div class="mb-3">
-                            <label for="password_confirmation" class="form-label">Confirmar Contraseña</label>
-                            <input id="password_confirmation" type="password" name="password_confirmation" class="form-control" required>
+                        <div class="mb-2">
+                            <label for="password_confirmation" class="form-label">{{ __('Confirmar Contraseña') }}</label>
+                            <input id="password_confirmation" type="password" class="form-control" name="password_confirmation" required>
+                            <div id="confirm-password-hint" class="confirm-password-hint"></div>
+                            <div class="invalid-feedback">Las contraseñas deben coincidir.</div>
                         </div>
-                        <button type="button" class="btn btn-primary" onclick="nextStep()">Siguiente</button>
+                        <div class="d-grid mt-4">
+                            <button type="button" class="btn btn-dark" onclick="nextSection(2)">{{ __('Siguiente') }}</button>
+                        </div>
                     </div>
 
-                    <!-- Paso 2: Información Personal -->
-                    <div class="step">
-                        <h4>Información Personal</h4>
-                        <div class="mb-3">
-                            <label for="nombre" class="form-label">Nombre</label>
-                            <input id="nombre" type="text" name="nombre" class="form-control" required>
+                    <!-- Sección 2: Información Personal -->
+                    <div id="section2" class="form-section">
+                        <h4 class="text-dark mb-3">{{ __('Información Personal') }}</h4>
+                        <div class="mb-2">
+                            <label for="nombre" class="form-label">{{ __('Nombre') }}</label>
+                            <input id="nombre" type="text" class="form-control" name="nombre" required>
+                            <div class="invalid-feedback">El nombre es obligatorio.</div>
                         </div>
-                        <div class="mb-3">
-                            <label for="apellido_paterno" class="form-label">Apellido Paterno</label>
-                            <input id="apellido_paterno" type="text" name="apellido_paterno" class="form-control" required>
+                        <div class="mb-2">
+                            <label for="apellido_paterno" class="form-label">{{ __('Apellido Paterno') }}</label>
+                            <input id="apellido_paterno" type="text" class="form-control" name="apellido_paterno" required>
+                            <div class="invalid-feedback">El apellido paterno es obligatorio.</div>
                         </div>
-                        <div class="mb-3">
-                            <label for="apellido_materno" class="form-label">Apellido Materno</label>
-                            <input id="apellido_materno" type="text" name="apellido_materno" class="form-control">
+                        <div class="mb-2">
+                            <label for="apellido_materno" class="form-label">{{ __('Apellido Materno') }}</label>
+                            <input id="apellido_materno" type="text" class="form-control" name="apellido_materno">
                         </div>
-                        <div class="mb-3">
-                            <label for="genero" class="form-label">Género</label>
-                            <select id="genero" name="genero" class="form-select" required>
-                                <option value="M">Masculino</option>
-                                <option value="F">Femenino</option>
+                        <div class="mb-2">
+                            <label for="genero" class="form-label">{{ __('Género') }}</label>
+                            <select id="genero" class="form-select" name="genero" required>
+                                <option value="M">{{ __('Masculino') }}</option>
+                                <option value="F">{{ __('Femenino') }}</option>
                             </select>
+                            <div class="invalid-feedback">El género es obligatorio.</div>
                         </div>
-                        <div class="mb-3">
-                            <label for="numero_telefonico" class="form-label">Número Telefónico</label>
-                            <input type="text" id="numero_telefonico" name="numero_telefonico" class="form-control" required>
+                        <div class="mb-2">
+                            <label for="numero_telefonico" class="form-label">{{ __('Número Telefónico') }}</label>
+                            <input id="numero_telefonico" type="text" class="form-control" name="numero_telefonico" required pattern="\d+">
+                            <div class="invalid-feedback">El número telefónico es obligatorio y debe ser numérico.</div>
                         </div>
-                        <button type="button" class="btn btn-secondary" onclick="prevStep()">Anterior</button>
-                        <button type="button" class="btn btn-primary" onclick="nextStep()">Siguiente</button>
+                        <div class="d-grid mt-4">
+                            <button type="button" class="btn btn-secondary mb-2" onclick="prevSection(1)">{{ __('Anterior') }}</button>
+                            <button type="button" class="btn btn-dark" onclick="nextSection(3)">{{ __('Siguiente') }}</button>
+                        </div>
                     </div>
 
-                    <!-- Paso 3: Dirección -->
-                    <div class="step">
-                        <h4>Dirección</h4>
-                        <div class="mb-3">
-                            <label for="calle" class="form-label">Calle</label>
-                            <input id="calle" type="text" name="calle" class="form-control" required>
+                    <!-- Sección 3: Dirección -->
+                    <div id="section3" class="form-section">
+                        <h4 class="text-dark mb-3">{{ __('Dirección') }}</h4>
+                        <div class="mb-2">
+                            <label for="calle" class="form-label">{{ __('Calle') }}</label>
+                            <input id="calle" type="text" class="form-control" name="calle" required>
+                            <div class="invalid-feedback">La calle es obligatoria.</div>
                         </div>
-                        <div class="mb-3">
-                            <label for="numero_ext" class="form-label">Número Exterior</label>
-                            <input id="numero_ext" type="text" name="numero_ext" class="form-control" required>
+                        <div class="mb-2">
+                            <label for="numero_ext" class="form-label">{{ __('Número Exterior') }}</label>
+                            <input id="numero_ext" type="text" class="form-control" name="numero_ext" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="colonia" class="form-label">Colonia</label>
-                            <input id="colonia" type="text" name="colonia" class="form-control" required>
+                        <div class="mb-2">
+                            <label for="colonia" class="form-label">{{ __('Colonia') }}</label>
+                            <input id="colonia" type="text" class="form-control" name="colonia" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="estado" class="form-label">Estado</label>
-                            <input id="estado" type="text" name="estado" class="form-control" required>
+                        <div class="mb-2">
+                            <label for="pais" class="form-label" style="font-size: 0.85rem;">{{ __('País') }}</label>
+                            <select id="country-select" name="pais" class="form-select">
+                                <option value="">Selecciona un país</option>
+                                <option value="US">Estados Unidos</option>
+                                <option value="MX">México</option>
+                                <option value="CA">Canadá</option>
+                            </select>
+                            <div class="invalid-feedback">El país es obligatorio.</div>
                         </div>
-                        <div class="mb-3">
-                            <label for="codigo_postal" class="form-label">Código Postal</label>
-                            <input id="codigo_postal" type="text" name="codigo_postal" class="form-control" required>
+                        
+                        <div class="mb-2">
+                            <label for="estado" class="form-label" style="font-size: 0.85rem;">{{ __('Estado') }}</label>
+                            <select id="state-select" name="estado" class="form-select" disabled>
+                                <option value="">Selecciona un estado</option>
+                            </select>
+                            <div class="invalid-feedback">El estado es obligatorio.</div>
                         </div>
-                        <div class="mb-3">
-                            <label for="pais" class="form-label">País</label>
-                            <input type="text" id="pais" name="pais" class="form-control" required>
+
+                        <div class="mb-2">
+                            <label for="codigo_postal" class="form-label">{{ __('Código Postal') }}</label>
+                            <input id="codigo_postal" type="text" class="form-control" name="codigo_postal" required>
                         </div>
-                        <button type="button" class="btn btn-secondary" onclick="prevStep()">Anterior</button>
-                        <button type="submit" class="btn btn-success">Finalizar</button>
+                        <div class="d-grid mt-4">
+                            <button type="button" class="btn btn-secondary mb-2" onclick="prevSection(2)">{{ __('Anterior') }}</button>
+                            <button type="submit" class="btn btn-dark">{{ __('Registrar') }}</button>
+                        </div>
                     </div>
                 </form>
             </div>
         </div>
-        <div class="col-lg-6 bg-image d-none d-lg-block" style="background-image: url('{{ asset('img/mujer.jpeg') }}'); background-size: cover; background-position: center;">
-        </div>
+
+        <div class="col-lg-6 bg-image d-none d-lg-block" style="background-image: url('{{ asset('img/mujer.jpeg') }}'); background-size: cover; background-position: center;"></div>
     </div>
 </div>
 
 <script>
-    let currentStep = 0; // Comenzar en el paso 0 (primer paso)
-    const steps = document.querySelectorAll('.step');
-
-    function showStep(stepIndex) {
-        steps.forEach((step, index) => {
-            step.classList.toggle('active', index === stepIndex);
-        });
-    }
-
-    function nextStep() {
-        if (currentStep < steps.length - 1) {
-            currentStep++;
-            showStep(currentStep);
+    function nextSection(sectionNumber) {
+        if (validateSection(sectionNumber - 1)) {
+            toggleSection(sectionNumber - 1, sectionNumber);
         }
     }
 
-    function prevStep() {
-        if (currentStep > 0) {
-            currentStep--;
-            showStep(currentStep);
-        }
+    function prevSection(sectionNumber) {
+        toggleSection(sectionNumber + 1, sectionNumber);
     }
 
-    showStep(currentStep); // Mostrar el primer paso al cargar
+    function toggleSection(current, next) {
+        document.getElementById(`section${current}`).classList.remove('active');
+        document.getElementById(`section${next}`).classList.add('active');
+    }
 
-    document.getElementById('registerForm').addEventListener('submit', function(event) {
-        const form = this;
-        const inputs = form.querySelectorAll('input, select');
+    function validateSection(sectionNumber) {
+        const inputs = document.querySelectorAll(`#section${sectionNumber} input, #section${sectionNumber} select`);
         let valid = true;
 
         inputs.forEach(input => {
             if (!input.checkValidity()) {
-                valid = false;
                 input.classList.add('is-invalid');
+                valid = false;
             } else {
                 input.classList.remove('is-invalid');
             }
         });
 
-        if (!valid) {
-            event.preventDefault(); // Evitar envío si hay errores
+        return valid;
+    }
+
+    document.getElementById('registerForm').addEventListener('submit', function (event) {
+        if (!validateSection(3)) {
+            event.preventDefault();
         }
     });
 
@@ -207,6 +240,33 @@
         } else {
             hint.innerHTML = 'Correo electrónico válido';
             hint.style.color = '#28a745';
+        }
+    });
+
+      // Cargar los datos de países y estados
+      const countriesStates = {
+        "US": ["California", "Texas", "Florida", "New York"],
+        "MX": ["Ciudad de México", "Jalisco", "Nuevo León", "Yucatán"],
+        "CA": ["Ontario", "Quebec", "British Columbia", "Alberta"]
+    };
+
+    const countrySelect = document.getElementById('country-select');
+    const stateSelect = document.getElementById('state-select');
+
+    countrySelect.addEventListener('change', function () {
+        const country = this.value;
+        stateSelect.innerHTML = '<option value="">Selecciona un estado</option>'; // Reset states
+
+        if (country && countriesStates[country]) {
+            stateSelect.disabled = false;
+            countriesStates[country].forEach(state => {
+                const option = document.createElement('option');
+                option.value = state;
+                option.textContent = state;
+                stateSelect.appendChild(option);
+            });
+        } else {
+            stateSelect.disabled = true;
         }
     });
 </script>

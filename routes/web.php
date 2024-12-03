@@ -34,14 +34,6 @@ Route::get('/catalogo', function () {
 });
 
 
-Route::get('/productos', function () {
-    return view('productos');
-})->name('productos');
-
-Route::get('/producto', function () {
-    return view('producto_detalle');
-})->name('producto.detalle');
-
 Route::get('/carrito', function () {
     return view('carrito'); 
 })->name('carrito');
@@ -67,17 +59,26 @@ Route::middleware(['auth'])->group(function () {
 Route::post('/procesar-pago', [StripeController::class, 'procesarPago'])->name('procesarPago');
 Route::post('/create-payment-intent', [StripeController::class, 'createPaymentIntent'])->name('createPaymentIntent');
 
+
+
 Route::get('/agradecimiento', function () {
     return view('agradecimitnto');
 })->name('agradecimiento');
+
+
+
 
 Route::get('/pago', function () {
     return view('pago');
 })->name('pago');
 
+
+
 Route::get('/Datos/Cliente', function () {
     return view('informacionCliente');
 })->name('informacionCliente');
+
+
 
 Route::get('/Detalle_Orden', [informacionClienteController::class, 'mostrarInformacionEnvio'])->name('detalleOrden')->middleware('auth');
 
@@ -118,10 +119,6 @@ Route::get('/producto/{id}', action: [EdicionesProductoController::class, 'detal
 Route::get('/rebajas' , [EdicionesProductoController::class, 'rebajas'])->name('rebajas');
 
 Route::get('/personalizacion', [PersonalizarController::class, 'mostrarCatalogoPersonalizable'])->name('personalizacion');
-
-Route::get('/personalizar/{productoId}', [PersonalizarController::class, 'personalizarProducto'])->name('personalizar.producto');
-Route::post('/personalizar/guardar', [PersonalizarController::class, 'guardar'])->name('personalizar.guardar');
-
 
 Route::get('/s3-image', [S3ImageController::class, 'getImage'])->name('s3.image');
 
@@ -224,9 +221,7 @@ Route::get('test', function(){
 return view('mail.orden');
 });
 
-Route::get('/personalizarAdmin', function () {
-    return view('admin.personalizar.personalizarAdmin');
-})->name('admin.personalizar');
+
 
 Route::get('/reporteAdmin', [dashController::class, 'reporteVentas'])->name('admin.reporteVentas');
 
@@ -236,3 +231,7 @@ Route::get('/envios-pendientes', [informacionClienteController::class, 'mostrare
 
 Route::get('/envios-detalles/{id}', [informacionClienteController::class, 'obtenerDetallesProducto'])->name('envios.detallesProducto');
 
+<<<<<<< HEAD
+=======
+Route::get('/personalizarAdmin', [PersonalizarController::class, 'personalizarProducto'])->name('admin.personalizar');
+>>>>>>> 97a664aec3feab7e10bace8acf9ab0c001d873bc
