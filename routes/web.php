@@ -223,9 +223,7 @@ return view('mail.orden');
 
 
 
-Route::get('/reporteAdmin', function () {
-    return view('admin.ordenes.reporteVentas');
-})->name('admin.reporteVentas');
+Route::get('/reporteAdmin', [dashController::class, 'reporteVentas'])->name('admin.reporteVentas');
 
 Route::put('/direccion/actualizar/{id}', [informacionClienteController::class, 'actualizarDireccion'])->name('direccion.actualizar');
 

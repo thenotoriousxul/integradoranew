@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\ReporteVenta;
 use Illuminate\Support\Facades\DB; 
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -53,7 +55,12 @@ class dashController extends Controller
 
         return $pdf->stream('manual_usuario.pdf');
     }
-
-
     
+    public function reporteVentas(){
+        $reporteVenta = ReporteVenta::all();
+        dd($reporteVenta);
+
+        return view('admin.ordenes.reporteVentas');
+    }
+
 }
