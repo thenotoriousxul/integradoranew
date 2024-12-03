@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ordenMail;
 use App\Models\DetalleOrden;
 use App\Models\Orden;
 use App\Models\Pago;
@@ -9,6 +10,7 @@ use Illuminate\Http\Request;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 
 class StripeController extends Controller
 {
@@ -63,6 +65,10 @@ class StripeController extends Controller
 
             $this->guardarPago($orden, $paymentIntent);
 
+            $usuario = auth()->user();
+
+            Mail::to($usuario->email)->send(new ordenMail($numeroPedido=$orden->id));
+
 
             return response()->json([
                 'success' => true,
@@ -91,7 +97,7 @@ class StripeController extends Controller
             'fecha_orden' => now(),
             'total' => $total,
             'envios_domicilio' => 1,
-            'estado' => 'Pagada',
+            'estado' => 'Pendiente',
         ]);
 
         foreach ($carrito as $producto) {
@@ -119,6 +125,8 @@ class StripeController extends Controller
             'estado' => 'pagado',
             'num_referencia' => $paymentIntent->id, 
         ]);
+
+        $orden->update([ 'estado' => 'Pagada', ]);
     }
 
     private function obtenerPaymentIntentDesdeStripe($paymentIntentId)

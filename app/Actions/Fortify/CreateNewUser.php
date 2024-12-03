@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Models\Persona;
 use App\Models\Direccion;
 use AWS\CRT\HTTP\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\DB as FacadesDB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -96,62 +98,73 @@ class CreateNewUser implements CreatesNewUsers
 
 
 
-    public function createEmpleado(array $input)
-    {
-    // Validar los datos
-    Validator::make($input, [
-        'name' => ['required', 'string', 'max:255'],
-        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-        'password' => ['required', 'string', 'min:8', 'confirmed'],
-    ])->validate();
+public function createEmpleado(array $input)
+{
+    // Usar una transacción para garantizar atomicidad
+    return DB::transaction(function () use ($input) {
+        // Validar los datos
+        Validator::make($input, [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'calle' => ['required', 'string'],
+            'numero_ext' => ['required', 'string'],
+            'colonia' => ['required', 'string'],
+            'estado' => ['required', 'string'],
+            'codigo_postal' => ['required', 'string'],
+            'pais' => ['required', 'string'],
+            'nombre' => ['required', 'string'],
+            'apellido_paterno' => ['required', 'string'],
+            'genero' => ['required', 'string'],
+            'numero_telefonico' => ['required', 'string'],
+        ])->validate();
 
-    // Crear usuario
-    $user = User::create([
-        'name' => $input['name'],
-        'email' => $input['email'],
-        'password' => Hash::make($input['password']),
-    ]);
+        // Crear usuario
+        $user = User::create([
+            'name' => $input['name'],
+            'email' => $input['email'],
+            'password' => Hash::make($input['password']),
+        ]);
 
-    $password = $input['password'];
+        $password = $input['password'];
 
-    // Crear dirección
-    $direccion = Direccion::create([
-        'calle' => $input['calle'],
-        'numero_ext' => $input['numero_ext'],
-        'numero_int' => $input['numero_int'] ?? null,
-        'colonia' => $input['colonia'],
-        'estado' => $input['estado'],
-        'codigo_postal' => $input['codigo_postal'],
-        'pais' => $input['pais'],
-    ]);
+        // Crear dirección
+        $direccion = Direccion::create([
+            'calle' => $input['calle'],
+            'numero_ext' => $input['numero_ext'],
+            'numero_int' => $input['numero_int'] ?? null,
+            'colonia' => $input['colonia'],
+            'estado' => $input['estado'],
+            'codigo_postal' => $input['codigo_postal'],
+            'pais' => $input['pais'],
+        ]);
 
-    // Crear persona con información adicional
-    Persona::create([
-        'users_id' => $user->id,
-        'direcciones_id' => $direccion->id,
-        'nombre' => $input['nombre'],
-        'apellido_paterno' => $input['apellido_paterno'],
-        'apellido_materno' => $input['apellido_materno'],
-        'genero' => $input['genero'],
-        'numero_telefonico' => $input['numero_telefonico'],
-    ]);
+        // Crear persona con información adicional
+        $persona = Persona::create([
+            'users_id' => $user->id,
+            'direcciones_id' => $direccion->id,
+            'nombre' => $input['nombre'],
+            'apellido_paterno' => $input['apellido_paterno'],
+            'apellido_materno' => $input['apellido_materno'],
+            'genero' => $input['genero'],
+            'numero_telefonico' => $input['numero_telefonico'],
+        ]);
 
-    // Asignar el rol de empleado
-    $user->assignRole('empleado');
+        // Crear TipoPersona
+        TipoPersona::create([
+            'personas_id' => $persona->id,
+            'tipo_persona' => 'Empleado',
+        ]);
 
-    try {
-        Mail::to($input['email'])->send(new empleadoMail($input['email'],$password ));
-        return 'Correo enviado correctamente';
-    } catch (\Exception $e) {
-        return 'Error al enviar el correo: ' . $e->getMessage();
-    }
+        // Asignar rol de empleado
+        $user->assignRole('empleado');
 
+        // Enviar correo
+        Mail::to($input['email'])->send(new empleadoMail($input['email'], $password));
 
-    return $user;
-
-
-    }
-
+        return $user;
+    });
+}
 
 
 }

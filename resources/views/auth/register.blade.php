@@ -135,19 +135,26 @@
                             <div class="invalid-feedback">La colonia es obligatoria.</div>
                         </div>
                         <div class="mb-2">
+                            <label for="pais" class="form-label" style="font-size: 0.85rem;">{{ __('País') }}</label>
+                            <select id="country-select" name="pais" class="form-select">
+                                <option value="">Selecciona un país</option>
+                                <option value="US">Estados Unidos</option>
+                                <option value="MX">México</option>
+                                <option value="CA">Canadá</option>
+                            </select>
+                            <div class="invalid-feedback">El país es obligatorio.</div>
+                        </div>
+                        <div class="mb-2">
                             <label for="estado" class="form-label" style="font-size: 0.85rem;">{{ __('Estado') }}</label>
-                            <input id="estado" type="text" class="form-control form-control-sm" name="estado" required>
+                            <select id="state-select" name="estado" class="form-select" disabled>
+                                <option value="">Selecciona un estado</option>
+                            </select>
                             <div class="invalid-feedback">El estado es obligatorio.</div>
                         </div>
                         <div class="mb-2">
                             <label for="codigo_postal" class="form-label" style="font-size: 0.85rem;">{{ __('Código Postal') }}</label>
                             <input id="codigo_postal" type="text" class="form-control form-control-sm" name="codigo_postal" required pattern="\d{5}">
                             <div class="invalid-feedback">El código postal debe tener 5 dígitos.</div>
-                        </div>
-                        <div class="mb-2">
-                            <label for="pais" class="form-label" style="font-size: 0.85rem;">{{ __('País') }}</label>
-                            <input id="pais" type="text" class="form-control form-control-sm" name="pais" required>
-                            <div class="invalid-feedback">El país es obligatorio.</div>
                         </div>
                         <div class="d-grid mt-4">
                             <button type="button" class="btn btn-secondary btn-sm mb-2" onclick="prevSection(2)">{{ __('Anterior') }}</button>
@@ -239,6 +246,33 @@
         } else {
             hint.innerHTML = 'Correo electrónico válido';
             hint.style.color = '#28a745';
+        }
+    });
+
+      // Cargar los datos de países y estados
+      const countriesStates = {
+        "US": ["California", "Texas", "Florida", "New York"],
+        "MX": ["Ciudad de México", "Jalisco", "Nuevo León", "Yucatán"],
+        "CA": ["Ontario", "Quebec", "British Columbia", "Alberta"]
+    };
+
+    const countrySelect = document.getElementById('country-select');
+    const stateSelect = document.getElementById('state-select');
+
+    countrySelect.addEventListener('change', function () {
+        const country = this.value;
+        stateSelect.innerHTML = '<option value="">Selecciona un estado</option>'; // Reset states
+
+        if (country && countriesStates[country]) {
+            stateSelect.disabled = false;
+            countriesStates[country].forEach(state => {
+                const option = document.createElement('option');
+                option.value = state;
+                option.textContent = state;
+                stateSelect.appendChild(option);
+            });
+        } else {
+            stateSelect.disabled = true;
         }
     });
 </script>

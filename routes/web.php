@@ -34,14 +34,6 @@ Route::get('/catalogo', function () {
 });
 
 
-Route::get('/productos', function () {
-    return view('productos');
-})->name('productos');
-
-Route::get('/producto', function () {
-    return view('producto_detalle');
-})->name('producto.detalle');
-
 Route::get('/carrito', function () {
     return view('carrito'); 
 })->name('carrito');
@@ -67,17 +59,26 @@ Route::middleware(['auth'])->group(function () {
 Route::post('/procesar-pago', [StripeController::class, 'procesarPago'])->name('procesarPago');
 Route::post('/create-payment-intent', [StripeController::class, 'createPaymentIntent'])->name('createPaymentIntent');
 
+
+
 Route::get('/agradecimiento', function () {
     return view('agradecimitnto');
 })->name('agradecimiento');
+
+
+
 
 Route::get('/pago', function () {
     return view('pago');
 })->name('pago');
 
+
+
 Route::get('/Datos/Cliente', function () {
     return view('informacionCliente');
 })->name('informacionCliente');
+
+
 
 Route::get('/Detalle_Orden', [informacionClienteController::class, 'mostrarInformacionEnvio'])->name('detalleOrden')->middleware('auth');
 
@@ -221,6 +222,10 @@ return view('mail.orden');
 });
 
 
+
+Route::get('/reporteAdmin', function () {
+    return view('admin.ordenes.reporteVentas');
+})->name('admin.reporteVentas');
 
 Route::put('/direccion/actualizar/{id}', [informacionClienteController::class, 'actualizarDireccion'])->name('direccion.actualizar');
 

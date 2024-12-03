@@ -266,7 +266,7 @@
                         @endguest
                         
                         
-                        @if(Auth::check() && !Auth::user()->hasRole('admin'))
+                        @if(!Auth::check() || (Auth::check() && !Auth::user()->hasRole('admin')))
                             <!-- Carrito -->
                             <li class="nav-item position-relative">
                                 <a class="nav-link" href="{{ route('carrito.mostrar') }}">
