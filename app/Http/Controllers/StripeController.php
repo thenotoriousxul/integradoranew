@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ordenMail;
 use App\Models\DetalleOrden;
 use App\Models\Orden;
 use App\Models\Pago;
@@ -9,6 +10,7 @@ use Illuminate\Http\Request;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 
 class StripeController extends Controller
 {
@@ -62,6 +64,10 @@ class StripeController extends Controller
             $orden = $this->guardarOrden($carrito, $paymentIntent);
 
             $this->guardarPago($orden, $paymentIntent);
+
+            $usuario = auth()->user();
+
+            Mail::to($usuario->email)->send(new ordenMail($numeroPedido=$orden->id));
 
 
             return response()->json([
