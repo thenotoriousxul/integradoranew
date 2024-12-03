@@ -228,12 +228,11 @@ Route::get('/personalizarAdmin', function () {
     return view('admin.personalizar.personalizarAdmin');
 })->name('admin.personalizar');
 
-Route::get('/reporteAdmin', function () {
-    return view('admin.ordenes.reporteVentas');
-})->name('admin.reporteVentas');
+Route::get('/reporteAdmin', [dashController::class, 'reporteVentas'])->name('admin.reporteVentas');
 
 Route::put('/direccion/actualizar/{id}', [informacionClienteController::class, 'actualizarDireccion'])->name('direccion.actualizar');
 
 Route::get('/envios-pendientes', [informacionClienteController::class, 'mostrarenvios'])->name('envios.pendientes');
 
 Route::get('/envios-detalles/{id}', [informacionClienteController::class, 'obtenerDetallesProducto'])->name('envios.detallesProducto');
+
