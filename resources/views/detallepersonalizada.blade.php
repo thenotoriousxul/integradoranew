@@ -26,27 +26,30 @@
 
             <!-- Filtro por tallas -->
             <div class="mb-4">
-    <label class="form-label">Tallas Disponibles:</label>
-    <div class="size-options">
-        @forelse ($tallas as $talla)
-            @if ($talla['cantidad'] > 0)
-                <div class="size-option available" 
-                    data-talla="{{ $talla['talla'] }}" 
-                    data-cantidad="{{ $talla['cantidad'] }}" 
-                    title="{{ $talla['cantidad'] }} disponibles">
-                    {{ $talla['talla'] }}
+                <label class="form-label">Tallas Disponibles:</label>
+                <div class="size-options d-flex flex-wrap gap-2">
+                    @forelse ($tallas as $talla)
+                        @if ($talla['cantidad'] > 0)
+                            <button type="button" 
+                                class="btn btn-outline-primary size-option available" 
+                                data-talla="{{ $talla['talla'] }}" 
+                                data-cantidad="{{ $talla['cantidad'] }}" 
+                                title="{{ $talla['cantidad'] }} disponibles">
+                                {{ $talla['talla'] }}
+                            </button>
+                        @else
+                            <button type="button" 
+                                class="btn btn-outline-secondary size-option unavailable" 
+                                title="Agotada" 
+                                disabled>
+                                {{ $talla['talla'] }}
+                            </button>
+                        @endif
+                    @empty
+                        <p>No hay tallas disponibles para este producto.</p>
+                    @endforelse
                 </div>
-            @else
-                <div class="size-option unavailable" title="Agotada">
-                    {{ $talla['talla'] }}
-                </div>
-            @endif
-        @empty
-            <p>No hay tallas disponibles para este producto.</p>
-        @endforelse
-    </div>
-</div>
-
+            </div>
 
             <!-- Formulario para agregar al carrito -->
             <form action="{{ route('carrito.agregar', $producto->id) }}" method="POST">
