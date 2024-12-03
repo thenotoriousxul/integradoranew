@@ -70,7 +70,7 @@
                                 </li>
                              @if ($producto->estado == 'activo')
                                 <li>
-                                    <form method="POST" action="{{ route('inactivar.producto', $producto->id) }}" style="display:inline;">
+                                    <form method="POST" action="{{ route('inactivar', $producto->id) }}" style="display:inline;">
                                         @csrf
                                         @method('PATCH')
                                         <button type="submit" class="dropdown-item">Inactivar</button>
@@ -78,7 +78,7 @@
                                 </li>
                             @else
                                 <li>
-                                    <form method="POST" action="{{ route('activar.producto', $producto->id) }}" style="display:inline;">
+                                    <form method="POST" action="{{ route('activar', $producto->id) }}" style="display:inline;">
                                         @csrf
                                         @method('PATCH')
                                         <button type="submit" class="dropdown-item">Activar</button>
