@@ -217,7 +217,10 @@
                         <input type="number" name="costo_max" id="costo_max" class="form-control" value="{{ request('costo_max') }}">
                     </div>
                 </div>
-                <button type="submit" class="btn btn-filter">Aplicar Filtros</button>
+                <button type="submit" class="btn btn-dark">Aplicar Filtros</button>
+            </form>
+            <form method="GET" action="{{ route('mostrar.productos') }}">
+                <button type="submit" class="btn btn-filter">Limpiar Filtros</button>
             </form>
         </div>
     </div>

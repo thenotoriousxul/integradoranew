@@ -8,6 +8,7 @@ use App\Models\Producto;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use Svg\Tag\Rect;
 
 class EdicionesProductoController extends Controller
 {
@@ -129,6 +130,21 @@ class EdicionesProductoController extends Controller
             $talla,
         ]);
 
+        
+        $productos = collect($productos);
+
+        // Agrupar productos por nombre
+        $productos = $productos->groupBy(function ($item) {
+            return strtolower(trim($item->nombre)); 
+        })->map(function ($grupo) {
+            return $grupo->sortByDesc(function ($item) {
+                return [
+                    $item->imagen_producto_trasera !== null ? 1 : 0, 
+                    $item->costo_precio_venta, 
+                ];
+            })->first(); 
+        });
+
         return view('admin.edicionesP.productos', compact('productos'));
     }
 
@@ -137,5 +153,26 @@ class EdicionesProductoController extends Controller
         $productos = EdicionesProductos::paginate(15);
 
         return view('admin.edicionesP.listar', compact('productos'));
+    }
+
+    public function activar(Request $request, $id){
+        $producto = EdicionesProductos::findOrFail($id);
+
+        $producto->estado = 'activo';
+
+        $producto->save();
+        return redirect()->route('listar.productos')
+        ->with('success', 'el producto se ah activado correctamente');
+
+    }
+
+
+    public function inactivar(Request $request ,$id){
+        $producto = EdicionesProductos::findOrFail($id);
+        
+        $producto->estado = 'inactivo';
+        $producto->save();
+        return redirect()->route('listar.productos')
+        ->with('success', 'el producto se ah inactivado correcamente.');
     }
 }
