@@ -35,6 +35,20 @@
             color: #555;
         }
 
+        .Elcanvas-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 20px;
+        }
+
+        #myCanvas {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f2f2f2; /* Fondo gris claro */
+        }
+
         .custom-card {
             width: 300px;
             background-color: #fff;
@@ -81,41 +95,6 @@
         .btn-black { background-color: black; }
         .btn-white { background-color: white; border: 1px solid #ddd; }
         .btn-cream { background-color: #e1c699; }
-
-        @media (max-width: 992px) {
-            .custom-container {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .opciones {
-                flex-direction: row;
-                width: 100%;
-                justify-content: space-around;
-                margin-right: 0;
-                margin-bottom: 20px;
-            }
-
-            .custom-card {
-                width: 90%;
-                margin-left: 0;
-                max-height: none;
-            }
-
-            .estampado-img {
-                max-width: 80px;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .opciones {
-                padding: 10px;
-            }
-
-            .custom-card {
-                padding: 10px;
-            }
-        }
     </style>
 
     <!-- Contenedor Principal -->
@@ -207,8 +186,8 @@
                 img.set({
                     left: canvas.width / 2,
                     top: canvas.height / 2,
-                    scaleX: 0.3,
-                    scaleY: 0.3,
+                    scaleX: 0.2,
+                    scaleY: 0.2,
                     originX: 'center',
                     originY: 'center',
                     selectable: true
@@ -232,13 +211,14 @@
 
         // Descargar diseño
         function descargarImagen() {
+            canvas.discardActiveObject();
+            canvas.renderAll();
             const link = document.createElement('a');
             link.href = canvas.toDataURL('image/png');
             link.download = 'diseño_personalizado.png';
             link.click();
         }
 
-        // Inicializar canvas y cargar playera
         crearPlayera();
     </script>
 @endsection
