@@ -20,7 +20,7 @@ use App\Http\Controllers\EstampadoController;
 use App\Http\Controllers\PersonalizarController;
 use App\Http\Controllers\OrdenController;
 use App\Http\Controllers\S3ImageController;
-use App\Http\Controllers\userController;
+use App\Http\Controllers\UserController;
 use App\Mail\ordenMail;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\EdicionPersonalizadaController;
@@ -261,7 +261,7 @@ Route::post('/proveedor/nuevo', [proveedorController::class, 'nuevoproveedor'])-
 
 
 
-Route::get('/usuarios/listar', [userController::class, 'listar'])->name('listar.usurios');
+Route::get('/usuarios/listar', [UserController::class, 'listar'])->name('listar.usurios');
 
 Route::post('/carrito/agregar/{productoId}', [EdicionPersonalizadaController::class, 'agregarAlCarrito'])->name('carrito.agregar');
 
