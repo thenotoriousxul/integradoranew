@@ -202,7 +202,7 @@
                 <i class="fas fa-chevron-down abajo"></i>
             </a>
             <div id="proveedores-submenu" class="submenu">
-                <a class="item-side sub" href="{{ route('admin.listarProveedor') }}">
+                <a class="item-side sub" href="{{ route('proveedores.index') }}">
                     <i class="fa-solid fa-list-check"></i>
                     <span class="sidebar-text">Lista Proveedores</span>
                 </a>

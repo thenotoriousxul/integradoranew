@@ -50,3 +50,4 @@ class proveedorController extends Controller
         return view('admin.proveedores.listarProveedor', compact('proveedores'));
     }
 }
+ 

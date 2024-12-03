@@ -171,7 +171,7 @@ Route::middleware(['role:admin|empleado'])->group(function () {
         Route::delete('/{id}/eliminar', [EstampadoController::class, 'eliminarEstampado'])->name('estampados.eliminar');
     });
 
-    ////
+    //// 
 
     Route::prefix('admin/producto')->group(function(){
         Route::get('/dash/productosBase', [productoController::class, 'dashProductos'])->name('dash.productosBase');
