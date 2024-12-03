@@ -231,7 +231,4 @@ Route::get('/envios-pendientes', [informacionClienteController::class, 'mostrare
 
 Route::get('/envios-detalles/{id}', [informacionClienteController::class, 'obtenerDetallesProducto'])->name('envios.detallesProducto');
 
-<<<<<<< HEAD
-=======
 Route::get('/personalizarAdmin', [PersonalizarController::class, 'personalizarProducto'])->name('admin.personalizar');
->>>>>>> 97a664aec3feab7e10bace8acf9ab0c001d873bc
