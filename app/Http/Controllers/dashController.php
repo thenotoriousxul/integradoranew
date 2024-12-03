@@ -57,10 +57,9 @@ class dashController extends Controller
     }
     
     public function reporteVentas(){
-        $reporteVenta = ReporteVenta::all();
-        dd($reporteVenta);
+        $reporteVentas = ReporteVenta::all();
 
-        return view('admin.ordenes.reporteVentas');
+        return view('admin.ordenes.reporteVentas', compact('reporteVentas'));
     }
 
 }
