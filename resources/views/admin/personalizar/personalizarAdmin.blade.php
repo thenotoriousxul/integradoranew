@@ -187,7 +187,7 @@
                 canvas.add(img);
                 canvas.setActiveObject(img);
                 logoObject = img;
-            });
+            }),{CrossOrigin: 'anonymous'};
         }
 
         function eliminarObjeto() {
