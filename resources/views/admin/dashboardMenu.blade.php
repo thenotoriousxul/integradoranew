@@ -196,9 +196,9 @@
 
   const ctx = document.getElementById('ventasChart').getContext('2d');
     const ventasChart = new Chart(ctx, {
-    type: 'line', // Tipo de gráfico: líneas
+    type: 'line',
     data: {
-        labels: meses, // Etiquetas del eje X (meses)
+        labels: meses, 
         datasets: [{
             label: 'Ventas por mes',
             data: totalVentas,

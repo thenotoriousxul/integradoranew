@@ -27,7 +27,6 @@ class CreateNewUser implements CreatesNewUsers
 
     public function create(array $input)
     {
-        // Validar los datos
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -47,14 +46,12 @@ class CreateNewUser implements CreatesNewUsers
             
         ])->validate();
 
-        // Crear usuario
         $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
         ]);
 
-        // Crear dirección
         $direccion = Direccion::create([
             'calle' => $input['calle'],
             'numero_ext' => $input['numero_ext'],
@@ -65,7 +62,6 @@ class CreateNewUser implements CreatesNewUsers
             'pais' => $input['pais'],
         ]);
 
-        // Crear persona
        $persona= Persona::create([
             'users_id' => $user->id,
             'direcciones_id' => $direccion->id,
@@ -89,7 +85,6 @@ class CreateNewUser implements CreatesNewUsers
         try {
             Mail::to($input['email'])->send(new clienteEmail);
         } catch (\Exception $e) {
-            // Manejo de errores de correo (opcional, para no interrumpir el flujo)
             logger('Error al enviar el correo: ' . $e->getMessage());
         }
         
@@ -100,9 +95,7 @@ class CreateNewUser implements CreatesNewUsers
 
 public function createEmpleado(array $input)
 {
-    // Usar una transacción para garantizar atomicidad
     return DB::transaction(function () use ($input) {
-        // Validar los datos
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -119,7 +112,6 @@ public function createEmpleado(array $input)
             'numero_telefonico' => ['required', 'string'],
         ])->validate();
 
-        // Crear usuario
         $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
@@ -128,7 +120,6 @@ public function createEmpleado(array $input)
 
         $password = $input['password'];
 
-        // Crear dirección
         $direccion = Direccion::create([
             'calle' => $input['calle'],
             'numero_ext' => $input['numero_ext'],
@@ -139,7 +130,6 @@ public function createEmpleado(array $input)
             'pais' => $input['pais'],
         ]);
 
-        // Crear persona con información adicional
         $persona = Persona::create([
             'users_id' => $user->id,
             'direcciones_id' => $direccion->id,
@@ -150,16 +140,13 @@ public function createEmpleado(array $input)
             'numero_telefonico' => $input['numero_telefonico'],
         ]);
 
-        // Crear TipoPersona
         TipoPersona::create([
             'personas_id' => $persona->id,
             'tipo_persona' => 'Empleado',
         ]);
 
-        // Asignar rol de empleado
         $user->assignRole('empleado');
 
-        // Enviar correo
         Mail::to($input['email'])->send(new empleadoMail($input['email'], $password));
 
         return $user;

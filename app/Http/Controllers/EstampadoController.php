@@ -8,20 +8,17 @@ use Illuminate\Support\Facades\Storage;
 
 class EstampadoController extends Controller
 {
-    // Listar todos los estampados
     public function listarEstampados()
     {
         $estampados = Estampado::all();
         return view('admin.estampados.listar', compact('estampados'));
     }
 
-    // Mostrar formulario para crear un estampado
     public function crearFormularioEstampado()
     {
         return view('admin.estampados.crear');
     }
 
-    // Guardar un nuevo estampado
     public function guardarEstampado(Request $request)
 {
     $request->validate([
@@ -47,14 +44,12 @@ class EstampadoController extends Controller
 }
 
 
-    // Mostrar formulario para editar un estampado
     public function editarFormularioEstampado($id)
     {
         $estampado = Estampado::findOrFail($id);
         return view('admin.estampados.editar', compact('estampado'));
     }
 
-    // Actualizar un estampado
     public function actualizarEstampado(Request $request, $id)
     {
         $request->validate([
@@ -80,7 +75,6 @@ class EstampadoController extends Controller
         return redirect()->route('estampados.listar')->with('success', 'Estampado actualizado exitosamente.');
     }
 
-    // Eliminar un estampado
     public function eliminarEstampado($id)
     {
         $estampado = Estampado::findOrFail($id);

@@ -37,7 +37,6 @@
     @endif
 
 
-    <!-- Modal -->
 <div class="modal fade" id="detallesOrdenModal" tabindex="-1" aria-labelledby="detallesOrdenModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

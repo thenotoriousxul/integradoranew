@@ -33,10 +33,10 @@ class Estampado extends Model
     public function estampados()
     {
     return $this->belongsToMany(
-        Estampado::class,          // Modelo relacionado
-        'ediciones_estampados',    // Nombre de la tabla pivote
-        'edicion_id',              // Clave foránea en la tabla pivote para "Edicion"
-        'estampado_id'             // Clave foránea en la tabla pivote para "Estampado"
+        Estampado::class,          
+        'ediciones_estampados',    
+        'edicion_id',              
+        'estampado_id'             
     );
     }
 }

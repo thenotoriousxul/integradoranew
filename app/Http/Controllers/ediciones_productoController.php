@@ -13,25 +13,22 @@ class EdicionesProductoController extends Controller
 {
     public function getProductos()
     {
-        // Recupera los productos con rebaja = 0
         $producto = EdicionesProductos::where('rebaja', 0)
             ->where('estado', 'activo')
             ->where('personalizada', 0)
             ->get();
 
-        // Agrupa los productos por nombre
         $productos = $producto->groupBy(function ($item) {
-            return strtolower(trim($item->nombre)); // Normaliza el nombre para agrupar
+            return strtolower(trim($item->nombre)); 
         })->map(function ($grupo) {
             return $grupo->sortByDesc(function ($item) {
                 return [
-                    $item->imagen_producto_trasera !== null ? 1 : 0, // Prioriza productos con imagen trasera
-                    $item->costo_precio_venta // Ordena por precio
+                    $item->imagen_producto_trasera !== null ? 1 : 0, 
+                    $item->costo_precio_venta
                 ];
-            })->first(); // Selecciona el mejor producto del grupo
+            })->first();
         });
 
-        // Pasamos los productos agrupados a la vista
         return view('admin.edicionesP.productos', compact('productos'));
     }
 
@@ -39,7 +36,6 @@ class EdicionesProductoController extends Controller
     {
         $producto = EdicionesProductos::findOrFail($id);
 
-        // Obtener todas las tallas asociadas al producto por nombre
         $tallas = EdicionesProductos::whereRaw('LOWER(nombre) = ?', [strtolower(trim($producto->nombre))])
             ->get()
             ->map(function ($item) {
@@ -48,7 +44,7 @@ class EdicionesProductoController extends Controller
                     'cantidad' => $item->cantidad,
                 ];
             })
-            ->unique('talla'); // Evita duplicados de tallas
+            ->unique('talla');
 
         return view('admin.edicionesP.producto_detalle', compact('producto', 'tallas'));
     }
@@ -72,11 +68,9 @@ class EdicionesProductoController extends Controller
             'cantidad' => 'required|integer|min:1',
         ]);
 
-        /////
 
         $imageUrl = null;
 
-        // Subida de la imagen a S3 y generación de la URL
         if ($request->hasFile('imagen_producto_final')) {
             $imagePath = $request->file('imagen_producto_final')->store('ediciones_productos', 's3');
             Storage::disk('s3')->setVisibility($imagePath, 'public');

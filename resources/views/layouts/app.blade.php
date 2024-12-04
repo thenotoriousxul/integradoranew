@@ -85,13 +85,11 @@
             margin-left: 5px;
         }
 
-        /* Centrar verticalmente los elementos en la barra de navegación */
         .navbar .navbar-nav .nav-item, .navbar .navbar-nav .nav-link, .navbar .navbar-brand {
             display: flex;
             align-items: center;
         }
 
-        /* Espaciado y centrado para opciones de menú en pantallas pequeñas */
         @media (max-width: 768px) {
             .navbar-collapse {
                 justify-content: center;
@@ -109,11 +107,10 @@
             }
             .navbar-nav .nav-item.dropdown,
             .navbar-nav .nav-item.position-relative {
-                margin-bottom: 10px; /* Separación entre Cuenta y Carrito */
+                margin-bottom: 10px; 
             }
         }
 
-        /* Separación entre "Cuenta" y el carrito en pantallas grandes */
         .navbar-nav .nav-item.position-relative {
             margin-left: 15px;
         }
@@ -220,7 +217,6 @@
                     </ul>
 
                     <ul class="navbar-nav ms-auto">
-                        <!-- Usuario -->
                         @guest
                             <li class="nav-item dropdown">
                                 <a id="guestDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -231,7 +227,6 @@
                                     @if (Route::has('register'))
                                         <a class="dropdown-item" href="{{ route('register') }}">{{ __('Registrarse') }}</a>
                                     @endif
-                                    <!-- Eliminado el enlace "Ir al panel administrador" para invitados -->
                                 </div>
                             </li>
                         @else 
@@ -269,7 +264,6 @@
                         
                         
                         @if(!Auth::check() || (Auth::check() && !Auth::user()->hasRole('admin')))
-                            <!-- Carrito -->
                             <li class="nav-item position-relative">
                                 <a class="nav-link" href="{{ route('carrito.mostrar') }}">
                                     <i class="fas fa-shopping-cart"></i>

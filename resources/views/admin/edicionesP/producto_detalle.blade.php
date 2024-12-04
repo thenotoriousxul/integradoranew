@@ -66,7 +66,6 @@
         color: var(--text-color);
     }
 
-    /* Estilo para tallas disponibles */
     .size-option.available {
         background-color: #ffffff;
         color: var(--primary-color);
@@ -79,7 +78,6 @@
         transform: scale(1.1);
     }
 
-    /* Estilo para tallas agotadas */
     .size-option.unavailable {
         background-color: #f6f6f6;
         color: #999999;
@@ -166,7 +164,6 @@
                 <div class="mb-4">
                     <label class="form-label">Cantidad</label>
                     <select class="form-select quantity-selector" name="cantidad">
-                        <!-- Opciones de cantidad se actualizarán dinámicamente -->
                     </select>
                     <p>Selecciona una talla para ver el stock disponible.</p>
                 </div>
@@ -188,23 +185,17 @@
 
     sizeOptions.forEach(option => {
         option.addEventListener('click', function() {
-            // Remover la clase 'active' de todas las opciones
             sizeOptions.forEach(opt => opt.classList.remove('active'));
 
-            // Agregar la clase 'active' a la opción seleccionada
             this.classList.add('active');
 
-            // Actualizar el campo oculto con la talla seleccionada
             hiddenTallaInput.value = this.dataset.talla;
 
-            // Obtener el stock disponible para la talla seleccionada
             const stockDisponible = parseInt(this.dataset.cantidad);
 
-            // Establecer el máximo entre 1 y 5 (o menos si no hay suficiente stock)
             const maxSeleccionable = Math.min(stockDisponible, 5);
 
-            // Actualizar las opciones del selector de cantidad
-            quantitySelector.innerHTML = ''; // Vaciar las opciones actuales
+            quantitySelector.innerHTML = '';
             for (let i = 1; i <= maxSeleccionable; i++) {
                 const option = document.createElement('option');
                 option.value = i;
@@ -212,7 +203,6 @@
                 quantitySelector.appendChild(option);
             }
 
-            // Habilitar el botón de agregar al carrito
             agregarCarritoButton.disabled = false;
 
             console.log('Talla seleccionada:', this.dataset.talla, 'Stock disponible:', stockDisponible, 'Max permitido:', maxSeleccionable);

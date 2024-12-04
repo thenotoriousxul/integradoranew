@@ -55,36 +55,30 @@
 @endsection
 
 @section('js')
-<!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
-    // Verifica si jQuery está cargado correctamente
-    console.log("jQuery está definido:", typeof jQuery);  // Esto debería mostrar "function"
+    console.log("jQuery está definido:", typeof jQuery);  
 </script>
 
-<!-- Select2 JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script>
-    console.log("Select2 cargado correctamente");  // Verifica si Select2 está cargado correctamente
+    console.log("Select2 cargado correctamente");
 </script>
 
-<!-- DataTables Core -->
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script>
-    console.log("DataTables cargado correctamente");  // Verifica si DataTables está cargado correctamente
+    console.log("DataTables cargado correctamente"); 
 </script>
 
-<!-- DataTables Bootstrap 5 -->
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 <script>
-    console.log("DataTables Bootstrap 5 cargado correctamente");  // Verifica si DataTables Bootstrap 5 está cargado correctamente
+    console.log("DataTables Bootstrap 5 cargado correctamente");
 </script>
 
-<!-- Cargar idioma español localmente (evitar CORS) -->
 <script>
     $('#ReporteVentas').DataTable({
         language: {
-            url: "/js/i18n/es-ES.json"  // Ruta local al archivo JSON
+            url: "/js/i18n/es-ES.json"  
         },
         scrollX: true
     });
@@ -92,7 +86,6 @@
     console.log("DataTable inicializado en #ReporteVentas");
 </script>
 
-<!-- Sidebar Script -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         console.log("El DOM está completamente cargado.");

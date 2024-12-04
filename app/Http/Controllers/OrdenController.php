@@ -10,13 +10,13 @@ class OrdenController extends Controller
 {
     public function index()
     {
-        $ordenes = Orden::all(); // Obtén todas las órdenes
+        $ordenes = Orden::all();
         return view('admin.ordenes.index', compact('ordenes'));
     }
 
     public function create()
     {
-        return view('admin.ordenes.create'); // Vista del formulario de creación
+        return view('admin.ordenes.create');
     }
 
     public function store(Request $request)
@@ -44,13 +44,13 @@ class OrdenController extends Controller
 
     public function show($id)
     {
-        $orden = Orden::with('detalles.edicion')->findOrFail($id); // Incluye detalles y ediciones
+        $orden = Orden::with('detalles.edicion')->findOrFail($id);
         return view('admin.ordenes.show', compact('orden'));
     }
 
     public function edit($id)
     {
-        $orden = Orden::findOrFail($id); // Encuentra la orden
+        $orden = Orden::findOrFail($id);
         return view('admin.ordenes.edit', compact('orden'));
     }
 
@@ -82,7 +82,7 @@ class OrdenController extends Controller
         $tipoPersona = auth()->user()->persona->tipoPersona()->first();
 
         $ordenes = Orden::where('tipo_personas_id', $tipoPersona->id)
-            ->with(['detalles.edicionProducto']) // Cambiado a la relación correcta
+            ->with(['detalles.edicionProducto'])
             ->get();
     
         return view('cliente.pedidos', compact('ordenes'));

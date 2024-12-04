@@ -47,7 +47,6 @@
             <strong>Producto Seleccionado:</strong> <span id="producto-detalles"></span>
         </div>
 
-        <!-- Cantidad -->
         <div class="mb-3">
             <label for="cantidad" class="form-label fw-bold">Cantidad</label>
             <input type="number" name="cantidad" id="cantidad" class="form-control" min="1" placeholder="Ingrese la cantidad" required>
@@ -63,7 +62,6 @@
                 <input type="file" name="imagen_producto_trasera" id="imagen_producto_trasera" class="form-control border rounded" style="background-color: #e9ecef; color: #495057;">
         </div>
 
-        <!-- Botón de Envío -->
         <div class="text-center">
             <button type="submit" class="btn btn-success w-50">Agregar</button>
         </div>
@@ -72,7 +70,6 @@
 
 
 
-<!-- Modal para Seleccionar Producto -->
 <div class="modal fade" id="productosModal" tabindex="-1" aria-labelledby="productosModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -88,7 +85,6 @@
                                  data-id="{{ $producto->id }}" 
                                  data-detalles="{{ ucfirst($producto->tipo) }} - Color: {{ ucfirst($producto->color) }} - Talla: {{ strtoupper($producto->talla) }}">
                                 
-                                <!-- Imagen del Producto -->
                                 <img src="{{ $producto->imagen_producto }}" 
                                      class="card-img-top" 
                                      alt="{{ ucfirst($producto->tipo) }}" 
@@ -116,20 +112,16 @@
 <script>
     document.querySelectorAll('.seleccionar-producto').forEach(button => {
     button.addEventListener('click', function () {
-        // Obtener información del producto
         const card = this.closest('.producto-card');
         const productoId = card.getAttribute('data-id');
         const detalles = card.getAttribute('data-detalles');
 
-        // Actualizar campo oculto y mostrar producto seleccionado
         document.getElementById('productos_id').value = productoId;
         document.getElementById('producto-detalles').textContent = detalles;
 
-        // Mostrar el mensaje con el producto seleccionado
         const seleccionadoDiv = document.getElementById('producto-seleccionado');
         seleccionadoDiv.classList.remove('d-none');
 
-        // Cerrar el modal
         const modal = document.querySelector('#productosModal');
         const modalInstance = bootstrap.Modal.getInstance(modal);
         modalInstance.hide();

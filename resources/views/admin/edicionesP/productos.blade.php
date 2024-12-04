@@ -152,7 +152,6 @@
 @section('content')
 <div class="container py-4">
 
-    <!-- Encabezado del catálogo -->
     <div class="catalogo-header">
         <h1>Catálogo de Productos</h1>
         <p>Explora nuestra amplia gama de playeras para todos los gustos.</p>
@@ -164,7 +163,6 @@
         </button>
     </div>
 
-    <!-- Productos -->
     <div class="row">
         @foreach ($productos as $producto)
             <div class="col-md-3 mb-4">
@@ -198,7 +196,6 @@
         @endforeach
     </div>
 
-    <!-- Filtros -->
     <div class="offcanvas offcanvas-start" tabindex="-1" id="filtroOffcanvas" aria-labelledby="filtroOffcanvasLabel">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="filtroOffcanvasLabel">Selecciona el filtro</h5>

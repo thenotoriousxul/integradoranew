@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Log;
 
 class carritoController extends Controller
 {
-    // Agregar un producto al carrito
     public function agregarProducto(Request $request, $productoId)
     {
         $producto = EdicionesProductos::find($productoId);
@@ -87,10 +86,8 @@ class carritoController extends Controller
         if ($carrito->has($productoId)) {
             $carrito->forget($productoId);
     
-            // Guardamos el carrito actualizado en la sesión
             session()->put('carrito', $carrito->toArray());
     
-            // Calcular total después de eliminar
             $total = $carrito->sum(function($item) {
                 return $item['price'] * $item['quantity'];
             });
@@ -106,7 +103,7 @@ class carritoController extends Controller
     
     public function vaciarCarrito()
     {
-        session()->forget('carrito');  // Limpiamos el carrito de la sesión
+        session()->forget('carrito'); 
         return response()->json(['success' => true]);
         
     }

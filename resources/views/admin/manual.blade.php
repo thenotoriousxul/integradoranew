@@ -60,20 +60,16 @@
 </head>
 <body>
     <div class="container">
-        <!-- Logo -->
         <img src="{{ asset('img/ozeztrc.png') }}" alt="Logo" class="logo">
 
-        <!-- Título del Manual -->
         <h1>Manual de Usuario</h1>
         <p>Bienvenido al manual de usuario. Aquí encontrarás instrucciones básicas para utilizar el sistema.</p>
 
-        <!-- Sección 1: Introducción -->
         <div class="section">
             <h2>1. Introducción</h2>
             <p>Este sistema ha sido diseñado para facilitar la gestión de productos, órdenes y configuraciones administrativas. A continuación, aprenderás cómo utilizar sus funciones principales.</p>
         </div>
 
-        <!-- Sección 2: Inicio de Sesión -->
         <div class="section">
             <h2>2. Inicio de Sesión</h2>
             <p>Sigue estos pasos para acceder al sistema:</p>
@@ -85,7 +81,6 @@
             </ul>
         </div>
 
-        <!-- Sección 3: Gestión de Productos -->
         <div class="section">
             <h2>3. Gestión de Productos</h2>
             <p>En esta sección podrás crear, editar y eliminar productos. Sigue estos pasos:</p>
@@ -97,7 +92,6 @@
             </ul>
         </div>
 
-        <!-- Sección 4: Generación de Reportes -->
         <div class="section">
             <h2>4. Generación de Reportes</h2>
             <p>Para generar reportes de ventas y productos:</p>
@@ -109,7 +103,6 @@
             </ul>
         </div>
 
-        <!-- Sección 5: Configuración -->
         <div class="section">
             <h2>5. Configuración</h2>
             <p>Personaliza el sistema según tus necesidades:</p>
@@ -120,7 +113,6 @@
             </ul>
         </div>
 
-        <!-- Pie de Página -->
         <div class="footer">
             <p>Manual de Usuario - Sistema OzeztRC © {{ now()->year }}</p>
         </div>

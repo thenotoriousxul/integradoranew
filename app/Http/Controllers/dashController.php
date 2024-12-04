@@ -33,9 +33,9 @@ class dashController extends Controller
 
         $ventas = DB::table('ordenes')
         ->select(DB::raw('YEAR(fecha_orden) as año'), DB::raw('MONTHNAME(fecha_orden) as mes'), DB::raw('COUNT(*) as total_ventas'))
-        ->groupBy(DB::raw('YEAR(fecha_orden), MONTH(fecha_orden), MONTHNAME(fecha_orden)')) // Agrupar por mes y año
-        ->orderBy(DB::raw('YEAR(fecha_orden)')) // Ordenar por año primero
-        ->orderBy(DB::raw('MONTH(fecha_orden)')) // Luego ordenar por el número del mes (1-12)
+        ->groupBy(DB::raw('YEAR(fecha_orden), MONTH(fecha_orden), MONTHNAME(fecha_orden)')) 
+        ->orderBy(DB::raw('YEAR(fecha_orden)')) 
+        ->orderBy(DB::raw('MONTH(fecha_orden)')) 
         ->get();
 
     
