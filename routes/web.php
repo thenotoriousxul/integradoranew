@@ -20,7 +20,7 @@ use App\Http\Controllers\EstampadoController;
 use App\Http\Controllers\PersonalizarController;
 use App\Http\Controllers\OrdenController;
 use App\Http\Controllers\S3ImageController;
-use App\Http\Controllers\userController;
+use App\Http\Controllers\UserController;
 use App\Mail\ordenMail;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\EdicionPersonalizadaController;
@@ -232,6 +232,7 @@ return view('mail.orden');
 
 Route::get('/reporteAdmin', [dashController::class, 'reporteVentas'])->name('admin.reporteVentas');
 
+Route::get('/pdf/reporte', [dashController::class, 'pdfReporteVentas'])->name('pdf.reporte');
 
 Route::get('/agregarProveedor', function () {
     return view('admin.proveedores.agregarProveedor');
