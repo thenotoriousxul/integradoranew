@@ -198,15 +198,14 @@
                 alert('No hay estampados para eliminar.');
             }
         }
-
         function descargarImagen() {
-            canvas.discardActiveObject();
-            canvas.renderAll();
             const link = document.createElement('a');
-            link.href = canvas.toDataURL('image/png');
-            link.download = 'diseño_personalizado.png';
+            link.href = canvas.toDataURL({ format: 'png' });
+            link.download = 'mi_diseño.png'; 
             link.click();
         }
+        
+        var maxImg = 2;
 
         crearPlayera();
     </script>
