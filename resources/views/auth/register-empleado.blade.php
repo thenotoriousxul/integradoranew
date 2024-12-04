@@ -42,7 +42,6 @@
                 <form method="POST" action="{{ route('guardar.empleado') }}" id="registerForm">
                     @csrf
 
-                    <!-- Sección 1: Información de Usuario -->
                     <div id="section1" class="form-section active">
                         <h4 class="text-dark mb-3">{{ __('Información de Usuario') }}</h4>
                         <div class="mb-2">
@@ -73,7 +72,6 @@
                         </div>
                     </div>
 
-                    <!-- Sección 2: Información Personal -->
                     <div id="section2" class="form-section">
                         <h4 class="text-dark mb-3">{{ __('Información Personal') }}</h4>
                         <div class="mb-2">
@@ -109,7 +107,6 @@
                         </div>
                     </div>
 
-                    <!-- Sección 3: Dirección -->
                     <div id="section3" class="form-section">
                         <h4 class="text-dark mb-3">{{ __('Dirección') }}</h4>
                         <div class="mb-2">
@@ -243,7 +240,6 @@
         }
     });
 
-      // Cargar los datos de países y estados
       const countriesStates = {
         "US": ["California", "Texas", "Florida", "New York"],
         "MX": [
@@ -263,7 +259,7 @@
 
     countrySelect.addEventListener('change', function () {
         const country = this.value;
-        stateSelect.innerHTML = '<option value="">Selecciona un estado</option>'; // Reset states
+        stateSelect.innerHTML = '<option value="">Selecciona un estado</option>'; 
 
         if (country && countriesStates[country]) {
             stateSelect.disabled = false;

@@ -17,14 +17,12 @@ class productoController extends Controller
     public function saveProducto(productoRequest $request){
         $imageUrl = null;
     
-        // Subida de la imagen a S3 y generación de la URL
         if ($request->hasFile('imagen_producto')) {
             $imagePath = $request->file('imagen_producto')->store('productos', 's3');
             Storage::disk('s3')->setVisibility($imagePath, 'public');
             $imageUrl = Storage::disk('s3')->url($imagePath); // Esto es un string con la URL
         }
     
-        // Creación y guardado del producto
         $producto = new Producto();
         $producto->tipo = $request->input('tipo');
         $producto->talla = $request->input('talla');
@@ -32,7 +30,7 @@ class productoController extends Controller
         $producto->lote = $request->input('lote');
         $producto->costo = $request->input('costo');
         $producto->producto_personalizar = $request->input('producto_personalizar');
-        $producto->imagen_producto = $imageUrl; // La URL se guarda como string en la BD
+        $producto->imagen_producto = $imageUrl;
         $producto->save();
     
         return redirect()->route('dash.productosBase')->with('success', 'Producto creado exitosamente.');
@@ -72,18 +70,14 @@ class productoController extends Controller
         
         $imageUrl = null;
 
-            // Manejar la imagen si hay una nueva subida
         if ($request->hasFile('imagen_producto')) {
-        // Eliminar la imagen anterior de S3, si existe
         if ($producto->imagen_producto) {
             Storage::disk('s3')->delete($producto->imagen_producto);
         }
 
-        // Subir la nueva imagen a S3
         $imagePath = $request->file('imagen_producto')->store('productos', 's3');
         Storage::disk('s3')->setVisibility($imagePath, 'public');
 
-        // Actualizar la URL de la imagen
         $producto->imagen_producto = Storage::disk('s3')->url($imagePath);
         }
 
@@ -144,7 +138,6 @@ class productoController extends Controller
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $currentPageItems = $productosCollection->slice(($currentPage - 1) * $perPage, $perPage)->values(); // Elementos actuales
 
-        // Crear el objeto paginador
         $paginatedProductos = new LengthAwarePaginator(
             $currentPageItems, 
             $productosCollection->count(), 
@@ -153,7 +146,6 @@ class productoController extends Controller
             ['path' => $request->url(), 'query' => $request->query()] 
         );
 
-        // Retornar a la vista
         return view('admin.productos.productosBase', [
             'productos' => $paginatedProductos,
         ]);

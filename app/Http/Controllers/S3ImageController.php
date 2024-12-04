@@ -9,7 +9,7 @@ class S3ImageController extends Controller
 {
     public function getImage(Request $request)
     {
-        $imagePath = $request->query('image'); // Obtiene el path relativo
+        $imagePath = $request->query('image');
         if (!$imagePath) {
             Log::error('Parámetro de imagen faltante');
             return response()->json(['error' => 'Falta el parámetro de la imagen.'], 400);
@@ -17,7 +17,6 @@ class S3ImageController extends Controller
 
         $bucket = env('AWS_BUCKET');
 
-        // Configura el cliente S3
         $s3 = new S3Client([
             'region' => env('AWS_DEFAULT_REGION'),
             'version' => 'latest',
@@ -28,10 +27,9 @@ class S3ImageController extends Controller
         ]);
 
         try {
-            // Intenta obtener el objeto desde S3
             $result = $s3->getObject([
                 'Bucket' => $bucket,
-                'Key' => $imagePath, // Path relativo
+                'Key' => $imagePath, 
             ]);
 
             Log::info('Imagen cargada correctamente desde S3:', ['path' => $imagePath]);

@@ -4,7 +4,6 @@
 <div class="container mt-4">
     <h1 class="mb-4">Editar Orden #{{ $orden->id }}</h1>
 
-    <!-- Formulario para editar la orden -->
     <div class="card shadow-sm">
         <div class="card-body">
             <form action="{{ route('admins.ordenes.update', $orden->id) }}" method="POST">

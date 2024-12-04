@@ -28,25 +28,20 @@ class disenosController extends Controller
         $diseño->nombre = $request->input('nombre');
         $diseño->save();
     
-        // Procesar estampados si existen
         if (isset($validated['estampados'])) {
             foreach ($validated['estampados'] as $estampadoData) {
                 $estampado = new Estampado();
                 $estampado->nombre = $estampadoData['nombre'];
                 $estampado->costo = $estampadoData['costo'];
     
-                 // Subir la imagen si está presente
                  if (isset($estampadoData['imagen_estampado']) && $estampadoData['imagen_estampado'] instanceof \Illuminate\Http\UploadedFile) {
-                // Guardar en S3
                 $path = $estampadoData['imagen_estampado']->store('estampados', 's3');
-                $estampado->imagen_estampado = $path; // Guardar la ruta en la base de datos
+                $estampado->imagen_estampado = $path;
 
-                // Hacer pública la imagen (opcional)
                 Storage::disk('s3')->setVisibility($path, 'public');
                  }
                 $estampado->save();
     
-                // Relacionar estampado con diseño
                 $diseño->estampados()->attach($estampado->id);
             }
         }

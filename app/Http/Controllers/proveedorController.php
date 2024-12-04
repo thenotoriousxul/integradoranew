@@ -23,7 +23,6 @@ class proveedorController extends Controller
             'numero_telefonico' => 'required|string|max:50',
         ]);
 
-        // Crear dirección
         $direccion = Direccion::create([
             'calle' => $request->input('calle'),
             'numero_ext' => $request->input('numero_ext'),

@@ -105,29 +105,33 @@
     }
 
     .section-content {
-        height: 300px;
-        background-color: #f8fafc;
-        border-radius: 8px;
-        border: 1px solid #e2e8f0;
-        padding: 20px;
-        position: relative;
-    }
+    height: 300px;
+    background-color: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    padding: 20px;
+    position: relative;
+    overflow-y: auto; /* Habilita el desplazamiento vertical si el contenido excede */
+}
 
     .section-content::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 4px;
-        background: linear-gradient(to right, #3498db, #e74c3c, #2ecc71, #f39c12);
-    }
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(to right, #3498db, #e74c3c, #2ecc71, #f39c12);
+}
+
 
     .table-info {
         font-size: 2rem;
         font-weight: bold;
     }
+
 </style>
+
 @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
@@ -143,42 +147,101 @@
         {{ session('success') }}
     </div>
 @endif
+
 <div class="dash-info">
     <div class="card">
         <h2>Ingresos Del Mes</h2>
-        <div class="table-info">{{ number_format($ingresosMes, 2)}}</div>
+        <div class="table-info">{{ number_format($ingresosMes, 2) }}</div>
     </div>
     <div class="card">
-        <h2>Numero ventas este mes</h2>
-        <div class="table-info">{{$ventasTotales}}</div>
+        <h2>Número de Ventas este Mes</h2>
+        <div class="table-info">{{ $ventasTotales }}</div>
     </div>
     <div class="card">
-        <h2>Nuevos clientes este mes</h2>
-        <div class="table-info">{{$nuevosClientes}} </div>
+        <h2>Nuevos Clientes este Mes</h2>
+        <div class="table-info">{{ $nuevosClientes }}</div>
     </div>
 </div>
 
 <div class="dashboard-sections">
     <div class="dashboard-section">
         <div class="section-header">
-            <h2 class="section-title">Actividad Reciente</h2>
+            <h2 class="section-title">Productos Más Vendidos</h2>
         </div>
         <div class="section-content">
-            <p>Aquí se mostraría la lista de actividades recientes...</p>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Talla</th>
+                        <th>Costo de Venta</th>
+                        <th>Costo de Producción</th>
+                        <th>Total Vendidos</th>
+                        <th>Total Ventas</th>
+                        <th>Ganancia Neta</th>
+                        <th>Promedio Ventas por Orden</th>
+                        <th>Fecha Primera Venta</th>
+                        <th>Fecha Última Venta</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($reporteVentas as $venta)
+                        <tr>
+                            <td>{{ $venta->Producto }}</td>
+                            <td>{{ $venta->Talla }}</td>
+                            <td>{{ number_format($venta->CostoVenta, 2) }}</td>
+                            <td>{{ number_format($venta->CostoProduccion, 2) }}</td>
+                            <td>{{ $venta->TotalVendidos }}</td>
+                            <td>{{ number_format($venta->TotalVentas, 2) }}</td>
+                            <td>{{ number_format($venta->GananciaNeta, 2) }}</td>
+                            <td>{{ number_format($venta->PromedioVentasPorOrden, 2) }}</td>
+                            <td>{{ \Carbon\Carbon::parse($venta->FechaPrimeraVenta)->format('d/m/Y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($venta->FechaUltimaVenta)->format('d/m/Y') }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
+
+    <div class="dashboard-section">
+        <div class="section-header">
+            <h2 class="section-title">Alertas</h2>
+        </div>
+        <div class="section-content">
+            @if ($productosBajoStock->count() > 0)
+                <div class="alert alert-warning" role="alert">
+                    <strong>¡Alerta!</strong> Algunos productos tienen stock bajo (menos de 5 unidades):
+                    <ul>
+                        @foreach ($productosBajoStock as $producto)
+                            <li>{{ $producto->nombre }} - {{ $producto->cantidad }} unidades</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @else
+                <p>No hay productos con bajo stock.</p>
+            @endif
+
+            <!-- Alertas de productos agotados -->
+            @if ($productosAgotados->count() > 0)
+                <div class="alert alert-danger" role="alert">
+                    <strong>¡Atención!</strong> Algunos productos están agotados:
+                    <ul>
+                        @foreach ($productosAgotados as $producto)
+                            <li>{{ $producto->nombre }} - Agotado</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @else
+                <p>No hay productos agotados.</p>
+            @endif
+        </div>
+    </div>
+
     <div class="section-columns">
         <div class="dashboard-section">
             <div class="section-header">
-                <h2 class="section-title">Alertas</h2>
-            </div>
-            <div class="section-content">
-                <p>Aquí se mostrarían las alertas importantes...</p>
-            </div>
-        </div>
-        <div class="dashboard-section">
-            <div class="section-header">
-                <h2 class="section-title">Numero Ventas por mes</h2>
+                <h2 class="section-title">Ventas por Mes</h2>
             </div>
             <div class="section-content">
                 <canvas id="ventasChart" width="400" height="200"></canvas>
@@ -187,18 +250,17 @@
     </div>
 </div>
 
-
 <script>
-  const ventasData = @json($ventas);
+    const ventasData = @json($ventas);
 
-  const meses = ventasData.map(item => item.mes);
-  const totalVentas = ventasData.map(item => item.total_ventas);
+    const meses = ventasData.map(item => item.mes);
+    const totalVentas = ventasData.map(item => item.total_ventas);
 
-  const ctx = document.getElementById('ventasChart').getContext('2d');
+    const ctx = document.getElementById('ventasChart').getContext('2d');
     const ventasChart = new Chart(ctx, {
-    type: 'line', // Tipo de gráfico: líneas
+    type: 'line',
     data: {
-        labels: meses, // Etiquetas del eje X (meses)
+        labels: meses, 
         datasets: [{
             label: 'Ventas por mes',
             data: totalVentas,
@@ -215,8 +277,7 @@
                 beginAtZero: true
             }
         }
-    }
-});
-
+    });
 </script>
+
 @endsection

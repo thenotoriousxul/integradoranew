@@ -18,17 +18,17 @@ class Edicion extends Model
     ];
 
     public function productos(){
-        return $this->hasMany(Edicion::class, 'ediciones_poductos');
+        return $this->hasMany(Producto::class, 'ediciones_poductos');
       }
 
     
       public function estampados()
       {
           return $this->belongsToMany(
-              Estampado::class,          // Modelo relacionado
-              'ediciones_estampados',    // Nombre de la tabla pivote
-              'edicion_id',              // Clave foránea en la tabla pivote para "Edicion"
-              'estampado_id'             // Clave foránea en la tabla pivote para "Estampado"
+              Estampado::class,          
+              'ediciones_estampados',    
+              'edicion_id',              
+              'estampado_id'             
           );
       }
 }

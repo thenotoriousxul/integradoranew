@@ -78,7 +78,6 @@
                                         </form>
                                     </li>
                                 @endif
-                                <!-- Acción 3: Eliminar -->
                                 <li>
                                     <form method="POST" action="" style="display:inline;">
                                         @csrf
@@ -106,7 +105,6 @@
         </div>
         <div class="offcanvas-body">
             <form method="GET" action="{{ route('filtros') }}">
-                <!-- Filtro por Precio -->
                 <h6>Filtrar por Precio</h6>
                 <div class="mb-3">
                     <label for="costo_min" class="form-label">Costo Mínimo</label>
@@ -123,7 +121,6 @@
                     <input type="text" name="tipo" id="tipo" class="form-control mb-2" value="{{ request('tipo') }}">
                 </div>
     
-                <!-- Filtro por Tipo -->
                 <h6>Filtrar por Talla</h6>
                 <div class="mb-3">
                     <label for="talla" class="form-label">Talla</label>

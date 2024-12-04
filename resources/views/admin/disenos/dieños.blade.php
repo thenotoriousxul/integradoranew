@@ -20,7 +20,6 @@
                 <td>{{ $diseno->cantidad }}</td>
                 <td>${{ number_format($diseno->costo, 2) }}</td>
                 <td>
-                    <!-- Botón para mostrar estampados -->
                     <button 
                         type="button" 
                         class="btn btn-info btn-sm" 
@@ -29,7 +28,6 @@
                         Ver Estampados
                     </button>
 
-                    <!-- Modal para mostrar estampados -->
                     <div class="modal fade" id="modal-estampados-{{ $diseno->id }}" tabindex="-1" aria-labelledby="modalLabel{{ $diseno->id }}" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">

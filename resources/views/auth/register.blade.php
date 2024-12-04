@@ -30,10 +30,8 @@
 @endif
 <div class="container-fluid vh-100">
     <div class="row h-100">
-        <!-- Columna izquierda: Formulario -->
         <div class="col-lg-6 d-flex align-items-center justify-content-center bg-white p-4">
             <div class="w-100" style="max-width: 400px;">
-                <!-- Logo y título -->
                 <div class="text-center mb-4">
                     <a href="{{ url('/') }}">
                         <img src="{{ asset('img/ozeztrc.png') }}" alt="Logo" class="img-fluid mb-3" style="max-height: 80px;">
@@ -44,7 +42,6 @@
                 <form method="POST" action="{{ route('register') }}" id="registerForm">
                     @csrf
 
-                    <!-- Sección 1: Información de Usuario -->
                     <div id="section1" class="form-section active">
                         <h4 class="text-dark mb-3" style="font-size: 1rem;">{{ __('Información de Usuario') }}</h4>
                         <div class="mb-2">
@@ -75,7 +72,6 @@
                         </div>
                     </div>
 
-                    <!-- Sección 2: Información Personal -->
                     <div id="section2" class="form-section">
                         <h4 class="text-dark mt-4 mb-3" style="font-size: 1rem;">{{ __('Información Personal') }}</h4>
                         <div class="mb-2">
@@ -112,7 +108,6 @@
                         </div>
                     </div>
 
-                    <!-- Sección 3: Dirección -->
                     <div id="section3" class="form-section">
                         <h4 class="text-dark mt-4 mb-3" style="font-size: 1rem;">{{ __('Dirección') }}</h4>
                         <div class="mb-2">
@@ -169,7 +164,6 @@
             </div>
         </div>
 
-        <!-- Columna derecha: Imagen -->
         <div class="col-lg-6 bg-image d-none d-lg-block" style="background-image: url('{{ asset('img/mujer.jpeg') }}'); background-size: cover; background-position: center;">
         </div>
     </div>
@@ -201,7 +195,7 @@
         });
 
         if (!valid) {
-            event.preventDefault(); // Evitar envío si hay errores
+            event.preventDefault();
         }
     });
 
@@ -249,7 +243,6 @@
         }
     });
 
-      // Cargar los datos de países y estados
       const countriesStates = {
         "US": ["California", "Texas", "Florida", "New York"],
         "MX": [

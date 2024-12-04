@@ -1,7 +1,6 @@
 @extends('admin.layouts.dashboard')
 
 @section('content')
-    <!-- Estilos Personalizados -->
     <style>
         .custom-container {
             display: flex;
@@ -46,7 +45,7 @@
         #myCanvas {
             border: 1px solid #ccc;
             border-radius: 10px;
-            background-color: #f2f2f2; /* Fondo gris claro */
+            background-color: #f2f2f2; 
         }
 
         .custom-card {
@@ -97,20 +96,16 @@
         .btn-cream { background-color: #e1c699; }
     </style>
 
-    <!-- Contenedor Principal -->
     <div class="custom-container">
-        <!-- Opciones de Personalización -->
         <div class="opciones">
             <i onclick="descargarImagen()" class="fa-solid fa-floppy-disk fa-2xl" title="Guardar"></i>
             <i onclick="eliminarObjeto()" class="fa-solid fa-trash fa-2xl" title="Eliminar"></i>
         </div>
 
-        <!-- Canvas para Personalización -->
         <div class="Elcanvas-container">
             <canvas id="myCanvas" width="550" height="600"></canvas>
         </div>
 
-        <!-- Estampados Disponibles -->
         <div class="custom-card">
             <div class="card-header">
                 Configuración y Estampados
@@ -140,14 +135,12 @@
         </div>
     </div>
 
-    <!-- JavaScript Personalizado -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
     <script>
         const canvas = new fabric.Canvas('myCanvas');
         let playera = null;
         let logoObject = null;
 
-        // Cargar playera inicial
         function crearPlayera() {
             fabric.Image.fromURL('{{ asset('img/playera.png') }}', function(img) {
                 img.set({
@@ -162,7 +155,6 @@
             });
         }
 
-        // Cambiar color de la playera
         function cambiarColor(color) {
             if (playera) {
                 playera.filters = [];
@@ -175,7 +167,6 @@
             }
         }
 
-        // Agregar estampado
         function agregarEstampado(imagePath) {
             if (logoObject) {
                 alert('Solo puedes agregar un estampado a la vez. Elimina el actual antes de agregar otro.');
@@ -199,7 +190,6 @@
             });
         }
 
-        // Eliminar estampado
         function eliminarObjeto() {
             if (logoObject) {
                 canvas.remove(logoObject);
@@ -208,16 +198,14 @@
                 alert('No hay estampados para eliminar.');
             }
         }
-
-        // Descargar diseño
         function descargarImagen() {
-            canvas.discardActiveObject();
-            canvas.renderAll();
             const link = document.createElement('a');
-            link.href = canvas.toDataURL('image/png');
-            link.download = 'diseño_personalizado.png';
+            link.href = canvas.toDataURL({ format: 'png' });
+            link.download = 'mi_diseño.png'; 
             link.click();
         }
+        
+        var maxImg = 2;
 
         crearPlayera();
     </script>

@@ -29,12 +29,12 @@ class Orden extends Model
    }
    public function tipoPersona()
    {
-       return $this->belongsTo(tipoPersona::class, 'tipo_personas_id');
+       return $this->belongsTo(TipoPersona::class, 'tipo_personas_id');
    }
 
    public function pagos()
    {
-       return $this->hasMany(pago::class, 'ordenes_id');
+       return $this->hasMany(Pago::class, 'ordenes_id');
    }
 
 }

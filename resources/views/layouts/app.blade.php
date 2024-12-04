@@ -3,13 +3,17 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Ozez ') }}</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" href="{{ asset('img/ozeztrc.png') }}?v=1.1" type="image/png">
+
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.6.6/dist/sweetalert2.min.css">
+
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="preload" as="image" href="{{ asset('img/byn.jpeg') }}">
 
@@ -83,13 +87,11 @@
             margin-left: 5px;
         }
 
-        /* Centrar verticalmente los elementos en la barra de navegación */
         .navbar .navbar-nav .nav-item, .navbar .navbar-nav .nav-link, .navbar .navbar-brand {
             display: flex;
             align-items: center;
         }
 
-        /* Espaciado y centrado para opciones de menú en pantallas pequeñas */
         @media (max-width: 768px) {
             .navbar-collapse {
                 justify-content: center;
@@ -107,11 +109,10 @@
             }
             .navbar-nav .nav-item.dropdown,
             .navbar-nav .nav-item.position-relative {
-                margin-bottom: 10px; /* Separación entre Cuenta y Carrito */
+                margin-bottom: 10px; 
             }
         }
 
-        /* Separación entre "Cuenta" y el carrito en pantallas grandes */
         .navbar-nav .nav-item.position-relative {
             margin-left: 15px;
         }
@@ -218,7 +219,6 @@
                     </ul>
 
                     <ul class="navbar-nav ms-auto">
-                        <!-- Usuario -->
                         @guest
                             <li class="nav-item dropdown">
                                 <a id="guestDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -229,7 +229,6 @@
                                     @if (Route::has('register'))
                                         <a class="dropdown-item" href="{{ route('register') }}">{{ __('Registrarse') }}</a>
                                     @endif
-                                    <!-- Eliminado el enlace "Ir al panel administrador" para invitados -->
                                 </div>
                             </li>
                         @else 
@@ -267,7 +266,6 @@
                         
                         
                         @if(!Auth::check() || (Auth::check() && !Auth::user()->hasRole('admin')))
-                            <!-- Carrito -->
                             <li class="nav-item position-relative">
                                 <a class="nav-link" href="{{ route('carrito.mostrar') }}">
                                     <i class="fas fa-shopping-cart"></i>
@@ -314,6 +312,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.6.6/dist/sweetalert2.all.min.js"></script>
+
     
     <script>
         window.addEventListener('load', function() {
