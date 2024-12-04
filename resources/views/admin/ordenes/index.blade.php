@@ -24,7 +24,7 @@
         @forelse ($ordenes as $orden)
         <tr>
             <td>{{ $orden->id }}</td>
-            <td>{{ $orden->tipo_personas_id }}</td>
+            <td>{{ $orden->tipo_personas_id}}</td>
             <td>{{ $orden->fecha }}</td>
             <td>${{ number_format($orden->total, 2) }}</td>
             <td>{{ $orden->envios_domicilio ? 'Sí' : 'No' }}</td>

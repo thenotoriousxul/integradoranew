@@ -265,3 +265,5 @@ Route::get('/usuarios/listar', [UserController::class, 'listar'])->name('listar.
 
 Route::post('/carrito/agregar/{productoId}', [EdicionPersonalizadaController::class, 'agregarAlCarrito'])->name('carrito.agregar');
 
+Route::get('/probabilidad', [dashController::class, 'probabilidad'])->name('probabilidad');
+

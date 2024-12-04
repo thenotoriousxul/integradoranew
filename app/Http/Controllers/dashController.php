@@ -133,5 +133,18 @@ class dashController extends Controller
         return view('admin.dashboardMenu', compact('reporteVentas'));
     }
 
+    public function probabilidad(){
+
+
+        $data = [
+            "metricas" => ["Ventas ($)", "Pedidos"],
+            "antes del sistema" => [1000, 200],
+            "despues del sistema"=>[1500, 200 ]
+        ];
+        echo json_encode($data);
+
+        return view('admin.probabilidad', compas);
+    }
+
 
 }

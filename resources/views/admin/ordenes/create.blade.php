@@ -19,13 +19,13 @@
         <form action="{{ route('admins.ordenes.store') }}" method="POST" class="p-4 shadow rounded" style="background-color: #dde3eb; border-radius: 2rem;">
             @csrf
         
-            <!-- Cliente -->
+            
             <div class="mb-3">
                 <label for="tipo_personas_id" class="form-label fw-bold">Cliente (ID)</label>
                 <input type="number" name="tipo_personas_id" id="tipo_personas_id" class="form-control" placeholder="Ingrese el ID del cliente" required>
             </div>
         
-            <!-- Fecha -->
+            
             <div class="mb-3">
                 <label for="fecha" class="form-label fw-bold">Fecha</label>
                 <input type="date" name="fecha" id="fecha" class="form-control" value="{{ date('Y-m-d') }}" required>
