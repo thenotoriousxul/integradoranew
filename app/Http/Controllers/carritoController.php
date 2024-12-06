@@ -34,12 +34,6 @@ class carritoController extends Controller
                             ->where('talla', $talla)
                             ->value('cantidad');
         
-        if ($cantidad > $stockDisponible) {
-            return back()->withErrors(['error' => 'Lo sentimos, stock insuficiente, intenta con otra cantidad menor.']);
-        }
-
-        
-    
         $carrito = collect(session()->get('carrito', []));
         $productoTallaKey = "{$productoId}_{$talla}";
         $cantidadEnCarrito = $carrito[$productoTallaKey]['quantity'] ?? 0;

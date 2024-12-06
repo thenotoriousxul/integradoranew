@@ -7,6 +7,12 @@
     <!-- Otros estilos y scripts -->
 </head>
 
+@if (session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
 <div class="container py-5">
     <div class="text-center mb-4">
         <h1 style="font-family: 'Bebas Neue', cursive; font-size: 3rem; letter-spacing: 2px; color: #000;">
@@ -54,12 +60,18 @@
             </tbody>
         </table>
         
-        <div class="text-end mt-4">
+        <div class="text-end mt-4" >
             <h3 id="carrito-total">Total: ${{ number_format($totalMonto, 2) }}</h3>
             <button id="vaciar-carrito" class="btn btn-danger mt-3">Vaciar Carrito</button>
-            <a href="{{ route('detalleOrden') }}" id="comprar-carrito" class="btn btn-success mt-3 {{ empty($contenidoCarrito) || count($contenidoCarrito) === 0 ? 'disabled' : '' }}">Continuar con la compra</a>
+            <form action="{{ route('producto.verificar') }}" method="POST">
+                @csrf
+                <button type="submit" 
+                        class="btn btn-success mt-3 {{ empty($contenidoCarrito) || count($contenidoCarrito) === 0 ? 'disabled' : '' }}">
+                    Continuar con la compra
+                </button>
+            </form> 
         </div>
-        
+       
     </div>
 </div>
 
@@ -137,6 +149,7 @@
     table td {
         vertical-align: middle;
     }
+    
 </style>
 @endsection
 

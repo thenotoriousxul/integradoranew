@@ -269,3 +269,5 @@ Route::post('/carrito/agregar/{productoId}', [EdicionPersonalizadaController::cl
 Route::get('/admin/acciones', function () {
     return view('admin.acciones.acciones');
 })->name('admin.acciones');
+
+Route::post('/producto/verificar', [StripeController::class, 'verificarProductos'])->name('producto.verificar');
