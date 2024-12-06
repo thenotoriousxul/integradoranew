@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Mail\ordenMail;
 use App\Models\DetalleOrden;
+use App\Models\EdicionesProductos;
 use App\Models\Orden;
 use App\Models\Pago;
 use Illuminate\Http\Request;
@@ -57,6 +58,25 @@ class StripeController extends Controller
 
         $paymentIntentId = $request->input('payment_intent_id');
 
+
+        foreach ($carrito as $key => $item) {
+            $producto = EdicionesProductos::find($item['id']);
+            
+            if (!$producto) {
+                return back()->withErrors(['error' => "El producto '{$item['name']}' no existe."]);
+            }
+            
+            $stockDisponible = EdicionesProductos::where('nombre', $producto->nombre)
+                                ->where('talla', $item['attributes']['talla'])
+                                ->value('cantidad');
+            
+            if ($item['quantity'] > $stockDisponible) {
+                return back()->withErrors([
+                    'error' => "El producto '{$item['name']}' no tiene suficiente stock para la talla '{$item['attributes']['talla']}'."
+                ]);
+            }
+        }
+
         try {
             $paymentIntent = $this->obtenerPaymentIntentDesdeStripe($paymentIntentId);
 
@@ -74,8 +94,8 @@ class StripeController extends Controller
                     return response()->json(['success' => false, 'message' => 'Producto no encontrado.'], 404);
                 }
     
-                if ($producto->cantidad < $detalle['quantity']) {
-                    DB::rollBack();
+                 if ($producto->cantidad < $detalle['quantity']) {
+                     DB::rollBack();
                     return response()->json([
                         'success' => false,
                         'message' => "El producto '{$producto->nombre}' no tiene suficiente stock.",
