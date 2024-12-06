@@ -74,13 +74,13 @@ class StripeController extends Controller
                     return response()->json(['success' => false, 'message' => 'Producto no encontrado.'], 404);
                 }
     
-                if ($producto->cantidad < $detalle['quantity']) {
-                    DB::rollBack();
-                    return response()->json([
-                        'success' => false,
-                        'message' => "El producto '{$producto->nombre}' no tiene suficiente stock.",
-                    ], 400);
-                }
+                // if ($producto->cantidad < $detalle['quantity']) {
+                //     DB::rollBack();
+                //     return response()->json([
+                //         'success' => false,
+                //         'message' => "El producto '{$producto->nombre}' no tiene suficiente stock.",
+                //     ], 400);
+                // }
             }
 
             // Guardar la orden y el pago
