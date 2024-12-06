@@ -19,11 +19,14 @@ use App\Http\Controllers\empleadoController;
 use App\Http\Controllers\EstampadoController;
 use App\Http\Controllers\PersonalizarController;
 use App\Http\Controllers\OrdenController;
-use App\Http\Controllers\S3ImageController;
 use App\Http\Controllers\UserController;
 use App\Mail\ordenMail;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\EdicionPersonalizadaController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;  
+use Illuminate\Support\Facades\Response;  
 
 //prueba
 // Rutas de acceso general
@@ -119,11 +122,11 @@ Route::get('/personalizacion', [PersonalizarController::class, 'mostrarCatalogoP
 
 Route::get('/personalizacion/{id}', [PersonalizarController::class, 'mostrarDetalle'])->name('personalizacion.detalle');
 
-Route::get('/s3-image', [S3ImageController::class, 'getImage'])->name('s3.image');
 
 Route::get('/dash/cliente', function () {
     return view('cliente.pedidos');
 });
+
 
 
 

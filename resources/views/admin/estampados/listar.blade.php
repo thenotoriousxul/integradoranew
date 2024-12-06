@@ -23,7 +23,7 @@
             <td>{{ $estampado->nombre }}</td>
             <td>
                 @if ($estampado->imagen_estampado)
-                    <img src="{{ Storage::url( $estampado->imagen_estampado) }}" alt="Imagen" style="width: 100px;">
+                    <img src="{{ $estampado->imagen_estampado }}" alt="Imagen" style="width: 100px;">
                 @else
                     Sin Imagen
                 @endif
@@ -44,4 +44,5 @@
         @endforelse
     </tbody>
 </table>
+
 @endsection
