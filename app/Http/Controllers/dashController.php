@@ -74,7 +74,6 @@ class dashController extends Controller
         ->get();
     
 
-
         return view('admin.dashboardMenu', [
             'ingresosMes'=>$ingresosMes,
             'ventasTotales'=>$ventasTotales,

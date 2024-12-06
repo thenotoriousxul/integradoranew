@@ -105,38 +105,35 @@
     }
 
     .section-content {
-    height: 300px;
-    background-color: #f8fafc;
-    border-radius: 8px;
-    border: 1px solid #e2e8f0;
-    padding: 20px;
-    position: relative;
-    overflow-y: auto; /* Habilita el desplazamiento vertical si el contenido excede */
-}
+        height: 300px;
+        background-color: #f8fafc;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        padding: 20px;
+        position: relative;
+        overflow: auto;
+    }
 
     .section-content::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: linear-gradient(to right, #3498db, #e74c3c, #2ecc71, #f39c12);
-}
-
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+    }
 
     .table-info {
         font-size: 2rem;
         font-weight: bold;
     }
-
 </style>
 
 @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
             @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li> 
+                <li>{{ $error }}</li>
             @endforeach
         </ul>
     </div>
@@ -163,44 +160,46 @@
     </div>
 </div>
 
-<div class="dashboard-sections">
+<div class="container">
     <div class="dashboard-section">
         <div class="section-header">
             <h2 class="section-title">Productos Más Vendidos</h2>
         </div>
         <div class="section-content">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Producto</th>
-                        <th>Talla</th>
-                        <th>Costo de Venta</th>
-                        <th>Costo de Producción</th>
-                        <th>Total Vendidos</th>
-                        <th>Total Ventas</th>
-                        <th>Ganancia Neta</th>
-                        <th>Promedio Ventas por Orden</th>
-                        <th>Fecha Primera Venta</th>
-                        <th>Fecha Última Venta</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($reporteVentas as $venta)
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
                         <tr>
-                            <td>{{ $venta->Producto }}</td>
-                            <td>{{ $venta->Talla }}</td>
-                            <td>{{ number_format($venta->CostoVenta, 2) }}</td>
-                            <td>{{ number_format($venta->CostoProduccion, 2) }}</td>
-                            <td>{{ $venta->TotalVendidos }}</td>
-                            <td>{{ number_format($venta->TotalVentas, 2) }}</td>
-                            <td>{{ number_format($venta->GananciaNeta, 2) }}</td>
-                            <td>{{ number_format($venta->PromedioVentasPorOrden, 2) }}</td>
-                            <td>{{ \Carbon\Carbon::parse($venta->FechaPrimeraVenta)->format('d/m/Y') }}</td>
-                            <td>{{ \Carbon\Carbon::parse($venta->FechaUltimaVenta)->format('d/m/Y') }}</td>
+                            <th>Producto</th>
+                            <th>Talla</th>
+                            <th>Costo de Venta</th>
+                            <th>Costo de Producción</th>
+                            <th>Total Vendidos</th>
+                            <th>Total Ventas</th>
+                            <th>Ganancia Neta</th>
+                            <th>Promedio Ventas por Orden</th>
+                            <th>Fecha Primera Venta</th>
+                            <th>Fecha Última Venta</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach($reporteVentas as $venta)
+                            <tr>
+                                <td>{{ $venta->Producto }}</td>
+                                <td>{{ $venta->Talla }}</td>
+                                <td>{{ number_format($venta->CostoVenta, 2) }}</td>
+                                <td>{{ number_format($venta->CostoProduccion, 2) }}</td>
+                                <td>{{ $venta->TotalVendidos }}</td>
+                                <td>{{ number_format($venta->TotalVentas, 2) }}</td>
+                                <td>{{ number_format($venta->GananciaNeta, 2) }}</td>
+                                <td>{{ number_format($venta->PromedioVentasPorOrden, 2) }}</td>
+                                <td>{{ $venta->FechaPrimeraVenta ? \Carbon\Carbon::parse($venta->FechaPrimeraVenta)->format('d/m/Y') : 'Sin datos' }}</td>
+                                <td>{{ $venta->FechaUltimaVenta ? \Carbon\Carbon::parse($venta->FechaUltimaVenta)->format('d/m/Y') : 'Sin datos' }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -210,7 +209,7 @@
         </div>
         <div class="section-content">
             @if ($productosBajoStock->count() > 0)
-                <div class="alert alert-warning" role="alert">
+                <div class="alert alert-warning">
                     <strong>¡Alerta!</strong> Algunos productos tienen stock bajo (menos de 5 unidades):
                     <ul>
                         @foreach ($productosBajoStock as $producto)
@@ -222,9 +221,8 @@
                 <p>No hay productos con bajo stock.</p>
             @endif
 
-            <!-- Alertas de productos agotados -->
             @if ($productosAgotados->count() > 0)
-                <div class="alert alert-danger" role="alert">
+                <div class="alert alert-danger">
                     <strong>¡Atención!</strong> Algunos productos están agotados:
                     <ul>
                         @foreach ($productosAgotados as $producto)
@@ -252,32 +250,38 @@
 
 <script>
     const ventasData = @json($ventas);
-
-    const meses = ventasData.map(item => item.mes);
-    const totalVentas = ventasData.map(item => item.total_ventas);
-
     const ctx = document.getElementById('ventasChart').getContext('2d');
-    const ventasChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: meses, 
-        datasets: [{
-            label: 'Ventas por mes',
-            data: totalVentas,
-            backgroundColor: 'rgba(100, 100, 235, 0.2)',
-            borderColor: 'rgba(255, 165, 0, 2)', 
-            borderWidth: 2,
-            fill: true, 
-        }]
-    },
-    options: {
-        responsive: true,
-        scales: {
-            y: {
-                beginAtZero: true
-            }
-        }
-    });
+
+    // Verifica que los datos sean correctos en consola
+    console.log(ventasData);
+
+    if (ventasData.length > 0) {
+        const ventasChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ventasData.map(d => d.mes), // Uso correcto del campo 'mes'
+                datasets: [{
+                    label: 'Ventas por Mes',
+                    data: ventasData.map(d => d.total_ventas), // Cambio de 'total' a 'total_ventas'
+                    borderColor: 'rgba(255, 165, 0, 1)',
+                    backgroundColor: 'rgba(255, 165, 0, 0.2)',
+                    borderWidth: 2,
+                }],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true, // Asegúrate de que las escalas empiecen desde cero
+                    },
+                },
+            },
+        });
+    } else {
+        document.getElementById('ventasChart').innerHTML = 'No hay datos para mostrar';
+    }
 </script>
+
 
 @endsection

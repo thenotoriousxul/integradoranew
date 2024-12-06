@@ -17,6 +17,7 @@
             <th>Fecha</th>
             <th>Total</th>
             <th>Envío</th>
+            <th>EStado</th>
             <th>Acciones</th>
         </tr>
     </thead>
@@ -24,10 +25,17 @@
         @forelse ($ordenes as $orden)
         <tr>
             <td>{{ $orden->id }}</td>
-            <td>{{ $orden->tipo_personas_id }}</td>
-            <td>{{ $orden->fecha }}</td>
+            <td>{{ $orden->tipo_personas_id}}</td>
+            <td>{{ $orden->fecha_orden }}</td>
             <td>${{ number_format($orden->total, 2) }}</td>
             <td>{{ $orden->envios_domicilio ? 'Sí' : 'No' }}</td>
+            <td>
+                @if($orden->estado === 'Pagada')
+                <p class="bg-success text-white  rounded">Completada</p>
+                @else
+                <p class="bg-danger text-white  rounded">Pendiente</p>
+                @endif
+            </td>
             <td>
                 <a href="{{ route('admins.ordenes.show', $orden->id) }}" class="btn btn-info btn-sm">Ver</a>
                 <a href="{{ route('admins.ordenes.edit', $orden->id) }}" class="btn btn-primary btn-sm">Editar</a>
