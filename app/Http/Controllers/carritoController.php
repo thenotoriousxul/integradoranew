@@ -71,7 +71,6 @@ class carritoController extends Controller
         session()->put('carrito', $carrito);
     
         session()->flash('success', 'Producto agregado al carrito.');
-        
         return redirect()->back();
     }
     
