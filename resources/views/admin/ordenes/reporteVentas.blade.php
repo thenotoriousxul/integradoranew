@@ -105,11 +105,13 @@
         responsive: true,
         autowidth: false,
         language: {
-            info: 'Showing page _PAGE_ of _PAGES_',
+            info: 'Mostrando pagina _PAGE_ of _PAGES_',
             infoEmpty: 'No hay registros para mostrar',
             emptyTable: "No hay datos para mostrar",
             search:"Buscar:",
-            lengthMenu:     "Mostrando _MENU_ Registros",
+            zeroRecords: "No se encontraron resultados",
+            lengthMenu: "Mostrando _MENU_ Registros",
+            infoFiltered: "(filtrando from _MAX_ total de registros)",
             paginate: {
             first:      "Primero",
             last:       "Ultimo",
