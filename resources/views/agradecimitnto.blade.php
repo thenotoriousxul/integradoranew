@@ -25,7 +25,7 @@
         
     </section>
     
-    <a href="#" class="btn btn-primary w-100 mb-2">Ver mis pedidos</a>
+    <a href="{{ route('pedidos') }}" class="btn btn-primary w-100 mb-2">Ver mis pedidos</a>
     <a href="{{ url('/') }}" class="btn btn-outline-primary w-100">Volver a la tienda</a>
 </div>
 </div>
