@@ -45,7 +45,7 @@
         #myCanvas {
             border: 1px solid #ccc;
             border-radius: 10px;
-            background-color: #f2f2f2; 
+            background-color: #f2f2f2;
         }
 
         .custom-card {
@@ -98,7 +98,6 @@
 
     <div class="custom-container">
         <div class="opciones">
-            <i onclick="descargarImagen()" class="fa-solid fa-floppy-disk fa-2xl" title="Guardar"></i>
             <i onclick="eliminarObjeto()" class="fa-solid fa-trash fa-2xl" title="Eliminar"></i>
         </div>
 
@@ -126,22 +125,27 @@
                         <img 
                             src="{{ $estampado->imagen_estampado }}" 
                             alt="{{ $estampado->nombre }}" 
-                            class="estampado-img" 
-                            onclick="agregarEstampado('{{ $estampado->imagen_estampado }}')" 
+                            class="estampado-img"
+                            onclick="agregarEstampado('{{ $estampado->imagen_estampado }}', '{{ $estampado->id }}')" 
                         >
                     @endforeach
                 </div>
+                <br>
+                <button id="descargarBtn" class="btn btn-success" onclick="descargarImagen()">Descargar Imagen</button>
             </div>
         </div>
     </div>
 
+    <input type="hidden" id="estampado_id" name="estampado_id" />
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         const canvas = new fabric.Canvas('myCanvas');
         let playera = null;
         let logoObject = null;
-    
-        // Crear la camiseta como fondo en el canvas
+        let playeraBounds = null;
+
         function crearPlayera() {
             fabric.Image.fromURL('{{ asset('img/playera.png') }}', function(img) {
                 img.set({
@@ -153,74 +157,70 @@
                 });
                 canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
                 playera = img;
+
+                playeraBounds = img.getBoundingRect();
             });
         }
-    
-        // Cambiar el color de la camiseta
+
         function cambiarColor(color) {
             if (playera) {
                 playera.filters = [];
-                playera.filters.push(new fabric.Image.filters.BlendColor({
-                    color: color,
-                    mode: 'multiply'
-                }));
+                playera.filters.push(new fabric.Image.filters.Tint({ color: color }));
                 playera.applyFilters();
                 canvas.renderAll();
             }
         }
-    
-        // Agregar un estampado en el canvas
-        var maxImg = 2; // Limitar a 2 estampados
-    
-        function agregarEstampado(imagePath) {
-            if (logoObject) {
-                alert('Solo puedes agregar un estampado a la vez. Elimina el actual antes de agregar otro.');
-                return;
-            }
-    
-            // Verificación de límite de imágenes
-            if (canvas.getObjects().length >= maxImg) {
-                alert('Ya se han agregado el número máximo de estampados.');
-                return;
-            }
-    
-            fabric.Image.fromURL(imagePath, function(img) {
+
+        function agregarEstampado(imagen, estampado_id) {
+            fabric.Image.fromURL(imagen, function(img) {
                 img.set({
-                    left: canvas.width / 2,
-                    top: canvas.height / 2,
-                    scaleX: 0.2,
-                    scaleY: 0.2,
-                    originX: 'center',
-                    originY: 'center',
-                    selectable: true
+                    left: canvas.width / 2 - img.width / 2,
+                    top: canvas.height / 2 - img.height / 2,
+                    selectable: true,
+                    estampadoId: estampado_id
                 });
-    
                 canvas.add(img);
-                canvas.setActiveObject(img);
                 logoObject = img;
-            }); // Asegúrate de que la propiedad esté bien escrita
+
+                document.getElementById('estampado_id').value = estampado_id;
+            });
         }
-    
-        // Eliminar el estampado actual
+
         function eliminarObjeto() {
-            if (logoObject) {
-                canvas.remove(logoObject);
-                logoObject = null;
-            } else {
-                alert('No hay estampados para eliminar.');
-            }
+            // Eliminar todos los objetos estampados (logoObject y cualquier otro en el canvas)
+            canvas.getObjects().forEach(function(obj) {
+                if (obj.estampadoId) {
+                    canvas.remove(obj);
+                }
+            });
+            canvas.renderAll();
+
+            // Limpiar el campo oculto
+            document.getElementById('estampado_id').value = '';
         }
-    
-        // Descargar la imagen generada en el canvas
-        function descargarImagen() {
-            const link = document.createElement('a');
-            link.href = canvas.toDataURL({ format: 'png' });
-            link.download = 'mi_diseño.png';
-            link.click();
-        }
-    
-        // Inicializar la camiseta
-        crearPlayera();
+
+    function descargarImagen() {
+     if (!logoObject) {
+         alert("Primero debes agregar un estampado para descargar la imagen.");
+         return;
+     }
+
+     // Convierte el canvas a una imagen en formato base64
+     const dataURL = canvas.toDataURL({
+         format: 'png',
+         quality: 1.0
+     });
+
+     // Crea un enlace temporal para la descarga
+     const enlace = document.createElement('a');
+     enlace.href = dataURL;
+     enlace.download = 'playera_con_estampado.png';
+     enlace.click();
+     }
+
+
+        $(document).ready(function() {
+            crearPlayera();
+        });
     </script>
-    
 @endsection

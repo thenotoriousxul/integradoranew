@@ -11,6 +11,7 @@ use Stripe\Stripe;
 use Stripe\PaymentIntent;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
 
 class StripeController extends Controller
 {
@@ -60,6 +61,27 @@ class StripeController extends Controller
             if (!$paymentIntent || $paymentIntent->status !== 'succeeded') {
                 return response()->json(['success' => false, 'message' => 'El pago no se procesó correctamente.'], 500);
             }
+
+
+            DB::beginTransaction();
+
+            foreach ($carrito as $productoId => $detalle) {
+                $producto = \App\Models\EdicionesProductos::lockForUpdate()->find($productoId);
+    
+                if (!$producto) {
+                    DB::rollBack();
+                    return response()->json(['success' => false, 'message' => 'Producto no encontrado.'], 404);
+                }
+    
+                if ($producto->cantidad < $detalle['quantity']) {
+                    DB::rollBack();
+                    return response()->json([
+                        'success' => false,
+                        'message' => "El producto '{$producto->nombre}' no tiene suficiente stock.",
+                    ], 400);
+                }
+            }
+
 
             $orden = $this->guardarOrden($carrito, $paymentIntent);
 
@@ -133,5 +155,38 @@ class StripeController extends Controller
     {
         return PaymentIntent::retrieve($paymentIntentId);
     }
+
+
+    public function verificarProductos(Request $request)
+{
+    $carrito = session()->get('carrito', []);
+
+    if (empty($carrito)) {
+        return redirect()->back()->with('error', 'El carrito está vacío.'); // Redirige con un mensaje
+    }
+
+    foreach ($carrito as $productoId => $detalle) {
+        $producto = \App\Models\EdicionesProductos::find($productoId);
+
+        if (!$producto) {
+            return redirect()->back()->with('error', "El producto con ID {$productoId} no existe.");
+        }
+
+        if (!$producto->activo) { // Verifica si el producto está activo
+            return redirect()->back()->with('error', "El producto '{$producto->nombre}' no está disponible.");
+        }
+    }
+
+    // Si todos los productos están activos, redirige al detalle de la orden
+    return redirect()->route('detalleOrden');
+}
+
+    
+
+
+
+
+
+
 
 }

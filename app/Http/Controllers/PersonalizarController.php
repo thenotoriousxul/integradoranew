@@ -43,9 +43,11 @@ class PersonalizarController extends Controller
 public function personalizarProducto()
 {
     $estampados = Estampado::all()->map(function ($estampado) {
-        $estampado->imagen_estampado = Storage::disk('s3')->url($estampado->imagen_estampado);
+        // Limpiar la URL de la imagen, eliminando la parte extra codificada
+        $estampado->imagen_estampado = preg_replace('/https:\/\/.*?amazonaws.com/', 'https://laravel-ozez.s3.us-east-2.amazonaws.com', $estampado->imagen_estampado);
         return $estampado;
     });
+
 
     return view('admin.personalizar.personalizarAdmin', compact('estampados'));
 }
