@@ -283,3 +283,4 @@ Route::get('/personalizarAdmin/{id}', [PersonalizarController::class, 'personali
 // Route::post('/pruebas/guardar', [PruebaController::class, 'guardar'])->name('personalizar.guardar');
 
 Route::get('/s3-image', [S3ImageController::class, 'getImage'])->name('s3.image');
+Route::post('/producto/verificar', [StripeController::class, 'verificarProductos'])->name('producto.verificar');

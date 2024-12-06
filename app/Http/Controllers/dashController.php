@@ -95,9 +95,20 @@ class dashController extends Controller
     
 
     public function reporteVentas(){
-        $reporteVentas = ReporteVenta::all();
+        // $reporteVentas = ReporteVenta::all();
+        $reporteVentas = DB::table('reporteVentas')->get();
 
-        return view('admin.ordenes.reporteVentas', compact('reporteVentas'));
+        $TotalVentasLinea = DB::table('ordenes')
+            ->join('tipo_personas', 'ordenes.tipo_personas_id', '=', 'tipo_personas.id')
+            ->where('tipo_personas.tipo_persona', 'Cliente')
+            ->sum('ordenes.total');
+
+        $TotalVentasFisica = DB::table('ordenes')
+            ->join('tipo_personas', 'ordenes.tipo_personas_id', '=', 'tipo_personas.id')
+            ->where('tipo_personas.tipo_persona', 'Empleado')
+            ->sum('ordenes.total');
+
+        return view('admin.ordenes.reporteVentas', compact('reporteVentas', 'TotalVentasLinea', 'TotalVentasFisica'));
     }
 
     public function pdfReporteVentas(){
