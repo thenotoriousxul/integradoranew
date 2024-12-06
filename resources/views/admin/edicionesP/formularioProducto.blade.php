@@ -14,9 +14,8 @@
 <div class="container my-4" style="background-color: #1f2937; padding: 2rem; border-radius: 2rem;">
     <h1 class="text-center mb-4 text-light">Formulario para agregar un producto a una edición</h1>
 
-    <form action="{{ route('store.productos') }}" method="POST"  enctype="multipart/form-data" class="p-4 shadow rounded" style="background-color: #dde3eb; border-radius: 2rem;">
+    <form action="{{ route('store.productos') }}" method="POST" enctype="multipart/form-data" class="p-4 shadow rounded" style="background-color: #dde3eb; border-radius: 2rem;">
         @csrf
-
 
         <div class="mb-3">
             <label for="nombre" class="form-label fw-bold">Nombre</label>
@@ -40,7 +39,6 @@
             </button>
         </div>
 
-
         <input type="hidden" name="productos_id" id="productos_id" required>
 
         <div id="producto-seleccionado" class="alert alert-info d-none">
@@ -52,14 +50,14 @@
             <input type="number" name="cantidad" id="cantidad" class="form-control" min="1" placeholder="Ingrese la cantidad" required>
         </div>
 
-          <div class="mb-4">
-                <label class="form-label fw-semibold text-dark" for="imagen_producto_final">Ingresa la imagen del producto</label>
-                <input type="file" name="imagen_producto_final" id="imagen_producto_final" class="form-control border rounded" style="background-color: #e9ecef; color: #495057;">
-            </div>
+        <div class="mb-4">
+            <label class="form-label fw-semibold text-dark" for="imagen_producto_final">Ingresa la imagen del producto</label>
+            <input type="file" name="imagen_producto_final" id="imagen_producto_final" class="form-control border rounded" style="background-color: #e9ecef; color: #495057;">
+        </div>
 
         <div class="mb-4">
-                <label class="form-label fw-semibold text-dark" for="imagen_producto_trasera">Ingresa la imagen del producto Trasera</label>
-                <input type="file" name="imagen_producto_trasera" id="imagen_producto_trasera" class="form-control border rounded" style="background-color: #e9ecef; color: #495057;">
+            <label class="form-label fw-semibold text-dark" for="imagen_producto_trasera">Ingresa la imagen del producto Trasera</label>
+            <input type="file" name="imagen_producto_trasera" id="imagen_producto_trasera" class="form-control border rounded" style="background-color: #e9ecef; color: #495057;">
         </div>
 
         <div class="text-center">
@@ -67,8 +65,6 @@
         </div>
     </form>
 </div>
-
-
 
 <div class="modal fade" id="productosModal" tabindex="-1" aria-labelledby="productosModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -83,7 +79,8 @@
                         <div class="col-md-4">
                             <div class="card mb-3 producto-card" 
                                  data-id="{{ $producto->id }}" 
-                                 data-detalles="{{ ucfirst($producto->tipo) }} - Color: {{ ucfirst($producto->color) }} - Talla: {{ strtoupper($producto->talla) }}">
+                                 data-detalles="{{ ucfirst($producto->tipo) }} - Color: {{ ucfirst($producto->color) }} - Talla: {{ strtoupper($producto->talla) }}"
+                                 data-stock="{{ $producto->lote }}"> <!-- Cambié el nombre del atributo a data-stock -->
                                 
                                 <img src="{{ $producto->imagen_producto }}" 
                                      class="card-img-top" 
@@ -95,9 +92,14 @@
                                     <p class="card-text">Color: {{ ucfirst($producto->color) }}</p>
                                     <p class="card-text">Talla: {{ strtoupper($producto->talla) }}</p>
                                     <p class="card-text">Lote actual: {{ strtoupper($producto->lote) }}</p>
+
+                                    @if($producto->lote > 0)
                                     <button type="button" class="btn btn-primary seleccionar-producto">
                                         Seleccionar
                                     </button>
+                                    @else 
+                                    <span class="text-danger">Agotado</span>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -108,13 +110,17 @@
     </div>
 </div>
 
-
 <script>
-    document.querySelectorAll('.seleccionar-producto').forEach(button => {
+document.querySelectorAll('.seleccionar-producto').forEach(button => {
     button.addEventListener('click', function () {
         const card = this.closest('.producto-card');
         const productoId = card.getAttribute('data-id');
         const detalles = card.getAttribute('data-detalles');
+        const lote = card.getAttribute('data-stock'); 
+
+        const cantidadInput = document.getElementById('cantidad');
+        cantidadInput.setAttribute('max', lote); 
+        cantidadInput.value = 1; 
 
         document.getElementById('productos_id').value = productoId;
         document.getElementById('producto-detalles').textContent = detalles;
@@ -127,6 +133,6 @@
         modalInstance.hide();
     });
 });
-
 </script>
+
 @endsection

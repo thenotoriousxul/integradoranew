@@ -158,8 +158,9 @@ class StripeController extends Controller
 
 
     public function verificarProductos(Request $request)
-{
+    {
     $carrito = session()->get('carrito', []);
+    
 
     if (empty($carrito)) {
         return redirect()->back()->with('error', 'El carrito está vacío.'); // Redirige con un mensaje
@@ -167,19 +168,22 @@ class StripeController extends Controller
 
     foreach ($carrito as $productoId => $detalle) {
         $producto = \App\Models\EdicionesProductos::find($productoId);
+       
 
         if (!$producto) {
             return redirect()->back()->with('error', "El producto con ID {$productoId} no existe.");
         }
 
-        if (!$producto->activo) { // Verifica si el producto está activo
+        if ($producto->estado !== 'activo') { // Verifica si el producto está activo
             return redirect()->back()->with('error', "El producto '{$producto->nombre}' no está disponible.");
         }
+
+        
     }
 
     // Si todos los productos están activos, redirige al detalle de la orden
     return redirect()->route('detalleOrden');
-}
+    }
 
     
 
