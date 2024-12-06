@@ -20,12 +20,15 @@ class PersonalizarController extends Controller
      */
     public function mostrarCatalogoPersonalizable()
     {
-        $productos = EdicionesProductos::where('personalizada', 1)
-            ->where('estado', 'activo')
-            ->paginate(10);
-
-        return view('personalizacion', compact('productos'));
+        // Consulta los productos personalizables
+        $productos = Producto::where('producto_personalizar', 1)->get();
+    
+        // Devuelve la vista con la variable $productos
+        return view('admin.personalizar.personalizarAdmin', compact('productos'));
     }
+    
+    
+    
 
     public function mostrarDetalle($id)
 {
@@ -40,17 +43,30 @@ class PersonalizarController extends Controller
     return view('detallepersonalizada', compact('producto', 'tallas'));
 }
 
-public function personalizarProducto()
+public function personalizarProducto($id)
 {
+    $producto = Producto::findOrFail($id);
+
+    // Obtener estampados disponibles
     $estampados = Estampado::all()->map(function ($estampado) {
-        // Limpiar la URL de la imagen, eliminando la parte extra codificada
-        $estampado->imagen_estampado = preg_replace('/https:\/\/.*?amazonaws.com/', 'https://laravel-ozez.s3.us-east-2.amazonaws.com', $estampado->imagen_estampado);
+        $estampado->imagen_estampado = ltrim(parse_url($estampado->imagen_estampado, PHP_URL_PATH), '/');
         return $estampado;
     });
 
-
-    return view('admin.personalizar.personalizarAdmin', compact('estampados'));
+    // Retorna la vista correcta en la ruta `admin.personalizador.detalle`
+    return view('admin.personalizar.detalle', compact('producto', 'estampados'));
 }
+
+public function mostrarCatalogoPersonalizableFinal()
+{
+    $productos = EdicionesProductos::where('personalizada', 1)
+        ->where('estado', 'activo')
+        ->paginate(10);
+
+    return view('personalizacion', compact('productos'));
+}
+
+
 
     
 

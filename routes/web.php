@@ -20,6 +20,7 @@ use App\Http\Controllers\EstampadoController;
 use App\Http\Controllers\PersonalizarController;
 use App\Http\Controllers\OrdenController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PruebaController;
 use App\Mail\ordenMail;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\EdicionPersonalizadaController;
@@ -27,6 +28,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;  
 use Illuminate\Support\Facades\Response;  
+use App\Http\Controllers\S3ImageController;
 
 //prueba
 // Rutas de acceso general
@@ -118,7 +120,7 @@ Route::get('/filtros',[EdicionesProductoController::class, 'filtro'])->name('fil
 
 Route::get('/producto/{id}', action: [EdicionesProductoController::class, 'detalle'])->name('vista_producto_detalle'); 
 
-Route::get('/personalizacion', [PersonalizarController::class, 'mostrarCatalogoPersonalizable'])->name('personalizacion');
+Route::get('/personalizacion', [PersonalizarController::class, 'mostrarCatalogoPersonalizableFinal'])->name('personalizacion');
 
 Route::get('/personalizacion/{id}', [PersonalizarController::class, 'mostrarDetalle'])->name('personalizacion.detalle');
 
@@ -250,7 +252,6 @@ Route::get('/envios-pendientes', [informacionClienteController::class, 'mostrare
 
 Route::get('/envios-detalles/{id}', [informacionClienteController::class, 'obtenerDetallesProducto'])->name('envios.detallesProducto');
 
-Route::get('/personalizarAdmin', [PersonalizarController::class, 'personalizarProducto'])->name('admin.personalizar');
 
 
 Route::prefix('admin/ediciones_personalizadas')->name('admin.ediciones_personalizadas.')->group(function () {
@@ -269,3 +270,16 @@ Route::post('/carrito/agregar/{productoId}', [EdicionPersonalizadaController::cl
 Route::get('/admin/acciones', function () {
     return view('admin.acciones.acciones');
 })->name('admin.acciones');
+
+// Route::get('/prueba', [PruebaController::class, 'mostrarCatalogoPersonalizable'])->name('pruebas');
+
+// Mostrar los productos personalizables
+Route::get('/personalizarAdmin', [PersonalizarController::class, 'mostrarCatalogoPersonalizable'])->name('admin.personalizar');
+
+// Mostrar detalles para personalizar un producto específico
+Route::get('/personalizarAdmin/{id}', [PersonalizarController::class, 'personalizarProducto'])->name('admin.guardar');
+
+// Route::get('/pruebas/{productoId}', [PruebaController::class, 'personalizarProducto'])->name('personalizar.producto');
+// Route::post('/pruebas/guardar', [PruebaController::class, 'guardar'])->name('personalizar.guardar');
+
+Route::get('/s3-image', [S3ImageController::class, 'getImage'])->name('s3.image');

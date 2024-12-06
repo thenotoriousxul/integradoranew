@@ -1,114 +1,236 @@
-@extends('layouts.app')
+@extends('admin.layouts.dashboard')
 
 @section('content')
-<div class="container py-5">
-    <a href="{{ route('personalizacion') }}" class="btn btn-outline-secondary mb-4">
-        <i class="bi bi-arrow-left me-2"></i>
-        Volver al Catálogo
-    </a>
-
-    <div class="row">
-        <!-- Imagen del producto -->
-        <div class="col-md-6 mb-4">
-            <img src="{{ $producto->imagen_producto_final }}" alt="Imagen de {{ $producto->nombre }}" class="img-fluid rounded">
+<div class="container">
+    <h1 class="text-center">Personaliza tu playera</h1>
+    <br>
+    <div class="personalization-container d-flex flex-row flex-wrap align-items-start justify-content-center">
+        <div class="canvas-container">
+            <canvas id="myCanvas" width="550" height="600"></canvas>
         </div>
-
-        <!-- Detalles del producto -->
-        <div class="col-md-6">
-            <h1 class="mb-4">{{ $producto->nombre }}</h1>
-            <p class="lead">Cantidad total disponible: {{ $producto->cantidad }}</p>
-            <p>Estado: {{ ucfirst($producto->estado) }}</p>
-            @if ($producto->rebaja)
-                <p class="text-danger">Precio con rebaja: ${{ number_format($producto->precio_rebajado, 2) }}</p>
-            @else
-                <p>Precio: ${{ number_format($producto->costo_precio_venta, 2) }}</p>
-            @endif
-
-            <!-- Filtro por tallas -->
-           <!-- Filtro por tallas -->
-<div class="mb-4">
-    <label class="form-label">Tallas Disponibles:</label>
-    <div class="size-options d-flex flex-wrap gap-2">
-        @forelse ($tallas as $talla)
-            @if ((int) $talla['cantidad'] > 0)
-                <button type="button" 
-                    class="btn btn-outline-primary size-option available" 
-                    data-talla="{{ $talla['talla'] }}" 
-                    data-cantidad="{{ $talla['cantidad'] }}" 
-                    title="{{ $talla['cantidad'] }} disponibles">
-                    {{ $talla['talla'] }}
-                </button>
-            @else
-                <button type="button" 
-                    class="btn btn-outline-secondary size-option unavailable" 
-                    title="Agotada" 
-                    disabled>
-                    {{ $talla['talla'] }}
-                </button>
-            @endif
-        @empty
-            <p>No hay tallas disponibles para este producto.</p>
-        @endforelse
-    </div>
-</div>
+        <div class="estampados-container ml-4">
+            <h3>Estampados Disponibles</h3>
+            <div class="estampados d-flex flex-wrap">
+            @foreach($estampados as $estampado)
+    <img onclick="agregarEstampado('{{ $estampado->imagen_estampado }}', '{{ $estampado->id }}')" 
+         src="{{ Storage::disk('s3')->url($estampado->imagen_estampado) }}" 
+         alt="{{ $estampado->nombre }}" 
+         class="img-thumbnail m-2" 
+         title="{{ $estampado->nombre }}">
+@endforeach
 
 
-            <!-- Formulario para agregar al carrito -->
-            <form action="{{ route('carrito.agregar', $producto->id) }}" method="POST">
+
+
+            </div>
+            <!-- Formulario para enviar los datos -->
+            <form id="personalizar-form" action="{{ route('personalizar.guardar') }}" method="POST">
                 @csrf
-                <input type="hidden" name="talla" id="talla-seleccionada" value="">
-
-                <div class="mb-4">
-                    <label class="form-label">Cantidad:</label>
-                    <select class="form-select quantity-selector" name="cantidad" disabled>
-                        <option value="">Seleccione una talla primero</option>
-                    </select>
-                </div>
-
-                <button type="submit" class="btn btn-primary w-100" id="agregar-carrito" disabled>
-                    Agregar al Carrito
-                </button>
+                <input type="hidden" name="producto_id" value="{{ $producto->id }}">
+                <input type="hidden" name="estampado_id" id="estampado_id" value="">
+                <input type="hidden" name="imagen_personalizada" id="imagen_personalizada" value="">
+                <button type="button" onclick="guardarDiseno()" class="btn btn-success mt-3">Agregar al carrito</button>
             </form>
+            <!-- Botón para eliminar objetos -->
+            <div class="controls mt-3">
+        <button onclick="eliminarObjeto()" class="btn btn-danger">Eliminar Objeto</button>
+        <button onclick="descargarImagen()" class="btn btn-primary">Descargar Diseño</button>
+        </div>
         </div>
     </div>
+    <br>
+    <br>
 </div>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.0/fabric.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const sizeOptions = document.querySelectorAll('.size-option.available');
-        const hiddenTallaInput = document.getElementById('talla-seleccionada');
-        const agregarCarritoButton = document.getElementById('agregar-carrito');
-        const quantitySelector = document.querySelector('.quantity-selector');
+    const canvas = new fabric.Canvas('myCanvas');
+    const productId = {{ $producto->id }};
+    let playeraBounds = null;
+    let selectedEstampadoId = null;
 
-        sizeOptions.forEach(option => {
-            option.addEventListener('click', function() {
-                // Remover la clase 'active' de todas las opciones
-                sizeOptions.forEach(opt => opt.classList.remove('active'));
-
-                // Agregar la clase 'active' a la opción seleccionada
-                this.classList.add('active');
-
-                // Actualizar el campo oculto con la talla seleccionada
-                hiddenTallaInput.value = this.dataset.talla;
-
-                // Obtener el stock disponible para la talla seleccionada
-                const stockDisponible = parseInt(this.dataset.cantidad);
-
-                // Actualizar las opciones del selector de cantidad
-                quantitySelector.innerHTML = '';
-                for (let i = 1; i <= Math.min(stockDisponible, 5); i++) {
-                    const option = document.createElement('option');
-                    option.value = i;
-                    option.textContent = i;
-                    quantitySelector.appendChild(option);
-                }
-
-                // Habilitar el botón de agregar al carrito y el selector
-                agregarCarritoButton.disabled = false;
-                quantitySelector.disabled = false;
+    // Función para establecer la imagen de fondo
+    function setBackground() {
+        fabric.Image.fromURL('{{ $producto->imagen_producto }}', function(img) {
+            img.set({
+                left: 0,
+                top: 0,
+                selectable: false,
+                evented: false
             });
+            canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
+            // Almacenar los límites de la playera
+            playeraBounds = img.getBoundingRect();
+        }, { crossOrigin: 'Anonymous' }); // Añadir crossOrigin
+    }
+
+    // Restaurar el canvas al cargar
+    restoreCanvas();
+
+    // Agregar estampado al canvas
+    function agregarEstampado(imagePath, estampadoId) {
+    const proxyURL = `/s3-image?image=${encodeURIComponent(imagePath)}`;
+
+    fabric.Image.fromURL(proxyURL, function(img) {
+        img.set({
+            left: canvas.width / 2,
+            top: canvas.height / 2,
+            scaleX: 0.2,
+            scaleY: 0.2,
+            originX: 'center',
+            originY: 'center',
+            selectable: true,
+            evented: true
         });
+        canvas.add(img);
+        canvas.setActiveObject(img);
+        saveCanvas();
+
+        // Establecer el ID del estampado seleccionado
+        document.getElementById('estampado_id').value = estampadoId;
     });
+}
+
+
+    // Eventos para restringir movimiento y escalado dentro de la playera
+    canvas.on('object:moving', function(e) {
+        var obj = e.target;
+        if (obj === canvas.backgroundImage) return;
+
+        var objBounds = obj.getBoundingRect();
+
+        // Restringir movimiento
+        if (objBounds.left < playeraBounds.left) {
+            obj.left = playeraBounds.left + obj.width * obj.scaleX / 2;
+        }
+        if (objBounds.top < playeraBounds.top) {
+            obj.top = playeraBounds.top + obj.height * obj.scaleY / 2;
+        }
+        if (objBounds.left + objBounds.width > playeraBounds.left + playeraBounds.width) {
+            obj.left = playeraBounds.left + playeraBounds.width - obj.width * obj.scaleX / 2;
+        }
+        if (objBounds.top + objBounds.height > playeraBounds.top + playeraBounds.height) {
+            obj.top = playeraBounds.top + playeraBounds.height - obj.height * obj.scaleY / 2;
+        }
+    });
+
+    canvas.on('object:scaling', function(e) {
+        var obj = e.target;
+        if (obj === canvas.backgroundImage) return;
+
+        var objBounds = obj.getBoundingRect();
+
+        // Restringir escalado
+        if (objBounds.left < playeraBounds.left ||
+            objBounds.top < playeraBounds.top ||
+            objBounds.left + objBounds.width > playeraBounds.left + playeraBounds.width ||
+            objBounds.top + objBounds.height > playeraBounds.top + playeraBounds.height) {
+            obj.scaleX = obj.oldScaleX || obj.scaleX;
+            obj.scaleY = obj.oldScaleY || obj.scaleY;
+            obj.left = obj.oldLeft || obj.left;
+            obj.top = obj.oldTop || obj.top;
+        } else {
+            obj.oldScaleX = obj.scaleX;
+            obj.oldScaleY = obj.scaleY;
+            obj.oldLeft = obj.left;
+            obj.oldTop = obj.top;
+        }
+    });
+
+    // Guardar el estado después de modificar objetos
+    canvas.on('object:modified', function() {
+        saveCanvas();
+    });
+
+    // Función para guardar el diseño y enviar el formulario
+    function guardarDiseno() {
+        try {
+            // Obtener la imagen del canvas
+            const canvasData = canvas.toDataURL('image/png');
+            // Establecer el valor en el input oculto
+            document.getElementById('imagen_personalizada').value = canvasData;
+            // Enviar el formulario
+            document.getElementById('personalizar-form').submit();
+        } catch (error) {
+            console.error('Error al guardar el diseño:', error);
+            alert('Ocurrió un error al guardar el diseño. Por favor, asegúrate de que todas las imágenes se cargaron correctamente.');
+        }
+    }
+
+    // Eliminar el objeto seleccionado
+    function eliminarObjeto() {
+        const activeObject = canvas.getActiveObject();
+        if (activeObject && activeObject !== canvas.backgroundImage) {
+            canvas.remove(activeObject);
+            saveCanvas();
+        } else {
+            alert('Seleccione un objeto para eliminar.');
+        }
+    }
+
+    function descargarImagen() {
+    const link = document.createElement('a');
+    link.href = canvas.toDataURL({ format: 'png' }); // Generar la URL del diseño
+    link.download = 'mi_diseño.png'; // Nombre del archivo descargado
+    link.click();
+}
+
+
+    // Guardar el estado del canvas en localStorage por producto
+    function saveCanvas() {
+        const canvasData = JSON.stringify(canvas.toJSON(['objects']));
+        localStorage.setItem('canvasState_' + productId, canvasData);
+    }
+
+    // Restaurar el estado del canvas desde localStorage
+    function restoreCanvas() {
+        const canvasData = localStorage.getItem('canvasState_' + productId);
+        if (canvasData) {
+            canvas.loadFromJSON(canvasData, function() {
+                canvas.renderAll();
+                // Asegurarse de que la imagen de fondo es la correcta después de restaurar
+                setBackground();
+            });
+        } else {
+            // Si no hay estado guardado, establecer la imagen de fondo
+            setBackground();
+        }
+    }
 </script>
 
+<style>
+    .personalization-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: flex-start;
+    }
+    .canvas-container {
+        flex: 1;
+        min-width: 300px;
+        margin-right: 20px;
+    }
+    .estampados-container {
+        flex: 1;
+        min-width: 300px;
+    }
+    .img-thumbnail {
+        cursor: pointer;
+        width: 80px;
+        height: 80px;
+    }
+    @media (max-width: 768px) {
+        .personalization-container {
+            flex-direction: column;
+            align-items: center;
+        }
+        .canvas-container, .estampados-container {
+            min-width: 100%;
+            max-width: 550px;
+            margin-right: 0;
+        }
+        .controls, .estampados {
+            justify-content: center;
+        }
+    }
+</style>
 @endsection
