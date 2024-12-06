@@ -140,7 +140,8 @@
         const canvas = new fabric.Canvas('myCanvas');
         let playera = null;
         let logoObject = null;
-
+    
+        // Crear la camiseta como fondo en el canvas
         function crearPlayera() {
             fabric.Image.fromURL('{{ asset('img/playera.png') }}', function(img) {
                 img.set({
@@ -154,7 +155,8 @@
                 playera = img;
             });
         }
-
+    
+        // Cambiar el color de la camiseta
         function cambiarColor(color) {
             if (playera) {
                 playera.filters = [];
@@ -166,13 +168,22 @@
                 canvas.renderAll();
             }
         }
-
+    
+        // Agregar un estampado en el canvas
+        var maxImg = 2; // Limitar a 2 estampados
+    
         function agregarEstampado(imagePath) {
             if (logoObject) {
                 alert('Solo puedes agregar un estampado a la vez. Elimina el actual antes de agregar otro.');
                 return;
             }
-
+    
+            // Verificación de límite de imágenes
+            if (canvas.getObjects().length >= maxImg) {
+                alert('Ya se han agregado el número máximo de estampados.');
+                return;
+            }
+    
             fabric.Image.fromURL(imagePath, function(img) {
                 img.set({
                     left: canvas.width / 2,
@@ -183,13 +194,14 @@
                     originY: 'center',
                     selectable: true
                 });
-
+    
                 canvas.add(img);
                 canvas.setActiveObject(img);
                 logoObject = img;
-            }),{CrossOrigin: 'anonymous'};
+            }); // Asegúrate de que la propiedad esté bien escrita
         }
-
+    
+        // Eliminar el estampado actual
         function eliminarObjeto() {
             if (logoObject) {
                 canvas.remove(logoObject);
@@ -198,15 +210,17 @@
                 alert('No hay estampados para eliminar.');
             }
         }
+    
+        // Descargar la imagen generada en el canvas
         function descargarImagen() {
             const link = document.createElement('a');
             link.href = canvas.toDataURL({ format: 'png' });
-            link.download = 'mi_diseño.png'; 
+            link.download = 'mi_diseño.png';
             link.click();
         }
-        
-        var maxImg = 2;
-
+    
+        // Inicializar la camiseta
         crearPlayera();
     </script>
+    
 @endsection

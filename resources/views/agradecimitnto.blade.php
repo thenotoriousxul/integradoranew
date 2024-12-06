@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
 <style>
     .thanks {
         background-color: #f8f9fa;

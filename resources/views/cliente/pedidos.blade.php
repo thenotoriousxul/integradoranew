@@ -23,7 +23,7 @@
                                 @foreach ($orden->detalles as $detalle)
                                     <div class="row mb-3">
                                         <div class="col-md-2">
-                                            <img src="/placeholder.svg?height=80&width=80" alt="{{ $detalle->edicionProducto->nombre }}" class="img-fluid rounded">
+                                            <img src="{{$detalle->edicionProducto->imagen_producto_final}}" alt="{{ $detalle->edicionProducto->nombre }}" class="img-fluid rounded">
                                         </div>
                                         <div class="col-md-10">
                                             <h3 class="h6 mb-2">{{ $detalle->edicionProducto->nombre }}</h3>

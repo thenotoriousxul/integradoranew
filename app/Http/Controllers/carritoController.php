@@ -33,17 +33,24 @@ class carritoController extends Controller
         $stockDisponible = EdicionesProductos::where('nombre', $producto->nombre)
                             ->where('talla', $talla)
                             ->value('cantidad');
-    
+        
         if ($cantidad > $stockDisponible) {
             return back()->withErrors(['error' => 'Lo sentimos, stock insuficiente, intenta con otra cantidad menor.']);
         }
+
+        
     
         $carrito = collect(session()->get('carrito', []));
-    
         $productoTallaKey = "{$productoId}_{$talla}";
+        $cantidadEnCarrito = $carrito[$productoTallaKey]['quantity'] ?? 0;
+
+        //checa la cantidad de producto que ya esta en el carrito y la compara con el stock disponible
+        if (($cantidadEnCarrito + $cantidad) > $stockDisponible) {
+            return back()->withErrors(['error' => 'Lo sentimos, stock insuficiente. Intenta con otra cantidad menor.']);
+        }
     
         if ($carrito->has($productoTallaKey)) {
-            $precio = $producto->rebaja ? $producto->precio_rebajado : $producto->costo_precio_venta; // Usa el precio rebajado si hay rebaja
+            $precio = $producto->rebaja ? $producto->precio_rebajado : $producto->costo_precio_venta; 
             $carrito->put($productoTallaKey, [
                 'id' => $producto->id,
                 'name' => $producto->nombre,
