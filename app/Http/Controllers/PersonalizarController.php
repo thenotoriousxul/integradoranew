@@ -52,9 +52,10 @@ public function personalizarProducto($id)
         $estampado->imagen_estampado = ltrim(parse_url($estampado->imagen_estampado, PHP_URL_PATH), '/');
         return $estampado;
     });
+   
 
     // Retorna la vista correcta en la ruta `admin.personalizador.detalle`
-    return view('admin.personalizar.detalle', compact('producto', 'estampados'));
+    return view('personalizar', compact('producto', 'estampados'));
 }
 
 public function mostrarCatalogoPersonalizableFinal()

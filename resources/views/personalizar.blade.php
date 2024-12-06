@@ -24,13 +24,6 @@
 
             </div>
             <!-- Formulario para enviar los datos -->
-            <form id="personalizar-form" action="{{ route('personalizar.guardar') }}" method="POST">
-                @csrf
-                <input type="hidden" name="producto_id" value="{{ $producto->id }}">
-                <input type="hidden" name="estampado_id" id="estampado_id" value="">
-                <input type="hidden" name="imagen_personalizada" id="imagen_personalizada" value="">
-                <button type="button" onclick="guardarDiseno()" class="btn btn-success mt-3">Agregar al carrito</button>
-            </form>
             <!-- Botón para eliminar objetos -->
             <div class="controls mt-3">
         <button onclick="eliminarObjeto()" class="btn btn-danger">Eliminar Objeto</button>
