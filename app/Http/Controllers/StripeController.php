@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Mail\ordenMail;
 use App\Models\DetalleOrden;
 use App\Models\Orden;
@@ -12,10 +11,10 @@ use Stripe\PaymentIntent;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class StripeController extends Controller
 {
-
     public function __construct()
     {
         Stripe::setApiKey(env('STRIPE_SECRET'));
@@ -35,10 +34,13 @@ class StripeController extends Controller
                 'payment_method_types' => ['card'],
             ]);
 
+            Log::info('PaymentIntent creado:', ['clientSecret' => $paymentIntent->client_secret]);
+
             return response()->json([
                 'clientSecret' => $paymentIntent->client_secret,
             ]);
         } catch (\Exception $e) {
+            Log::error('Error creando PaymentIntent:', ['error' => $e->getMessage()]);
             return response()->json([
                 'error' => $e->getMessage(),
             ], 500);
@@ -62,7 +64,6 @@ class StripeController extends Controller
                 return response()->json(['success' => false, 'message' => 'El pago no se procesó correctamente.'], 500);
             }
 
-
             DB::beginTransaction();
 
             foreach ($carrito as $productoId => $detalle) {
@@ -82,15 +83,17 @@ class StripeController extends Controller
                 }
             }
 
-
+            // Guardar la orden y el pago
             $orden = $this->guardarOrden($carrito, $paymentIntent);
-
             $this->guardarPago($orden, $paymentIntent);
 
-            $usuario = auth()->user();
+            // Confirmar la transacción
+            DB::commit();
 
+            $usuario = auth()->user();
             Mail::to($usuario->email)->send(new ordenMail($numeroPedido=$orden->id));
 
+            Log::info('Orden creada con éxito', ['orden_id' => $orden->id]);
 
             return response()->json([
                 'success' => true,
@@ -98,6 +101,8 @@ class StripeController extends Controller
                 'orden_id' => $orden->id,
             ]);
         } catch (\Exception $e) {
+            DB::rollBack();  // Revierte la transacción en caso de error
+            Log::error('Error al procesar el pago:', ['error' => $e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => 'Hubo un error al procesar el pago: ' . $e->getMessage(),
@@ -113,7 +118,6 @@ class StripeController extends Controller
 
         $tipoPersona = $usuario->persona->tipoPersona()->first();
 
-
         $orden = Orden::create([
             'tipo_personas_id' => $tipoPersona->id,
             'fecha_orden' => now(),
@@ -122,6 +126,7 @@ class StripeController extends Controller
             'estado' => 'Pendiente',
         ]);
 
+        // Guardar detalles de la orden
         foreach ($carrito as $producto) {
             DetalleOrden::create([
                 'ediciones_productos_id' => $producto['id'],
@@ -129,9 +134,12 @@ class StripeController extends Controller
                 'cantidad' => $producto['quantity'],
                 'total' => $producto['price'] * $producto['quantity'],
             ]);
-        } 
+        }
 
+        // Limpiar el carrito de la sesión
         session()->forget('carrito');
+
+        Log::info('Orden guardada correctamente', ['orden_id' => $orden->id]);
 
         return $orden;
     }
@@ -148,7 +156,10 @@ class StripeController extends Controller
             'num_referencia' => $paymentIntent->id, 
         ]);
 
-        $orden->update([ 'estado' => 'Pagada', ]);
+        // Actualizar el estado de la orden
+        $orden->update([ 'estado' => 'Pagada' ]);
+
+        Log::info('Pago guardado correctamente', ['orden_id' => $orden->id, 'pago_total' => $paymentIntent->amount_received / 100]);
     }
 
     private function obtenerPaymentIntentDesdeStripe($paymentIntentId)
@@ -156,41 +167,26 @@ class StripeController extends Controller
         return PaymentIntent::retrieve($paymentIntentId);
     }
 
-
     public function verificarProductos(Request $request)
     {
-    $carrito = session()->get('carrito', []);
-    
+        $carrito = session()->get('carrito', []);
 
-    if (empty($carrito)) {
-        return redirect()->back()->with('error', 'El carrito está vacío.'); // Redirige con un mensaje
-    }
-
-    foreach ($carrito as $productoId => $detalle) {
-        $producto = \App\Models\EdicionesProductos::find($productoId);
-       
-
-        if (!$producto) {
-            return redirect()->back()->with('error', "El producto con ID {$productoId} no existe.");
+        if (empty($carrito)) {
+            return redirect()->back()->with('error', 'El carrito está vacío.');
         }
 
-        if ($producto->estado !== 'activo') { // Verifica si el producto está activo
-            return redirect()->back()->with('error', "El producto '{$producto->nombre}' no está disponible.");
+        foreach ($carrito as $productoId => $detalle) {
+            $producto = \App\Models\EdicionesProductos::find($productoId);
+
+            if (!$producto) {
+                return redirect()->back()->with('error', "El producto con ID {$productoId} no existe.");
+            }
+
+            if ($producto->estado !== 'activo') {
+                return redirect()->back()->with('error', "El producto '{$producto->nombre}' no está disponible.");
+            }
         }
 
-        
+        return redirect()->route('detalleOrden');
     }
-
-    // Si todos los productos están activos, redirige al detalle de la orden
-    return redirect()->route('detalleOrden');
-    }
-
-    
-
-
-
-
-
-
-
 }
