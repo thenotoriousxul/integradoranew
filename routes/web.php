@@ -54,10 +54,6 @@ Route::middleware(['auth'])->group(function () {
     })->name('cliente.dashboard');
 
     
-// Route::post('/procesar-pago', [StripeController::class, 'procesarPago'])->name('procesarPago');
-// Route::post('/create-payment-intent', [StripeController::class, 'createPaymentIntent'])->name('createPaymentIntent');
-
-
 Route::post('/procesar-pago', [StripeController::class, 'procesarPago'])->name('procesarPago');
 Route::post('/create-payment-intent', [StripeController::class, 'createPaymentIntent'])->name('createPaymentIntent');
 
@@ -190,6 +186,7 @@ Route::middleware(['role:admin|empleado'])->group(function () {
         Route::get('dash/productos/filtros',[productoController::class, 'filtros'])->name('filtros');
     });
 
+
     Route::prefix('admins/ordenes')->group(function () {
         Route::get('/', [OrdenController::class, 'index'])->name('admins.ordenes.index');
         Route::get('/crear', [OrdenController::class, 'create'])->name('admins.ordenes.create');
@@ -199,6 +196,7 @@ Route::middleware(['role:admin|empleado'])->group(function () {
         Route::delete('/{id}/eliminar', [OrdenController::class, 'destroy'])->name('admins.ordenes.destroy');
         Route::get('/{id}', [OrdenController::class, 'show'])->name('admins.ordenes.show');
     });
+
 
     Route::prefix('admin/ediciones_productos')->group(function(){
         Route::get('/crear/producto',[EdicionesProductoController::class, 'create'])->name('crear.producto');
@@ -263,5 +261,8 @@ Route::post('/proveedor/nuevo', [proveedorController::class, 'nuevoproveedor'])-
 
 Route::get('/usuarios/listar', [UserController::class, 'listar'])->name('listar.usurios');
 
-Route::post('/carrito/agregar/{productoId}', [EdicionPersonalizadaController::class, 'agregarAlCarrito'])->name('carrito.agregar');
+Route::post('/carrito/agregar/{productoId}', [EdicionPersonalizadaController::class, 'agregarAlCarrito'])->name('carrito.agregar.personalizada');
 
+Route::get('/admin/acciones', function () {
+    return view('admin.acciones.acciones');
+})->name('admin.acciones');

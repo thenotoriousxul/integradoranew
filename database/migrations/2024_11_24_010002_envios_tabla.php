@@ -20,9 +20,7 @@ return new class extends Migration
         $table->timestamp('fecha_entrega')->nullable();
         $table->timestamps();
 
-        // Llaves foráneas
         $table->foreign('ordenes_id')->references('id')->on('ordenes')->onDelete('cascade');
-        $table->foreign('direcciones_id')->references('id')->on('direcciones')->onDelete('cascade');
     });
     }
 
