@@ -3,19 +3,17 @@
 @section('title', 'Reporte de Ventas')
 
 @section('css')
-<!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
-<!-- DataTables Bootstrap 5 CSS -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
-<!-- Select2 CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.3/css/responsive.bootstrap5.css">
 @endsection
 
 @section('content')
 <h2 class="text-center">Reporte de Ventas</h2>
 <div class="card">
     <div class="card-body">
-   
+{{--    
         <style>
             label:has(input[type="search"]) {
                 display: inline-block;
@@ -23,7 +21,7 @@
             }
             label:has(input[type="search"]) input {
                 margin-left: 2px; 
-            }
+            } --}}
         </style>
 
             <div class="container mt-4">
@@ -36,7 +34,7 @@
                         <th>Nombre</th>
                         <th>Producto</th>
                         <th>Cantidad</th>
-                        <th>Total Pedido</th>
+                        <th>Total Orden</th>
                         <th>Pago Final</th>
                         <th>Descuento</th>
                         <th>Método de Pago</th>
@@ -99,11 +97,25 @@
 <script>
     console.log("DataTables Bootstrap 5 cargado correctamente");
 </script>
+<script src="https://cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.js"></script>
+<script src="https://cdn.datatables.net/responsive/3.0.3/js/responsive.bootstrap5.js"></script>
 
 <script>
     $('#ReporteVentas').DataTable({
+        responsive: true,
+        autowidth: false,
         language: {
-            url: "/js/i18n/es-ES.json"  
+            info: 'Showing page _PAGE_ of _PAGES_',
+            infoEmpty: 'No hay registros para mostrar',
+            emptyTable: "No hay datos para mostrar",
+            search:"Buscar:",
+            lengthMenu:     "Mostrando _MENU_ Registros",
+            paginate: {
+            first:      "Primero",
+            last:       "Ultimo",
+            next:       "Siguiente",
+            previous:   "Anterior"
+            },
         },
         scrollX: true
     });
@@ -111,7 +123,7 @@
     console.log("DataTable inicializado en #ReporteVentas");
 </script>
 
-<script>
+{{-- <script>
     document.addEventListener('DOMContentLoaded', function() {
         console.log("El DOM está completamente cargado.");
         const sidebar = document.getElementById('sidebar');
@@ -123,6 +135,6 @@
         } else {
             console.warn("El elemento #sidebar no existe en el DOM.");
         }
-    });
+    }); --}}
 </script>
 @endsection
