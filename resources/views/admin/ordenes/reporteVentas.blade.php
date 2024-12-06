@@ -12,50 +12,69 @@
 @endsection
 
 @section('content')
+<h2 class="text-center">Reporte de Ventas</h2>
+<div class="card">
+    <div class="card-body">
+   
+        <style>
+            label:has(input[type="search"]) {
+                display: inline-block;
+                margin-left: 350px; 
+            }
+            label:has(input[type="search"]) input {
+                margin-left: 2px; 
+            }
+        </style>
 
-<div class="container mt-4">
-    <h2 class="text-center">Reporte de Ventas</h2>
-    <table id="ReporteVentas" class="table table-striped" style="width:100%">
-        <thead>
-            <tr>
-                <th>N.º Orden</th>
-                <th>Fecha Orden</th>
-                <th>Cliente/Empleado</th>
-                <th>Nombre</th>
-                <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Total Pedido</th>
-                <th>Pago Final</th>
-                <th>Descuento</th>
-                <th>Método de Pago</th>
-                <th>Estado de Envío</th>
-                <th>Direccion</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($reporteVentas as $reporteVenta)
-            <tr>
-                <td>{{ $reporteVenta->numero_orden }}</td>
-                <td>{{ \Carbon\Carbon::parse($reporteVenta->fecha_orden)->format('d/m/Y') }}</td>
-                <td>{{ $reporteVenta->tipo_cliente }}</td>
-                <td>{{ $reporteVenta->Nombre }}</td>
-                <td>{{ $reporteVenta->nombre_producto }}</td>
-                <td>{{ $reporteVenta->cantidad }}</td>
-                <td>{{ number_format($reporteVenta->total_producto, 2) }}</td>
-                <td>{{ number_format($reporteVenta->total_pedido, 2) }}</td>
-                <td>{{ $reporteVenta->descuento }}</td>
-                <td>{{ $reporteVenta->metodo_pago }}</td>
-                <td>{{ $reporteVenta->estado_envio }}</td>
-                <td>{{ $reporteVenta->direccion_envio}}</td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-    
-    <a href="{{ route('pdf.reporte') }}">
-        <button class="btn btn-success">Guardar PDF</button>
-    </a>
-    
+            <div class="container mt-4">
+                <table id="ReporteVentas" class="table table-striped" style="width:100%">
+                    <thead>
+                    <tr>
+                        <th>N.º Orden</th>
+                        <th>Fecha Orden</th>
+                        <th>Cliente/Empleado</th>
+                        <th>Nombre</th>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Total Pedido</th>
+                        <th>Pago Final</th>
+                        <th>Descuento</th>
+                        <th>Método de Pago</th>
+                        <th>Estado de Envío</th>
+                        <th>Direccion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($reporteVentas as $reporteVenta)
+                    <tr>
+                        <td>{{ $reporteVenta->numero_orden }}</td>
+                        <td>{{ \Carbon\Carbon::parse($reporteVenta->fecha_orden)->format('d/m/Y') }}</td>
+                        <td>{{ $reporteVenta->tipo_cliente }}</td>
+                        <td>{{ $reporteVenta->Nombre }}</td>
+                        <td>{{ $reporteVenta->nombre_producto }}</td>
+                        <td>{{ $reporteVenta->cantidad }}</td>
+                        <td>{{ number_format($reporteVenta->total_producto, 2) }}</td>
+                        <td>{{ number_format($reporteVenta->total_pedido, 2) }}</td>
+                        <td>{{ $reporteVenta->descuento }}</td>
+                        <td>{{ $reporteVenta->metodo_pago }}</td>
+                        <td>{{ $reporteVenta->estado_envio }}</td>
+                        <td>{{ $reporteVenta->direccion_envio}}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            <div class="mt-3">
+                <strong>Total de ventas en línea:</strong> {{ number_format($TotalVentasLinea, 2) }}<br>
+                <strong>Total de ventas locales:</strong> {{ number_format($TotalVentasFisica, 2) }}
+            </div>
+            <div class="container">
+                <a href="{{ route('pdf.reporte') }}">
+                    <button class="btn btn-success">Guardar PDF</button>
+                    </a>
+            </div>
+            
+        </div>
+    </div>
 </div>
 
 @endsection
