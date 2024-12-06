@@ -167,34 +167,22 @@
         @foreach ($productos as $producto)
             <div class="col-md-3 mb-4">
                 <div class="card h-100">
-                    @if ($producto->cantidad > 0)
-                        <div class="image-container">
-                            <img src="{{ $producto->imagen_producto_final }}" alt="Imagen de {{ $producto->nombre }}" class="image-main">
-                            <img src="{{ $producto->imagen_producto_trasera }}" alt="Imagen trasera de {{ $producto->nombre }}" class="image-hover">
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $producto->nombre }}</h5>
-                            <p class="card-text">Precio: ${{ number_format($producto->costo_precio_venta, 2) }}</p>
-                            @if(!Auth::check() || (Auth::check() && !Auth::user()->hasRole('admin')))
+                    <div class="image-container">
+                        <img src="{{ $producto->imagen_producto_final }}" alt="Imagen de {{ $producto->nombre }}" class="image-main">
+                        <img src="{{ $producto->imagen_producto_trasera }}" alt="Imagen trasera de {{ $producto->nombre }}" class="image-hover">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $producto->nombre }}</h5>
+                        <p class="card-text">Precio: ${{ number_format($producto->costo_precio_venta, 2) }}</p>
+                        @if (!Auth::check() || (Auth::check() && !Auth::user()->hasRole('admin')))
                             <a href="{{ route('vista_producto_detalle', ['id' => $producto->id]) }}" class="btn btn-primary w-100">Ver detalles</a>
-                            @endif
-                        </div>
-                    @else
-                        <div class="image-container">
-                            <img src="{{ $producto->imagen_producto_final }}" alt="Imagen de {{ $producto->nombre }}" class="image-main">
-                            <div class="overlay">
-                                <p class="text-danger">Agotado</p>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $producto->nombre }}</h5>
-                            <p class="text-danger">Agotado</p>
-                        </div>
-                    @endif
+                        @endif
+                    </div>
                 </div>
             </div>
         @endforeach
     </div>
+    
 
     <div class="offcanvas offcanvas-start" tabindex="-1" id="filtroOffcanvas" aria-labelledby="filtroOffcanvasLabel">
         <div class="offcanvas-header">
