@@ -267,9 +267,6 @@ Route::get('/usuarios/listar', [UserController::class, 'listar'])->name('listar.
 
 Route::post('/carrito/agregar/{productoId}', [EdicionPersonalizadaController::class, 'agregarAlCarrito'])->name('carrito.agregar.personalizada');
 
-Route::get('/admin/acciones', function () {
-    return view('admin.acciones.acciones');
-})->name('admin.acciones');
 
 // Route::get('/prueba', [PruebaController::class, 'mostrarCatalogoPersonalizable'])->name('pruebas');
 
@@ -284,3 +281,15 @@ Route::get('/personalizarAdmin/{id}', [PersonalizarController::class, 'personali
 
 Route::get('/s3-image', [S3ImageController::class, 'getImage'])->name('s3.image');
 Route::post('/producto/verificar', [StripeController::class, 'verificarProductos'])->name('producto.verificar');
+
+Route::get('/auditoria/ediciones', function () {
+    return view('admin.acciones.AudEdiciones');
+})->name('admin.auditoria.ediciones');
+
+Route::get('/auditoria/pagos', function () {
+    return view('admin.acciones.AudPagos');
+})->name('admin.auditoria.pagos');
+
+Route::get('/auditoria/usuarios', function () {
+    return view('admin.acciones.AudUsuarios');
+})->name('admin.auditoria.usuarios');

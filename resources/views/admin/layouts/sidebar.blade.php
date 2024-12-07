@@ -222,10 +222,26 @@
                 <span class="sidebar-text">Personalizadas</span>
             </a>  
             
-            <a id="acciones" class="item-side" href="{{ route('admin.acciones') }}">
+            <a id="acciones" class="item-side" href="">
                 <i class="fas fa-box"></i>
                 <span class="sidebar-text">Acciones</span>
+                <i class="fas fa-chevron-down abajo"></i>
             </a>   
+
+            <div id="acciones-submenu" class="submenu">
+                <a class="item-side sub" href="{{route('admin.auditoria.usuarios')}}">
+                    <i class="fas fa-list"></i>
+                    <span class="sidebar-text">Usuarios</span>
+                </a>
+                <a class="item-side sub" href="{{route('admin.auditoria.pagos')}}">
+                    <i class="fas fa-plus"></i>
+                    <span class="sidebar-text">Pagos</span>
+                </a>
+                <a class="item-side sub" href="{{route('admin.auditoria.ediciones')}}">
+                    <i class="fas fa-plus"></i>
+                    <span class="sidebar-text">Ediciones</span>
+                </a>
+            </div>
 
             <a class="item-side" href="/dash/gestor/historial">
                 <i class="fas fa-history"></i>
