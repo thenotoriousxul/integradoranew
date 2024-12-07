@@ -83,9 +83,10 @@ class OrdenController extends Controller
 
         $ordenes = Orden::where('tipo_personas_id', $tipoPersona->id)
             ->with(['detalles.edicionProducto'])
-            ->get();
-    
+            ->paginate(10); // Muestra 10 registros por página
+        
         return view('cliente.pedidos', compact('ordenes'));
+        
     }
 
   

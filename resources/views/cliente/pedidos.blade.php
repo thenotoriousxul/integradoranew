@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="container">
-   
     <div class="row">
         <div class="col-md-11 mx-auto">
             <section class="mb-5">
@@ -20,7 +19,9 @@
                                 @foreach ($orden->detalles as $detalle)
                                     <div class="row mb-3">
                                         <div class="col-md-2">
-                                            <img src="{{$detalle->edicionProducto->imagen_producto_final}}" alt="{{ $detalle->edicionProducto->nombre }}" class="img-fluid rounded">
+                                            <img src="{{ $detalle->edicionProducto->imagen_producto_final }}" 
+                                                 alt="{{ $detalle->edicionProducto->nombre }}" 
+                                                 class="img-fluid rounded">
                                         </div>
                                         <div class="col-md-10">
                                             <h3 class="h6 mb-2">{{ $detalle->edicionProducto->nombre }}</h3>
@@ -35,6 +36,10 @@
                             </div>
                         </div>
                     @endforeach
+                    <div class="mt-4 d-flex justify-content-center">
+                        {{ $ordenes->links('pagination::bootstrap-4')->withClass('pagination-sm') }}
+                    </div>
+                    
                 @endif
             </section>
         </div>
@@ -59,5 +64,4 @@
         height: 80px;
     }
 </style>
-
 @endsection

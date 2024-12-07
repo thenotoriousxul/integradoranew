@@ -21,10 +21,12 @@
     <h1 class="h3 mb-3">¡Gracias por tu compra!</h1>
     <p class="mb-4">Tu pedido ha sido confirmado gracias</p>
     
-    <section class="bg-light p-3 rounded mb-4 text-start">
-        
+    <section class="bg-light p-3 rounded mb-4 ">
+        <p>Tu pedido llegara a la direccion proporcionada an una semana</p>
     </section>
-    
+    <section class="bg-light p-3 rounded mb-4 ">
+        <p>Puedes ver el estado de el pedido en tu perfil</p>
+    </section>
     <a href="{{ route('pedidos') }}" class="btn btn-primary w-100 mb-2">Ver mis pedidos</a>
     <a href="{{ url('/') }}" class="btn btn-outline-primary w-100">Volver a la tienda</a>
 </div>
