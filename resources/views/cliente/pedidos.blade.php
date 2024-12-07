@@ -2,10 +2,7 @@
 
 @section('content')
 <div class="container">
-    <header class="text-center mb-5">
-        <h1 class="h2">OZEZ</h1>
-    </header>
-
+   
     <div class="row">
         <div class="col-md-11 mx-auto">
             <section class="mb-5">

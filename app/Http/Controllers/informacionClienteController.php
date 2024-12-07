@@ -6,6 +6,8 @@ use App\Http\Requests\direccionRequest;
 use App\Models\Direccion;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Carbon\Carbon;
+
 use Illuminate\Support\Facades\DB;
 
 
@@ -29,18 +31,21 @@ class informacionClienteController extends Controller
     {
         $direccion = Direccion::findOrFail($id);
 
-
         $diasRestriccion = 30; 
-        $ultimaActualizacion = $direccion->updated_at;
-
-    if ($ultimaActualizacion && now()->diffInDays($ultimaActualizacion) < $diasRestriccion) {
-        $diasFaltantes = $diasRestriccion - now()->diffInDays($ultimaActualizacion);
-
-        return redirect()->back()->withErrors([
-            'message' => "No puedes actualizar tu dirección. Debes esperar $diasFaltantes días más."
-        ]);
-    }
-
+        $ultimaActualizacion = Carbon::parse($direccion->updated_at);  
+        
+        $ultimaActualizacion->setTimezone('America/Mexico_City');
+        
+        $diasPasados = now('America/Mexico_City')->diffInDays($ultimaActualizacion, false);
+        
+        $diasFaltantes = intval($diasRestriccion - abs($diasPasados));
+        
+        if ($diasFaltantes > 0) {
+            return redirect()->back()->withErrors([
+                'message' => "No puedes actualizar tu dirección. Debes esperar $diasFaltantes días más."
+            ]);
+        }
+        
         $direccion->update([
             'calle' => $request->calle,
             'colonia' => $request->colonia,

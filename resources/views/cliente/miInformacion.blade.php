@@ -13,9 +13,6 @@
 @endif
 
 <div class="container">
-    <header class="text-center mb-5">
-        <h1 class="h2">OZEZ</h1>
-    </header>
 
     <div class="row">
         <div class="col-md-11 mx-auto">
@@ -27,11 +24,11 @@
                         <p id="nombre" class="form-control">{{ $usuario->persona->nombre ?? 'Nombre no disponible' }}</p>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="apellido_p" class="form-label">Apellido paterno</label>
+                        <label for="apellido_p" class="form-label">Apellidos</label>
                         <p id="apellido_p" class="form-control">{{$usuario->persona->apellido_paterno}} {{$usuario->persona->apellido_materno}}</p>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="apellido_m" class="form-label">Apellido Materno</label>
+                        <label for="apellido_m" class="form-label">Genero</label>
                         <p id="apellido_m" class="form-control">{{$usuario->persona->genero}}</p>
                     </div>
                     <div class="col-md-6 mb-3">
@@ -68,12 +65,19 @@
                             <input type="text" class="form-control" name="numero_int" id="numero_int" value="{{ $usuario->persona->direccion->numero_int }}">
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="estado" class="form-label">Estado</label>
-                            <input type="text" class="form-control" name="estado" id="estado" value="{{ $usuario->persona->direccion->estado }}">
+                            <label for="estado" class="form-label" >{{ __('Estado') }}</label>
+                            <select id="estado" name="estado" class="form-control" >
+                                <option  value="{{ $usuario->persona->direccion->estado }}" >{{ $usuario->persona->direccion->estado }}</option>
+                            </select>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="pais" class="form-label">Pais</label>
-                            <input type="text" class="form-control" name="pais" id="pais" value="{{ $usuario->persona->direccion->pais }}">
+                            <label for="pais" class="form-label">{{ __('País') }}</label>
+                            <select id="pais" name="pais" class="form-select">
+                                <option value="{{ $usuario->persona->direccion->pais }}">{{ $usuario->persona->direccion->pais }}</option>
+                                <option value="US">Estados Unidos</option>
+                                <option value="MX">México</option>
+                                <option value="CA">Canadá</option>
+                            </select>
                         </div>
                     </div>
                 </section>
@@ -105,5 +109,41 @@
         background-color: #333;
     }
 </style>
+
+<script>
+    const countriesStates = {
+        "US": ["California", "Texas", "Florida", "New York"],
+        "MX": [
+            "Aguascalientes", "Baja California", "Baja California Sur", "Campeche", 
+            "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima", 
+            "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo", 
+            "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca", 
+            "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa", 
+            "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán", "Zacatecas"
+        ],
+        
+       "CA": ["Ontario", "Quebec", "British Columbia", "Alberta"]
+    };
+
+    const countrySelect = document.getElementById('pais');
+    const stateSelect = document.getElementById('estado');
+
+    countrySelect.addEventListener('change', function () {
+        const country = this.value;
+        stateSelect.innerHTML = '<option value="">Selecciona un estado</option>'; 
+
+        if (country && countriesStates[country]) {
+            stateSelect.disabled = false;
+            countriesStates[country].forEach(state => {
+                const option = document.createElement('option');
+                option.value = state;
+                option.textContent = state;
+                stateSelect.appendChild(option);
+            });
+        } else {
+            stateSelect.disabled = true;
+        }
+    });
+</script>
 
 @endsection
