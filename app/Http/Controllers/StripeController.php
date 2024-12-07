@@ -83,6 +83,7 @@ class StripeController extends Controller
             }
 
             if ($producto->estado !== 'activo') {
+                session()->forget('carrito');
                 return redirect()->back()->with('error', "El producto '{$producto->nombre}' no está disponible.");
             }
         }
@@ -106,12 +107,16 @@ class StripeController extends Controller
                 }
 
                 if ($producto->cantidad < $detalle['quantity']) {
+                    
                     DB::rollBack();
+                    session()->forget('carrito');
                     return response()->json([
                         'success' => false,
                         'message' => "El producto '{$producto->nombre}' no tiene suficiente stock.",
                     ], 400);
+                    
                 }
+                
             }
 
             // Guardar la orden y el pago
@@ -211,6 +216,8 @@ class StripeController extends Controller
             }
 
             if ($producto->estado !== 'activo') {
+                session()->forget('carrito');
+
                 return redirect()->back()->with('error', "El producto '{$producto->nombre}' no está disponible.");
             }
         }
@@ -224,6 +231,7 @@ class StripeController extends Controller
 
             if ($producto->cantidad < $detalle['quantity']) {
                 DB::rollBack();
+                session()->forget('carrito');
                 return response()->json([
                     'success' => false,
                     'message' => "El producto '{$producto->nombre}' no tiene suficiente stock.",
