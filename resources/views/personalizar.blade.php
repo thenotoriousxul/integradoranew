@@ -4,34 +4,27 @@
 <div class="container">
     <h1 class="text-center">Personaliza tu playera</h1>
     <br>
-    <div class="personalization-container d-flex flex-row flex-wrap align-items-start justify-content-center">
+    <div class="personalization-container d-flex flex-wrap align-items-start justify-content-center">
         <div class="canvas-container">
             <canvas id="myCanvas" width="550" height="600"></canvas>
         </div>
         <div class="estampados-container ml-4">
             <h3>Estampados Disponibles</h3>
             <div class="estampados d-flex flex-wrap">
-            @foreach($estampados as $estampado)
-    <img onclick="agregarEstampado('{{ $estampado->imagen_estampado }}', '{{ $estampado->id }}')" 
-         src="{{ Storage::disk('s3')->url($estampado->imagen_estampado) }}" 
-         alt="{{ $estampado->nombre }}" 
-         class="img-thumbnail m-2" 
-         title="{{ $estampado->nombre }}">
-@endforeach
-
-
-
-
+                @foreach($estampados as $estampado)
+                <img onclick="agregarEstampado('{{ $estampado->imagen_estampado }}', '{{ $estampado->id }}')" 
+                     src="{{ Storage::disk('s3')->url($estampado->imagen_estampado) }}" 
+                     alt="{{ $estampado->nombre }}" 
+                     class="img-thumbnail m-2" 
+                     title="{{ $estampado->nombre }}">
+                @endforeach
             </div>
-            <!-- Formulario para enviar los datos -->
-            <!-- Botón para eliminar objetos -->
-            <div class="controls mt-3">
-        <button onclick="eliminarObjeto()" class="btn btn-danger">Eliminar Objeto</button>
-        <button onclick="descargarImagen()" class="btn btn-primary">Descargar Diseño</button>
-        </div>
+            <div class="controls mt-3 d-flex flex-wrap justify-content-between">
+                <button onclick="eliminarObjeto()" class="btn btn-danger mb-2">Eliminar Objeto</button>
+                <button onclick="descargarImagen()" class="btn btn-primary mb-2">Descargar Diseño</button>
+            </div>
         </div>
     </div>
-    <br>
     <br>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.0/fabric.min.js"></script>
@@ -59,16 +52,15 @@
     // Restaurar el canvas al cargar
     restoreCanvas();
 
-    // Agregar estampado al canvas
     function agregarEstampado(imagePath, estampadoId) {
-    const proxyURL = /s3-image?image=${encodeURIComponent(imagePath)};
+    const proxyURL = `/s3-image?image=${encodeURIComponent(imagePath)}&t=${new Date().getTime()}`; // Evitar caché
 
     fabric.Image.fromURL(proxyURL, function(img) {
         img.set({
             left: canvas.width / 2,
             top: canvas.height / 2,
-            scaleX: 0.2,
-            scaleY: 0.2,
+            scaleX: 0.07,
+            scaleY: 0.07,
             originX: 'center',
             originY: 'center',
             selectable: true,
@@ -82,7 +74,6 @@
         document.getElementById('estampado_id').value = estampadoId;
     });
 }
-
 
     // Eventos para restringir movimiento y escalado dentro de la playera
     canvas.on('object:moving', function(e) {
@@ -188,6 +179,12 @@
             setBackground();
         }
     }
+    // Forzar recarga sin caché si es necesario
+    if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('t', new Date().getTime()); // Añadir timestamp para evitar el caché
+        window.location.href = url.toString();
+    }
 </script>
 
 <style>
@@ -198,18 +195,33 @@
         align-items: flex-start;
     }
     .canvas-container {
-        flex: 1;
-        min-width: 300px;
+        flex: 1 1 550px;
+        max-width: 100%;
         margin-right: 20px;
     }
     .estampados-container {
-        flex: 1;
-        min-width: 300px;
+        flex: 1 1 300px;
+        max-width: 100%;
+        margin-left: 0;
     }
     .img-thumbnail {
         cursor: pointer;
-        width: 80px;
-        height: 80px;
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        transition: transform 0.2s ease;
+    }
+    .img-thumbnail:hover {
+        transform: scale(1.1);
+    }
+    .controls button {
+        width: 48%;
+    }
+    @media (max-width: 1024px) {
+        .img-thumbnail {
+            width: 80px;
+            height: 80px;
+        }
     }
     @media (max-width: 768px) {
         .personalization-container {
@@ -217,12 +229,28 @@
             align-items: center;
         }
         .canvas-container, .estampados-container {
-            min-width: 100%;
-            max-width: 550px;
+            flex: 1 1 100%;
+            max-width: 100%;
             margin-right: 0;
+            margin-left: 0;
         }
-        .controls, .estampados {
+        .estampados {
             justify-content: center;
+        }
+        .controls button {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    }
+    @media (max-width: 576px) {
+        .img-thumbnail {
+            width: 70px;
+            height: 70px;
+        }
+        canvas {
+            width: 100%;
+            height: auto;
         }
     }
 </style>
+@endsection
