@@ -13,8 +13,8 @@
                         <div class="card mb-4">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between mb-3">
-                                    <span class="fw-bold">Orden {{ $orden->id }}</span>
-                                    <span class="text-muted">{{ $orden->fecha }}</span>
+                                    <span class="fw-bold">Orden:  {{$orden->fecha_orden}}-{{ $orden->id }}</span>
+                                    <span class="text-muted">{{ $orden->fecha_orden }}</span>
                                 </div>
                                 @foreach ($orden->detalles as $detalle)
                                     <div class="row mb-3">
