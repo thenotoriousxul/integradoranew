@@ -29,6 +29,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;  
 use Illuminate\Support\Facades\Response;  
 use App\Http\Controllers\S3ImageController;
+use App\Http\Controllers\AccionesController;
+
 
 //prueba
 // Rutas de acceso general
@@ -267,9 +269,9 @@ Route::get('/usuarios/listar', [UserController::class, 'listar'])->name('listar.
 
 Route::post('/carrito/agregar/{productoId}', [EdicionPersonalizadaController::class, 'agregarAlCarrito'])->name('carrito.agregar.personalizada');
 
-Route::get('/admin/acciones', function () {
-    return view('admin.acciones.acciones');
-})->name('admin.acciones');
+
+Route::get('/admin/acciones', [AccionesController::class, 'index'])->name('admin.acciones');
+
 
 // Route::get('/prueba', [PruebaController::class, 'mostrarCatalogoPersonalizable'])->name('pruebas');
 
