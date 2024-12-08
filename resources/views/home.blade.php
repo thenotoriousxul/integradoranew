@@ -39,7 +39,17 @@
         overflow: hidden;
         white-space: nowrap;
         width: 100%;
-        animation: typing 4s steps(40, end), fade-out 0s step-end 4s;
+        animation: typing 6s steps(40, end), fade-out 0s step-end 4s;
+    }
+
+    .display-5 {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 2rem;
+        color: white;
+        overflow: hidden;
+        white-space: nowrap;
+        width: 100%;
+        animation: typing 6s steps(40, end), fade-out 0s step-end 4s;
     }
 
     .lead {
@@ -79,16 +89,32 @@
         width: 100%;
     }
 
-    .lanzamiento h2 {
+    .desert {
+        position: relative;
+        background-image: url('{{ asset('img/desert.jpeg') }}');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-align: center;
+        width: 100%;
+    }
+
+
+    .lanzamiento h2, .desert h2 {
         font-size: 4rem;
         margin-bottom: 10px;
     }
 
-    .lanzamiento p {
+    .lanzamiento p, .desert p {
         font-size: 3rem;
     }
 
-    .lanzamiento .btn {
+    .lanzamiento .btn, .desert .btn {
         font-size: 1.5rem;
         padding: 10px 20px;
         margin-top: 20px;
@@ -98,7 +124,7 @@
         transition: background-color 0.3s ease, color 0.3s ease;
     }
 
-    .lanzamiento .btn:hover {
+    .lanzamiento .btn:hover, .desert .btn:hover  {
         background-color: #f1f1f1;
         color: #333;
     }
@@ -181,111 +207,129 @@
     }
 
     @media (max-width: 576px) {
-        .display-4 {
-            font-size: 2.5rem;
-        }
-
-        .lead {
-            font-size: 1.2rem;
-        }
-
-        .lanzamiento h2,
-        .personalizacion-content h2 {
-            font-size: 2.5rem;
-        }
-
-        .lanzamiento p,
-        .personalizacion-content p {
-            font-size: 1.5rem;
-        }
-
-        .lanzamiento .btn,
-        .personalizacion-content .btn {
-            font-size: 1rem;
-            padding: 8px 15px;
-        }
-
-        .personalizacion {
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-
-        .personalizacion img {
-            width: 100%; 
-            margin-bottom: 20px;
-        }
+    .display-4 {
+        font-size: 2.5rem;
     }
 
-    @media (min-width: 576px) and (max-width: 768px) {
-        .display-4 {
-            font-size: 4rem;
-        }
-
-        .lead {
-            font-size: 1.5rem;
-        }
-
-        .lanzamiento h2,
-        .personalizacion-content h2 {
-            font-size: 3rem;
-        }
-
-        .lanzamiento p,
-        .personalizacion-content p {
-            font-size: 1.8rem;
-        }
-
-        .lanzamiento .btn,
-        .personalizacion-content .btn {
-            font-size: 1.2rem;
-            padding: 10px 20px;
-        }
-
-        .personalizacion img {
-            width: 50%;
-        }
+    .display-5 {
+        font-size: 0.9rem;
     }
 
-    @media (min-width: 768px) and (max-width: 992px) {
-        .display-4 {
-            font-size: 4.5rem;
-        }
-
-        .lead {
-            font-size: 1.6rem;
-        }
-
-        .lanzamiento h2,
-        .personalizacion-content h2 {
-            font-size: 3.5rem;
-        }
-
-        .lanzamiento p,
-        .personalizacion-content p {
-            font-size: 2rem;
-        }
+    .lead {
+        font-size: 1.2rem;
     }
 
-    @media (min-width: 992px) {
-        .display-4 {
-            font-size: 5.5rem;
-        }
-
-        .lead {
-            font-size: 1.8rem;
-        }
-
-        .lanzamiento h2,
-        .personalizacion-content h2 {
-            font-size: 4rem;
-        }
-
-        .lanzamiento p,
-        .personalizacion-content p {
-            font-size: 3rem;
-        }
+    .lanzamiento h2,
+    .personalizacion-content h2,
+    .desert h2 {
+        font-size: 2.5rem;
     }
+
+    .lanzamiento p,
+    .personalizacion-content p,
+    .desert p {
+        font-size: 1.5rem;
+    }
+
+    .lanzamiento .btn,
+    .personalizacion-content .btn,
+    .desert .btn {
+        font-size: 1rem;
+        padding: 8px 15px;
+    }
+
+    .personalizacion,
+    .desert {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .personalizacion img,
+    .desert img {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 768px) {
+    .display-4 {
+        font-size: 4rem;
+    }
+
+    .lead {
+        font-size: 1.5rem;
+    }
+
+    .lanzamiento h2,
+    .personalizacion-content h2,
+    .desert h2 {
+        font-size: 3rem;
+    }
+
+    .lanzamiento p,
+    .personalizacion-content p,
+    .desert p {
+        font-size: 1.8rem;
+    }
+
+    .lanzamiento .btn,
+    .personalizacion-content .btn,
+    .desert .btn {
+        font-size: 1.2rem;
+        padding: 10px 20px;
+    }
+
+    .personalizacion img,
+    .desert img {
+        width: 50%;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 992px) {
+    .display-4 {
+        font-size: 4.5rem;
+    }
+
+    .lead {
+        font-size: 1.6rem;
+    }
+
+    .lanzamiento h2,
+    .personalizacion-content h2,
+    .desert h2 {
+        font-size: 3.5rem;
+    }
+
+    .lanzamiento p,
+    .personalizacion-content p,
+    .desert p {
+        font-size: 2rem;
+    }
+}
+
+@media (min-width: 992px) {
+    .display-4 {
+        font-size: 5.5rem;
+    }
+
+    .lead {
+        font-size: 1.8rem;
+    }
+
+    .lanzamiento h2,
+    .personalizacion-content h2,
+    .desert h2 {
+        font-size: 4rem;
+    }
+
+    .lanzamiento p,
+    .personalizacion-content p,
+    .desert p {
+        font-size: 3rem;
+    }
+}
+
 
 
 
@@ -391,7 +435,6 @@
             font-size: 36px;
         }
     }
-   
     #product-gallery {
     background-color: black;
     padding: 2rem 0;
@@ -410,9 +453,10 @@
 
 #product-gallery .card-img-top {
     object-fit: cover;
-    height: 300px;
     width: 100%;
+    height: 300px;
     border-radius: 8px;
+    object-position: center;
 }
 
 #product-gallery .card-text {
@@ -425,7 +469,6 @@
     color: white;
 }
 
-
 @media (max-width: 1560px) {
     #product-gallery .card-img-top {
         height: 420px;
@@ -434,21 +477,19 @@
 
 @media (max-width: 768px) {
     #product-gallery .card-img-top {
-        height: 250px;
+        height: 500px;
     }
 }
 
 @media (max-width: 576px) {
     #product-gallery .card-img-top {
-        height: 200px;
+        height: 500px; }
     }
 }
 
 
 
-
 </style>
-
 
 
 <div class="container-fluid p-0">
@@ -457,105 +498,97 @@
         
         <div class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center">
             <h1 class="display-4">Bienvenido a OZEZ</h1>
-            <p class="lead">Explora nuestra colección de playeras personalizables y exclusivas.</p>
+            <p class="display-5">Explora nuestra colección de playeras personalizables y exclusivas.</p>
         </div>
     </div>
-
-
-    {{-- <div class="animacion">
-        <div class="logo-container">
-            <span>Innovación en Cada Puntada</span>
-            <span>Diseños que Definen tu Estilo</span>
-            <span>OZEZ: Lleva tu Estilo al Siguiente Nivel</span>
-            <span>Autenticidad y Creatividad en Cada Playera</span>
-            <span>Explora la Diferencia con OZEZ</span>
-            <span>Calidad y Personalización en un Solo Lugar</span>
-            <span>Viste tu Estilo, Viste OZEZ</span>
-        </div>
-    </div> --}}
-
-    {{-- <div class="catalogo py-5 text-center">
-        <div class="container">
-            <h2 class="display-5 font-weight-bold">Explora Nuestro Catálogo</h2>
-            <p class="lead mb-4">Descubre nuestra amplia variedad de playeras únicas, diseñadas para adaptarse a cada estilo. Ya sea que busques algo moderno, clásico o completamente personalizado, OZEZ tiene algo para ti.</p>
-            <a href="{{route('mostrar.productos')}}" class="btn btn-dark" style="font-size: 2rem; padding: 15px 30px;">Ir al Catálogo</a>
-        </div>
-    </div> --}}
-
-
-    {{-- <div class="animacion">
-        <div class="logo-container">
-            <span>Personalización al Máximo</span>
-            <span>Estilo Único para Cada Personalidad</span>
-            <span>Explora Nuevas Posibilidades con OZEZ</span>
-            <span>Calidad y Estilo en un Solo Lugar</span>
-            <span>Viste la Diferencia</span>
-            <span>Innovación en Cada Puntada</span>
-        </div>
-    </div> --}}
-
-    <div id="product-gallery" class="container-fluid " style="background-color: black; padding: 2rem 0;">
-        <div class="text-center mb-4">
-            <h2 class="display-5 font-weight-bold" style="color: white;">Productos Destacados</h2>
-            <p class="lead" style="color: white;">Explora nuestras prendas más populares y seleccionadas por nuestros clientes como sus favoritas.</p>
-        </div>
-        <div class="row g-4">
-            <!-- Producto 1 -->
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="card h-100 shadow-sm" style="background-color: black; border: none;">
-                    <a href="#">
-                        <img src="{{ asset('img/first.jpeg') }}" class="card-img-top" alt="Producto 1">
-                    </a>
-                    <div class="card-body text-center">
-                        <p class="card-text" style="color: white;">¡Resalta tu estilo con nuestras playeras exclusivas!</p>
-                    </div>
-                </div>
-            </div>
-            <!-- Producto 2 -->
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="card h-100 shadow-sm" style="background-color: black; border: none;">
-                    <a href="#">
-                        <img src="{{ asset('img/second.jpeg') }}" class="card-img-top" alt="Producto 2">
-                    </a>
-                    <div class="card-body text-center">
-                        <p class="card-text" style="color: white;">Combina autenticidad y comodidad con cada diseño.</p>
-                    </div>
-                </div>
-            </div>
-            <!-- Producto 3 -->
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="card h-100 shadow-sm" style="background-color: black; border: none;">
-                    <a href="#">
-                        <img src="{{ asset('img/third.jpeg') }}" class="card-img-top" alt="Producto 3">
-                    </a>
-                    <div class="card-body text-center">
-                        <p class="card-text" style="color: white;">Encuentra la inspiración en cada detalle de nuestras playeras.</p>
-                    </div>
-                </div>
-            </div>
-            <!-- Producto 4 -->
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="card h-100 shadow-sm" style="background-color: black; border: none;">
-                    <a href="#">
-                        <img src="{{ asset('img/fourth.jpeg') }}" class="card-img-top" alt="Producto 4">
-                    </a>
-                    <div class="card-body text-center">
-                        <p class="card-text" style="color: white;">¡Elige el modelo que habla de ti y marca la diferencia!</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
 
     <div class="animacion">
         <div class="logo-container">
-            <span>Exprésate con OZEZ</span>
-            <span>Diseño Exclusivo, Estilo Único</span>
-            <span>Vive tu Moda con OZEZ</span>
-            <span>Edición Limitada para Personalidades Únicas</span>
-            <span>Calidad y Estilo en Cada Costura</span>
-            <span>Hazlo Personal, Hazlo OZEZ</span>
+            <span>¡Tu estilo, tu esencia!</span>
+            <span>Diseños exclusivos, solo para ti</span>
+            <span>Exprésate con lo que vistes</span>
+            <span>Rinde homenaje a la moda única</span>
+            <span>¡Más que moda, una forma de vida!</span>
+            <span>Transforma tu estilo con OZEZ</span>
+        </div>
+    </div>
+
+    <div class="desert">
+        <div>
+            <h2>Nuevo Lanzamiento: Edición Desert Style</h2>
+            <p>¡Celebra con nosotros el estilo único de nuestra nueva playera! <br>Disponible solo por tiempo limitado.</p>
+            <a href="productos/catalogo" class="btn">Consíguelo aquí</a>
+        </div>
+    </div>
+
+    <div class="animacion">
+        <div class="logo-container">
+            <span>Diseños que cuentan tu historia</span>
+            <span>Con OZEZ, cada playera tiene un mensaje</span>
+            <span>Vive la moda que te define</span>
+            <span>Colores vibrantes, estilo sin igual</span>
+            <span>OZEZ, donde cada prenda tiene carácter</span>
+            <span>¡Lleva tu estilo más allá!</span>
+        </div>
+    </div>
+
+    <div id="product-gallery" class="container-fluid" style="background-color: black; padding: 2rem 0;">
+    <div class="text-center mb-4">
+        <h2 class="display-5 font-weight-bold" style="color: white;">Productos destacados</h2>
+        <p class="lead" style="color: white;">Explora nuestras prendas más populares y seleccionadas por nuestros clientes como sus favoritas.</p>
+    </div>
+    <div class="row g-4">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="card h-100 shadow-sm" style="background-color: black; border: none;">
+                <a href="productos/catalogo">
+                    <img src="{{ asset('img/first.jpeg') }}" class="card-img-top" alt="Producto 1">
+                </a>
+                <div class="card-body text-center">
+                    <p class="card-text" style="color: white;">¡Resalta tu estilo con nuestras playeras exclusivas!</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="card h-100 shadow-sm" style="background-color: black; border: none;">
+                <a href="productos/catalogo">
+                    <img src="{{ asset('img/second.jpeg') }}" class="card-img-top" alt="Producto 2">
+                </a>
+                <div class="card-body text-center">
+                    <p class="card-text" style="color: white;">Combina autenticidad y comodidad con cada diseño.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="card h-100 shadow-sm" style="background-color: black; border: none;">
+                <a href="productos/catalogo">
+                    <img src="{{ asset('img/third.jpeg') }}" class="card-img-top" alt="Producto 3">
+                </a>
+                <div class="card-body text-center">
+                    <p class="card-text" style="color: white;">Encuentra la inspiración en cada detalle de nuestras playeras.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="card h-100 shadow-sm" style="background-color: black; border: none;">
+                <a href="productos/catalogo">
+                    <img src="{{ asset('img/fourth.jpeg') }}" class="card-img-top" alt="Producto 4">
+                </a>
+                <div class="card-body text-center">
+                    <p class="card-text" style="color: white;">¡Elige el modelo que habla de ti y marca la diferencia!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="animacion">
+        <div class="logo-container">
+            <span>OZEZ: La moda hecha para ti</span>
+            <span>Transforma tu estilo, transforma tu mundo</span>
+            <span>¡Lleva la moda al siguiente nivel!</span>
+            <span>Diseños limitados, estilo ilimitado</span>
+            <span>En cada puntada, hay una historia</span>
+            <span>Haz tuyo el estilo OZEZ</span>
         </div>
     </div>
 
@@ -577,8 +610,6 @@
             <p class="disclaimer">No acumulable a otras promociones. Válido hasta el 05/01.</p>
         </div>
     </div>
-    
-    
 
     <div class="animacion">
         <div class="logo-container">
@@ -593,9 +624,9 @@
 
     <div class="lanzamiento">
         <div>
-            <h2>Nuevo Lanzamiento: Edición Especial Día de Muertos</h2>
+            <h2>Edición Especial Día de Muertos</h2>
             <p>¡Descubre nuestra exclusiva playera en honor al Día de Muertos! <br>Disponible solo por tiempo limitado.</p>
-            <a href="#" class="btn">Consíguelo aquí</a>
+            <a href="productos/catalogo" class="btn">Consíguelo aquí</a>
         </div>
     </div>
 
@@ -611,9 +642,9 @@
     <div class="personalizacion">
         <img src="{{ asset('img/hombre.jpeg') }}" alt="Personalización de playeras">
         <div class="personalizacion-content">
-            <h2>Haz Tuya Cada Playera</h2>
-            <p>Con nuestra opción de personalización, puedes darle tu toque especial a cada prenda. Cambia colores o logos, y crea un estilo que realmente hable de ti.</p>
-            <a href="#" class="btn">Personalizar Ahora</a>
+            <h2>Descubre Nuestro Catálogo de Playeras Personalizadas</h2>
+            <p>Explora nuestra selección de playeras personalizadas con estampados exclusivos. Si tienes en mente algún diseño que no encuentras en nuestro catálogo, ¡no te preocupes! Puedes pedirlo a través de WhatsApp y te ayudamos a crear la playera que deseas.</p>
+            <a href="personalizacion" class="btn" target="_blank">Ver Catálogo</a>
         </div>
     </div>
 
@@ -628,4 +659,5 @@
         </div>
     </div>
 </div>
+
 @endsection
