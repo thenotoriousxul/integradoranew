@@ -12,38 +12,33 @@
             <h3>Estampados Disponibles</h3>
             <div class="estampados d-flex flex-wrap">
             @foreach($estampados as $estampado)
-    <img onclick="agregarEstampado('{{ $estampado->imagen_estampado }}', '{{ $estampado->id }}')" 
-         src="{{ Storage::disk('s3')->url($estampado->imagen_estampado) }}" 
-         alt="{{ $estampado->nombre }}" 
-         class="img-thumbnail m-2" 
-         title="{{ $estampado->nombre }}">
-@endforeach
-
-
-
-
+                <img onclick="agregarEstampado('{{ $estampado->imagen_estampado }}', '{{ $estampado->id }}')" 
+                     src="{{ Storage::disk('s3')->url($estampado->imagen_estampado) }}?t={{ time() }}" 
+                     alt="{{ $estampado->nombre }}" 
+                     class="img-thumbnail m-2" 
+                     title="{{ $estampado->nombre }}">
+            @endforeach
             </div>
-            <!-- Formulario para enviar los datos -->
-            <!-- Botón para eliminar objetos -->
             <div class="controls mt-3">
-        <button onclick="eliminarObjeto()" class="btn btn-danger">Eliminar Objeto</button>
-        <button onclick="descargarImagen()" class="btn btn-primary">Descargar Diseño</button>
-        </div>
+                <button onclick="eliminarObjeto()" class="btn btn-danger">Eliminar Objeto</button>
+                <button onclick="descargarImagen()" class="btn btn-primary">Descargar Diseño</button>
+            </div>
         </div>
     </div>
-    <br>
-    <br>
+    <br><br>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.0/fabric.min.js"></script>
 <script>
     const canvas = new fabric.Canvas('myCanvas');
     const productId = {{ $producto->id }};
     let playeraBounds = null;
-    let selectedEstampadoId = null;
+
+    // Limpiar el estado de localStorage al cargar la página
+    localStorage.removeItem('canvasState_' + productId);
 
     // Función para establecer la imagen de fondo
     function setBackground() {
-        fabric.Image.fromURL('{{ $producto->imagen_producto }}', function(img) {
+        fabric.Image.fromURL('{{ $producto->imagen_producto }}?t=' + new Date().getTime(), function(img) {
             img.set({
                 left: 0,
                 top: 0,
@@ -51,9 +46,8 @@
                 evented: false
             });
             canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
-            // Almacenar los límites de la playera
             playeraBounds = img.getBoundingRect();
-        }, { crossOrigin: 'Anonymous' }); // Añadir crossOrigin
+        }, { crossOrigin: 'Anonymous' });
     }
 
     // Restaurar el canvas al cargar
@@ -61,28 +55,27 @@
 
     // Agregar estampado al canvas
     function agregarEstampado(imagePath, estampadoId) {
-    const proxyURL = /s3-image?image=${encodeURIComponent(imagePath)};
+        const proxyURL = `/s3-image?image=${encodeURIComponent(imagePath)}&t=${new Date().getTime()}`;
 
-    fabric.Image.fromURL(proxyURL, function(img) {
-        img.set({
-            left: canvas.width / 2,
-            top: canvas.height / 2,
-            scaleX: 0.2,
-            scaleY: 0.2,
-            originX: 'center',
-            originY: 'center',
-            selectable: true,
-            evented: true
+        fabric.Image.fromURL(proxyURL, function(img) {
+            img.set({
+                left: canvas.width / 2,
+                top: canvas.height / 2,
+                scaleX: 0.2,
+                scaleY: 0.2,
+                originX: 'center',
+                originY: 'center',
+                selectable: true,
+                evented: true
+            });
+            canvas.add(img);
+            canvas.setActiveObject(img);
+            saveCanvas();
+
+            // Establecer el ID del estampado seleccionado
+            document.getElementById('estampado_id').value = estampadoId;
         });
-        canvas.add(img);
-        canvas.setActiveObject(img);
-        saveCanvas();
-
-        // Establecer el ID del estampado seleccionado
-        document.getElementById('estampado_id').value = estampadoId;
-    });
-}
-
+    }
 
     // Eventos para restringir movimiento y escalado dentro de la playera
     canvas.on('object:moving', function(e) {
@@ -91,7 +84,6 @@
 
         var objBounds = obj.getBoundingRect();
 
-        // Restringir movimiento
         if (objBounds.left < playeraBounds.left) {
             obj.left = playeraBounds.left + obj.width * obj.scaleX / 2;
         }
@@ -112,7 +104,6 @@
 
         var objBounds = obj.getBoundingRect();
 
-        // Restringir escalado
         if (objBounds.left < playeraBounds.left ||
             objBounds.top < playeraBounds.top ||
             objBounds.left + objBounds.width > playeraBounds.left + playeraBounds.width ||
@@ -137,11 +128,8 @@
     // Función para guardar el diseño y enviar el formulario
     function guardarDiseno() {
         try {
-            // Obtener la imagen del canvas
             const canvasData = canvas.toDataURL('image/png');
-            // Establecer el valor en el input oculto
             document.getElementById('imagen_personalizada').value = canvasData;
-            // Enviar el formulario
             document.getElementById('personalizar-form').submit();
         } catch (error) {
             console.error('Error al guardar el diseño:', error);
@@ -161,12 +149,11 @@
     }
 
     function descargarImagen() {
-    const link = document.createElement('a');
-    link.href = canvas.toDataURL({ format: 'png' }); // Generar la URL del diseño
-    link.download = 'mi_diseño.png'; // Nombre del archivo descargado
-    link.click();
-}
-
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL({ format: 'png' });
+        link.download = 'mi_diseño.png';
+        link.click();
+    }
 
     // Guardar el estado del canvas en localStorage por producto
     function saveCanvas() {
@@ -180,11 +167,9 @@
         if (canvasData) {
             canvas.loadFromJSON(canvasData, function() {
                 canvas.renderAll();
-                // Asegurarse de que la imagen de fondo es la correcta después de restaurar
                 setBackground();
             });
         } else {
-            // Si no hay estado guardado, establecer la imagen de fondo
             setBackground();
         }
     }
