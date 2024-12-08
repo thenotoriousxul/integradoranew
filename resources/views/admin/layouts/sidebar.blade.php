@@ -39,7 +39,7 @@
     .title-section {
         color: black;
         margin-bottom: 15px;
-        font-size: 15px;
+        font-size: 18px;
         font-weight: bold;
         text-transform: uppercase;
         letter-spacing: 1.2px;
@@ -50,7 +50,7 @@
         padding: 8px 13px;
         text-decoration: none;
         color: royalblue;
-        font-size: 15px;
+        font-size: 17px;
         border-radius: 12px;
         margin-bottom: 15px;
         background-color: transparent;
