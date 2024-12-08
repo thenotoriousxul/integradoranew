@@ -22,13 +22,16 @@
         </div>
 
         <div class="mb-3">
-            <label for="productos_id" class="form-label fw-bold">Producto</label>
-            <select name="productos_id" id="productos_id" class="form-control" required>
-                <option value="" disabled selected>Seleccione un producto</option>
-                @foreach ($productos as $producto)
-                    <option value="{{ $producto->id }}">{{ ucfirst($producto->tipo) }} - {{ ucfirst($producto->color) }}</option>
-                @endforeach
-            </select>
+            <label class="form-label fw-bold">Producto</label>
+            <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#productosModal">
+                Seleccionar Producto
+            </button>
+        </div>
+
+        <input type="hidden" name="productos_id" id="productos_id" required>
+
+        <div id="producto-seleccionado" class="alert alert-info d-none">
+            <strong>Producto Seleccionado:</strong> <span id="producto-detalles"></span>
         </div>
 
         <div class="mb-3">
@@ -46,4 +49,75 @@
         </div>
     </form>
 </div>
+
+<!-- Modal para seleccionar producto -->
+<div class="modal fade" id="productosModal" tabindex="-1" aria-labelledby="productosModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="productosModalLabel">Seleccionar Producto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    @foreach ($productos as $producto)
+                        <div class="col-md-4">
+                            <div class="card mb-3 producto-card" 
+                                 data-id="{{ $producto->id }}" 
+                                 data-detalles="{{ ucfirst($producto->tipo) }} - Color: {{ ucfirst($producto->color) }} - Talla: {{ strtoupper($producto->talla) }}"
+                                 data-stock="{{ $producto->lote }}">
+
+                                <img src="{{ $producto->imagen_producto }}" 
+                                     class="card-img-top" 
+                                     alt="{{ ucfirst($producto->tipo) }}" 
+                                     style="height: 200px; object-fit: cover;">
+
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ ucfirst($producto->tipo) }}</h5>
+                                    <p class="card-text">Color: {{ ucfirst($producto->color) }}</p>
+                                    <p class="card-text">Talla: {{ strtoupper($producto->talla) }}</p>
+                                    <p class="card-text">Lote actual: {{ strtoupper($producto->lote) }}</p>
+
+                                    @if($producto->lote > 0)
+                                    <button type="button" class="btn btn-primary seleccionar-producto">
+                                        Seleccionar
+                                    </button>
+                                    @else 
+                                    <span class="text-danger">Agotado</span>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.querySelectorAll('.seleccionar-producto').forEach(button => {
+    button.addEventListener('click', function () {
+        const card = this.closest('.producto-card');
+        const productoId = card.getAttribute('data-id');
+        const detalles = card.getAttribute('data-detalles');
+        const lote = card.getAttribute('data-stock'); 
+
+        const cantidadInput = document.getElementById('cantidad');
+        cantidadInput.setAttribute('max', lote); 
+        cantidadInput.value = 1; 
+
+        document.getElementById('productos_id').value = productoId;
+        document.getElementById('producto-detalles').textContent = detalles;
+
+        const seleccionadoDiv = document.getElementById('producto-seleccionado');
+        seleccionadoDiv.classList.remove('d-none');
+
+        const modal = document.querySelector('#productosModal');
+        const modalInstance = bootstrap.Modal.getInstance(modal);
+        modalInstance.hide();
+    });
+});
+</script>
+
 @endsection
