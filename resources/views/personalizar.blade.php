@@ -36,31 +36,30 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.0/fabric.min.js"></script>
 <script>
-    const canvas = new fabric.Canvas('myCanvas');
-    const productId = {{ $producto->id }};
-    let playeraBounds = null;
-    let selectedEstampadoId = null;
+  const canvas = new fabric.Canvas('myCanvas');
+const productId = {{ $producto->id }};  // Asegúrate de que el producto tenga un ID único
+let playeraBounds = null;
 
-    // Función para establecer la imagen de fondo
-    function setBackground() {
-        fabric.Image.fromURL('{{ $producto->imagen_producto }}', function(img) {
-            img.set({
-                left: 0,
-                top: 0,
-                selectable: false,
-                evented: false
-            });
-            canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
-            // Almacenar los límites de la playera
-            playeraBounds = img.getBoundingRect();
-        }, { crossOrigin: 'Anonymous' }); // Añadir crossOrigin
-    }
+// Función para establecer la imagen de fondo
+function setBackground() {
+    const productImageURL = `{{ $producto->imagen_producto }}?t=${new Date().getTime()}`; // Usar timestamp para evitar caché
+    fabric.Image.fromURL(productImageURL, function(img) {
+        img.set({
+            left: 0,
+            top: 0,
+            selectable: false,
+            evented: false
+        });
+        canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
+        playeraBounds = img.getBoundingRect();  // Guardar los límites de la playera
+    }, { crossOrigin: 'Anonymous' });
+}
 
-    // Restaurar el canvas al cargar
-    restoreCanvas();
+// Llamar a setBackground para establecer la imagen de fondo al cargar la página
+setBackground();
 
-    // Agregar estampado al canvas
-    function agregarEstampado(imagePath, estampadoId) {
+// Agregar estampado al canvas
+function agregarEstampado(imagePath, estampadoId) {
     const proxyURL = `/s3-image?image=${encodeURIComponent(imagePath)}`;
 
     fabric.Image.fromURL(proxyURL, function(img) {
@@ -76,118 +75,72 @@
         });
         canvas.add(img);
         canvas.setActiveObject(img);
-        saveCanvas();
-
-        // Establecer el ID del estampado seleccionado
-        document.getElementById('estampado_id').value = estampadoId;
     });
 }
 
+// Eventos para restringir movimiento y escalado dentro de los límites de la playera
+canvas.on('object:moving', function(e) {
+    var obj = e.target;
+    if (obj === canvas.backgroundImage) return;
 
-    // Eventos para restringir movimiento y escalado dentro de la playera
-    canvas.on('object:moving', function(e) {
-        var obj = e.target;
-        if (obj === canvas.backgroundImage) return;
+    var objBounds = obj.getBoundingRect();
 
-        var objBounds = obj.getBoundingRect();
-
-        // Restringir movimiento
-        if (objBounds.left < playeraBounds.left) {
-            obj.left = playeraBounds.left + obj.width * obj.scaleX / 2;
-        }
-        if (objBounds.top < playeraBounds.top) {
-            obj.top = playeraBounds.top + obj.height * obj.scaleY / 2;
-        }
-        if (objBounds.left + objBounds.width > playeraBounds.left + playeraBounds.width) {
-            obj.left = playeraBounds.left + playeraBounds.width - obj.width * obj.scaleX / 2;
-        }
-        if (objBounds.top + objBounds.height > playeraBounds.top + playeraBounds.height) {
-            obj.top = playeraBounds.top + playeraBounds.height - obj.height * obj.scaleY / 2;
-        }
-    });
-
-    canvas.on('object:scaling', function(e) {
-        var obj = e.target;
-        if (obj === canvas.backgroundImage) return;
-
-        var objBounds = obj.getBoundingRect();
-
-        // Restringir escalado
-        if (objBounds.left < playeraBounds.left ||
-            objBounds.top < playeraBounds.top ||
-            objBounds.left + objBounds.width > playeraBounds.left + playeraBounds.width ||
-            objBounds.top + objBounds.height > playeraBounds.top + playeraBounds.height) {
-            obj.scaleX = obj.oldScaleX || obj.scaleX;
-            obj.scaleY = obj.oldScaleY || obj.scaleY;
-            obj.left = obj.oldLeft || obj.left;
-            obj.top = obj.oldTop || obj.top;
-        } else {
-            obj.oldScaleX = obj.scaleX;
-            obj.oldScaleY = obj.scaleY;
-            obj.oldLeft = obj.left;
-            obj.oldTop = obj.top;
-        }
-    });
-
-    // Guardar el estado después de modificar objetos
-    canvas.on('object:modified', function() {
-        saveCanvas();
-    });
-
-    // Función para guardar el diseño y enviar el formulario
-    function guardarDiseno() {
-        try {
-            // Obtener la imagen del canvas
-            const canvasData = canvas.toDataURL('image/png');
-            // Establecer el valor en el input oculto
-            document.getElementById('imagen_personalizada').value = canvasData;
-            // Enviar el formulario
-            document.getElementById('personalizar-form').submit();
-        } catch (error) {
-            console.error('Error al guardar el diseño:', error);
-            alert('Ocurrió un error al guardar el diseño. Por favor, asegúrate de que todas las imágenes se cargaron correctamente.');
-        }
+    // Restringir movimiento dentro de los límites de la playera
+    if (objBounds.left < playeraBounds.left) {
+        obj.left = playeraBounds.left + obj.width * obj.scaleX / 2;
     }
-
-    // Eliminar el objeto seleccionado
-    function eliminarObjeto() {
-        const activeObject = canvas.getActiveObject();
-        if (activeObject && activeObject !== canvas.backgroundImage) {
-            canvas.remove(activeObject);
-            saveCanvas();
-        } else {
-            alert('Seleccione un objeto para eliminar.');
-        }
+    if (objBounds.top < playeraBounds.top) {
+        obj.top = playeraBounds.top + obj.height * obj.scaleY / 2;
     }
+    if (objBounds.left + objBounds.width > playeraBounds.left + playeraBounds.width) {
+        obj.left = playeraBounds.left + playeraBounds.width - obj.width * obj.scaleX / 2;
+    }
+    if (objBounds.top + objBounds.height > playeraBounds.top + playeraBounds.height) {
+        obj.top = playeraBounds.top + playeraBounds.height - obj.height * obj.scaleY / 2;
+    }
+});
 
-    function descargarImagen() {
+canvas.on('object:scaling', function(e) {
+    var obj = e.target;
+    if (obj === canvas.backgroundImage) return;
+
+    var objBounds = obj.getBoundingRect();
+
+    // Restringir escalado dentro de los límites de la playera
+    if (objBounds.left < playeraBounds.left ||
+        objBounds.top < playeraBounds.top ||
+        objBounds.left + objBounds.width > playeraBounds.left + playeraBounds.width ||
+        objBounds.top + objBounds.height > playeraBounds.top + playeraBounds.height) {
+        obj.scaleX = obj.oldScaleX || obj.scaleX;
+        obj.scaleY = obj.oldScaleY || obj.scaleY;
+        obj.left = obj.oldLeft || obj.left;
+        obj.top = obj.oldTop || obj.top;
+    } else {
+        obj.oldScaleX = obj.scaleX;
+        obj.oldScaleY = obj.scaleY;
+        obj.oldLeft = obj.left;
+        obj.oldTop = obj.top;
+    }
+});
+
+// Eliminar el objeto seleccionado
+function eliminarObjeto() {
+    const activeObject = canvas.getActiveObject();
+    if (activeObject && activeObject !== canvas.backgroundImage) {
+        canvas.remove(activeObject);
+    } else {
+        alert('Seleccione un objeto para eliminar.');
+    }
+}
+
+// Descargar la imagen personalizada
+function descargarImagen() {
     const link = document.createElement('a');
     link.href = canvas.toDataURL({ format: 'png' }); // Generar la URL del diseño
     link.download = 'mi_diseño.png'; // Nombre del archivo descargado
     link.click();
 }
 
-
-    // Guardar el estado del canvas en localStorage por producto
-    function saveCanvas() {
-        const canvasData = JSON.stringify(canvas.toJSON(['objects']));
-        localStorage.setItem('canvasState_' + productId, canvasData);
-    }
-
-    // Restaurar el estado del canvas desde localStorage
-    function restoreCanvas() {
-        const canvasData = localStorage.getItem('canvasState_' + productId);
-        if (canvasData) {
-            canvas.loadFromJSON(canvasData, function() {
-                canvas.renderAll();
-                // Asegurarse de que la imagen de fondo es la correcta después de restaurar
-                setBackground();
-            });
-        } else {
-            // Si no hay estado guardado, establecer la imagen de fondo
-            setBackground();
-        }
-    }
 </script>
 
 <style>
