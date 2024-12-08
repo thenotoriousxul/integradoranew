@@ -70,6 +70,9 @@
                 display: none;
             }
         }
+        a{
+            text-decoration: none !important;
+        }
     </style>
 </head>
 <body>
@@ -79,6 +82,9 @@
 
     <div class="contenedor">
         <main class="contenido">
+            <header class="text-center mb-5">
+                <a href="{{ url('/') }}"  class="h2">OZEZ</a>  <!-- Título global -->
+            </header>
             @yield('content')
         </main>
         

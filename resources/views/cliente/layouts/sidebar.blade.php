@@ -5,7 +5,6 @@
         <a href="{{ route('pedidos') }}" class="nav-link text-secondary py-2">Mis compras</a>
         <a href="{{ route('perfil') }}" class="nav-link text-secondary py-2">Datos personales</a>
         <a href="{{ route('envios.pendientes') }}" class="nav-link text-secondary py-2">Envios pendientes</a>
-        <a href="#" class="nav-link text-secondary py-2">Atención al cliente</a>
     </nav>
     <a class="btn btn-dark w-100 py-3 rounded-3" href="{{ route('logout') }}"
        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

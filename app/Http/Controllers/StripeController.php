@@ -1,14 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Mail\ordenMail;
 use App\Models\DetalleOrden;
+use App\Models\EdicionesProductos;
 use App\Models\Orden;
 use App\Models\Pago;
 use Illuminate\Http\Request;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
-use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -29,7 +30,7 @@ class StripeController extends Controller
 
         try {
             $paymentIntent = PaymentIntent::create([
-                'amount' => $total * 100, 
+                'amount' => $total * 100,
                 'currency' => 'mxn',
                 'payment_method_types' => ['card'],
             ]);
@@ -57,6 +58,37 @@ class StripeController extends Controller
 
         $paymentIntentId = $request->input('payment_intent_id');
 
+        foreach ($carrito as $key => $item) {
+            $producto = EdicionesProductos::find($item['id']);
+
+            if (!$producto) {
+                return back()->withErrors(['error' => "El producto '{$item['name']}' no existe."]);
+            }
+
+            $stockDisponible = EdicionesProductos::where('nombre', $producto->nombre)
+                                ->where('talla', $item['attributes']['talla'])
+                                ->value('cantidad');
+
+            if ($item['quantity'] > $stockDisponible) {
+                return back()->withErrors([
+                    'error' => "El producto '{$item['name']}' no tiene suficiente stock para la talla '{$item['attributes']['talla']}'."
+                ]);
+            }
+        }
+        foreach ($carrito as $productoId => $detalle) {
+            $producto = EdicionesProductos::find($productoId);
+
+            if (!$producto) {
+                return redirect()->back()->with('error', "El producto con ID {$productoId} no existe.");
+            }
+
+            if ($producto->estado !== 'activo') {
+                session()->forget('carrito');
+                return redirect()->back()->with('error', "El producto '{$producto->nombre}' no está disponible.");
+            }
+        }
+
+
         try {
             $paymentIntent = $this->obtenerPaymentIntentDesdeStripe($paymentIntentId);
 
@@ -67,20 +99,24 @@ class StripeController extends Controller
             DB::beginTransaction();
 
             foreach ($carrito as $productoId => $detalle) {
-                $producto = \App\Models\EdicionesProductos::lockForUpdate()->find($productoId);
-    
+                $producto = EdicionesProductos::lockForUpdate()->find($productoId);
+
                 if (!$producto) {
                     DB::rollBack();
                     return response()->json(['success' => false, 'message' => 'Producto no encontrado.'], 404);
                 }
-    
-                // if ($producto->cantidad < $detalle['quantity']) {
-                //     DB::rollBack();
-                //     return response()->json([
-                //         'success' => false,
-                //         'message' => "El producto '{$producto->nombre}' no tiene suficiente stock.",
-                //     ], 400);
-                // }
+
+                if ($producto->cantidad < $detalle['quantity']) {
+                    
+                    DB::rollBack();
+                    session()->forget('carrito');
+                    return response()->json([
+                        'success' => false,
+                        'message' => "El producto '{$producto->nombre}' no tiene suficiente stock.",
+                    ], 400);
+                    
+                }
+                
             }
 
             // Guardar la orden y el pago
@@ -91,7 +127,7 @@ class StripeController extends Controller
             DB::commit();
 
             $usuario = auth()->user();
-            Mail::to($usuario->email)->send(new ordenMail($numeroPedido=$orden->id));
+            Mail::to($usuario->email)->send(new ordenMail($orden->id));
 
             Log::info('Orden creada con éxito', ['orden_id' => $orden->id]);
 
@@ -101,7 +137,7 @@ class StripeController extends Controller
                 'orden_id' => $orden->id,
             ]);
         } catch (\Exception $e) {
-            DB::rollBack();  // Revierte la transacción en caso de error
+            DB::rollBack();
             Log::error('Error al procesar el pago:', ['error' => $e->getMessage()]);
             return response()->json([
                 'success' => false,
@@ -109,7 +145,7 @@ class StripeController extends Controller
             ], 500);
         }
     }
- 
+
     private function guardarOrden($carrito, $paymentIntent)
     {
         $total = $paymentIntent->amount_received / 100;
@@ -126,7 +162,6 @@ class StripeController extends Controller
             'estado' => 'Pendiente',
         ]);
 
-        // Guardar detalles de la orden
         foreach ($carrito as $producto) {
             DetalleOrden::create([
                 'ediciones_productos_id' => $producto['id'],
@@ -136,7 +171,6 @@ class StripeController extends Controller
             ]);
         }
 
-        // Limpiar el carrito de la sesión
         session()->forget('carrito');
 
         Log::info('Orden guardada correctamente', ['orden_id' => $orden->id]);
@@ -148,16 +182,15 @@ class StripeController extends Controller
     {
         Pago::create([
             'ordenes_id' => $orden->id,
-            'descuento' => 0, 
+            'descuento' => 0,
             'pago_total' => $paymentIntent->amount_received / 100,
-            'metodo_pago' => 'Tarjeta', 
+            'metodo_pago' => 'Tarjeta',
             'fecha_pago' => now(),
             'estado' => 'pagado',
-            'num_referencia' => $paymentIntent->id, 
+            'num_referencia' => $paymentIntent->id,
         ]);
 
-        // Actualizar el estado de la orden
-        $orden->update([ 'estado' => 'Pagada' ]);
+        $orden->update(['estado' => 'Pagada']);
 
         Log::info('Pago guardado correctamente', ['orden_id' => $orden->id, 'pago_total' => $paymentIntent->amount_received / 100]);
     }
@@ -176,14 +209,33 @@ class StripeController extends Controller
         }
 
         foreach ($carrito as $productoId => $detalle) {
-            $producto = \App\Models\EdicionesProductos::find($productoId);
+            $producto = EdicionesProductos::find($productoId);
 
             if (!$producto) {
                 return redirect()->back()->with('error', "El producto con ID {$productoId} no existe.");
             }
 
             if ($producto->estado !== 'activo') {
+                session()->forget('carrito');
+
                 return redirect()->back()->with('error', "El producto '{$producto->nombre}' no está disponible.");
+            }
+        }
+        foreach ($carrito as $productoId => $detalle) {
+            $producto = EdicionesProductos::lockForUpdate()->find($productoId);
+
+            if (!$producto) {
+                DB::rollBack();
+                return response()->json(['success' => false, 'message' => 'Producto no encontrado.'], 404);
+            }
+
+            if ($producto->cantidad < $detalle['quantity']) {
+                DB::rollBack();
+                session()->forget('carrito');
+                return response()->json([
+                    'success' => false,
+                    'message' => "El producto '{$producto->nombre}' no tiene suficiente stock.",
+                ], 400);
             }
         }
 
