@@ -4,10 +4,11 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
-  background-color: #58656d;
+  background-color: gold;
   border-radius: 10px;
   height: 60px;
   color: #ffffff;
+  font-weight: bold;
 }
 
 .raya {
