@@ -29,6 +29,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;  
 use Illuminate\Support\Facades\Response;  
 use App\Http\Controllers\S3ImageController;
+use App\Http\Controllers\AuditoriaController;
+
 
 //prueba
 // Rutas de acceso general
@@ -268,6 +270,9 @@ Route::get('/usuarios/listar', [UserController::class, 'listar'])->name('listar.
 Route::post('/carrito/agregar/{productoId}', [EdicionPersonalizadaController::class, 'agregarAlCarrito'])->name('carrito.agregar.personalizada');
 
 
+Route::get('/admin/acciones', [AuditoriaController::class, 'index'])->name('admin.acciones');
+
+
 // Route::get('/prueba', [PruebaController::class, 'mostrarCatalogoPersonalizable'])->name('pruebas');
 
 // Mostrar los productos personalizables
@@ -282,14 +287,7 @@ Route::get('/personalizarAdmin/{id}', [PersonalizarController::class, 'personali
 Route::get('/s3-image', [S3ImageController::class, 'getImage'])->name('s3.image');
 Route::post('/producto/verificar', [StripeController::class, 'verificarProductos'])->name('producto.verificar');
 
-Route::get('/auditoria/ediciones', function () {
-    return view('admin.acciones.AudEdiciones');
-})->name('admin.auditoria.ediciones');
 
-Route::get('/auditoria/pagos', function () {
-    return view('admin.acciones.AudPagos');
-})->name('admin.auditoria.pagos');
-
-Route::get('/auditoria/usuarios', function () {
-    return view('admin.acciones.AudUsuarios');
-})->name('admin.auditoria.usuarios');
+Route::get('/auditoria/ediciones', [AuditoriaController::class, 'audEdiciones'])->name('admin.auditoria.ediciones');
+Route::get('/auditoria/pagos', [AuditoriaController::class, 'audPagos'])->name('admin.auditoria.pagos');
+Route::get('/auditoria/usuarios', [AuditoriaController::class, 'audUsuarios'])->name('admin.auditoria.usuarios');
