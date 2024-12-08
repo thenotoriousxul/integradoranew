@@ -8,44 +8,83 @@
 </div>
 @endif
 
-<table class="table table-responsive table-bordered table-hover table-sm">
-    <thead class="thead-dark">
-        <tr>
-            <th>Email</th>
-            <th>Nombre</th>
-            <td>NUmero Telefono</td>
-            <td>Costo</td>
-            <th>Fecha creacion</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @forelse ($usuarios as $usuario)
+<div class="table-responsive">
+    <table class="table table-striped table-hover table-bordered table-sm">
+        <thead class="thead-dark text-center">
             <tr>
-                <td>{{ $usuario->email }}</td>
-                <td>
-                    @if ($usuario->persona)
-                        {{ $usuario->persona->nombre }}
-                        {{ $usuario->persona->apellido_paterno}}
-                        {{ $usuario->persona->apellido_materno}}
-                    @else
-                        Sin persona relacionada
-                    @endif
-                </td>
-                <td>
-                    @if ($usuario->persona)
-                        {{ $usuario->persona->numero_telefonico}}
-                    @else
-                        Sin numero relacionado
-                    @endif
-                </td>
+                <th>Email</th>
+                <th>Nombre Completo</th>
+                <th>Teléfono</th>
+                <th>Género</th>
+                <th>Rol</th>
+                <th>Acciones</th>
             </tr>
-        @empty
-            <tr>
-                <td colspan="3">No se encontraron resultados.</td>
-            </tr>
-        @endforelse
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @forelse ($usuarios as $usuario)
+                <tr>
+                    <td>{{ $usuario->email }}</td>
+                    <td>
+                        @if ($usuario->persona)
+                            {{ $usuario->persona->nombre }}
+                            {{ $usuario->persona->apellido_paterno }}
+                            {{ $usuario->persona->apellido_materno }}
+                        @else
+                            <span class="text-muted">No registrado</span>
+                        @endif
+                    </td>
+                    <td>
+                        @if ($usuario->persona && $usuario->persona->numero_telefonico)
+                            {{ $usuario->persona->numero_telefonico }}
+                        @else
+                            <span class="text-muted">No disponible</span>
+                        @endif
+                    </td>
+                    <td class="text-center">
+                        @if ($usuario->persona)
+                            @if($usuario->persona->genero === 'M')
+                                <span class="badge bg-primary">Masculino</span>
+                            @else
+                                <span class="badge bg-warning">Femenino</span>
+                            @endif
+                        @else
+                            <span class="text-muted">Sin datos</span>
+                        @endif
+                    </td>
+                    <td>
+                        @if ($usuario->roles->isNotEmpty())
+                            {{ $usuario->roles->pluck('name')->implode(', ') }}
+                        @else
+                            Sin rol asignado
+                        @endif
+                    </td>
+                    
+                    <td class="text-center">
+                        <a href="#" class="btn btn-sm btn-warning">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <form action="#" method="POST" style="display:inline-block;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de eliminar este usuario?')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="5" class="text-center">No se encontraron usuarios registrados.</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+
+</div>
+<div class="d-flex justify-content-start mt-4">
+    {{ $usuarios->links('pagination::bootstrap-4') }}
+</div>
+
+
+
 @endsection

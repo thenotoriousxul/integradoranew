@@ -8,6 +8,19 @@
         {{ session('success') }}
     </div>
 @endif
+<br>
+<div class="mb-3">
+    <h4>Ordenar y filtrar</h4>
+    <a href="#" class="btn btn-success btn-sm">
+        Ordenar por ID descendente
+    </a>
+    <a href="{{route('admin.orden.pendientes', 'Pendiente')}}" class="btn btn-warning btn-sm">
+        Mostrar Pendientes
+    </a>
+    <a href="{{ route('admins.ordenes.index') }}" class="btn btn-secondary btn-sm">
+        Restablecer filtros
+    </a>
+</div>
 
 <table class="table table-bordered">
     <thead>
@@ -31,19 +44,16 @@
             <td>{{ $orden->envios_domicilio ? 'Sí' : 'No' }}</td>
             <td>
                 @if($orden->estado === 'Pagada')
-                <p class="bg-success text-white  rounded">Completada</p>
-                @else
-                <p class="bg-danger text-white  rounded">Pendiente</p>
+                    <p class="bg-success text-white rounded">Completada</p>
+                @elseif($orden->estado === 'Devuelta')
+                    <p class="bg-warning text-white rounded">Orden Cancelada</p>
+                @elseif($orden->estado === 'Pendiente')
+                    <p class="bg-secondary text-white rounded">Pendiente</p>
                 @endif
-            </td>
+            </td>            
             <td>
                 <a href="{{ route('admins.ordenes.show', $orden->id) }}" class="btn btn-info btn-sm">Ver</a>
                 <a href="{{ route('admins.ordenes.edit', $orden->id) }}" class="btn btn-primary btn-sm">Editar</a>
-                <form action="{{ route('admins.ordenes.destroy', $orden->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('¿Estás seguro de eliminar esta orden?')">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                </form>
             </td>
         </tr>
         @empty
@@ -53,4 +63,7 @@
         @endforelse
     </tbody>
 </table>
+<div class="d-flex justify-content-start">
+    {{ $ordenes->links('pagination::bootstrap-4') }}
+</div>
 @endsection
