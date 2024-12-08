@@ -52,7 +52,7 @@ class carritoController extends Controller
         }
 
         if ($carrito->has($productoTallaKey)) {
-            $precio = $productoConTallaEspecifica->rebaja ? $productoConTallaEspecifica->precio_rebajado : $productoConTallaEspecificacosto_precio_venta;
+            $precio = $productoConTallaEspecifica->rebaja ? $productoConTallaEspecifica->precio_rebajado : $productoConTallaEspecifica->costo_precio_venta;
             $carrito->put($productoTallaKey, [
                 'id' => $productoConTallaEspecifica->id,
                 'name' => $productoConTallaEspecifica->nombre,
