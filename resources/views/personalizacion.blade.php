@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+@if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+    </div>
+@endif
+
 <div class="container py-5">
     <div class="text-center mb-5">
         <h1 class="fw-bold text-uppercase" style="font-size: 2.5rem; letter-spacing: 2px;">Ediciones Personalizadas</h1>
