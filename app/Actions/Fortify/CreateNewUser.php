@@ -46,13 +46,11 @@ class CreateNewUser implements CreatesNewUsers
             
         ])->validate();
 
-    $user = User::create([
-    'name' => $input['name'],
-    'email' => $input['email'],
-    'password' => Hash::make($input['password']),
-    'creado_por' => auth()->user()->id, // ID del usuario que realiza la acción
-    ]);
-
+        $user = User::create([
+            'name' => $input['name'],
+            'email' => $input['email'],
+            'password' => Hash::make($input['password']),
+        ]);
 
         $direccion = Direccion::create([
             'calle' => $input['calle'],
@@ -114,13 +112,11 @@ public function createEmpleado(array $input)
             'numero_telefonico' => ['required', 'string'],
         ])->validate();
 
-    $user = User::create([
-    'name' => $input['name'],
-    'email' => $input['email'],
-    'password' => Hash::make($input['password']),
-    'creado_por' => auth()->user()->id, 
-    ]);
-
+        $user = User::create([
+            'name' => $input['name'],
+            'email' => $input['email'],
+            'password' => Hash::make($input['password']),
+        ]);
 
         $password = $input['password'];
 

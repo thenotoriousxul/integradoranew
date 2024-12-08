@@ -1,87 +1,27 @@
 @extends('layouts.app')
 
 @section('content')
-<style>
-    img {
-        height: 300px;
-        width: 200px;
-        object-fit: cover;
-    }
-
-    .card {
-        transition: transform 0.3s, box-shadow 0.3s;
-        border: 1px solid #e3e5e8;
-        border-radius: 8px;
-    }
-
-    .card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
-    }
-
-    .btn-details {
-        background-color: #5865F2;
-        color: #ffffff;
-        border: none;
-        padding: 10px 20px;
-        font-size: 14px;
-        font-weight: 600;
-        border-radius: 5px;
-        text-transform: uppercase;
-        transition: all 0.3s ease;
-    }
-
-    .btn-details:hover {
-        background-color: #4752c4;
-        color: #ffffff;
-        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
-    }
-
-    .whatsapp-info {
-        margin-top: 30px;
-        font-size: 16px;
-        color: #333;
-        text-align: center;
-    }
-
-    .whatsapp-info a {
-        color: #25D366;
-        text-decoration: none;
-        font-weight: bold;
-    }
-
-    .whatsapp-info a:hover {
-        color: #128C7E;
-    }
-
-    .whatsapp-icon {
-        font-size: 24px;
-        margin-left: 8px;
-    }
-</style>
-
-<div class="container py-4">
+<div class="container py-5">
     <div class="text-center mb-5">
-        <p class="lead">Explora nuestras ediciones personalizadas.</p>
+        <h1 class="fw-bold text-uppercase" style="font-size: 2.5rem; letter-spacing: 2px;">Ediciones Personalizadas</h1>
+        <p class="text-muted">Explora nuestras ediciones personalizadas.</p>
     </div>
 
-    <h1 class="mb-4 text-center">Ediciones Personalizadas</h1>
-    <div class="row">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
         @forelse ($productos as $producto)
-            <div class="col-md-3 mb-4">
-                <div class="card h-100 shadow-sm">
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm">
                     @if($producto->imagen_producto_final)
-                        <img src="{{ $producto->imagen_producto_final }}" alt="Imagen de {{ $producto->nombre }}" class="card-img-top">
+                        <img src="{{ $producto->imagen_producto_final }}" alt="Imagen de {{ $producto->nombre }}" class="card-img-top img-fluid" style="height: 300px; object-fit: cover;">
                     @else
-                        <div class="d-flex justify-content-center align-items-center" style="height: 300px; background-color: #f6f6f6;">
-                            <p>Imagen no disponible</p>
+                        <div class="d-flex justify-content-center align-items-center bg-light" style="height: 300px;">
+                            <p class="text-muted">Imagen no disponible</p>
                         </div>
                     @endif
                     <div class="card-body text-center">
-                        <h5 class="card-title">{{ $producto->nombre }}</h5>
-                        <p class="card-text">Cantidad: {{ $producto->cantidad }}</p>
-                        <p class="card-text">Estado: {{ ucfirst($producto->estado) }}</p>
-                        <a href="{{ route('personalizacion.detalle', $producto->id) }}" class="btn btn-details">Ver Detalle</a>
+                        <h5 class="card-title fw-bold">{{ $producto->nombre }}</h5>
+                        <p class="card-text text-muted">Cantidad: {{ $producto->cantidad }}</p>
+                        <a href="{{ route('personalizacion.detalle', $producto->id) }}" class="btn btn-dark w-100 mt-3">Ver Detalle</a>
                     </div>
                 </div>
             </div>
@@ -93,12 +33,10 @@
     </div>
 
     <!-- Mensaje informativo después de todos los productos -->
-    <div class="whatsapp-info">
-        <p>¿Te gustaría un diseño personalizado? Si tienes alguna idea en mente, no dudes en <a href="https://wa.me/528718974991?text=Hola,%20quiero%20saber%20más%20sobre%20el%20diseño%20personalizado" target="_blank">contactarnos por WhatsApp</a>. ¡Estaremos encantados de ayudarte!</p>
-        <a href="https://wa.me/528718974991?text=Hola,%20quiero%20saber%20más%20sobre%20el%20diseño%20personalizado" 
-           class="whatsapp-icon" 
-           target="_blank">
-            <i class="bi bi-whatsapp"></i>
+    <div class="whatsapp-info text-center mt-5">
+        <p class="text-muted">¿Te gustaría un diseño personalizado? Si tienes alguna idea en mente, no dudes en <a href="https://wa.me/528718974991?text=Hola,%20quiero%20saber%20más%20sobre%20el%20diseño%20personalizado" class="text-success fw-bold" target="_blank">contactarnos por WhatsApp</a>. ¡Estaremos encantados de ayudarte!</p>
+        <a href="https://wa.me/528718974991?text=Hola,%20quiero%20saber%20más%20sobre%20el%20diseño%20personalizado" target="_blank" class="d-inline-block mt-2">
+            <i class="bi bi-whatsapp" style="font-size: 1.5rem; color: #25D366;"></i>
         </a>
     </div>
 </div>
