@@ -140,6 +140,10 @@ Route::middleware(['role:admin'])->group(function(){
         Route::get('registrar', function(){ return view('auth.register-empleado');})->name('registrar.empleados');
         Route::post('guardar/empleado', [empleadoController::class, 'registrarEmpleado'])->name('guardar.empleado');  
     });
+
+    Route::prefix('admin/usuarios')->group(function () {
+        Route::get('/listar', [UserController::class, 'listar'])->name('listar.usurios');  
+    });
 });
 
 Route::get('/rebajas' , [EdicionesProductoController::class, 'rebajas'])->name('rebajas');
@@ -152,6 +156,8 @@ Route::middleware(['role:admin|empleado'])->group(function () {
         Route::get('/crear',[formulariosController::class, 'crearDiseño'])->name('crear.diseño');
         Route::post('/guardar',[disenosController::class, 'storeDiseños'])->name('guardar.diseño');
         Route::get('/diseños',[disenosController::class, 'getDiseños'])->name('mostrar.diseños');
+
+    
     });
 
     
@@ -202,6 +208,9 @@ Route::middleware(['role:admin|empleado'])->group(function () {
         Route::put('/{id}/actualizar', [OrdenController::class, 'update'])->name('admins.ordenes.update');
         Route::delete('/{id}/eliminar', [OrdenController::class, 'destroy'])->name('admins.ordenes.destroy');
         Route::get('/{id}', [OrdenController::class, 'show'])->name('admins.ordenes.show');
+        Route::patch('entregada/{id}', [OrdenController::class, 'Entregada'])->name('admin.orden.entregada');
+        Route::patch('cancelada/{id}', [OrdenController::class, 'Cancelada'])->name('admin.orden.cancelada');
+        Route::get('pendientes/{estado}', [OrdenController::class, 'filtroPendientes'])->name('admin.orden.pendientes');
     });
 
 
@@ -265,7 +274,24 @@ Route::post('/proveedor/nuevo', [proveedorController::class, 'nuevoproveedor'])-
 
 
 
-Route::get('/usuarios/listar', [UserController::class, 'listar'])->name('listar.usurios');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Route::post('/carrito/agregar/{productoId}', [EdicionPersonalizadaController::class, 'agregarAlCarrito'])->name('carrito.agregar.personalizada');
 
@@ -273,16 +299,12 @@ Route::post('/carrito/agregar/{productoId}', [EdicionPersonalizadaController::cl
 Route::get('/admin/acciones', [AuditoriaController::class, 'index'])->name('admin.acciones');
 
 
-// Route::get('/prueba', [PruebaController::class, 'mostrarCatalogoPersonalizable'])->name('pruebas');
 
-// Mostrar los productos personalizables
 Route::get('/personalizarAdmin', [PersonalizarController::class, 'mostrarCatalogoPersonalizable'])->name('admin.personalizar');
 
-// Mostrar detalles para personalizar un producto específico
+
 Route::get('/personalizarAdmin/{id}', [PersonalizarController::class, 'personalizarProducto'])->name('admin.guardar');
 
-// Route::get('/pruebas/{productoId}', [PruebaController::class, 'personalizarProducto'])->name('personalizar.producto');
-// Route::post('/pruebas/guardar', [PruebaController::class, 'guardar'])->name('personalizar.guardar');
 
 Route::get('/s3-image', [S3ImageController::class, 'getImage'])->name('s3.image');
 Route::post('/producto/verificar', [StripeController::class, 'verificarProductos'])->name('producto.verificar');

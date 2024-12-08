@@ -23,10 +23,8 @@ class Orden extends Model
     {
         return $this->hasMany(DetalleOrden::class, 'ordenes_id');
     }
-    public function orden()
-   {
-    return $this->hasOne(Orden::class, 'ordenes_id');
-   }
+
+
    public function tipoPersona()
    {
        return $this->belongsTo(TipoPersona::class, 'tipo_personas_id');

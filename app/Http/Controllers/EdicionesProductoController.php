@@ -33,6 +33,10 @@ class EdicionesProductoController extends Controller
         return view('admin.edicionesP.productos', compact('productos'));
     }
 
+
+
+
+
     public function detalle($id)
     {
         $producto = EdicionesProductos::findOrFail($id);
@@ -50,6 +54,9 @@ class EdicionesProductoController extends Controller
         return view('admin.edicionesP.producto_detalle', compact('producto', 'tallas'));
     }
 
+
+
+
     public function create()
     {
         $ediciones = Edicion::all();
@@ -57,6 +64,10 @@ class EdicionesProductoController extends Controller
 
         return view('admin.edicionesP.formularioProducto', compact('ediciones', 'productos'));
     }
+
+
+    
+
 
     public function store(Request $request)
     {
@@ -97,6 +108,12 @@ class EdicionesProductoController extends Controller
         return redirect()->route('listar.productos');
     }
 
+
+
+
+
+
+
     public function rebajas()
     {
         $productos = EdicionesProductos::where('rebaja', 1)->get();
@@ -104,13 +121,19 @@ class EdicionesProductoController extends Controller
         return view('rebajas', compact('productos'));
     }
 
+
+
+
+
+
+
     public function filtro(Request $request)
     {
         $request->validate([
             'costo_min' => ['nullable', 'numeric', 'min:0'],
             'costo_max' => ['nullable', 'numeric', 'min:0'],
             'talla' => ['nullable', 'in:CH,M,XL,XXL'],
-            'nombre' => ['nullable', 'string', 'max:100'],
+            'nombre' => ['nullable', 'string', 'max:20'],
         ]);
 
         $costo_min = $request->input('costo_min') === '' ? null : $request->input('costo_min');
@@ -142,12 +165,18 @@ class EdicionesProductoController extends Controller
         return view('admin.edicionesP.productos', compact('productos'));
     }
 
+
+
+
+
+
     public function getProducts()
     {
         $productos = EdicionesProductos::paginate(15);
 
         return view('admin.edicionesP.listar', compact('productos'));
     }
+
 
     public function activar(Request $request, $id){
         $producto = EdicionesProductos::findOrFail($id);
@@ -161,6 +190,7 @@ class EdicionesProductoController extends Controller
     }
 
 
+
     public function inactivar(Request $request ,$id){
         $producto = EdicionesProductos::findOrFail($id);
         
@@ -170,12 +200,13 @@ class EdicionesProductoController extends Controller
         ->with('success', 'el producto se ah inactivado correcamente.');
     }
 
+
     public function filtroRebaja(Request $request){
         $request->validate([
             'costo_min' => ['nullable', 'numeric', 'min:0'],
             'costo_max' => ['nullable', 'numeric', 'min:0'],
             'talla' => ['nullable', 'in:CH,M,XL,XXL'],
-            'nombre' => ['nullable', 'string', 'max:100'],
+            'nombre' => ['nullable', 'string', 'max:20'],
             'orden' => ['nullable', 'in:precio_asc,precio_desc,nombre']
         ]);
 

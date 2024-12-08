@@ -9,8 +9,7 @@ class UserController extends Controller
 {
     public function listar(){
 
-        $usuarios = User::with('persona')->get();
-
+        $usuarios = User::with(['persona', 'roles'])->paginate(10);
         return view('admin.usuarios.listar', compact('usuarios'));
     }   
 }

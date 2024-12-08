@@ -8,6 +8,8 @@ use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
@@ -58,5 +60,25 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::resetPasswordView(function ($request) {
             return view('auth.reset-password', ['request' => $request]);
         });
+
+        Fortify::authenticateUsing(function (Request $request) {
+            $user = \App\Models\User::where(Fortify::username(), $request->input(Fortify::username()))->first();
+
+            if (! $user || ! Hash::check($request->password, $user->password)) {
+                return null; 
+            }
+
+            
+            if ($user->status === 'Inactivo') {
+                throw ValidationException::withMessages([
+                    Fortify::username() => 'Tu cuenta ah sido bloqueada. Comunicate con el administrador.',
+                ]);
+            }
+
+            return $user; 
+        });
+
+        
+        
     }
 }
