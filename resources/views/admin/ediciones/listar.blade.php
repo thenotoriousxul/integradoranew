@@ -49,4 +49,7 @@
         @endforelse
     </tbody>
 </table>
+<div class="mt-4 d-flex justify-content-center">
+    {{ $ediciones->links('pagination::bootstrap-4')->withClass('pagination-sm') }}
+</div>
 @endsection

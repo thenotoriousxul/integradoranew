@@ -103,6 +103,7 @@
             @endforelse
         </tbody>
     </table>
-    {{ $productos->links() }}
-
+    <div class="mt-4 d-flex justify-content-center">
+        {{ $productos->links('pagination::bootstrap-4')->withClass('pagination-sm') }}
+    </div>
 @endsection 

@@ -81,8 +81,8 @@
     </table>
 
 </div>
-<div class="d-flex justify-content-start mt-4">
-    {{ $usuarios->links('pagination::bootstrap-4') }}
+<div class="mt-4 d-flex justify-content-center">
+    {{ $usuarios->links('pagination::bootstrap-4')->withClass('pagination-sm') }}
 </div>
 
 
