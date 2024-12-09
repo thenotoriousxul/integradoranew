@@ -149,6 +149,7 @@ class StripeController extends Controller
                 'message' => 'Hubo un error al procesar el pago: ' . $e->getMessage(),
             ], 500);
         }
+    }
         
 
     private function guardarOrden($carrito, $paymentIntent)
