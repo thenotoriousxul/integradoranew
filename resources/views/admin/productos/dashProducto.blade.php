@@ -13,6 +13,16 @@
             </div>
         @endif
 
+        <div class="mb-3">
+            <label for="proveedores_id" class="form-label fw-bold">Proveedor</label>
+            <select name="proveedores_id" id="proveedores_id" class="form-control" >
+                <option value="" disabled selected>Seleccione una Proveedor</option>
+                @foreach ($proveedores as $edicion)
+                    <option value="{{ $edicion->id }}">{{ $edicion->nombre }}</option>
+                @endforeach
+            </select>
+        </div>
+    
         <div class="mb-4">
             <label class="form-label fw-semibold text-black" for="tipo">Ingresa el tipo</label>
             <input value="{{old('tipo')}}" type="text" name="tipo" id="tipo" class="form-control border rounded" placeholder="Tipo de producto">

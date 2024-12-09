@@ -315,3 +315,5 @@ Route::post('/producto/verificar', [StripeController::class, 'verificarProductos
 Route::get('/auditoria/ediciones', [AuditoriaController::class, 'audEdiciones'])->name('admin.auditoria.ediciones');
 Route::get('/auditoria/pagos', [AuditoriaController::class, 'audPagos'])->name('admin.auditoria.pagos');
 Route::get('/auditoria/usuarios', [AuditoriaController::class, 'audUsuarios'])->name('admin.auditoria.usuarios');
+
+

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\productoRequest;
 use App\Models\Producto;
+use App\Models\Productos_Proveedores;
+use App\Models\Proveedor;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -22,7 +24,7 @@ class productoController extends Controller
             Storage::disk('s3')->setVisibility($imagePath, 'public');
             $imageUrl = Storage::disk('s3')->url($imagePath); // Esto es un string con la URL
         }
-    
+     
         $producto = new Producto();
         $producto->tipo = $request->input('tipo');
         $producto->talla = $request->input('talla');
@@ -33,7 +35,13 @@ class productoController extends Controller
         $producto->imagen_producto = $imageUrl;
         $producto->save();
     
-        return redirect()->route('dash.productosBase')->with('success', 'Producto creado exitosamente.');
+        
+
+        Productos_Proveedores::create([
+            'productos_id' => $producto->id,
+            'proveedores_id' => $request->input('proveedores_id'),  
+        ]);
+                return redirect()->route('dash.productosBase')->with('success', 'Producto creado exitosamente.');
     }
     
 
@@ -150,4 +158,14 @@ class productoController extends Controller
             'productos' => $paginatedProductos,
         ]);
  }
+
+ public function create()
+ {
+     $proveedores = Proveedor::all();
+dd($proveedores);
+     return view('admin.productos.dashProducto', compact('proveedores'));
+ }
+
+
+
 }

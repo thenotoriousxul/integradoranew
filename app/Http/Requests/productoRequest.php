@@ -28,7 +28,8 @@ class productoRequest extends FormRequest
             'color' => ['required', 'string', 'max:50'],
             'lote' => ['required', 'integer', 'min:1'],
             'costo' => ['required', 'numeric', 'min:0'],
-            'imagen_producto' => ['nullable', 'image', 'max:2048'], // Aceptar solo archivos de imagen de hasta 2 MB
+            'imagen_producto' => ['nullable', 'image', 'max:2048'],
+            'proveedores_id' => ['required', 'integer'], 
         ];
     }
 }
