@@ -132,7 +132,7 @@
         <td colspan="2">Total</td>
         <td>${{ number_format($total, 2) }}</td>
     </tr>
-</tbody>
+    </tbody>
 
                 </table>
             </div>
