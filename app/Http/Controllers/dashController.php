@@ -114,10 +114,20 @@ class dashController extends Controller
     public function pdfReporteVentas(){
         $inicioMes = Carbon::now()->startOfMonth(); 
         $finMes = Carbon::now()->endOfMonth(); 
+
+        $TotalVentasLinea = DB::table('ordenes')
+        ->join('tipo_personas', 'ordenes.tipo_personas_id', '=', 'tipo_personas.id')
+        ->where('tipo_personas.tipo_persona', 'Cliente')
+        ->sum('ordenes.total');
+
+        $TotalVentasFisica = DB::table('ordenes')
+        ->join('tipo_personas', 'ordenes.tipo_personas_id', '=', 'tipo_personas.id')
+        ->where('tipo_personas.tipo_persona', 'Empleado')
+        ->sum('ordenes.total');
     
         $reporteVentas = ReporteVenta::whereBetween('fecha_orden', [$inicioMes, $finMes])->get(); 
     
-        $pdf = PDF::loadView('admin.ordenes.reportepdf', compact('reporteVentas'));
+        $pdf = PDF::loadView('admin.ordenes.reportepdf', compact('reporteVentas', 'TotalVentasLinea', 'TotalVentasFisica'));
     
         // Retornar el PDF
         return $pdf->stream('reporte_ventas_mes.pdf');
