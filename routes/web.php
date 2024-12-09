@@ -151,6 +151,9 @@ Route::middleware(['role:admin'])->group(function(){
 Route::get('/rebajas' , [EdicionesProductoController::class, 'rebajas'])->name('rebajas');
 Route::get('rebaja/filtro', [EdicionesProductoController::class, 'filtroRebaja'])->name('filtros.rebajas');
 
+
+
+
 //-- Rutas protegidas para el admin y el empleado
 Route::middleware(['role:admin|empleado'])->group(function () {
 
