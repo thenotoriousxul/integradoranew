@@ -114,15 +114,18 @@ class dashController extends Controller
     public function pdfReporteVentas(){
         $inicioMes = Carbon::now()->startOfMonth(); 
         $finMes = Carbon::now()->endOfMonth(); 
+        $currentMonth = Carbon::now()->month;
 
         $TotalVentasLinea = DB::table('ordenes')
         ->join('tipo_personas', 'ordenes.tipo_personas_id', '=', 'tipo_personas.id')
         ->where('tipo_personas.tipo_persona', 'Cliente')
+        ->whereMonth('ordenes.fecha_orden', $currentMonth)
         ->sum('ordenes.total');
 
         $TotalVentasFisica = DB::table('ordenes')
         ->join('tipo_personas', 'ordenes.tipo_personas_id', '=', 'tipo_personas.id')
         ->where('tipo_personas.tipo_persona', 'Empleado')
+        ->whereMonth('ordenes.fecha_orden', $currentMonth)
         ->sum('ordenes.total');
     
         $reporteVentas = ReporteVenta::whereBetween('fecha_orden', [$inicioMes, $finMes])->get(); 
