@@ -132,7 +132,14 @@ class StripeController extends Controller
         
             // Enviar el correo
             $usuario = auth()->user();
-            Mail::to($usuario->email)->send(new ordenMail($orden->id, $productos, $total));
+            // Crear el objeto del correo
+            $correo = new ordenMail($orden->id, $productos, $total);
+
+            // Ver el contenido del correo antes de enviarlo
+            dd($correo->render());  // Muestra el contenido HTML del correo
+
+            // Enviar el correo
+            Mail::to($usuario->email)->send($correo);
         
             Log::info('Orden creada con éxito', ['orden_id' => $orden->id]);
         
