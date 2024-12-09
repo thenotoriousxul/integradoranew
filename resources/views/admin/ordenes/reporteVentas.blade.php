@@ -11,6 +11,16 @@
 
 @section('content')
 <h2 class="text-center">Reporte de Ventas</h2>
+<div class="dash-info">
+    <div class="card">
+        <h2>Total de ventas en línea:</h2>
+        <div class="table-info">{{ number_format($TotalVentasLinea, 2) }}</div>
+    </div>
+    <div class="card">
+        <h2>Total de ventas locales:</h2>
+        <div class="table-info">{{ number_format($TotalVentasFisica, 2) }}</div>
+    </div>
+</div>
 <div class="card">
     <div class="card-body">
 {{--    
@@ -61,10 +71,7 @@
                     @endforeach
                 </tbody>
             </table>
-            <div class="mt-3">
-                <strong>Total de ventas en línea:</strong> {{ number_format($TotalVentasLinea, 2) }}<br>
-                <strong>Total de ventas locales:</strong> {{ number_format($TotalVentasFisica, 2) }}
-            </div>
+            
             <div class="container">
                 <a href="{{ route('pdf.reporte') }}">
                     <button class="btn btn-success">Guardar PDF</button>
@@ -74,6 +81,51 @@
         </div>
     </div>
 </div>
+<style>
+.dash-info {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    margin-bottom: 40px;
+}
+
+.card {
+    padding: 25px;
+    border-radius: 12px;
+    color: #ffffff;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(45deg);
+    pointer-events: none;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+}
+
+.card h2 {
+    font-size: 1.75rem;
+    margin-bottom: 1.25rem;
+    font-weight: 600;
+}
+
+.card:nth-child(1) { background: linear-gradient(135deg, #3498db, #2980b9); }
+.card:nth-child(2) { background: linear-gradient(135deg, #453ce7, #c0392b); }
+.card:nth-child(3) { background: linear-gradient(135deg, #2a0069, #000000); }
+</style>
 
 @endsection
 
@@ -140,3 +192,5 @@
     }); --}}
 </script>
 @endsection
+
+
