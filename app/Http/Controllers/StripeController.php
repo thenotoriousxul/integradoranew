@@ -91,46 +91,51 @@ class StripeController extends Controller
 
         try {
             $paymentIntent = $this->obtenerPaymentIntentDesdeStripe($paymentIntentId);
-
+        
             if (!$paymentIntent || $paymentIntent->status !== 'succeeded') {
                 return response()->json(['success' => false, 'message' => 'El pago no se procesó correctamente.'], 500);
             }
-
+        
             DB::beginTransaction();
-
+        
             foreach ($carrito as $productoId => $detalle) {
                 $producto = EdicionesProductos::lockForUpdate()->find($productoId);
-
+        
                 if (!$producto) {
                     DB::rollBack();
                     return response()->json(['success' => false, 'message' => 'Producto no encontrado.'], 404);
                 }
-
+        
                 if ($producto->cantidad < $detalle['quantity']) {
-                    
                     DB::rollBack();
                     session()->forget('carrito');
                     return response()->json([
                         'success' => false,
                         'message' => "El producto '{$producto->nombre}' no tiene suficiente stock.",
                     ], 400);
-                    
                 }
-                
             }
-
+        
             // Guardar la orden y el pago
             $orden = $this->guardarOrden($carrito, $paymentIntent);
             $this->guardarPago($orden, $paymentIntent);
-
+        
+            // Recuperar productos y total
+            $productos = DetalleOrden::where('ordenes_id', $orden->id)
+                ->with('edicionProducto') // Asegúrate de que la relación esté definida en DetalleOrden
+                ->get();
+        
+            $total = $orden->total;
+        
             // Confirmar la transacción
             DB::commit();
-
+        
+            // Enviar el correo
             $usuario = auth()->user();
-            Mail::to($usuario->email)->send(new ordenMail($orden->id));
-
+            Mail::to($usuario->email)->send(new ordenMail($orden->id, $productos, $total));
+        
             Log::info('Orden creada con éxito', ['orden_id' => $orden->id]);
-
+        
             return response()->json([
                 'success' => true,
                 'message' => 'Pago procesado exitosamente.',
@@ -144,7 +149,7 @@ class StripeController extends Controller
                 'message' => 'Hubo un error al procesar el pago: ' . $e->getMessage(),
             ], 500);
         }
-    }
+        
 
     private function guardarOrden($carrito, $paymentIntent)
     {

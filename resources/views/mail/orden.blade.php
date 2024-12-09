@@ -121,18 +121,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                        
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                      
-                        <tr class="total">
-                            <td colspan="2">Total</td>
-                            <td></td>
-                        </tr>
-                    </tbody>
+    @foreach($productos as $producto)
+        <tr>
+            <td>{{ $producto->edicionProducto->nombre ?? 'Producto desconocido' }}</td>
+            <td>{{ $producto->cantidad }}</td>
+            <td>${{ number_format($producto->total, 2) }}</td>
+        </tr>
+    @endforeach
+    <tr class="total">
+        <td colspan="2">Total</td>
+        <td>${{ number_format($total, 2) }}</td>
+    </tr>
+    </tbody>
+
                 </table>
             </div>
             <div class="shipping-info">
