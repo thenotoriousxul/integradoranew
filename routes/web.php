@@ -152,13 +152,6 @@ Route::middleware(['role:admin'])->group(function(){
 Route::get('/rebajas' , [EdicionesProductoController::class, 'rebajas'])->name('rebajas');
 Route::get('rebaja/filtro', [EdicionesProductoController::class, 'filtroRebaja'])->name('filtros.rebajas');
 
-<<<<<<< HEAD
-=======
-
-
-
-//-- Rutas protegidas para el admin y el empleado
->>>>>>> 08e599ba878e42c3b7961193c1f4c6ce5cf1fc07
 Route::middleware(['role:admin|empleado'])->group(function () {
     Route::get('/auditoria/ediciones', [AuditoriaController::class, 'audEdiciones'])->name('admin.auditoria.ediciones');
     Route::get('/auditoria/pagos', [AuditoriaController::class, 'audPagos'])->name('admin.auditoria.pagos');
