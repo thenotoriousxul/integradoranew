@@ -23,4 +23,14 @@ class UserController extends Controller
 
         return redirect()->back()->with('success', 'usuario desactivado correctamente');
     }
+
+    public function activar($id){
+        $usuarios = User::FindOrFail($id);
+
+        $usuarios->status = 'Activo';
+        $usuarios->save();
+
+
+        return redirect()->back()->with('success', 'usuario activado correctamente');
+    }
 }

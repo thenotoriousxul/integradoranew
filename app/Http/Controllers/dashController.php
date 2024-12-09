@@ -6,6 +6,7 @@ use App\Models\EdicionesProductos;
 use App\Models\ReporteVenta;
 use Illuminate\Support\Facades\DB; 
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 
@@ -111,9 +112,15 @@ class dashController extends Controller
     }
 
     public function pdfReporteVentas(){
-        $reporteVentas = ReporteVenta::all();  
-        $pdf = pdf::loadView('admin.ordenes.reportepdf', compact('reporteVentas')); 
-        return $pdf->stream('manual_usuario.pdf');
+        $inicioMes = Carbon::now()->startOfMonth(); 
+        $finMes = Carbon::now()->endOfMonth(); 
+    
+        $reporteVentas = ReporteVenta::whereBetween('fecha_orden', [$inicioMes, $finMes])->get(); 
+    
+        $pdf = PDF::loadView('admin.ordenes.reportepdf', compact('reporteVentas'));
+    
+        // Retornar el PDF
+        return $pdf->stream('reporte_ventas_mes.pdf');
     }
 
     public function ventasPorProducto()

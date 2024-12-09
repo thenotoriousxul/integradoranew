@@ -60,16 +60,24 @@
                     </td>
                     
                     <td class="text-center">
-                        <a href="#" class="btn btn-sm btn-warning">
-                            <i class="fas fa-edit"></i>
-                        </a>
+                        @if($usuario->status === 'Activo')
                         <form action="{{ route('desactivar.usuarios', $usuario->id) }}" method="POST" style="display:inline-block;">
                             @csrf
                             @method('PATCH')
                             <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de desactivar este usuario?')">
-                                <i class="fas fa-ban"></i>
+                                <i class="fas fa-ban"></i> desactivar
                             </button>
                         </form>
+                        @endif
+                        @if($usuario->status === 'Inactivo')
+                        <form action="{{ route('activar.usuarios', $usuario->id) }}" method="POST" style="display:inline-block;">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('¿Quieres volver a activar este usuario?')">
+                                <i class="fas fa-check-circle"></i> Activar
+                            </button>
+                        </form>
+                        @endif
                     </td>
                 </tr>
             @empty
