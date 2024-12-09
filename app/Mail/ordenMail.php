@@ -1,9 +1,7 @@
 <?php
-
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
@@ -12,16 +10,20 @@ use Illuminate\Queue\SerializesModels;
 
 class ordenMail extends Mailable
 {
-
     public $numeroPedido;
+    public $productos;
+    public $total;
+
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($numeroPedido)
+    public function __construct($numeroPedido, $productos, $total)
     {
         $this->numeroPedido = $numeroPedido;
+        $this->productos = $productos;
+        $this->total = $total;
     }
 
     /**
@@ -42,8 +44,10 @@ class ordenMail extends Mailable
     {
         return new Content(
             view: 'mail.orden',
-            with:[
-                'numeroPedido'=>$this->numeroPedido,
+            with: [
+                'numeroPedido' => $this->numeroPedido,
+                'productos' => $this->productos,
+                'total' => $this->total,
             ]
         );
     }
