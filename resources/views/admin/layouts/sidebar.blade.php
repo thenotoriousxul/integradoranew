@@ -239,11 +239,6 @@
                     <span class="sidebar-text">Ediciones</span>
                 </a>
             </div>
-
-            <a class="item-side" href="/dash/gestor/historial">
-                <i class="fas fa-history"></i> <!-- Icono de historial -->
-                <span class="sidebar-text">Historial</span>
-            </a>
         </div>
 
         <div class="page-container">

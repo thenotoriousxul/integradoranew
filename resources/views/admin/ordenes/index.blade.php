@@ -63,7 +63,7 @@
         @endforelse
     </tbody>
 </table>
-<div class="d-flex justify-content-start">
-    {{ $ordenes->links('pagination::bootstrap-4') }}
+<div class="mt-4 d-flex justify-content-center">
+    {{ $ordenes->links('pagination::bootstrap-4')->withClass('pagination-sm') }}
 </div>
 @endsection

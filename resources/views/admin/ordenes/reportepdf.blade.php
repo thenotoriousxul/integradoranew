@@ -99,6 +99,9 @@
 
     <div class="container mt-4">
         <h2 class="text-center">Reporte de Ventas de el mes actual</h2>
+        <h3>Total de ventas en línea:{{ number_format($TotalVentasLinea, 2) }}</h3>
+        <h3>Total de ventas locales:{{ number_format($TotalVentasFisica, 2) }}</h3>
+
         <table id="ReporteVentas" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr>

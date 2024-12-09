@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\direccionRequest;
+use App\Mail\EnvioEntregado;
 use App\Models\Direccion;
+use App\Models\Envios;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Carbon\Carbon;
 
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Mail;
 
 class informacionClienteController extends Controller
 {
@@ -78,4 +80,26 @@ class informacionClienteController extends Controller
         return response()->json($productosComprados);
     }
     
+
+
+    /**
+     * Handle the event.
+     *
+     * @param  \App\Models\Envios  $envio
+     * @return void
+     */
+    // public function handle(Envios $envio)
+    // {
+    //     // Verifica si el estado ha cambiado a 'entregado'
+    //     if ($envio->isDirty('estado_envio') && $envio->estado_envio === 'entregado') {
+    //         // Obtén el correo del usuario a través de las relaciones
+    //         $correo = $envio->orden->persona->usuario->email;
+
+    //         // Envía el correo
+    //         Mail::to($correo)->send(new EnvioEntregado($envio));
+    //     }
+    // }
+
+
+
 }

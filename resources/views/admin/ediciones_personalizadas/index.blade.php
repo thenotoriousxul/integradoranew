@@ -43,6 +43,7 @@
         </tbody>
     </table>
 
-    {{ $edicionesPersonalizadas->links() }}
-</div>
+    <div class="mt-4 d-flex justify-content-center">
+        {{ $edicionesPersonalizadas->links('pagination::bootstrap-4')->withClass('pagination-sm') }}
+    </div></div>
 @endsection
