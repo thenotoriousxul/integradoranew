@@ -120,6 +120,7 @@ class dashController extends Controller
         ->join('tipo_personas', 'ordenes.tipo_personas_id', '=', 'tipo_personas.id')
         ->where('tipo_personas.tipo_persona', 'Cliente')
         ->whereMonth('ordenes.fecha_orden', $currentMonth)
+        ->where('estado', 'Pagada')
         ->sum('ordenes.total');
 
         $TotalVentasFisica = DB::table('ordenes')
