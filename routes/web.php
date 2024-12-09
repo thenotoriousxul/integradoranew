@@ -203,7 +203,7 @@ Route::middleware(['role:admin|empleado'])->group(function () {
         Route::post('/agregar/producto', [productoController::class, 'saveProducto'])->name('producto.save');
         Route::patch('/dash/productoBase/activar/{id}', [productoController::class, 'activar'])->name('activar.producto');
         Route::patch('/dash/productoBase/inactivar/{id}', [productoController::class, 'inactivar'])->name('inactivar.producto');
-        Route::get('dash/producto/editar/{id}', [productoController::class, 'editar'])->name('editar.producto');
+        Route::get('dash/producto/editar/{id}', [productoController::class, 'editar'])->name('editar.producto.base');
         Route::put('dash/productos/actualizar/{id}', [productoController::class, 'update'])->name('actualizar.producto');
         Route::get('dash/productos/filtroPorPrecio',[productoController::class, 'filtrarPorPrecio'])->name('filtrar.precio');
         Route::get('dash/productos/filtros',[productoController::class, 'filtros'])->name('filtros');
@@ -231,7 +231,6 @@ Route::middleware(['role:admin|empleado'])->group(function () {
         Route::patch('activar/producto/{id}',[EdicionesProductoController::class, 'activar'])->name('activar');
         Route::patch('inactivar/producto/{id}',[EdicionesProductoController::class, 'inactivar'])->name('inactivar');
         Route::get('listar',[EdicionesProductoController::class, 'getProducts'])->name('listar.productos');
-        Route::get('/editar/{id}', [EdicionesProductoController::class, 'edit'])->name('editar.producto');
         Route::patch('/actualizar/{id}', [EdicionesProductoController::class, 'update'])->name('actualizar.producto');
         Route::post('admin/ediciones_productos/guardar/producto/{id}', [EdicionesProductoController::class, 'update'])->name('store.productos');
 
