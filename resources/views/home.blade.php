@@ -600,7 +600,7 @@
         <div class="content">
             <p class="subtitle">Más artículos añadidos</p>
             <h2 class="title">Promociones hasta -50%</h2>
-            <a href="{{route('mostrar.productos')}}">
+            <a href="{{route('rebajas')}}">
             <button class="cta-button">Ir al catalogo</button>
             </a>
             <div class="details">
