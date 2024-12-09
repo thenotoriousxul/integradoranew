@@ -31,7 +31,6 @@
             <td>{{ $edicion->lote }}</td>
             <td>{{ $edicion->existencias }}</td>
             <td>${{ number_format($edicion->extra, 2) }}</td>
-            <td>${{ number_format($edicion->precio_de_venta, 2) }}</td>
             <td>{{$edicion->tipo}}</td>
             <td>
                 <a href="{{ route('ediciones.editar', $edicion->id) }}" class="btn btn-primary">Editar</a>

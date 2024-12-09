@@ -73,34 +73,33 @@ class productoController extends Controller
         return view('admin.productos.dashEditProducto', compact('producto'));
     }
 
-    public function update(productoRequest $request, $id){
-        $producto = Producto::findOrFail($id);
-        
-        $imageUrl = null;
+    public function update(productoRequest $request, $id)
+{
+    $producto = Producto::findOrFail($id);
 
-        if ($request->hasFile('imagen_producto')) {
+    $imageUrl = null;
+
+    if ($request->hasFile('imagen_producto')) {
         if ($producto->imagen_producto) {
             Storage::disk('s3')->delete($producto->imagen_producto);
         }
 
         $imagePath = $request->file('imagen_producto')->store('productos', 's3');
         Storage::disk('s3')->setVisibility($imagePath, 'public');
-
         $producto->imagen_producto = Storage::disk('s3')->url($imagePath);
-        }
-
-        $producto->tipo = $request->input('tipo');
-        $producto->talla = $request->input('talla');
-        $producto->color = $request->input('color');
-        $producto->lote = $request->input('lote');
-        $producto->costo = $request->input('costo');
-
-        
-        $producto->save();
-
-        
-        return redirect()->route('dash.productosBase')->with('success', 'Producto actualizado exitosamente.');
     }
+
+    // Actualiza solo los campos que se permiten cambiar
+    $producto->tipo = $request->input('tipo');
+    $producto->color = $request->input('color');
+    $producto->lote = $request->input('lote');
+    $producto->costo = $request->input('costo');
+
+    $producto->save();
+
+    return redirect()->route('dash.productosBase')->with('success', 'Producto actualizado exitosamente.');
+}
+
 
 
     public function filtrarPorPrecio(Request $request){

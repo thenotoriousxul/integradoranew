@@ -6,7 +6,7 @@
     <div class="alert alert-danger">
         <ul>
             @foreach($errors->all() as $error)
-            <li>{{ $error }}</li>
+                <li>{{ $error }}</li>
             @endforeach
         </ul>
     </div>
@@ -18,35 +18,32 @@
     <form action="{{ route('admins.ordenes.store') }}" method="POST" class="p-4 shadow rounded" style="background-color: #dde3eb; border-radius: 2rem;">
         @csrf
 
-        <!-- Empleado que realiza la orden -->
-        <input type="hidden" name="empleado_id" value="{{ auth()->id() }}">
-
-        <!-- Fecha -->
-        <div class="mb-3">
-            <label for="fecha" class="form-label fw-bold">Fecha</label>
-            <input type="date" name="fecha" id="fecha" class="form-control" value="{{ date('Y-m-d') }}" required>
-        </div>
-
-        <!-- Productos -->
         <div class="mb-3" id="productos">
             <h4 class="fw-bold">Detalle de la Orden</h4>
             <div class="producto-row mb-3">
                 <div class="row">
                     <div class="col-md-4">
                         <label for="producto" class="form-label">Producto</label>
-                        <input type="text" class="form-control" name="productos[]" placeholder="Nombre del producto" required>
+                        <select name="productos[]" class="form-control producto" required>
+                            <option value="">Seleccione un producto</option>
+                            @foreach($productos as $producto)
+                                <option value="{{ $producto->id }}" data-precio="{{ $producto->costo_precio_venta }}" data-lote="{{ $producto->cantidad }}">
+                                    {{ $producto->nombre }} - ${{ $producto->costo_precio_venta }} - lote: {{$producto->cantidad}}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="col-md-2">
                         <label for="cantidad" class="form-label">Cantidad</label>
-                        <input type="number" class="form-control" name="cantidades[]" placeholder="Cantidad" required>
+                        <input type="number" class="form-control cantidad" name="cantidades[]" placeholder="Cantidad" required>
                     </div>
                     <div class="col-md-2">
                         <label for="precio" class="form-label">Precio</label>
-                        <input type="number" step="0.01" class="form-control" name="precios[]" placeholder="Precio" required>
+                        <input type="number" step="0.01" class="form-control precio" name="precios[]" placeholder="Precio" readonly>
                     </div>
                     <div class="col-md-2">
                         <label for="total_producto" class="form-label">Total</label>
-                        <input type="number" step="0.01" class="form-control" name="totales[]" readonly>
+                        <input type="number" step="0.01" class="form-control total_producto" name="totales[]" readonly>
                     </div>
                     <div class="col-md-2 d-flex align-items-center">
                         <button type="button" class="btn btn-danger remove-product" style="width: 100%;">Eliminar</button>
@@ -54,16 +51,16 @@
                 </div>
             </div>
         </div>
-        
+
         <button type="button" id="agregarProducto" class="btn btn-success mb-3">Agregar Producto</button>
 
-        <!-- Total de la orden -->
+       
         <div class="mb-3">
             <label for="total" class="form-label fw-bold">Total de la Orden</label>
             <input type="number" step="0.01" name="total" id="total" class="form-control" readonly>
         </div>
 
-        <!-- Envío a domicilio -->
+      
         <div class="mb-3">
             <label for="envios_domicilio" class="form-label fw-bold">Envío a domicilio</label>
             <select name="envios_domicilio" id="envios_domicilio" class="form-select" required>
@@ -78,46 +75,58 @@
 </div>
 
 <script>
-    // Agregar un producto
     document.getElementById('agregarProducto').addEventListener('click', function() {
         const productoRow = document.querySelector('.producto-row');
         const newRow = productoRow.cloneNode(true);
         const productosContainer = document.getElementById('productos');
+
+        newRow.querySelectorAll('input').forEach(input => input.value = '');
         productosContainer.appendChild(newRow);
     });
 
-    // Eliminar un producto
     document.addEventListener('click', function(e) {
         if (e.target && e.target.classList.contains('remove-product')) {
             const row = e.target.closest('.producto-row');
             row.remove();
-            calcularTotal();
+            actualizarTotalOrden();
         }
     });
 
-    // Calcular total por producto
-    document.addEventListener('input', function(e) {
-        if (e.target && (e.target.name === 'cantidad[]' || e.target.name === 'precios[]')) {
-            calcularTotal();
+    
+    document.getElementById('productos').addEventListener('change', function(e) {
+        if (e.target && e.target.classList.contains('producto')) {
+            const producto = e.target.selectedOptions[0];
+            const precio = parseFloat(producto.dataset.precio) || 0;
+            const cantidadInput = e.target.closest('.producto-row').querySelector('.cantidad');
+            const precioInput = e.target.closest('.producto-row').querySelector('.precio');
+            const totalInput = e.target.closest('.producto-row').querySelector('.total_producto');
+            const cantidadDisponible = parseInt(producto.dataset.lote) || 0; 
+            precioInput.value = precio;
+
+            
+            cantidadInput.max = cantidadDisponible;
+            
+            
+            cantidadInput.addEventListener('input', function() {
+                let cantidad = parseInt(cantidadInput.value) || 0;
+                if (cantidad > cantidadDisponible) {
+                    cantidad = cantidadDisponible;
+                    cantidadInput.value = cantidad;
+                    alert("La cantidad seleccionada excede el stock disponible.");
+                }
+                totalInput.value = (precio * cantidad).toFixed(2);
+                actualizarTotalOrden();
+            });
         }
     });
 
-    // Función para calcular el total de la orden
-    function calcularTotal() {
-        let total = 0;
-        const cantidades = document.querySelectorAll('input[name="cantidades[]"]');
-        const precios = document.querySelectorAll('input[name="precios[]"]');
-        const totales = document.querySelectorAll('input[name="totales[]"]');
-        
-        for (let i = 0; i < cantidades.length; i++) {
-            const cantidad = parseFloat(cantidades[i].value) || 0;
-            const precio = parseFloat(precios[i].value) || 0;
-            const totalProducto = cantidad * precio;
-            totales[i].value = totalProducto.toFixed(2);
-            total += totalProducto;
-        }
-
-        document.getElementById('total').value = total.toFixed(2);
+    // Calcular el total de la orden
+    function actualizarTotalOrden() {
+        let totalOrden = 0;
+        document.querySelectorAll('.total_producto').forEach(function(input) {
+            totalOrden += parseFloat(input.value) || 0;
+        });
+        document.getElementById('total').value = totalOrden.toFixed(2);
     }
 </script>
 
