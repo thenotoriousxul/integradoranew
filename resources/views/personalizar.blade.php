@@ -153,8 +153,8 @@
 
     function descargarImagen() {
     const link = document.createElement('a');
-    link.href = canvas.toDataURL({ format: 'png' }); // Generar la URL del diseño
-    link.download = 'mi_diseño.png'; // Nombre del archivo descargado
+    link.href = canvas.toDataURL({ format: 'png' }); 
+    link.download = 'mi_diseño.png'; 
     link.click();
 }
 

@@ -30,18 +30,6 @@ class EdicionPersonalizadaController extends Controller
             'imagen_producto_final' => 'nullable|image|max:2048',
         ]);
     
-        $producto = Producto::find($request->productos_id); // Obtener el producto seleccionado
-    
-        // Verificar si el producto es personalizable
-        if ($producto->personalizada != 1) {
-            return redirect()->back()->withErrors(['producto' => 'El producto seleccionado no es personalizable.']);
-        }
-
-        // Verificar si la cantidad es mayor que el stock disponible
-        if ($request->cantidad > $producto->stock) {
-            return redirect()->back()->withErrors(['cantidad' => 'La cantidad no puede ser mayor al stock disponible.']);
-        }
-    
         $imageUrl = null;
     
         if ($request->hasFile('imagen_producto_final')) {
@@ -49,8 +37,7 @@ class EdicionPersonalizadaController extends Controller
             $imageUrl = Storage::disk('s3')->url($imagePath);
         }
     
-        // Igualar la imagen trasera al producto
-        $imageUrlTrasera = $imageUrl ?? $producto->imagen_producto_final; // Si no se sube una imagen trasera, usar la del producto
+        $imageUrlTrasera = $imageUrl; 
     
         $data = [
             'nombre' => $request->nombre,
@@ -68,5 +55,6 @@ class EdicionPersonalizadaController extends Controller
         return redirect()->route('personalizacion')
             ->with('success', 'Edición personalizada creada correctamente.');
     }
+    
+   
 }
-
