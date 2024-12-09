@@ -47,7 +47,7 @@ class EdicionController extends Controller
 
     public function listarEdiciones()
     {
-        $ediciones = Edicion::all();
+        $ediciones = Edicion::paginate(10);
         return view('admin.ediciones.listar', compact('ediciones'));
     }
 

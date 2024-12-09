@@ -213,6 +213,7 @@ Route::middleware(['role:admin|empleado'])->group(function () {
         Route::patch('entregada/{id}', [OrdenController::class, 'Entregada'])->name('admin.orden.entregada');
         Route::patch('cancelada/{id}', [OrdenController::class, 'Cancelada'])->name('admin.orden.cancelada');
         Route::get('pendientes/{estado}', [OrdenController::class, 'filtroPendientes'])->name('admin.orden.pendientes');
+        Route::get('filtrar/fecha', [OrdenController::class, 'filtrarFechas'])->name('admins.ordenes.filtrar');
     });
 
 

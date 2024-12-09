@@ -12,6 +12,7 @@ class formulariosController extends Controller
 
 
     public function formularioProducto(){
+        
         return view('admin.productos.dashProducto');
     }
 
