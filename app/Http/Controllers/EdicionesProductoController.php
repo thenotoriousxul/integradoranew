@@ -124,9 +124,6 @@ class EdicionesProductoController extends Controller
 
 
 
-
-
-
     public function filtro(Request $request)
     {
         $request->validate([
