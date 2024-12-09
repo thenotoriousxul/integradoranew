@@ -4,7 +4,7 @@
 <div class="container mt-5" style="background-color: #f8f9fa; padding: 2rem; border-radius: 0.5rem;">
     <h1 class="text-center mb-4 display-5 fw-bold text-dark">Editar Producto</h1>
 
-    <form action="{{ route('actualizar.producto', $producto->id) }}" method="POST" enctype="multipart/form-data" style="background-color: #ffffff; padding: 2rem; border-radius: 0.5rem;" class="shadow-sm border">
+    <form action="{{ route('actualizar.producto.base', $producto->id) }}" method="POST" enctype="multipart/form-data" style="background-color: #ffffff; padding: 2rem; border-radius: 0.5rem;" class="shadow-sm border">
         @csrf
         @method('PUT')
 

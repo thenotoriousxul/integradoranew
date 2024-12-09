@@ -204,7 +204,7 @@ Route::middleware(['role:admin|empleado'])->group(function () {
         Route::patch('/dash/productoBase/activar/{id}', [productoController::class, 'activar'])->name('activar.producto');
         Route::patch('/dash/productoBase/inactivar/{id}', [productoController::class, 'inactivar'])->name('inactivar.producto');
         Route::get('dash/producto/editar/{id}', [productoController::class, 'editar'])->name('editar.producto.base');
-        Route::put('dash/productos/actualizar/{id}', [productoController::class, 'update'])->name('actualizar.producto');
+        Route::put('dash/productos/actualizar/{id}', [productoController::class, 'update'])->name('actualizar.producto.base');
         Route::get('dash/productos/filtroPorPrecio',[productoController::class, 'filtrarPorPrecio'])->name('filtrar.precio');
         Route::get('dash/productos/filtros',[productoController::class, 'filtros'])->name('filtros');
     });
