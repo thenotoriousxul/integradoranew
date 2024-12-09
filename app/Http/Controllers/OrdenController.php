@@ -38,8 +38,12 @@ class OrdenController extends Controller
     );
 
     return view('admin.ordenes.index', ['ordenes' => $paginatedOrdenes]);
+
     }
     
+    public function filtrarFechas(){
+        
+    }
 
     
 

@@ -144,6 +144,7 @@ Route::middleware(['role:admin'])->group(function(){
     Route::prefix('admin/usuarios')->group(function () {
         Route::get('/listar', [UserController::class, 'listar'])->name('listar.usurios');  
         Route::patch('/desactivar/{id}', [UserController::class, 'desactivar'])->name('desactivar.usuarios');  
+        Route::patch('/activar/{id}', [UserController::class, 'activar'])->name('activar.usuarios');  
     });
 });
 
