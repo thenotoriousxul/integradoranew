@@ -10,8 +10,8 @@
 @endsection
 
 @section('content')
-<h2 class="text-center">Reporte de Ventas</h2>
 <div class="dash-info">
+    <h2 class="text-center">Reporte de Ventas</h2>
     <div class="card">
         <h2>Total de ventas en línea:</h2>
         <div class="table-info">{{ number_format($TotalVentasLinea, 2) }}</div>
@@ -125,6 +125,11 @@
 .card:nth-child(1) { background: linear-gradient(135deg, #3498db, #2980b9); }
 .card:nth-child(2) { background: linear-gradient(135deg, #453ce7, #c0392b); }
 .card:nth-child(3) { background: linear-gradient(135deg, #2a0069, #000000); }
+
+.table-info
+{
+    color: white;
+}
 </style>
 
 @endsection
