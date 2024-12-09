@@ -30,7 +30,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;  
 use App\Http\Controllers\S3ImageController;
 use App\Http\Controllers\AuditoriaController;
-
+use App\Mail\EnvioEntregado;
+use App\Models\Envios;
 
 //prueba
 // Rutas de acceso general
@@ -316,4 +317,5 @@ Route::get('/auditoria/ediciones', [AuditoriaController::class, 'audEdiciones'])
 Route::get('/auditoria/pagos', [AuditoriaController::class, 'audPagos'])->name('admin.auditoria.pagos');
 Route::get('/auditoria/usuarios', [AuditoriaController::class, 'audUsuarios'])->name('admin.auditoria.usuarios');
 
-
+Route::get('/proveedores/{id}/editar', [ProveedorController::class, 'editarProveedor'])->name('admin.editarProveedor');
+Route::put('/proveedores/{id}', [ProveedorController::class, 'actualizarProveedor'])->name('admin.actualizarProveedor');

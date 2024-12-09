@@ -51,6 +51,8 @@ class carritoController extends Controller
             return back()->withErrors(['error' => 'Lo sentimos, stock insuficiente. Intenta con otra cantidad menor.']);
         }
 
+        if (($cantidadEnCarrito + $cantidad) > 10) { return back()->withErrors(['error' => 'Lo sentimos, la cantidad máxima por producto es 10.']); }
+
         if ($carrito->has($productoTallaKey)) {
             $precio = $productoConTallaEspecifica->rebaja ? $productoConTallaEspecifica->precio_rebajado : $productoConTallaEspecifica->costo_precio_venta;
             $carrito->put($productoTallaKey, [
