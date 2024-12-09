@@ -33,11 +33,13 @@
                                 Acciones
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton-{{ $proveedor->id }}">
-                                <li><a class="dropdown-item" href="#">Editar</a></li>
-                                <li><a class="dropdown-item" href="#">Eliminar</a></li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('admin.editarProveedor', $proveedor->id) }}">Editar</a>
+                                </li>
                             </ul>
                         </div>
                     </td>
+                    
                 </tr>
             @empty
                 <tr>
@@ -47,6 +49,5 @@
         </tbody>
     </table>
     <div class="mt-4 d-flex justify-content-center">
-        {{ $proveedores->links('pagination::bootstrap-4')->withClass('pagination-sm') }}
     </div>
 @endsection

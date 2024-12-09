@@ -27,7 +27,7 @@
                             </div>
                         @endif
 
-                        <!-- Imagen trasera y overlay para "agotado" -->
+                       
                         @if ($producto->cantidad <= 0)
                             <div class="overlay">
                                 <p class="text-danger">Agotado</p>

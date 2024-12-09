@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\formularios;
 use App\Http\Controllers\Controller;
+use App\Models\Proveedor;
 use Illuminate\Http\Request;
 
 class formulariosController extends Controller
@@ -12,8 +13,9 @@ class formulariosController extends Controller
 
 
     public function formularioProducto(){
-        
-        return view('admin.productos.dashProducto');
+
+        $proveedores = Proveedor::all();
+        return view('admin.productos.dashProducto', compact('proveedores'));
     }
 
     public function formularioEdicion(){

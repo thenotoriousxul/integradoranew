@@ -81,24 +81,7 @@ class informacionClienteController extends Controller
     }
     
 
-
-    /**
-     * Handle the event.
-     *
-     * @param  \App\Models\Envios  $envio
-     * @return void
-     */
-    // public function handle(Envios $envio)
-    // {
-    //     // Verifica si el estado ha cambiado a 'entregado'
-    //     if ($envio->isDirty('estado_envio') && $envio->estado_envio === 'entregado') {
-    //         // Obtén el correo del usuario a través de las relaciones
-    //         $correo = $envio->orden->persona->usuario->email;
-
-    //         // Envía el correo
-    //         Mail::to($correo)->send(new EnvioEntregado($envio));
-    //     }
-    // }
+    
 
 
 

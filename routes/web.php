@@ -30,7 +30,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;  
 use App\Http\Controllers\S3ImageController;
 use App\Http\Controllers\AuditoriaController;
-
+use App\Mail\EnvioEntregado;
+use App\Models\Envios;
 
 //prueba
 // Rutas de acceso general
@@ -151,6 +152,13 @@ Route::middleware(['role:admin'])->group(function(){
 Route::get('/rebajas' , [EdicionesProductoController::class, 'rebajas'])->name('rebajas');
 Route::get('rebaja/filtro', [EdicionesProductoController::class, 'filtroRebaja'])->name('filtros.rebajas');
 
+<<<<<<< HEAD
+=======
+
+
+
+//-- Rutas protegidas para el admin y el empleado
+>>>>>>> 08e599ba878e42c3b7961193c1f4c6ce5cf1fc07
 Route::middleware(['role:admin|empleado'])->group(function () {
     Route::get('/auditoria/ediciones', [AuditoriaController::class, 'audEdiciones'])->name('admin.auditoria.ediciones');
     Route::get('/auditoria/pagos', [AuditoriaController::class, 'audPagos'])->name('admin.auditoria.pagos');
@@ -327,3 +335,6 @@ Route::post('/producto/verificar', [StripeController::class, 'verificarProductos
 Route::get('/auditoria/ediciones', [AuditoriaController::class, 'audEdiciones'])->name('admin.auditoria.ediciones');
 Route::get('/auditoria/pagos', [AuditoriaController::class, 'audPagos'])->name('admin.auditoria.pagos');
 Route::get('/auditoria/usuarios', [AuditoriaController::class, 'audUsuarios'])->name('admin.auditoria.usuarios');
+
+Route::get('/proveedores/{id}/editar', [ProveedorController::class, 'editarProveedor'])->name('admin.editarProveedor');
+Route::put('/proveedores/{id}', [ProveedorController::class, 'actualizarProveedor'])->name('admin.actualizarProveedor');

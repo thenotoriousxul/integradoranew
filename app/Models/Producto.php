@@ -25,9 +25,10 @@ class Producto extends Model
         return $this->hasMany(Edicion::class, 'ediciones_poductos');
       }
 
-      public function proveedor()
+      public function productoProveedores()
 {
-    return $this->belongsTo(Proveedor::class, 'proveedores_id');
+    return $this->hasMany(Productos_Proveedores::class, 'productos_id');
 }
+
 
 }

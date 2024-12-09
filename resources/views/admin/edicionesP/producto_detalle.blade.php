@@ -51,7 +51,7 @@
     }
 
     .size-option {
-        display: inline-flex;
+        display: flex;
         justify-content: center;
         align-items: center;
         width: 50px;
@@ -64,6 +64,8 @@
         transition: all 0.3s ease;
         text-align: center;
         color: var(--text-color);
+        flex-direction: column; /* Apila los elementos de talla y stock */
+        margin-bottom: 10px;
     }
 
     .size-option.available {
@@ -86,6 +88,13 @@
         text-decoration: line-through;
     }
 
+    .size-option .stock-quantity {
+        font-size: 12px;
+        color: var(--secondary-color);
+        margin-top: 8px; /* Aumenté el margen para más separación */
+        text-align: center;
+    }
+
     .btn-add-cart {
         background-color: var(--primary-color);
         color: white;
@@ -105,6 +114,14 @@
     .btn-add-cart:disabled {
         background-color: #cccccc;
         cursor: not-allowed;
+    }
+
+    /* Estilos para el div del stock */
+    .stock-info {
+        margin-top: 20px;
+        display: none; /* Este div estará oculto por defecto */
+        font-size: 14px;
+        color: var(--secondary-color);
     }
 </style>
 
@@ -156,7 +173,13 @@
                     @endforeach
                 </div>
             </div>
- 
+
+            <!-- Div de información del stock -->
+            <div class="stock-info" id="stock-info">
+                <p><strong>Talla seleccionada:</strong> <span id="selected-size"></span></p>
+                <p><strong>Stock disponible:</strong> <span id="available-stock"></span></p>
+            </div>
+
             <form action="{{ route('carrito.agregar', $producto->id) }}" method="POST">
                 @csrf
                 <input type="hidden" name="talla" id="talla-seleccionada" value="">
@@ -178,37 +201,42 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-    const sizeOptions = document.querySelectorAll('.size-option.available');
-    const hiddenTallaInput = document.getElementById('talla-seleccionada');
-    const agregarCarritoButton = document.getElementById('agregar-carrito');
-    const quantitySelector = document.querySelector('.quantity-selector');
+        const sizeOptions = document.querySelectorAll('.size-option.available');
+        const hiddenTallaInput = document.getElementById('talla-seleccionada');
+        const agregarCarritoButton = document.getElementById('agregar-carrito');
+        const quantitySelector = document.querySelector('.quantity-selector');
+        const stockInfoDiv = document.getElementById('stock-info');
+        const selectedSizeSpan = document.getElementById('selected-size');
+        const availableStockSpan = document.getElementById('available-stock');
 
-    sizeOptions.forEach(option => {
-        option.addEventListener('click', function() {
-            sizeOptions.forEach(opt => opt.classList.remove('active'));
+        sizeOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                sizeOptions.forEach(opt => opt.classList.remove('active'));
 
-            this.classList.add('active');
+                this.classList.add('active');
+                hiddenTallaInput.value = this.dataset.talla;
 
-            hiddenTallaInput.value = this.dataset.talla;
+                const stockDisponible = parseInt(this.dataset.cantidad);
+                const maxSeleccionable = Math.min(stockDisponible, 5);
 
-            const stockDisponible = parseInt(this.dataset.cantidad);
+                // Mostrar información del stock
+                selectedSizeSpan.textContent = this.dataset.talla;
+                availableStockSpan.textContent = stockDisponible;
 
-            const maxSeleccionable = Math.min(stockDisponible, 5);
+                stockInfoDiv.style.display = 'block'; // Mostrar el div con la info del stock
 
-            quantitySelector.innerHTML = '';
-            for (let i = 1; i <= maxSeleccionable; i++) {
-                const option = document.createElement('option');
-                option.value = i;
-                option.textContent = i;
-                quantitySelector.appendChild(option);
-            }
+                quantitySelector.innerHTML = '';
+                for (let i = 1; i <= maxSeleccionable; i++) {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = i;
+                    quantitySelector.appendChild(option);
+                }
 
-            agregarCarritoButton.disabled = false;
-
-            console.log('Talla seleccionada:', this.dataset.talla, 'Stock disponible:', stockDisponible, 'Max permitido:', maxSeleccionable);
+                agregarCarritoButton.disabled = false;
+            });
         });
     });
-});
-
 </script>
+
 @endsection
