@@ -6,7 +6,7 @@
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
-    <form action="{{ route('store.productos', $producto->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('store.productos.update', $producto->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('POST')
         

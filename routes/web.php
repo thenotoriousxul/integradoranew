@@ -232,7 +232,7 @@ Route::middleware(['role:admin|empleado'])->group(function () {
         Route::patch('inactivar/producto/{id}',[EdicionesProductoController::class, 'inactivar'])->name('inactivar');
         Route::get('listar',[EdicionesProductoController::class, 'getProducts'])->name('listar.productos');
         Route::patch('/actualizar/{id}', [EdicionesProductoController::class, 'update'])->name('actualizar.producto');
-        Route::post('admin/ediciones_productos/guardar/producto/{id}', [EdicionesProductoController::class, 'update'])->name('store.productos');
+        Route::post('admin/ediciones_productos/guardar/producto/{id}', [EdicionesProductoController::class, 'update'])->name('store.productos.update');
 
     });
   
