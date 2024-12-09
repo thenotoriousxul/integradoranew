@@ -32,8 +32,8 @@
     }
 
     .right-column {
-        background-image: url('{{ asset('img/colorplayera.jpeg') }}');
-        background-size: cover;
+        background-image: url('{{ asset('img/loginimg.jpeg') }}');
+        background-size: contain;
         background-position: center;
         height: 100vh;
         padding: 0;

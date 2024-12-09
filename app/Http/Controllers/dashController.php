@@ -127,6 +127,7 @@ class dashController extends Controller
         ->join('tipo_personas', 'ordenes.tipo_personas_id', '=', 'tipo_personas.id')
         ->where('tipo_personas.tipo_persona', 'Empleado')
         ->whereMonth('ordenes.fecha_orden', $currentMonth)
+        ->where('estado', 'Pagada')
         ->sum('ordenes.total');
     
         $reporteVentas = ReporteVenta::whereBetween('fecha_orden', [$inicioMes, $finMes])->get(); 

@@ -164,7 +164,7 @@
             </div>
         </div>
 
-        <div class="col-lg-6 bg-image d-none d-lg-block" style="background-image: url('{{ asset('img/mujer.jpeg') }}'); background-size: cover; background-position: center;">
+        <div class="col-lg-6 bg-image d-none d-lg-block" style="background-image: url('{{ asset('img/desert3.jpeg') }}'); background-size: cover; background-position: top;">
         </div>
     </div>
 </div>
