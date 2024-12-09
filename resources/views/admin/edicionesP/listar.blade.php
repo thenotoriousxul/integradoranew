@@ -103,6 +103,7 @@
             @endforelse
         </tbody>
     </table>
+    
     {{ $productos->links() }}
 
 @endsection 
