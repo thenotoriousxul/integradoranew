@@ -103,7 +103,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo de la tienda" class="logo">
+            <img src="{{ asset('img/ozeztrc.png') }}" alt="Logo de la tienda" class="logo">
             <h1>¡Gracias por tu compra!</h1>
             <p class="success-message">Tu pedido ha sido confirmado y está siendo procesado.</p>
         </div>
