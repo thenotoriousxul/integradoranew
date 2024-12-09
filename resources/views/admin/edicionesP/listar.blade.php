@@ -60,41 +60,35 @@
                         </span>
                     </td>
                     <td>
-                        <div class="dropdown">
-                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton-{{ $producto->id }}" data-bs-toggle="dropdown" aria-expanded="false">
-                                Acciones
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton-{{ $producto->id }}">
-                                <li>
-                                    <a class="dropdown-item" href="#', $producto->id) }}">Editar</a>
-                                </li>
-                             @if ($producto->estado == 'activo')
-                                <li>
-                                    <form method="POST" action="{{ route('inactivar', $producto->id) }}" style="display:inline;">
-                                        @csrf
-                                        @method('PATCH')
-                                        <button type="submit" class="dropdown-item">Inactivar</button>
-                                    </form>
-                                </li>
-                            @else
-                                <li>
-                                    <form method="POST" action="{{ route('activar', $producto->id) }}" style="display:inline;">
-                                        @csrf
-                                        @method('PATCH')
-                                        <button type="submit" class="dropdown-item">Activar</button>
-                                    </form>
-                                </li>
-                            @endif
-                                <li>
-                                    <form method="POST" action="#', $producto->id) }}" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="dropdown-item" onclick="return confirm('¿Estás seguro de eliminar este producto?')">Eliminar</button>
-                                    </form>
-                                </li>
-                            </ul>
-                        </div>
-                    </td>
+    <div class="dropdown">
+        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton-{{ $producto->id }}" data-bs-toggle="dropdown" aria-expanded="false">
+            Acciones
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton-{{ $producto->id }}">
+            <li>
+                <a class="dropdown-item" href="{{ route('editar.producto', $producto->id) }}">Editar</a>
+            </li>
+            @if ($producto->estado == 'activo')
+                <li>
+                    <form method="POST" action="{{ route('inactivar', $producto->id) }}" style="display:inline;">
+                        @csrf
+                        @method('PATCH')
+                        <button type="submit" class="dropdown-item">Inactivar</button>
+                    </form>
+                </li>
+            @else
+                <li>
+                    <form method="POST" action="{{ route('activar', $producto->id) }}" style="display:inline;">
+                        @csrf
+                        @method('PATCH')
+                        <button type="submit" class="dropdown-item">Activar</button>
+                    </form>
+                </li>
+            @endif
+        </ul>
+    </div>
+</td>
+
                 </tr>
             @empty
                 <tr>

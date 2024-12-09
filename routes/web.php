@@ -151,8 +151,15 @@ Route::middleware(['role:admin'])->group(function(){
 Route::get('/rebajas' , [EdicionesProductoController::class, 'rebajas'])->name('rebajas');
 Route::get('rebaja/filtro', [EdicionesProductoController::class, 'filtroRebaja'])->name('filtros.rebajas');
 
-//-- Rutas protegidas para el admin y el empleado
 Route::middleware(['role:admin|empleado'])->group(function () {
+    Route::get('/auditoria/ediciones', [AuditoriaController::class, 'audEdiciones'])->name('admin.auditoria.ediciones');
+    Route::get('/auditoria/pagos', [AuditoriaController::class, 'audPagos'])->name('admin.auditoria.pagos');
+    Route::get('/auditoria/usuarios', [AuditoriaController::class, 'audUsuarios'])->name('admin.auditoria.usuarios');
+
+    Route::get('/proveedores', [proveedorController::class, 'index'])->name('proveedores.index');
+
+
+
 
     Route::prefix('admin/diseños')->group(function(){
         Route::get('/crear',[formulariosController::class, 'crearDiseño'])->name('crear.diseño');
@@ -223,6 +230,10 @@ Route::middleware(['role:admin|empleado'])->group(function () {
         Route::patch('activar/producto/{id}',[EdicionesProductoController::class, 'activar'])->name('activar');
         Route::patch('inactivar/producto/{id}',[EdicionesProductoController::class, 'inactivar'])->name('inactivar');
         Route::get('listar',[EdicionesProductoController::class, 'getProducts'])->name('listar.productos');
+        Route::get('/editar/{id}', [EdicionesProductoController::class, 'edit'])->name('editar.producto');
+        Route::patch('/actualizar/{id}', [EdicionesProductoController::class, 'update'])->name('actualizar.producto');
+        Route::post('admin/ediciones_productos/guardar/producto/{id}', [EdicionesProductoController::class, 'update'])->name('store.productos');
+
     });
   
     Route::get('/admin/dashboard/menu', [dashController::class, 'menuPrincipal'])->name('dash.menu');
@@ -258,8 +269,6 @@ Route::get('/agregarProveedor', function () {
 
 
 
-Route::get('/proveedores', [proveedorController::class, 'index'])->name('proveedores.index');
-
 Route::put('/direccion/actualizar/{id}', [informacionClienteController::class, 'actualizarDireccion'])->name('direccion.actualizar');
 
 Route::get('/envios-pendientes', [informacionClienteController::class, 'mostrarenvios'])->name('envios.pendientes');
@@ -275,6 +284,8 @@ Route::prefix('admin/ediciones_personalizadas')->name('admin.ediciones_personali
 Route::post('/proveedor/nuevo', [proveedorController::class, 'nuevoproveedor'])->name('nuevoproveedor');
 
 
+Route::get('/editar/{id}', [EdicionesProductoController::class, 'edit'])->name('editar.producto');
+Route::patch('/actualizar/{id}', [EdicionesProductoController::class, 'update'])->name('actualizar.producto');
 
 
 

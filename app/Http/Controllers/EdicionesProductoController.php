@@ -226,4 +226,48 @@ class EdicionesProductoController extends Controller
 
 
     }
+
+    public function edit($id)
+    {
+        $producto = Producto::findOrFail($id); 
+        return view('admin.edicionesP.editarProducto', compact('producto')); 
+    }
+    
+
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'nombre' => ['required', 'string', 'max:55'],
+        'talla' => ['required', 'in:CH,M,XL,XXL'],
+        'imagen_producto_final' => ['nullable', 'image', 'max:2048'],
+        'imagen_producto_trasera' => ['nullable', 'image', 'max:2048'],
+        'costo_precio_venta' => ['required', 'numeric', 'min:0'],
+        'cantidad' => ['required', 'integer', 'min:1'],
+    ]);
+
+    $producto = EdicionesProductos::findOrFail($id);
+
+    if ($request->hasFile('imagen_producto_final')) {
+        $imagePath = $request->file('imagen_producto_final')->store('ediciones_productos', 's3');
+        Storage::disk('s3')->setVisibility($imagePath, 'public');
+        $producto->imagen_producto_final = Storage::disk('s3')->url($imagePath);
+    }
+
+    if ($request->hasFile('imagen_producto_trasera')) {
+        $imagePathTrasera = $request->file('imagen_producto_trasera')->store('ediciones_productos', 's3');
+        Storage::disk('s3')->setVisibility($imagePathTrasera, 'public');
+        $producto->imagen_producto_trasera = Storage::disk('s3')->url($imagePathTrasera);
+    }
+
+    $producto->nombre = $request->nombre;
+    $producto->talla = $request->talla;
+    $producto->costo_precio_venta = $request->costo_precio_venta;
+    $producto->cantidad = $request->cantidad;
+
+    $producto->save();
+
+    return redirect()->route('listar.productos')
+        ->with('success', 'Producto actualizado correctamente.');
+}
+
 }
