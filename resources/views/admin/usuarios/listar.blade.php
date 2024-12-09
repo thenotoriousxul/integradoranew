@@ -63,11 +63,11 @@
                         <a href="#" class="btn btn-sm btn-warning">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <form action="#" method="POST" style="display:inline-block;">
+                        <form action="{{ route('desactivar.usuarios', $usuario->id) }}" method="POST" style="display:inline-block;">
                             @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de eliminar este usuario?')">
-                                <i class="fas fa-trash"></i>
+                            @method('PATCH')
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de desactivar este usuario?')">
+                                <i class="fas fa-ban"></i>
                             </button>
                         </form>
                     </td>

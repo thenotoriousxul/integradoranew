@@ -12,4 +12,15 @@ class UserController extends Controller
         $usuarios = User::with(['persona', 'roles'])->paginate(10);
         return view('admin.usuarios.listar', compact('usuarios'));
     }   
+
+
+    public function desactivar($id){
+        $usuarios = User::FindOrFail($id);
+
+        $usuarios->status = 'Inactivo';
+        $usuarios->save();
+
+
+        return redirect()->back()->with('success', 'usuario desactivado correctamente');
+    }
 }

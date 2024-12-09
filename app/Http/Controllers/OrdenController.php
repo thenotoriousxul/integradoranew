@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 use App\Models\Orden;
 use App\Models\DetalleOrden;
 use App\Models\Edicion;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class OrdenController extends Controller
 {
@@ -17,11 +19,25 @@ class OrdenController extends Controller
     }
 
 
-    public function filtroPendientes($estado){
-        $ordenes = DB::select('CALL FiltrarPorEstado(?)', [$estado]);
+    public function filtroPendientes(Request $request, $estado){
+    
+    $ordenes = collect(DB::select('CALL FiltrarPorEstado(?)', [$estado]));
 
-       
-        return view('admin.ordenes.index', compact('ordenes'));
+    $ordenesCollection = Collection::make($ordenes);
+        
+    $perPage = 5; 
+    $currentPage = LengthAwarePaginator::resolveCurrentPage();
+    $currentPageItems = $ordenesCollection->slice(($currentPage - 1) * $perPage, $perPage)->values(); 
+
+    $paginatedOrdenes = new LengthAwarePaginator(
+        $currentPageItems, 
+        $ordenesCollection->count(), 
+        $perPage, 
+        $currentPage, 
+        ['path' => $request->url(), 'query' => $request->query()] 
+    );
+
+    return view('admin.ordenes.index', ['ordenes' => $paginatedOrdenes]);
     }
     
 
