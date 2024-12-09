@@ -42,7 +42,7 @@
         animation: typing 6s steps(40, end), fade-out 0s step-end 4s;
     }
 
-    .display-5 {
+    .display-6 {
         font-family: 'Bebas Neue', sans-serif;
         font-size: 2rem;
         color: white;
@@ -498,7 +498,7 @@
         
         <div class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center">
             <h1 class="display-4">Bienvenido a OZEZ</h1>
-            <p class="display-5">Explora nuestra colección de playeras personalizables y exclusivas.</p>
+            <p class="display-6">Explora nuestra colección de playeras personalizables y exclusivas.</p>
         </div>
     </div>
 

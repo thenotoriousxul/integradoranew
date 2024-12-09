@@ -66,7 +66,7 @@
                                         <form method="POST" action="{{ route('inactivar.producto', $producto->id) }}" style="display:inline;">
                                             @csrf
                                             @method('PATCH')
-                                            <button type="submit" class="dropdown-item">Inactivar</button>
+                                            <button type="submit" class="dropdown-item">Desactivar</button>
                                         </form>
                                     </li>
                                 @else
@@ -79,11 +79,6 @@
                                     </li>
                                 @endif
                                 <li>
-                                    <form method="POST" action="" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="dropdown-item" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?')">Eliminar</button>
-                                    </form>
                                 </li>
                             </ul>
                         </div>
