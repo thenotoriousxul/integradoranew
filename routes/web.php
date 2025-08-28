@@ -231,9 +231,9 @@ Route::middleware(['role:admin|empleado'])->group(function () {
         Route::patch('activar/producto/{id}',[EdicionesProductoController::class, 'activar'])->name('activar');
         Route::patch('inactivar/producto/{id}',[EdicionesProductoController::class, 'inactivar'])->name('inactivar');
         Route::get('listar',[EdicionesProductoController::class, 'getProducts'])->name('listar.productos');
+        Route::get('/editar/{id}', [EdicionesProductoController::class, 'edit'])->name('editar.producto');
         Route::patch('/actualizar/{id}', [EdicionesProductoController::class, 'update'])->name('actualizar.producto');
-        Route::post('admin/ediciones_productos/guardar/producto/{id}', [EdicionesProductoController::class, 'update'])->name('store.productos.update');
-
+        Route::post('admin/ediciones_productos/guardar/producto/{id}', [EdicionesProductoController::class, 'update'])->name('store.productos.actualizar  ');
     });
   
     Route::get('/admin/dashboard/menu', [dashController::class, 'menuPrincipal'])->name('dash.menu');
@@ -284,8 +284,6 @@ Route::prefix('admin/ediciones_personalizadas')->name('admin.ediciones_personali
 Route::post('/proveedor/nuevo', [proveedorController::class, 'nuevoproveedor'])->name('nuevoproveedor');
 
 
-Route::get('/editar/{id}', [EdicionesProductoController::class, 'edit'])->name('editar.producto');
-Route::patch('/actualizar/{id}', [EdicionesProductoController::class, 'update'])->name('actualizar.producto');
 
 
 

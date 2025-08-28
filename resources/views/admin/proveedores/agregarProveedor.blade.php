@@ -26,8 +26,13 @@
     
             <div class="mb-3">
                 <label for="tipo" class="form-label fw-bold">Tipo de Proveedor</label>
-                <input type="text" name="tipo" id="tipo" class="form-control" placeholder="Ingrese el número telefónico" required>
+                <select name="tipo" id="tipo" class="form-control" required>
+                    <option value="" disabled selected>Seleccione el tipo</option>
+                    <option value="Servicio">Servicio</option>
+                    <option value="Materia Prima">Materia Prima</option>
+                </select>
             </div>
+
             <div class="mb-3">
                 <label for="calle" class="form-label fw-bold">Calle</label>
                 <input type="text" name="calle" id="calle" class="form-control" placeholder="Ingrese la calle" required>

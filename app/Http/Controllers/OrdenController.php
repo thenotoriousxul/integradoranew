@@ -14,11 +14,14 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class OrdenController extends Controller
 {
     public function index()
-    {
-        $ordenes = Orden::with('tipoPersona.persona')->paginate(5);
+{
+    $ordenes = Orden::with('tipoPersona.persona')
+        ->orderBy('created_at', 'desc') 
+        ->paginate(5);
 
-        return view('admin.ordenes.index', compact('ordenes'));
-    }
+    return view('admin.ordenes.index', compact('ordenes'));
+}
+
 
 
 

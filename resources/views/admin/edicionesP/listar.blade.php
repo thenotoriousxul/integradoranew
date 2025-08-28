@@ -1,7 +1,7 @@
 @extends('admin.layouts.dashboard')
 
 @section('content')
-    <h2>Ediciones Productos</h2>
+    <h2>Ediciones Products</h2>
 
     @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">

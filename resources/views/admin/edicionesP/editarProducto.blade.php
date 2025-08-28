@@ -6,9 +6,9 @@
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
-    <form action="{{ route('store.productos.update', $producto->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('actualizar.producto', $producto->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
-        @method('POST')
+        @method('PATCH')
         
         <div class="mb-3">
             <label for="nombre" class="form-label">Nombre</label>

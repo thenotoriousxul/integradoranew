@@ -10,9 +10,11 @@ class EstampadoController extends Controller
 {
     public function listarEstampados()
     {
-        $estampados = Estampado::all();
+        $estampados = Estampado::paginate(10);
+        
         return view('admin.estampados.listar', compact('estampados'));
     }
+
 
     public function crearFormularioEstampado()
     {

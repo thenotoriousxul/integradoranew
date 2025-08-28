@@ -147,7 +147,6 @@ public function createEmpleado(array $input)
 
         $user->assignRole('empleado');
 
-        Mail::to($input['email'])->send(new empleadoMail($input['email'], $password));
 
         return $user;
     });

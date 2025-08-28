@@ -4,9 +4,11 @@
 <div class="container mx-auto p-4">
     <h1 class="text-2xl font-bold mb-4">Auditoría de Usuarios</h1>
 
+    <!-- Filtros -->
     <form method="GET" class="mb-4 row g-3">
         <div class="col-md-3">
-            <select name="operacion" class="form-select">
+            <label for="operacion" class="form-label">Operación</label>
+            <select name="operacion" id="operacion" class="form-select">
                 <option value="" {{ !request('operacion') ? 'selected' : '' }}>Todas</option>
                 <option value="INSERT" {{ request('operacion') === 'INSERT' ? 'selected' : '' }}>INSERT</option>
                 <option value="UPDATE" {{ request('operacion') === 'UPDATE' ? 'selected' : '' }}>UPDATE</option>
@@ -15,9 +17,11 @@
         </div>
 
         <div class="col-md-3">
+            <label for="usuario" class="form-label">Usuario</label>
             <input
                 type="text"
                 name="usuario"
+                id="usuario"
                 value="{{ request('usuario') }}"
                 class="form-control"
                 placeholder="Buscar usuario"
@@ -25,26 +29,27 @@
         </div>
 
         <div class="col-md-3">
-            <select name="orden" class="form-select">
+            <label for="orden" class="form-label">Ordenar por</label>
+            <select name="orden" id="orden" class="form-select">
                 <option value="desc" {{ request('orden') === 'desc' || !request('orden') ? 'selected' : '' }}>Más reciente</option>
                 <option value="asc" {{ request('orden') === 'asc' ? 'selected' : '' }}>Más antiguo</option>
             </select>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-3 d-flex align-items-end">
             <button type="submit" class="btn btn-primary w-100">Filtrar</button>
         </div>
     </form>
 
-    <!-- Tabla -->
+    <!-- Tabla de resultados -->
     <div class="table-responsive">
-        <table class="table table-bordered">
+        <table class="table table-bordered table-hover">
             <thead class="table-light">
                 <tr>
                     <th>Operación</th>
                     <th>Usuario</th>
-                    <th>Datos Anterior</th>
-                    <th>Datos Nuevo</th>
+                    <th>Datos Anteriores</th>
+                    <th>Datos Nuevos</th>
                     <th>Fecha</th>
                 </tr>
             </thead>
@@ -59,13 +64,19 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="5" class="text-center">No se encontraron resultados</td>
+                    <td colspan="5" class="text-center">No se encontraron registros</td>
                 </tr>
                 @endforelse
             </tbody>
+            <tfoot class="table-light">
+                <tr>
+                    <td colspan="5" class="text-center">Total de registros: {{ $auditorias->total() }}</td>
+                </tr>
+            </tfoot>
         </table>
     </div>
 
+    <!-- Paginación -->
     <div class="mt-4">
         {{ $auditorias->links('pagination::bootstrap-5') }}
     </div>

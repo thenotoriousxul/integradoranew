@@ -6,11 +6,11 @@
 
     <form method="GET" class="mb-4 row g-3">
         <div class="col-md-3">
-            <select name="operacion" class="form-select">
-                <option value="" {{ !request('operacion') ? 'selected' : '' }}>Todas</option>
-                <option value="INSERT" {{ request('operacion') === 'INSERT' ? 'selected' : '' }}>INSERT</option>
-                <option value="UPDATE" {{ request('operacion') === 'UPDATE' ? 'selected' : '' }}>UPDATE</option>
-                <option value="DELETE" {{ request('operacion') === 'DELETE' ? 'selected' : '' }}>DELETE</option>
+            <select name="accion" class="form-select">
+                <option value="" {{ !request('accion') ? 'selected' : '' }}>Todas</option>
+                <option value="INSERT" {{ request('accion') === 'INSERT' ? 'selected' : '' }}>INSERT</option>
+                <option value="UPDATE" {{ request('accion') === 'UPDATE' ? 'selected' : '' }}>UPDATE</option>
+                <option value="DELETE" {{ request('accion') === 'DELETE' ? 'selected' : '' }}>DELETE</option>
             </select>
         </div>
 
@@ -55,6 +55,7 @@
                     <td><pre class="mb-0">{{ $auditoria->datos_anterior }}</pre></td>
                     <td><pre class="mb-0">{{ $auditoria->datos_nuevo }}</pre></td>
                     <td>{{ $auditoria->fecha }}</td>
+
                 </tr>
                 @empty
                 <tr>

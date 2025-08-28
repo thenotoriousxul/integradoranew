@@ -8,6 +8,7 @@ use Spatie\Permission\Middlewares\RoleMiddleware;
 use App\Http\View\Composers\CarritoComposer;
 use App\Models\Envios;
 use App\Observers\EnvioObserver;
+use Illuminate\Support\Facades\URL; 
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,9 +24,13 @@ class AppServiceProvider extends ServiceProvider
      * Bootstrap any application services.
      */
     public function boot(): void
-    {
-        View::composer('*', CarritoComposer::class);
-        Envios::observe(EnvioObserver::class);
+{
+    View::composer('*', CarritoComposer::class);
+    Envios::observe(EnvioObserver::class);
 
-    }
+    if ($this->app->environment('local') && str_contains(config('app.url'), 'ngrok')) {
+    URL::forceScheme('https');
+}
+
+}
 }

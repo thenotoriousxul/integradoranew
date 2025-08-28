@@ -130,9 +130,9 @@ class StripeController extends Controller
             // Confirmar la transacción
             DB::commit();
         
-            // Enviar el correo
-            $usuario = auth()->user();
-            Mail::to($usuario->email)->send(new ordenMail($orden->id, $productos, $total));
+            // // Enviar el correo
+            // $usuario = auth()->user();
+            // Mail::to($usuario->email)->send(new ordenMail($orden->id, $productos, $total));
         
             Log::info('Orden creada con éxito', ['orden_id' => $orden->id]);
         

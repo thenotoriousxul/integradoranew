@@ -108,18 +108,15 @@ class EdicionesProductoController extends Controller
         return redirect()->route('listar.productos');
     }
 
-
-
-
-
-
-
     public function rebajas()
     {
-        $productos = EdicionesProductos::where('rebaja', 1)->get();
+        $productos = EdicionesProductos::where('rebaja', 1)
+            ->where('estado', 'activo') // solo productos activos
+            ->get();
 
         return view('rebajas', compact('productos'));
     }
+
 
 
 
@@ -229,7 +226,7 @@ class EdicionesProductoController extends Controller
 
     public function edit($id)
     {
-        $producto = Producto::findOrFail($id); 
+        $producto = EdicionesProductos::findOrFail($id);
         return view('admin.edicionesP.editarProducto', compact('producto')); 
     }
     

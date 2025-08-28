@@ -141,12 +141,6 @@
                     <i class="fas fa-tshirt"></i> <!-- Icono de camiseta -->
                     <span class="sidebar-text">Crear producto catalogo</span>
                 </a>
-
-                <a class="item-side sub" href="{{ route('admin.ediciones_personalizadas.create') }}">
-                    <i class="fas fa-pencil-alt"></i> <!-- Icono de lápiz para personalización -->
-                    <span class="sidebar-text">Crear producto personalizado</span>
-                </a>
-
                 <a class="item-side sub" href="{{ route('listar.productos') }}">
                     <i class="fas fa-th-list"></i> <!-- Icono de lista -->
                     <span class="sidebar-text">Listar Producto Catalogo</span>
@@ -221,7 +215,7 @@
 
             <a id="acciones" class="item-side" href="">
                 <i class="fas fa-cogs"></i> <!-- Icono de configuración -->
-                <span class="sidebar-text">Acciones</span>
+                <span class="sidebar-text">Auditorias</span>
                 <i class="fas fa-chevron-down abajo"></i>
             </a>
 
@@ -233,10 +227,6 @@
                 <a class="item-side sub" href="{{route('admin.auditoria.pagos')}}">
                     <i class="fas fa-credit-card"></i> <!-- Icono de pagos -->
                     <span class="sidebar-text">Pagos</span>
-                </a>
-                <a class="item-side sub" href="{{route('admin.auditoria.ediciones')}}">
-                    <i class="fas fa-edit"></i> <!-- Icono de edición -->
-                    <span class="sidebar-text">Ediciones</span>
                 </a>
             </div>
         </div>
