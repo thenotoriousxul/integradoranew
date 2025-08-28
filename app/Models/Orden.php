@@ -14,7 +14,6 @@ class Orden extends Model
     protected $fillable = [
         'tipo_personas_id',
         'fecha_orden',
-        'direcciones_id', 
         'total',
         'envios_domicilio',
         'estado'

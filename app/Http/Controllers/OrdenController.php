@@ -89,7 +89,6 @@ class OrdenController extends Controller
     
     $orden = Orden::create([
         'tipo_personas_id' => $tipoPersonaId, 
-        'direcciones_id' => null,
         'fecha_orden' => now(),
         'total' => $request->total, 
         'envios_domicilio' => $request->envios_domicilio,
