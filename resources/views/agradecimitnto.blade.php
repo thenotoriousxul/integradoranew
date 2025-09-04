@@ -46,7 +46,7 @@
             <p>Tu pedido llegará a la dirección proporcionada en una semana</p>
         </section>
         <section class="bg-light p-3 rounded mb-4">
-            <p>Puedes ver el estado de tu pedido en tu perfil</p>
+            <p>Puedes ver el estado de tu pedido en tu perfiil</p>
         </section>
         <a href="{{ route('pedidos') }}" class="btn btn-primary w-100 mb-2">Ver mis pedidos</a>
         <a href="{{ url('/') }}" class="btn btn-outline-primary w-100">Volver a la tienda</a>
